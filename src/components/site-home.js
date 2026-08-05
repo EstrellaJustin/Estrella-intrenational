@@ -1,7 +1,8 @@
 ﻿/* ============================================================
-   组件：is-home · 首页 = 全球出国项目分类系统
-   一级分类展开二级分类，点击二级分类进入项目列表页
-   仅分类内容，无统计 / 热门 / AI 入口 / 营销模块
+   组件：is-home · 首页 = 全球出国项目分类系统（三列矩阵）
+   一级分类卡片（图标+名称+二级分类+项目数）
+   点击卡片 → 分类页 category.html?cat=xx
+   点击二级分类 → 项目列表页 projects.html?cat=xx&sub=yy
    ============================================================ */
 
 class SiteHome extends HTMLElement {
@@ -13,27 +14,30 @@ class SiteHome extends HTMLElement {
 
   render() {
     const categories = Istra.categories || [];
+    const projects = Istra.projects || [];
+    const countByCat = {};
+    projects.forEach((p) => { countByCat[p.category.id] = (countByCat[p.category.id] || 0) + 1; });
 
-    const items = categories
-      .map((c, i) => `
-        <div class="home__cat" data-cat="${c.id}" data-reveal>
-          <button class="home__cat-head" type="button" aria-expanded="false" aria-controls="cat-body-${c.id}">
-            <span class="home__cat-num">${String(i + 1).padStart(2, '0')}</span>
-            <span class="home__cat-name">${c.name}</span>
-            <span class="home__cat-en">${c.en}</span>
-            <span class="home__cat-arrow" aria-hidden="true">+</span>
-          </button>
-          <div class="home__cat-body" id="cat-body-${c.id}">
-            <div class="home__cat-inner">
-              <div class="home__subs">
-                ${c.subs.map((s) => `
-                  <a class="home__sub" href="projects.html?cat=${c.id}&sub=${s.id}">
-                    ${s.name} <span class="arr">→</span>
-                  </a>`).join('')}
-              </div>
+    const cards = categories
+      .map((c, i) => {
+        const subs = c.subs
+          .map((s) => `<a class="home__sub" href="projects.html?cat=${c.id}&sub=${s.id}">${s.name}</a>`)
+          .join('');
+        return `
+          <article class="home__cat" data-cat="${c.id}" tabindex="0" role="link" aria-label="${c.name}" data-reveal>
+            <div class="home__cat-top">
+              <span class="home__cat-icon">${Istra.icon(c.id) || Istra.icon('compass')}</span>
+              <span class="home__cat-num">${String(i + 1).padStart(2, '0')}</span>
             </div>
-          </div>
-        </div>`)
+            <h3 class="home__cat-name">${c.name}</h3>
+            <p class="home__cat-en">${c.en}</p>
+            <div class="home__cat-subs">${subs}</div>
+            <div class="home__cat-foot">
+              <span class="home__cat-count">${countByCat[c.id] || 0} 项目</span>
+              <a class="home__cat-more" href="category.html?cat=${c.id}">查看全部 <span class="arr">→</span></a>
+            </div>
+          </article>`;
+      })
       .join('');
 
     this.innerHTML = `
@@ -48,7 +52,7 @@ class SiteHome extends HTMLElement {
 
         <section class="home__cats" aria-label="项目分类">
           <div class="container">
-            <div class="home__accordion">${items}</div>
+            <div class="home__grid">${cards}</div>
           </div>
         </section>
       </div>
@@ -56,11 +60,18 @@ class SiteHome extends HTMLElement {
   }
 
   bind() {
-    this.querySelectorAll('.home__cat').forEach((item) => {
-      const head = item.querySelector('.home__cat-head');
-      head.addEventListener('click', () => {
-        const open = item.classList.toggle('is-open');
-        head.setAttribute('aria-expanded', String(open));
+    this.querySelectorAll('.home__cat').forEach((card) => {
+      const catId = card.dataset.cat;
+      const open = () => { location.href = `category.html?cat=${catId}`; };
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return; /* 二级分类/查看全部由链接处理 */
+        open();
+      });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          open();
+        }
       });
     });
   }
