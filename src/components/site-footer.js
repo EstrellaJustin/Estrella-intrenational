@@ -1,0 +1,56 @@
+﻿/* ============================================================
+   组件：is-footer · 页脚
+   ============================================================ */
+
+class SiteFooter extends HTMLElement {
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    const cols = (Istra.footer && Istra.footer.columns || [])
+      .map((col) => `
+        <div class="footer__col">
+          <h3 class="footer__col-title">${col.title}</h3>
+          <ul class="footer__col-list">
+            ${col.links.map((l) => `<li><a class="footer__col-link" href="${l.href}">${l.label}</a></li>`).join('')}
+          </ul>
+        </div>
+      `)
+      .join('');
+
+    const contact = Istra.footer ? Istra.footer.contact : null;
+    const contactCol = contact ? `
+      <div class="footer__col">
+        <h3 class="footer__col-title">联系</h3>
+        <ul class="footer__col-list">
+          <li><a class="footer__col-link" href="mailto:${contact.email}">${contact.email}</a></li>
+          <li><span class="footer__col-link">${contact.label}</span></li>
+        </ul>
+      </div>
+    ` : '';
+
+    this.innerHTML = `
+      <footer class="footer">
+        <div class="container">
+          <div class="footer__main">
+            <div class="footer__brand">
+              <p class="footer__brand-name">
+                <img class="footer__brand-mark" src="assets/brand-mark.svg" alt="" width="36" height="36" />
+                伊斯特拉国际
+              </p>
+              <p class="footer__brand-tagline">${Istra.brand.tagline}<br>${Istra.brand.desc}</p>
+            </div>
+            ${cols}
+            ${contactCol}
+          </div>
+          <div class="footer__bottom">
+            <span>© 2026 伊斯特拉国际 · 第一阶段演示版</span>
+            <span>数据与内容仅供展示 · 全球身份规划与国际发展智能平台</span>
+          </div>
+        </div>
+      </footer>
+    `;
+  }
+}
+customElements.define('is-footer', SiteFooter);

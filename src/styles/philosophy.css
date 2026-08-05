@@ -1,0 +1,87 @@
+﻿/* ============================================================
+   品牌理念 · is-philosophy
+   深色编辑式版面 / 大字号留白 / 金色细线
+   ============================================================ */
+
+is-philosophy { display: block; }
+
+.philosophy {
+  position: relative;
+  padding-block: var(--section-pad);
+  background:
+    radial-gradient(46% 42% at 12% 12%, rgba(12, 41, 64, 0.85), transparent 70%),
+    linear-gradient(150deg, var(--color-ink-deep), var(--color-ink) 70%);
+  color: var(--color-white);
+  overflow: hidden;
+}
+
+.philosophy__watermark {
+  position: absolute;
+  right: -2%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-serif);
+  font-size: clamp(12rem, 30vw, 26rem);
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.028);
+  user-select: none;
+  pointer-events: none;
+}
+
+.philosophy__inner { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
+
+.philosophy__left { position: sticky; top: calc(var(--nav-h-scrolled) + 3rem); }
+.philosophy__right { padding-top: 1rem; }
+
+.philosophy__lead {
+  margin-top: 1.5rem;
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+}
+
+.philosophy__text {
+  margin-top: 1.5rem;
+  font-size: var(--fs-lead);
+  line-height: 2.1;
+  color: var(--color-text-on-dark-2);
+  max-width: 520px;
+}
+
+.philosophy__principles {
+  display: flex;
+  flex-direction: column;
+}
+.philosophy__principle {
+  display: flex;
+  gap: 1.75rem;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--color-line-dark);
+}
+.philosophy__principle:first-child { border-top: 1px solid var(--color-line-dark); }
+.philosophy__principle-index {
+  font-family: var(--font-serif);
+  font-size: 0.8125rem;
+  letter-spacing: 0.2em;
+  color: var(--color-gold);
+  padding-top: 0.4rem;
+  flex: none;
+}
+.philosophy__principle-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+.philosophy__principle-desc {
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.9;
+  color: var(--color-text-on-dark-2);
+}
+
+@media (max-width: 1024px) {
+  .philosophy__inner { grid-template-columns: 1fr; }
+  .philosophy__left { position: static; }
+}
+

@@ -1,0 +1,14 @@
+﻿{
+  "name": "istra-international",
+  "version": "0.1.0",
+  "private": true,
+  "description": "伊斯特拉国际 — 全球身份规划与国际发展智能平台（第一阶段：品牌视觉 / 基础架构 / 首页 / 导航）",
+  "scripts": {
+    "start": "node scripts/serve.js",
+    "start:no-open": "node scripts/serve.js --no-open"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}

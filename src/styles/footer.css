@@ -1,0 +1,70 @@
+﻿/* ============================================================
+   页脚 · is-footer
+   ============================================================ */
+
+is-footer { display: block; }
+
+.footer {
+  background: var(--color-ink-deep);
+  color: var(--color-text-on-dark-2);
+  padding-top: clamp(3.5rem, 6vw, 5.5rem);
+}
+
+.footer__main {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  padding-bottom: clamp(2.5rem, 4vw, 3.5rem);
+  border-bottom: 1px solid var(--color-line-dark);
+}
+
+.footer__brand-name {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-white);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+}
+.footer__brand-mark { width: 36px; height: 36px; flex: none; }
+.footer__brand-tagline {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  line-height: 2;
+  color: var(--color-text-on-dark-3);
+  letter-spacing: 0.06em;
+  max-width: 300px;
+}
+
+.footer__col-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 1.25rem;
+}
+.footer__col-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.footer__col-link {
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  color: var(--color-text-on-dark-2);
+  transition: color var(--dur-s) var(--ease-out);
+}
+.footer__col-link:hover { color: var(--color-gold-light); }
+
+.footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-block: 1.75rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-on-dark-3);
+}
+
+@media (max-width: 1024px) { .footer__main { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px)  { .footer__main { grid-template-columns: 1fr; } }
+

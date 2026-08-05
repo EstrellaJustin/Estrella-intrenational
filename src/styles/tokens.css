@@ -1,0 +1,78 @@
+﻿/* ============================================================
+   伊斯特拉国际 · Design Tokens
+   品牌：深海蓝 / 香槟金 / 高级米白
+   用途：全站唯一设计变量来源，未来框架迁移时可直接复用
+   ============================================================ */
+
+:root {
+  /* —— 品牌色 —— */
+  --color-ink:        #071A2B;   /* 深海蓝（主色） */
+  --color-ink-deep:   #040F19;   /* 深海蓝 · 深 */
+  --color-ink-soft:   #0C2940;   /* 深海蓝 · 亮 */
+  --color-ink-glass:  rgba(7, 26, 43, 0.92);
+
+  --color-gold:       #C8A96A;   /* 香槟金（辅助） */
+  --color-gold-light: #E6D2A4;   /* 香槟金 · 亮 */
+  --color-gold-deep:  #A8894E;   /* 香槟金 · 深 */
+
+  --color-cream:      #F7F5F0;   /* 高级米白（背景） */
+  --color-cream-deep: #EFEAE0;   /* 高级米白 · 深 */
+  --color-white:      #FFFFFF;
+
+  /* —— 文字 —— */
+  --color-text:       #22303C;
+  --color-text-soft:  #46545F;
+  --color-text-muted: #6E7A85;
+  --color-text-on-dark:    rgba(255, 255, 255, 0.92);
+  --color-text-on-dark-2:  rgba(255, 255, 255, 0.62);
+  --color-text-on-dark-3:  rgba(255, 255, 255, 0.38);
+
+  /* —— 线条 —— */
+  --color-line:       rgba(7, 26, 43, 0.10);
+  --color-line-soft:  rgba(7, 26, 43, 0.06);
+  --color-line-dark:  rgba(255, 255, 255, 0.14);
+  --color-line-gold:  rgba(200, 169, 106, 0.45);
+
+  /* —— 字体 —— */
+  --font-sans:  "PingFang SC", "Microsoft YaHei", "微软雅黑", "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+  --font-serif: "Palatino Linotype", "Book Antiqua", "Georgia", "Songti SC", "SimSun", "宋体", serif;
+
+  /* —— 字号（桌面 / 移动 clamp） —— */
+  --fs-micro:   0.6875rem;   /* 11px 微标签 */
+  --fs-small:   0.8125rem;   /* 13px */
+  --fs-body:    1rem;        /* 16px */
+  --fs-lead:    clamp(1rem, 1.2vw + 0.6rem, 1.1875rem);
+  --fs-h3:      clamp(1.25rem, 1.2vw + 0.9rem, 1.5rem);
+  --fs-h2:      clamp(1.75rem, 2.4vw + 1rem, 2.625rem);
+  --fs-h1:      clamp(2.4rem, 5.2vw + 1rem, 4.5rem);
+  --fs-hero-cn: clamp(2rem, 4.6vw + 0.8rem, 3.75rem);
+
+  /* —— 间距 —— */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --section-pad: clamp(5rem, 9vw, 8.5rem);
+
+  /* —— 布局 —— */
+  --container: 1200px;
+  --container-narrow: 860px;
+  --nav-h: 78px;
+  --nav-h-scrolled: 64px;
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --radius-l: 16px;
+
+  /* —— 动效 —— */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-s: 0.25s;
+  --dur-m: 0.5s;
+  --dur-l: 0.9s;
+  --shadow-card: 0 20px 50px -24px rgba(7, 26, 43, 0.18);
+  --shadow-lift: 0 30px 60px -28px rgba(7, 26, 43, 0.28);
+}

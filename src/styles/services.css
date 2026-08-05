@@ -1,0 +1,119 @@
+﻿/* ============================================================
+   核心服务 · is-services / is-service-card
+   ============================================================ */
+
+is-services, is-service-card { display: block; }
+
+.services {
+  padding-block: var(--section-pad);
+  background: var(--color-cream);
+}
+
+.services__head-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+}
+.services__head-row .section-head { margin-bottom: 0; }
+.services__index {
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  letter-spacing: 0.3em;
+  color: var(--color-gold-deep);
+  white-space: nowrap;
+}
+
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .services__grid { grid-template-columns: 1fr; }
+  .services__head-row { flex-direction: column; align-items: flex-start; }
+}
+
+/* —— 服务卡片 —— */
+.service-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+  padding: 2.25rem 2rem 2rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-top: 2px solid transparent;
+  border-radius: var(--radius-m);
+  transition: transform var(--dur-m) var(--ease-out), box-shadow var(--dur-m) var(--ease-out), border-color var(--dur-m) var(--ease-out);
+}
+.service-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-gold), transparent 70%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-m) var(--ease-out);
+}
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card);
+  border-color: rgba(200, 169, 106, 0.35);
+}
+.service-card:hover::before { transform: scaleX(1); }
+
+.service-card__num {
+  font-family: var(--font-serif);
+  font-size: 0.8125rem;
+  letter-spacing: 0.25em;
+  color: var(--color-gold-deep);
+}
+
+.service-card__icon {
+  margin-top: 1.75rem;
+  width: 52px; height: 52px;
+  color: var(--color-ink);
+}
+.service-card__icon svg { width: 100%; height: 100%; }
+
+.service-card__title {
+  margin-top: 1.5rem;
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-ink);
+}
+.service-card__en {
+  margin-top: 0.35rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.service-card__desc {
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.9;
+  color: var(--color-text-soft);
+}
+
+.service-card__link {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.18em;
+  color: var(--color-ink);
+  transition: color var(--dur-s) var(--ease-out);
+}
+.service-card__link .arr { transition: transform var(--dur-s) var(--ease-out); }
+.service-card:hover .service-card__link { color: var(--color-gold-deep); }
+.service-card:hover .service-card__link .arr { transform: translateX(4px); }
+
