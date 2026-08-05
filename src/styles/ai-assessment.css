@@ -1,6 +1,6 @@
 ﻿/* ============================================================
-   AI 评估中心 · is-ai-assessment（v3 · 深蓝沉浸式）
-   蓝色进度线 / 白色数字 / 深色透明输入框 + 白色边框
+   AI 评估中心 · is-ai-assessment（v7 · 十阶段深度评估）
+   深蓝私人银行风：深色透明输入框 + 白底按钮 + 步骤/数据分析动画
    ============================================================ */
 
 is-ai-assessment { display: block; }
@@ -27,13 +27,13 @@ is-ai-assessment { display: block; }
 }
 .assessment__eyebrow::before, .assessment__eyebrow::after { content: ""; width: 1.75rem; height: 1px; background: currentColor; }
 .assessment__title { margin-top: 1.125rem; font-size: var(--fs-h1); font-weight: 700; color: var(--color-heading); }
-.assessment__sub { margin: 0.875rem auto 0; max-width: 620px; font-size: var(--fs-lead); color: var(--color-text-muted); }
+.assessment__sub { margin: 0.875rem auto 0; max-width: 680px; font-size: var(--fs-lead); color: var(--color-text-muted); }
 
 /* —— 评估向导 —— */
 .assessment__body { padding-block: clamp(2rem, 5vw, 3.5rem) var(--section-pad); }
 
 .wizard {
-  max-width: 920px;
+  max-width: 940px;
   margin-inline: auto;
   background: var(--color-ink-2);
   border: 1px solid var(--color-line-soft);
@@ -42,44 +42,47 @@ is-ai-assessment { display: block; }
   overflow: hidden;
 }
 
-/* 步骤条 */
-.wizard__steps { padding: 2rem 2.5rem 1.5rem; border-bottom: 1px solid var(--color-line-soft); }
-.wizard__track { position: relative; display: flex; justify-content: space-between; }
-.wizard__track-line { position: absolute; top: 17px; left: 8%; right: 8%; height: 2px; background: var(--color-line-soft); }
-.wizard__track-fill { position: absolute; top: 17px; left: 8%; height: 2px; width: 0; background: var(--color-blue); box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); transition: width var(--dur-slow) var(--ease); }
+/* 进度条 */
+.wizard__progress { padding: 1.75rem 2.5rem 1.25rem; border-bottom: 1px solid var(--color-line-soft); }
+.wizard__progress-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.wizard__step-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; color: var(--color-accent); white-space: nowrap; }
+.wizard__step-name { font-size: 0.875rem; font-weight: 600; color: var(--color-text-muted); }
 
-.wizard__step { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; width: 25%; }
-.wizard__step-dot {
-  width: 34px; height: 34px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: var(--color-ink);
-  color: var(--color-heading);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+.wizard__track { position: relative; height: 4px; background: var(--color-line-soft); border-radius: 999px; overflow: hidden; }
+.wizard__track-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0;
+  background: linear-gradient(90deg, var(--color-blue), #60A5FA);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+  transition: width var(--dur-slow) var(--ease);
 }
-.wizard__step.is-active .wizard__step-dot { background: var(--color-blue); border-color: var(--color-blue); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25); }
-.wizard__step.is-done .wizard__step-dot { background: rgba(59, 130, 246, 0.25); border-color: var(--color-blue); color: var(--color-heading); }
-.wizard__step-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.1em; color: var(--color-text-muted); white-space: nowrap; }
-.wizard__step.is-active .wizard__step-label { color: var(--color-heading); }
-.wizard__step.is-done .wizard__step-label { color: #BFDBFE; }
+
+.wizard__dots { display: flex; gap: 0.375rem; margin-top: 0.875rem; }
+.wizard__dot {
+  flex: 1;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-line-soft);
+  transition: background-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.wizard__dot.is-active { background: var(--color-blue); box-shadow: 0 0 8px rgba(59, 130, 246, 0.7); }
+.wizard__dot.is-done { background: rgba(59, 130, 246, 0.45); }
 
 /* 步骤内容 */
-.wizard__content { padding: 2.25rem 2.5rem 2rem; min-height: 360px; }
+.wizard__content { padding: 2.25rem 2.5rem 2rem; min-height: 420px; }
 .wizard__panel { display: none; }
 .wizard__panel.is-active { display: block; animation: panel-in var(--dur) var(--ease); }
-@keyframes panel-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes panel-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
 .wizard__panel-title { font-size: 1.25rem; font-weight: 700; color: var(--color-heading); }
 .wizard__panel-desc { margin-top: 0.375rem; font-size: 0.875rem; color: var(--color-text-muted); }
+.wizard__panel-cta { margin-top: 1.5rem; text-align: center; }
 
 .field-grid { margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 1.5rem; }
 .field { display: flex; flex-direction: column; gap: 0.5rem; }
 .field--full { grid-column: 1 / -1; }
+.field-label { font-size: 0.8125rem; font-weight: 600; color: #CBD5E1; }
 .field label { font-size: 0.8125rem; font-weight: 600; color: #CBD5E1; }
 .field select, .field input {
   height: 48px;
@@ -90,7 +93,7 @@ is-ai-assessment { display: block; }
   color: var(--color-heading);
   font-family: inherit;
   font-size: 0.9375rem;
-  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background-color var(--dur) var(--ease);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
   appearance: none;
 }
 .field select {
@@ -100,16 +103,12 @@ is-ai-assessment { display: block; }
   padding-right: 2.25rem;
 }
 .field select option { background: var(--color-ink-2); color: var(--color-heading); }
-.field select:focus, .field input:focus {
-  outline: none;
-  border-color: var(--color-blue);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-}
+.field select:focus, .field input:focus { outline: none; border-color: var(--color-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); }
 .field.is-invalid select { border-color: #F87171; }
 .field .field-error { display: none; font-size: 0.75rem; color: #F87171; }
 .field.is-invalid .field-error { display: block; }
 
-/* 国家多选 chips */
+/* chips（多选 / 单选） */
 .chip-grid { display: flex; flex-wrap: wrap; gap: 0.625rem; }
 .chip {
   display: inline-flex;
@@ -128,40 +127,14 @@ is-ai-assessment { display: block; }
 .chip:hover { border-color: var(--color-accent-line); transform: translateY(-1px); }
 .chip.is-selected { background: var(--color-accent-soft); border-color: var(--color-accent); color: var(--color-accent); font-weight: 600; }
 
-/* 第四步：评估摘要 */
-.summary { margin-top: 1.5rem; background: rgba(4, 27, 58, 0.65); border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); overflow: hidden; }
-.summary__row {
-  display: flex;
-  justify-content: space-between;
-  gap: 1.5rem;
-  padding: 0.875rem 1.25rem;
-  border-bottom: 1px solid var(--color-line-soft);
-  font-size: 0.9375rem;
-}
-.summary__row:last-child { border-bottom: none; }
-.summary__label { color: var(--color-text-muted); flex: none; }
-.summary__value { color: var(--color-heading); font-weight: 600; text-align: right; }
-.summary__value--chips { display: flex; flex-wrap: wrap; gap: 0.375rem; justify-content: flex-end; }
-.summary__value .mini-chip {
-  padding: 0.2rem 0.625rem;
-  background: var(--color-accent-soft);
-  color: var(--color-accent);
-  border: 1px solid var(--color-accent-line);
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.assessment__note {
-  margin-top: 1.25rem;
-  padding: 0.875rem 1.25rem;
-  background: var(--color-accent-soft);
-  border-left: 3px solid var(--color-accent);
-  border-radius: var(--radius-s);
-  font-size: 0.8125rem;
-  color: #E5D9B0;
-  line-height: 1.9;
-}
+/* 天气接受度 */
+.weather-grid { margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem 1.5rem; }
+.weather-row { padding: 1rem 1.25rem; border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); background: rgba(4, 27, 58, 0.35); }
+.weather-row.is-invalid { border-color: #F87171; }
+.weather-row .field-error { display: none; font-size: 0.75rem; color: #F87171; margin-top: 0.5rem; }
+.weather-row.is-invalid .field-error { display: block; }
+.weather-label { display: block; font-size: 0.8125rem; font-weight: 600; color: #CBD5E1; margin-bottom: 0.625rem; }
+.weather-chip { padding: 0.375rem 0.75rem; font-size: 0.8125rem; }
 
 /* 底部按钮 */
 .wizard__actions {
@@ -174,12 +147,119 @@ is-ai-assessment { display: block; }
 }
 .wizard__actions-right { display: flex; gap: 0.75rem; }
 
+/* —— 分析动画 —— */
+.analyzing { max-width: 560px; margin-inline: auto; text-align: center; padding: 3rem 1rem 4rem; }
+.analyzing__ring {
+  width: 72px; height: 72px;
+  margin-inline: auto;
+  border-radius: 50%;
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  border-top-color: var(--color-blue);
+  animation: ring-spin 1.1s linear infinite;
+}
+@keyframes ring-spin { to { transform: rotate(360deg); } }
+.analyzing__title { margin-top: 1.75rem; font-size: 1.25rem; font-weight: 700; color: var(--color-heading); }
+.analyzing__steps { margin: 2rem auto 0; max-width: 320px; display: flex; flex-direction: column; gap: 0.875rem; text-align: left; }
+.analyzing__steps li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9375rem; color: var(--color-text-muted); transition: color var(--dur) var(--ease); }
+.analyzing__steps li.is-done { color: var(--color-heading); }
+.analyzing__check { width: 20px; height: 20px; flex: none; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--color-line); border-radius: 50%; color: var(--color-accent); font-size: 0.625rem; }
+
 @media (max-width: 768px) {
   .field-grid { grid-template-columns: 1fr; }
+  .weather-grid { grid-template-columns: 1fr; }
   .wizard__content { padding: 1.75rem 1.25rem 1.5rem; }
-  .wizard__steps { padding: 1.5rem 1.25rem 1.25rem; }
+  .wizard__progress { padding: 1.5rem 1.25rem 1.25rem; }
   .wizard__actions { flex-direction: column-reverse; align-items: stretch; padding: 1.25rem; }
   .wizard__actions-right { flex-direction: column; }
   .wizard__actions .btn { width: 100%; }
-  .wizard__step-label { font-size: 0.5625rem; letter-spacing: 0.04em; }
 }
+
+/* ============================================================
+   分析报告（私人银行风险评估风格 · 深蓝）
+   ============================================================ */
+
+.report { max-width: 940px; margin-inline: auto; }
+
+.report__cover {
+  padding: clamp(2rem, 5vw, 3.5rem);
+  background:
+    radial-gradient(60% 70% at 90% 0%, rgba(10, 61, 115, 0.5), transparent 70%),
+    var(--color-ink-2);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-panel);
+  text-align: center;
+}
+.report__cover-eyebrow { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--color-accent); }
+.report__cover-title { margin-top: 0.875rem; font-size: clamp(1.5rem, 3vw, 2.125rem); font-weight: 700; color: var(--color-heading); }
+.report__cover-meta { margin-top: 0.75rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+
+.report__section {
+  margin-top: 1.25rem;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  background: var(--color-ink-2);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-panel);
+}
+.report__section-title { display: flex; align-items: baseline; gap: 0.75rem; font-size: 1.125rem; font-weight: 700; color: var(--color-heading); }
+.report__section-title span { font-size: 0.75rem; font-weight: 700; color: var(--color-accent); }
+
+/* 用户画像 */
+.report__portrait { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.625rem; }
+.report__tag {
+  padding: 0.45rem 1rem;
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent-line);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+.report__summary { margin-top: 1rem; font-size: 0.9375rem; line-height: 2; color: var(--color-text); }
+
+/* 国家排名 */
+.report__rank { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+.report__rank-row { display: flex; align-items: center; gap: 1rem; }
+.report__rank-no { width: 28px; height: 28px; flex: none; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--color-accent-line); border-radius: 50%; font-size: 0.8125rem; font-weight: 700; color: var(--color-accent); }
+.report__rank-flag { width: 34px; height: 25px; flex: none; border-radius: 3px; object-fit: cover; box-shadow: 0 2px 8px -2px rgba(2, 19, 38, 0.8); }
+.report__rank-info { width: 140px; flex: none; }
+.report__rank-name { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.report__rank-reason { margin-top: 0.15rem; font-size: 0.6875rem; color: var(--color-text-muted); line-height: 1.6; }
+.report__rank-bar { flex: 1; height: 8px; background: var(--color-line-soft); border-radius: 999px; overflow: hidden; }
+.report__rank-bar span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--color-blue), #60A5FA); animation: bar-grow 0.8s var(--ease); }
+@keyframes bar-grow { from { width: 0 !important; } }
+.report__rank-pct { width: 3.25rem; text-align: right; font-size: 1rem; font-weight: 700; color: var(--color-accent); }
+
+/* 推荐 / 不推荐项目 */
+.report__list { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.report__project {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(4, 27, 58, 0.45);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-m);
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+a.report__project:hover { border-color: rgba(59, 130, 246, 0.55); background: rgba(10, 61, 115, 0.5); transform: translateY(-2px); }
+.report__project img { width: 34px; height: 25px; flex: none; border-radius: 3px; object-fit: cover; }
+.report__project-info { flex: 1; min-width: 0; }
+.report__project-name { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.report__project-reason { margin-top: 0.2rem; font-size: 0.75rem; color: var(--color-text-muted); }
+.report__project-cta { font-size: 0.75rem; font-weight: 600; color: var(--color-accent); white-space: nowrap; }
+.report__project--muted { opacity: 0.72; }
+.report__project--muted .report__project-name { color: var(--color-text); }
+
+/* 个性化路线 */
+.report__roadmap { margin-top: 1.5rem; display: flex; flex-direction: column; }
+.report__roadmap-step { position: relative; display: flex; gap: 1.25rem; padding-bottom: 1.5rem; }
+.report__roadmap-step:not(:last-child)::before { content: ""; position: absolute; left: 11px; top: 26px; bottom: 2px; width: 1px; background: var(--color-line-soft); }
+.report__roadmap-dot { width: 24px; height: 24px; flex: none; border-radius: 50%; background: var(--color-accent-soft); border: 1px solid var(--color-accent-line); position: relative; }
+.report__roadmap-dot::after { content: ""; position: absolute; inset: 7px; border-radius: 50%; background: var(--color-accent); }
+.report__roadmap-phase { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.report__roadmap-items { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.375rem; }
+.report__roadmap-items li { position: relative; padding-left: 1rem; font-size: 0.875rem; color: var(--color-text); }
+.report__roadmap-items li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 4px; height: 4px; border-radius: 50%; background: var(--color-blue); }
+
+.report__actions { margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+.report__note { margin-top: 1.25rem; font-size: 0.75rem; line-height: 1.9; color: var(--color-text-faint); text-align: center; }
