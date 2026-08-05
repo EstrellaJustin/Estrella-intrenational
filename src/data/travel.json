@@ -56,7 +56,7 @@
       "jp-edu-master",
       "jp-pr-apply"
     ],
-    "image": "assets/travel/jp.jpg"
+    "image": "assets/images/travel/country/jp.jpg"
   },
   {
     "id": "kr",
@@ -115,7 +115,7 @@
       "kr-edu-master",
       "kr-pr-apply"
     ],
-    "image": "assets/travel/kr.jpg"
+    "image": "assets/images/travel/country/kr.jpg"
   },
   {
     "id": "sg",
@@ -170,7 +170,7 @@
       "sg-edu-master",
       "sg-pr-apply"
     ],
-    "image": "assets/travel/sg.jpg"
+    "image": "assets/images/travel/country/sg.jpg"
   },
   {
     "id": "my",
@@ -229,7 +229,7 @@
       "my-edu-master",
       "my-pr-apply"
     ],
-    "image": "assets/travel/my.jpg"
+    "image": "assets/images/travel/country/my.jpg"
   },
   {
     "id": "th",
@@ -288,7 +288,7 @@
       "th-edu-master",
       "th-pr-apply"
     ],
-    "image": "assets/travel/th.jpg"
+    "image": "assets/images/travel/country/th.jpg"
   },
   {
     "id": "vn",
@@ -347,7 +347,7 @@
       "vn-edu-master",
       "vn-pr-apply"
     ],
-    "image": "assets/travel/vn.jpg"
+    "image": "assets/images/travel/country/vn.jpg"
   },
   {
     "id": "ae",
@@ -402,7 +402,7 @@
       "ae-edu-master",
       "ae-pr-apply"
     ],
-    "image": "assets/travel/ae.jpg"
+    "image": "assets/images/travel/country/ae.jpg"
   },
   {
     "id": "tr",
@@ -461,7 +461,7 @@
       "tr-edu-master",
       "tr-pr-apply"
     ],
-    "image": "assets/travel/tr.jpg"
+    "image": "assets/images/travel/country/tr.jpg"
   },
   {
     "id": "gb",
@@ -520,7 +520,7 @@
       "gb-edu-master",
       "gb-pr-apply"
     ],
-    "image": "assets/travel/gb.jpg"
+    "image": "assets/images/travel/country/gb.jpg"
   },
   {
     "id": "de",
@@ -579,7 +579,7 @@
       "de-edu-master",
       "de-pr-apply"
     ],
-    "image": "assets/travel/de.jpg"
+    "image": "assets/images/travel/country/de.jpg"
   },
   {
     "id": "fr",
@@ -638,7 +638,7 @@
       "fr-edu-master",
       "fr-pr-apply"
     ],
-    "image": "assets/travel/fr.jpg"
+    "image": "assets/images/travel/country/fr.jpg"
   },
   {
     "id": "it",
@@ -697,7 +697,7 @@
       "it-edu-master",
       "it-pr-apply"
     ],
-    "image": "assets/travel/it.jpg"
+    "image": "assets/images/travel/country/it.jpg"
   },
   {
     "id": "es",
@@ -756,7 +756,7 @@
       "es-edu-master",
       "es-pr-apply"
     ],
-    "image": "assets/travel/es.jpg"
+    "image": "assets/images/travel/country/es.jpg"
   },
   {
     "id": "pt",
@@ -815,7 +815,7 @@
       "pt-edu-master",
       "pt-pr-apply"
     ],
-    "image": "assets/travel/pt.jpg"
+    "image": "assets/images/travel/country/pt.jpg"
   },
   {
     "id": "ch",
@@ -874,7 +874,7 @@
       "ch-edu-master",
       "ch-pr-apply"
     ],
-    "image": "assets/travel/ch.jpg"
+    "image": "assets/images/travel/country/ch.jpg"
   },
   {
     "id": "us",
@@ -933,7 +933,7 @@
       "us-edu-master",
       "us-invest-business"
     ],
-    "image": "assets/travel/us.jpg"
+    "image": "assets/images/travel/country/us.jpg"
   },
   {
     "id": "ca",
@@ -992,7 +992,7 @@
       "ca-edu-master",
       "ca-pr-apply"
     ],
-    "image": "assets/travel/ca.jpg"
+    "image": "assets/images/travel/country/ca.jpg"
   },
   {
     "id": "au",
@@ -1051,7 +1051,7 @@
       "au-edu-master",
       "au-pr-apply"
     ],
-    "image": "assets/travel/au.jpg"
+    "image": "assets/images/travel/country/au.jpg"
   },
   {
     "id": "nz",
@@ -1110,7 +1110,7 @@
       "nz-edu-master",
       "nz-pr-apply"
     ],
-    "image": "assets/travel/nz.jpg"
+    "image": "assets/images/travel/country/nz.jpg"
   },
   {
     "id": "br",
@@ -1169,7 +1169,7 @@
       "br-edu-master",
       "br-pr-apply"
     ],
-    "image": "assets/travel/br.jpg"
+    "image": "assets/images/travel/country/br.jpg"
   },
   {
     "id": "za",
@@ -1228,6 +1228,6 @@
       "za-edu-master",
       "za-pr-apply"
     ],
-    "image": "assets/travel/za.jpg"
+    "image": "assets/images/travel/country/za.jpg"
   }
 ]

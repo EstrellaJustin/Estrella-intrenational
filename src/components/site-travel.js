@@ -53,7 +53,7 @@ class SiteTravel extends HTMLElement {
     this.innerHTML = `
       <div class="travel">
         <header class="travel__hero">
-          <div class="travel__hero-bg" style="background-image:url('assets/travel/jp.jpg')"></div>
+          <div class="travel__hero-bg" style="background-image:url('assets/images/travel/country/jp.jpg')"></div>
           <div class="container travel__hero-inner">
             <p class="travel__eyebrow" data-reveal>Global Travel Exploration</p>
             <h1 class="travel__title" data-reveal>探索世界，开启全球旅程</h1>
@@ -75,3 +75,4 @@ class SiteTravel extends HTMLElement {
 }
 
 customElements.define('is-travel', SiteTravel);
+

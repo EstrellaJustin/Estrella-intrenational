@@ -1657,22 +1657,22 @@ function build() {
 
   COUNTRIES.forEach((c) => {
     /* 国家代表图 */
-    imageDb.push({ id: c.id, type: 'country', country: c.cn, city: '', name: c.cn + ' 国家代表图', image: `assets/travel/${c.id}.jpg`, description: `${c.cn}国家代表图`, search: c.imgEn });
+    imageDb.push({ id: c.id, type: 'country', country: c.cn, city: '', name: c.cn + ' 国家代表图', image: `assets/images/travel/country/${c.id}.jpg`, description: `${c.cn}国家代表图`, search: c.imgEn });
 
     c.cities.forEach((city, i) => {
       const id = `${c.id}-${String(i + 1).padStart(2, '0')}`;
-      const cityImg = `assets/travel/cities/${id}.jpg`;
+      const cityImg = `assets/images/travel/city/${id}.jpg`;
 
       const attrs = (city.attrs || []).map((a, k) => ({
         name: a[0], intro: a[2], time: a[3],
-        image: `assets/travel/attractions/${id}-${k + 1}.jpg`
+        image: `assets/images/travel/attractions/${id}-${k + 1}.jpg`
       }));
 
       /* 城市实景图 */
       imageDb.push({ id: `${id}-city`, type: 'city', country: c.cn, city: city.n, name: `${c.cn}·${city.n} 城市实景图`, image: cityImg, description: city.note, search: `${city.en}, ${c.en}` });
       /* 景点实景图 */
       (city.attrs || []).forEach((a, k) => {
-        imageDb.push({ id: `${id}-a${k + 1}`, type: 'attraction', country: c.cn, city: city.n, name: a[0], image: `assets/travel/attractions/${id}-${k + 1}.jpg`, description: a[2], search: a[1] });
+        imageDb.push({ id: `${id}-a${k + 1}`, type: 'attraction', country: c.cn, city: city.n, name: a[0], image: `assets/images/travel/attractions/${id}-${k + 1}.jpg`, description: a[2], search: a[1] });
       });
 
       const routes = [

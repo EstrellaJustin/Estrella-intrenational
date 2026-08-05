@@ -30,19 +30,19 @@
         "name": "东京塔",
         "intro": "东京地标，红白铁塔与 360 度观景",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-01-1.jpg"
+        "image": "assets/images/travel/attractions/jp-01-1.jpg"
       },
       {
         "name": "浅草寺",
         "intro": "东京最古老寺庙，雷门与仲见世商店街",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/jp-01-2.jpg"
+        "image": "assets/images/travel/attractions/jp-01-2.jpg"
       },
       {
         "name": "涩谷十字路口",
         "intro": "世界最繁忙十字路口与忠犬八公像",
         "time": "1 小时",
-        "image": "assets/travel/attractions/jp-01-3.jpg"
+        "image": "assets/images/travel/attractions/jp-01-3.jpg"
       }
     ],
     "routes": [
@@ -138,7 +138,7 @@
       "jp-edu-master",
       "jp-pr-apply"
     ],
-    "image": "assets/travel/cities/jp-01.jpg"
+    "image": "assets/images/travel/city/jp-01.jpg"
   },
   {
     "id": "jp-02",
@@ -170,19 +170,19 @@
         "name": "大阪城",
         "intro": "丰臣秀吉时代名城与天守阁",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-02-1.jpg"
+        "image": "assets/images/travel/attractions/jp-02-1.jpg"
       },
       {
         "name": "道顿堀",
         "intro": "霓虹美食街与格力高广告牌",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/jp-02-2.jpg"
+        "image": "assets/images/travel/attractions/jp-02-2.jpg"
       },
       {
         "name": "通天阁",
         "intro": "大阪地标塔与周边新世界街区",
         "time": "1 小时",
-        "image": "assets/travel/attractions/jp-02-3.jpg"
+        "image": "assets/images/travel/attractions/jp-02-3.jpg"
       }
     ],
     "routes": [
@@ -276,7 +276,7 @@
       "jp-edu-master",
       "jp-pr-apply"
     ],
-    "image": "assets/travel/cities/jp-02.jpg"
+    "image": "assets/images/travel/city/jp-02.jpg"
   },
   {
     "id": "jp-03",
@@ -308,19 +308,19 @@
         "name": "伏见稻荷大社",
         "intro": "千本鸟居与山间参道",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-03-1.jpg"
+        "image": "assets/images/travel/attractions/jp-03-1.jpg"
       },
       {
         "name": "金阁寺",
         "intro": "贴金阁楼与镜湖池",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/jp-03-2.jpg"
+        "image": "assets/images/travel/attractions/jp-03-2.jpg"
       },
       {
         "name": "清水寺",
         "intro": "木造舞台与京都全景",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-03-3.jpg"
+        "image": "assets/images/travel/attractions/jp-03-3.jpg"
       }
     ],
     "routes": [
@@ -414,7 +414,7 @@
       "jp-edu-master",
       "jp-pr-apply"
     ],
-    "image": "assets/travel/cities/jp-03.jpg"
+    "image": "assets/images/travel/city/jp-03.jpg"
   },
   {
     "id": "jp-04",
@@ -446,19 +446,19 @@
         "name": "札幌钟楼",
         "intro": "北海道开垦时期地标",
         "time": "1 小时",
-        "image": "assets/travel/attractions/jp-04-1.jpg"
+        "image": "assets/images/travel/attractions/jp-04-1.jpg"
       },
       {
         "name": "大通公园",
         "intro": "城市中轴线公园与雪祭会场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/jp-04-2.jpg"
+        "image": "assets/images/travel/attractions/jp-04-2.jpg"
       },
       {
         "name": "白色恋人公园",
         "intro": "巧克力工厂与欧式庭院",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-04-3.jpg"
+        "image": "assets/images/travel/attractions/jp-04-3.jpg"
       }
     ],
     "routes": [
@@ -553,7 +553,7 @@
       "jp-edu-master",
       "jp-pr-apply"
     ],
-    "image": "assets/travel/cities/jp-04.jpg"
+    "image": "assets/images/travel/city/jp-04.jpg"
   },
   {
     "id": "jp-05",
@@ -585,19 +585,19 @@
         "name": "太宰府天满宫",
         "intro": "学问之神神社与梅园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-05-1.jpg"
+        "image": "assets/images/travel/attractions/jp-05-1.jpg"
       },
       {
         "name": "中洲屋台",
         "intro": "河畔屋台小吃街",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/jp-05-2.jpg"
+        "image": "assets/images/travel/attractions/jp-05-2.jpg"
       },
       {
         "name": "福冈塔",
         "intro": "海滨观景塔与夜景",
         "time": "1 小时",
-        "image": "assets/travel/attractions/jp-05-3.jpg"
+        "image": "assets/images/travel/attractions/jp-05-3.jpg"
       }
     ],
     "routes": [
@@ -692,7 +692,7 @@
       "jp-edu-master",
       "jp-pr-apply"
     ],
-    "image": "assets/travel/cities/jp-05.jpg"
+    "image": "assets/images/travel/city/jp-05.jpg"
   },
   {
     "id": "jp-06",
@@ -724,19 +724,19 @@
         "name": "首里城",
         "intro": "琉球王国都城遗迹",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-06-1.jpg"
+        "image": "assets/images/travel/attractions/jp-06-1.jpg"
       },
       {
         "name": "国际通",
         "intro": "那霸主街购物与美食",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-06-2.jpg"
+        "image": "assets/images/travel/attractions/jp-06-2.jpg"
       },
       {
         "name": "波之上海滩",
         "intro": "城市近郊海滩",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/jp-06-3.jpg"
+        "image": "assets/images/travel/attractions/jp-06-3.jpg"
       }
     ],
     "routes": [
@@ -831,7 +831,7 @@
       "jp-edu-master",
       "jp-pr-apply"
     ],
-    "image": "assets/travel/cities/jp-06.jpg"
+    "image": "assets/images/travel/city/jp-06.jpg"
   },
   {
     "id": "jp-07",
@@ -863,19 +863,19 @@
         "name": "名古屋城",
         "intro": "金鯱城郭与天守阁",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-07-1.jpg"
+        "image": "assets/images/travel/attractions/jp-07-1.jpg"
       },
       {
         "name": "热田神宫",
         "intro": "草薙神剑供奉神社",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/jp-07-2.jpg"
+        "image": "assets/images/travel/attractions/jp-07-2.jpg"
       },
       {
         "name": "大须商店街",
         "intro": "传统与现代融合商店街",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-07-3.jpg"
+        "image": "assets/images/travel/attractions/jp-07-3.jpg"
       }
     ],
     "routes": [
@@ -970,7 +970,7 @@
       "jp-edu-master",
       "jp-pr-apply"
     ],
-    "image": "assets/travel/cities/jp-07.jpg"
+    "image": "assets/images/travel/city/jp-07.jpg"
   },
   {
     "id": "jp-08",
@@ -1002,19 +1002,19 @@
         "name": "横滨中华街",
         "intro": "日本最大唐人街",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-08-1.jpg"
+        "image": "assets/images/travel/attractions/jp-08-1.jpg"
       },
       {
         "name": "山下公园",
         "intro": "海港公园与冰川丸",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/jp-08-2.jpg"
+        "image": "assets/images/travel/attractions/jp-08-2.jpg"
       },
       {
         "name": "横滨红砖仓库",
         "intro": "明治红砖建筑商业区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/jp-08-3.jpg"
+        "image": "assets/images/travel/attractions/jp-08-3.jpg"
       }
     ],
     "routes": [
@@ -1108,7 +1108,7 @@
       "jp-edu-master",
       "jp-pr-apply"
     ],
-    "image": "assets/travel/cities/jp-08.jpg"
+    "image": "assets/images/travel/city/jp-08.jpg"
   },
   {
     "id": "jp-09",
@@ -1140,19 +1140,19 @@
         "name": "广岛和平纪念公园",
         "intro": "原爆圆顶馆与和平资料馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/jp-09-1.jpg"
+        "image": "assets/images/travel/attractions/jp-09-1.jpg"
       },
       {
         "name": "严岛神社",
         "intro": "海上大鸟居与世界遗产",
         "time": "3 小时",
-        "image": "assets/travel/attractions/jp-09-2.jpg"
+        "image": "assets/images/travel/attractions/jp-09-2.jpg"
       },
       {
         "name": "广岛城",
         "intro": "重建的战国名城",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/jp-09-3.jpg"
+        "image": "assets/images/travel/attractions/jp-09-3.jpg"
       }
     ],
     "routes": [
@@ -1246,7 +1246,7 @@
       "jp-edu-master",
       "jp-pr-apply"
     ],
-    "image": "assets/travel/cities/jp-09.jpg"
+    "image": "assets/images/travel/city/jp-09.jpg"
   },
   {
     "id": "kr-01",
@@ -1278,19 +1278,19 @@
         "name": "景福宫",
         "intro": "朝鲜王朝正宫与守门仪式",
         "time": "2 小时",
-        "image": "assets/travel/attractions/kr-01-1.jpg"
+        "image": "assets/images/travel/attractions/kr-01-1.jpg"
       },
       {
         "name": "南山首尔塔",
         "intro": "城市地标观景塔",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/kr-01-2.jpg"
+        "image": "assets/images/travel/attractions/kr-01-2.jpg"
       },
       {
         "name": "明洞",
         "intro": "购物与街头美食中心",
         "time": "2 小时",
-        "image": "assets/travel/attractions/kr-01-3.jpg"
+        "image": "assets/images/travel/attractions/kr-01-3.jpg"
       }
     ],
     "routes": [
@@ -1386,7 +1386,7 @@
       "kr-edu-master",
       "kr-pr-apply"
     ],
-    "image": "assets/travel/cities/kr-01.jpg"
+    "image": "assets/images/travel/city/kr-01.jpg"
   },
   {
     "id": "kr-02",
@@ -1418,19 +1418,19 @@
         "name": "海云台",
         "intro": "著名海滨与沙滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/kr-02-1.jpg"
+        "image": "assets/images/travel/attractions/kr-02-1.jpg"
       },
       {
         "name": "甘川文化村",
         "intro": "彩色山城与艺术壁画",
         "time": "2 小时",
-        "image": "assets/travel/attractions/kr-02-2.jpg"
+        "image": "assets/images/travel/attractions/kr-02-2.jpg"
       },
       {
         "name": "札嘎其市场",
         "intro": "韩国最大海鲜市场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/kr-02-3.jpg"
+        "image": "assets/images/travel/attractions/kr-02-3.jpg"
       }
     ],
     "routes": [
@@ -1525,7 +1525,7 @@
       "kr-edu-master",
       "kr-pr-apply"
     ],
-    "image": "assets/travel/cities/kr-02.jpg"
+    "image": "assets/images/travel/city/kr-02.jpg"
   },
   {
     "id": "kr-03",
@@ -1557,19 +1557,19 @@
         "name": "汉拿山",
         "intro": "济州最高峰与火山口",
         "time": "4 小时",
-        "image": "assets/travel/attractions/kr-03-1.jpg"
+        "image": "assets/images/travel/attractions/kr-03-1.jpg"
       },
       {
         "name": "城山日出峰",
         "intro": "世界遗产火山峰",
         "time": "2 小时",
-        "image": "assets/travel/attractions/kr-03-2.jpg"
+        "image": "assets/images/travel/attractions/kr-03-2.jpg"
       },
       {
         "name": "柱状节理带",
         "intro": "六角形玄武岩柱海岸",
         "time": "1 小时",
-        "image": "assets/travel/attractions/kr-03-3.jpg"
+        "image": "assets/images/travel/attractions/kr-03-3.jpg"
       }
     ],
     "routes": [
@@ -1663,7 +1663,7 @@
       "kr-edu-master",
       "kr-pr-apply"
     ],
-    "image": "assets/travel/cities/kr-03.jpg"
+    "image": "assets/images/travel/city/kr-03.jpg"
   },
   {
     "id": "kr-04",
@@ -1695,19 +1695,19 @@
         "name": "仁川唐人街",
         "intro": "韩国最大唐人街",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/kr-04-1.jpg"
+        "image": "assets/images/travel/attractions/kr-04-1.jpg"
       },
       {
         "name": "月尾岛",
         "intro": "海港公园与游乐园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/kr-04-2.jpg"
+        "image": "assets/images/travel/attractions/kr-04-2.jpg"
       },
       {
         "name": "松岛国际城",
         "intro": "填海新城区与中央公园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/kr-04-3.jpg"
+        "image": "assets/images/travel/attractions/kr-04-3.jpg"
       }
     ],
     "routes": [
@@ -1801,7 +1801,7 @@
       "kr-edu-master",
       "kr-pr-apply"
     ],
-    "image": "assets/travel/cities/kr-04.jpg"
+    "image": "assets/images/travel/city/kr-04.jpg"
   },
   {
     "id": "kr-05",
@@ -1833,19 +1833,19 @@
         "name": "西门市场",
         "intro": "历史传统市场与小吃",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/kr-05-1.jpg"
+        "image": "assets/images/travel/attractions/kr-05-1.jpg"
       },
       {
         "name": "金光石路",
         "intro": "音乐家壁画街",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/kr-05-2.jpg"
+        "image": "assets/images/travel/attractions/kr-05-2.jpg"
       },
       {
         "name": "八公山",
         "intro": "山寺与缆车",
         "time": "3 小时",
-        "image": "assets/travel/attractions/kr-05-3.jpg"
+        "image": "assets/images/travel/attractions/kr-05-3.jpg"
       }
     ],
     "routes": [
@@ -1939,7 +1939,7 @@
       "kr-edu-master",
       "kr-pr-apply"
     ],
-    "image": "assets/travel/cities/kr-05.jpg"
+    "image": "assets/images/travel/city/kr-05.jpg"
   },
   {
     "id": "kr-06",
@@ -1971,19 +1971,19 @@
         "name": "佛国寺",
         "intro": "世界遗产佛教建筑群",
         "time": "2 小时",
-        "image": "assets/travel/attractions/kr-06-1.jpg"
+        "image": "assets/images/travel/attractions/kr-06-1.jpg"
       },
       {
         "name": "石窟庵",
         "intro": "花岗岩佛龛世界遗产",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/kr-06-2.jpg"
+        "image": "assets/images/travel/attractions/kr-06-2.jpg"
       },
       {
         "name": "大陵苑",
         "intro": "新罗古墓群公园",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/kr-06-3.jpg"
+        "image": "assets/images/travel/attractions/kr-06-3.jpg"
       }
     ],
     "routes": [
@@ -2078,7 +2078,7 @@
       "kr-edu-master",
       "kr-pr-apply"
     ],
-    "image": "assets/travel/cities/kr-06.jpg"
+    "image": "assets/images/travel/city/kr-06.jpg"
   },
   {
     "id": "kr-07",
@@ -2110,19 +2110,19 @@
         "name": "全州韩屋村",
         "intro": "传统韩屋聚落",
         "time": "2 小时",
-        "image": "assets/travel/attractions/kr-07-1.jpg"
+        "image": "assets/images/travel/attractions/kr-07-1.jpg"
       },
       {
         "name": "庆基殿",
         "intro": "朝鲜太祖御真殿",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/kr-07-2.jpg"
+        "image": "assets/images/travel/attractions/kr-07-2.jpg"
       },
       {
         "name": "全州殿洞天主教堂",
         "intro": "红砖哥特式教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/kr-07-3.jpg"
+        "image": "assets/images/travel/attractions/kr-07-3.jpg"
       }
     ],
     "routes": [
@@ -2217,7 +2217,7 @@
       "kr-edu-master",
       "kr-pr-apply"
     ],
-    "image": "assets/travel/cities/kr-07.jpg"
+    "image": "assets/images/travel/city/kr-07.jpg"
   },
   {
     "id": "sg-01",
@@ -2249,19 +2249,19 @@
         "name": "滨海湾金沙",
         "intro": "三塔顶船形建筑与空中花园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/sg-01-1.jpg"
+        "image": "assets/images/travel/attractions/sg-01-1.jpg"
       },
       {
         "name": "滨海湾花园",
         "intro": "超级树与云雾林",
         "time": "2 小时",
-        "image": "assets/travel/attractions/sg-01-2.jpg"
+        "image": "assets/images/travel/attractions/sg-01-2.jpg"
       },
       {
         "name": "鱼尾狮公园",
         "intro": "新加坡象征喷水鱼尾狮",
         "time": "1 小时",
-        "image": "assets/travel/attractions/sg-01-3.jpg"
+        "image": "assets/images/travel/attractions/sg-01-3.jpg"
       }
     ],
     "routes": [
@@ -2354,7 +2354,7 @@
       "sg-edu-master",
       "sg-pr-apply"
     ],
-    "image": "assets/travel/cities/sg-01.jpg"
+    "image": "assets/images/travel/city/sg-01.jpg"
   },
   {
     "id": "sg-02",
@@ -2386,19 +2386,19 @@
         "name": "环球影城",
         "intro": "电影主题乐园",
         "time": "半天",
-        "image": "assets/travel/attractions/sg-02-1.jpg"
+        "image": "assets/images/travel/attractions/sg-02-1.jpg"
       },
       {
         "name": "西乐索海滩",
         "intro": "岛南沙滩与水上活动",
         "time": "2 小时",
-        "image": "assets/travel/attractions/sg-02-2.jpg"
+        "image": "assets/images/travel/attractions/sg-02-2.jpg"
       },
       {
         "name": "空中缆车",
         "intro": "跨海缆车俯瞰全岛",
         "time": "1 小时",
-        "image": "assets/travel/attractions/sg-02-3.jpg"
+        "image": "assets/images/travel/attractions/sg-02-3.jpg"
       }
     ],
     "routes": [
@@ -2491,7 +2491,7 @@
       "sg-edu-master",
       "sg-pr-apply"
     ],
-    "image": "assets/travel/cities/sg-02.jpg"
+    "image": "assets/images/travel/city/sg-02.jpg"
   },
   {
     "id": "sg-03",
@@ -2523,19 +2523,19 @@
         "name": "佛牙寺龙华院",
         "intro": "唐式风格佛教寺庙",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/sg-03-1.jpg"
+        "image": "assets/images/travel/attractions/sg-03-1.jpg"
       },
       {
         "name": "牛车水夜市",
         "intro": "传统市集与小吃",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/sg-03-2.jpg"
+        "image": "assets/images/travel/attractions/sg-03-2.jpg"
       },
       {
         "name": "天福宫",
         "intro": "百年妈祖庙",
         "time": "1 小时",
-        "image": "assets/travel/attractions/sg-03-3.jpg"
+        "image": "assets/images/travel/attractions/sg-03-3.jpg"
       }
     ],
     "routes": [
@@ -2628,7 +2628,7 @@
       "sg-edu-master",
       "sg-pr-apply"
     ],
-    "image": "assets/travel/cities/sg-03.jpg"
+    "image": "assets/images/travel/city/sg-03.jpg"
   },
   {
     "id": "sg-04",
@@ -2660,19 +2660,19 @@
         "name": "竹脚中心",
         "intro": "印度市集与美食中心",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/sg-04-1.jpg"
+        "image": "assets/images/travel/attractions/sg-04-1.jpg"
       },
       {
         "name": "维拉玛卡里雅曼兴都庙",
         "intro": "色彩艳丽的兴都庙",
         "time": "1 小时",
-        "image": "assets/travel/attractions/sg-04-2.jpg"
+        "image": "assets/images/travel/attractions/sg-04-2.jpg"
       },
       {
         "name": "慕达发购物中心",
         "intro": "24 小时百货中心",
         "time": "1 小时",
-        "image": "assets/travel/attractions/sg-04-3.jpg"
+        "image": "assets/images/travel/attractions/sg-04-3.jpg"
       }
     ],
     "routes": [
@@ -2764,7 +2764,7 @@
       "sg-edu-master",
       "sg-pr-apply"
     ],
-    "image": "assets/travel/cities/sg-04.jpg"
+    "image": "assets/images/travel/city/sg-04.jpg"
   },
   {
     "id": "sg-05",
@@ -2796,19 +2796,19 @@
         "name": "ION 乌节",
         "intro": "高端购物中心与观景台",
         "time": "2 小时",
-        "image": "assets/travel/attractions/sg-05-1.jpg"
+        "image": "assets/images/travel/attractions/sg-05-1.jpg"
       },
       {
         "name": "义安城",
         "intro": "大型购物中心",
         "time": "2 小时",
-        "image": "assets/travel/attractions/sg-05-2.jpg"
+        "image": "assets/images/travel/attractions/sg-05-2.jpg"
       },
       {
         "name": "乌节中央城",
         "intro": "设计感商场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/sg-05-3.jpg"
+        "image": "assets/images/travel/attractions/sg-05-3.jpg"
       }
     ],
     "routes": [
@@ -2900,7 +2900,7 @@
       "sg-edu-master",
       "sg-pr-apply"
     ],
-    "image": "assets/travel/cities/sg-05.jpg"
+    "image": "assets/images/travel/city/sg-05.jpg"
   },
   {
     "id": "sg-06",
@@ -2932,19 +2932,19 @@
         "name": "克拉码头街",
         "intro": "彩色伞篷河畔街区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/sg-06-1.jpg"
+        "image": "assets/images/travel/attractions/sg-06-1.jpg"
       },
       {
         "name": "新加坡河游船",
         "intro": "夜游新加坡河",
         "time": "1 小时",
-        "image": "assets/travel/attractions/sg-06-2.jpg"
+        "image": "assets/images/travel/attractions/sg-06-2.jpg"
       },
       {
         "name": "福康宁公园",
         "intro": "城市中心历史公园",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/sg-06-3.jpg"
+        "image": "assets/images/travel/attractions/sg-06-3.jpg"
       }
     ],
     "routes": [
@@ -3036,7 +3036,7 @@
       "sg-edu-master",
       "sg-pr-apply"
     ],
-    "image": "assets/travel/cities/sg-06.jpg"
+    "image": "assets/images/travel/city/sg-06.jpg"
   },
   {
     "id": "my-01",
@@ -3068,19 +3068,19 @@
         "name": "双子塔",
         "intro": "世界最高双子塔与观景桥",
         "time": "2 小时",
-        "image": "assets/travel/attractions/my-01-1.jpg"
+        "image": "assets/images/travel/attractions/my-01-1.jpg"
       },
       {
         "name": "独立广场",
         "intro": "历史地标与殖民建筑",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/my-01-2.jpg"
+        "image": "assets/images/travel/attractions/my-01-2.jpg"
       },
       {
         "name": "黑风洞",
         "intro": "石灰岩洞穴与印度教神像",
         "time": "2 小时",
-        "image": "assets/travel/attractions/my-01-3.jpg"
+        "image": "assets/images/travel/attractions/my-01-3.jpg"
       }
     ],
     "routes": [
@@ -3174,7 +3174,7 @@
       "my-edu-master",
       "my-pr-apply"
     ],
-    "image": "assets/travel/cities/my-01.jpg"
+    "image": "assets/images/travel/city/my-01.jpg"
   },
   {
     "id": "my-02",
@@ -3206,19 +3206,19 @@
         "name": "壁画街",
         "intro": "乔治市壁画与铁线画",
         "time": "2 小时",
-        "image": "assets/travel/attractions/my-02-1.jpg"
+        "image": "assets/images/travel/attractions/my-02-1.jpg"
       },
       {
         "name": "极乐寺",
         "intro": "东南亚最大佛教寺庙之一",
         "time": "2 小时",
-        "image": "assets/travel/attractions/my-02-2.jpg"
+        "image": "assets/images/travel/attractions/my-02-2.jpg"
       },
       {
         "name": "姓氏桥",
         "intro": "海上木屋聚落",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/my-02-3.jpg"
+        "image": "assets/images/travel/attractions/my-02-3.jpg"
       }
     ],
     "routes": [
@@ -3311,7 +3311,7 @@
       "my-edu-master",
       "my-pr-apply"
     ],
-    "image": "assets/travel/cities/my-02.jpg"
+    "image": "assets/images/travel/city/my-02.jpg"
   },
   {
     "id": "my-03",
@@ -3343,19 +3343,19 @@
         "name": "荷兰红屋",
         "intro": "红色殖民建筑与广场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/my-03-1.jpg"
+        "image": "assets/images/travel/attractions/my-03-1.jpg"
       },
       {
         "name": "圣保罗教堂",
         "intro": "山顶教堂遗址",
         "time": "1 小时",
-        "image": "assets/travel/attractions/my-03-2.jpg"
+        "image": "assets/images/travel/attractions/my-03-2.jpg"
       },
       {
         "name": "鸡场街",
         "intro": "夜市与古董街",
         "time": "2 小时",
-        "image": "assets/travel/attractions/my-03-3.jpg"
+        "image": "assets/images/travel/attractions/my-03-3.jpg"
       }
     ],
     "routes": [
@@ -3447,7 +3447,7 @@
       "my-edu-master",
       "my-pr-apply"
     ],
-    "image": "assets/travel/cities/my-03.jpg"
+    "image": "assets/images/travel/city/my-03.jpg"
   },
   {
     "id": "my-04",
@@ -3479,19 +3479,19 @@
         "name": "天空之桥",
         "intro": "高空观景弯桥",
         "time": "2 小时",
-        "image": "assets/travel/attractions/my-04-1.jpg"
+        "image": "assets/images/travel/attractions/my-04-1.jpg"
       },
       {
         "name": "东方村缆车",
         "intro": "登马西冈山缆车",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/my-04-2.jpg"
+        "image": "assets/images/travel/attractions/my-04-2.jpg"
       },
       {
         "name": "珍南海滩",
         "intro": "主海滩与日落",
         "time": "2 小时",
-        "image": "assets/travel/attractions/my-04-3.jpg"
+        "image": "assets/images/travel/attractions/my-04-3.jpg"
       }
     ],
     "routes": [
@@ -3583,7 +3583,7 @@
       "my-edu-master",
       "my-pr-apply"
     ],
-    "image": "assets/travel/cities/my-04.jpg"
+    "image": "assets/images/travel/city/my-04.jpg"
   },
   {
     "id": "my-05",
@@ -3615,19 +3615,19 @@
         "name": "丹绒亚路海滩",
         "intro": "世界级日落海滩",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/my-05-1.jpg"
+        "image": "assets/images/travel/attractions/my-05-1.jpg"
       },
       {
         "name": "东姑阿都拉曼公园",
         "intro": "离岛浮潜群岛",
         "time": "半天",
-        "image": "assets/travel/attractions/my-05-2.jpg"
+        "image": "assets/images/travel/attractions/my-05-2.jpg"
       },
       {
         "name": "加雅街周日市集",
         "intro": "周末市集与手信",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/my-05-3.jpg"
+        "image": "assets/images/travel/attractions/my-05-3.jpg"
       }
     ],
     "routes": [
@@ -3719,7 +3719,7 @@
       "my-edu-master",
       "my-pr-apply"
     ],
-    "image": "assets/travel/cities/my-05.jpg"
+    "image": "assets/images/travel/city/my-05.jpg"
   },
   {
     "id": "my-06",
@@ -3751,19 +3751,19 @@
         "name": "云顶天城世界",
         "intro": "主题乐园",
         "time": "半天",
-        "image": "assets/travel/attractions/my-06-1.jpg"
+        "image": "assets/images/travel/attractions/my-06-1.jpg"
       },
       {
         "name": "清水岩庙",
         "intro": "山间中式寺庙",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/my-06-2.jpg"
+        "image": "assets/images/travel/attractions/my-06-2.jpg"
       },
       {
         "name": "云顶缆车",
         "intro": "世界最长缆车之一",
         "time": "1 小时",
-        "image": "assets/travel/attractions/my-06-3.jpg"
+        "image": "assets/images/travel/attractions/my-06-3.jpg"
       }
     ],
     "routes": [
@@ -3855,7 +3855,7 @@
       "my-edu-master",
       "my-pr-apply"
     ],
-    "image": "assets/travel/cities/my-06.jpg"
+    "image": "assets/images/travel/city/my-06.jpg"
   },
   {
     "id": "my-07",
@@ -3887,19 +3887,19 @@
         "name": "砂拉越河畔",
         "intro": "河滨长廊与夜景",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/my-07-1.jpg"
+        "image": "assets/images/travel/attractions/my-07-1.jpg"
       },
       {
         "name": "古晋猫博物馆",
         "intro": "主题博物馆",
         "time": "1 小时",
-        "image": "assets/travel/attractions/my-07-2.jpg"
+        "image": "assets/images/travel/attractions/my-07-2.jpg"
       },
       {
         "name": "巴科国家公园",
         "intro": "红毛猩猩与雨林",
         "time": "半天",
-        "image": "assets/travel/attractions/my-07-3.jpg"
+        "image": "assets/images/travel/attractions/my-07-3.jpg"
       }
     ],
     "routes": [
@@ -3992,7 +3992,7 @@
       "my-edu-master",
       "my-pr-apply"
     ],
-    "image": "assets/travel/cities/my-07.jpg"
+    "image": "assets/images/travel/city/my-07.jpg"
   },
   {
     "id": "th-01",
@@ -4024,19 +4024,19 @@
         "name": "大皇宫",
         "intro": "王室宫殿与玉佛寺",
         "time": "2 小时",
-        "image": "assets/travel/attractions/th-01-1.jpg"
+        "image": "assets/images/travel/attractions/th-01-1.jpg"
       },
       {
         "name": "卧佛寺",
         "intro": "巨大卧佛与按摩发源地",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/th-01-2.jpg"
+        "image": "assets/images/travel/attractions/th-01-2.jpg"
       },
       {
         "name": "郑王庙",
         "intro": "河畔黎明寺",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/th-01-3.jpg"
+        "image": "assets/images/travel/attractions/th-01-3.jpg"
       }
     ],
     "routes": [
@@ -4131,7 +4131,7 @@
       "th-edu-master",
       "th-pr-apply"
     ],
-    "image": "assets/travel/cities/th-01.jpg"
+    "image": "assets/images/travel/city/th-01.jpg"
   },
   {
     "id": "th-02",
@@ -4163,19 +4163,19 @@
         "name": "双龙寺",
         "intro": "素贴山金顶寺庙",
         "time": "2 小时",
-        "image": "assets/travel/attractions/th-02-1.jpg"
+        "image": "assets/images/travel/attractions/th-02-1.jpg"
       },
       {
         "name": "契迪龙寺",
         "intro": "古城中心大佛塔",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/th-02-2.jpg"
+        "image": "assets/images/travel/attractions/th-02-2.jpg"
       },
       {
         "name": "清迈夜市",
         "intro": "手工艺与夜市",
         "time": "2 小时",
-        "image": "assets/travel/attractions/th-02-3.jpg"
+        "image": "assets/images/travel/attractions/th-02-3.jpg"
       }
     ],
     "routes": [
@@ -4269,7 +4269,7 @@
       "th-edu-master",
       "th-pr-apply"
     ],
-    "image": "assets/travel/cities/th-02.jpg"
+    "image": "assets/images/travel/city/th-02.jpg"
   },
   {
     "id": "th-03",
@@ -4301,19 +4301,19 @@
         "name": "芭东海滩",
         "intro": "最热闹海滩与夜生活",
         "time": "2 小时",
-        "image": "assets/travel/attractions/th-03-1.jpg"
+        "image": "assets/images/travel/attractions/th-03-1.jpg"
       },
       {
         "name": "普吉大佛",
         "intro": "山顶大佛俯瞰全岛",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/th-03-2.jpg"
+        "image": "assets/images/travel/attractions/th-03-2.jpg"
       },
       {
         "name": "攀牙湾",
         "intro": "石灰岩群岛与长尾船",
         "time": "半天",
-        "image": "assets/travel/attractions/th-03-3.jpg"
+        "image": "assets/images/travel/attractions/th-03-3.jpg"
       }
     ],
     "routes": [
@@ -4406,7 +4406,7 @@
       "th-edu-master",
       "th-pr-apply"
     ],
-    "image": "assets/travel/cities/th-03.jpg"
+    "image": "assets/images/travel/city/th-03.jpg"
   },
   {
     "id": "th-04",
@@ -4438,19 +4438,19 @@
         "name": "芭堤雅海滩",
         "intro": "城市海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/th-04-1.jpg"
+        "image": "assets/images/travel/attractions/th-04-1.jpg"
       },
       {
         "name": "真理寺",
         "intro": "全木雕寺庙建筑",
         "time": "2 小时",
-        "image": "assets/travel/attractions/th-04-2.jpg"
+        "image": "assets/images/travel/attractions/th-04-2.jpg"
       },
       {
         "name": "水上市场",
         "intro": "河上市场体验",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/th-04-3.jpg"
+        "image": "assets/images/travel/attractions/th-04-3.jpg"
       }
     ],
     "routes": [
@@ -4543,7 +4543,7 @@
       "th-edu-master",
       "th-pr-apply"
     ],
-    "image": "assets/travel/cities/th-04.jpg"
+    "image": "assets/images/travel/city/th-04.jpg"
   },
   {
     "id": "th-05",
@@ -4575,19 +4575,19 @@
         "name": "查汶海滩",
         "intro": "主海滩与夜生活",
         "time": "2 小时",
-        "image": "assets/travel/attractions/th-05-1.jpg"
+        "image": "assets/images/travel/attractions/th-05-1.jpg"
       },
       {
         "name": "大佛寺",
         "intro": "金佛与海景",
         "time": "1 小时",
-        "image": "assets/travel/attractions/th-05-2.jpg"
+        "image": "assets/images/travel/attractions/th-05-2.jpg"
       },
       {
         "name": "祖父祖母石",
         "intro": "海岸奇石",
         "time": "1 小时",
-        "image": "assets/travel/attractions/th-05-3.jpg"
+        "image": "assets/images/travel/attractions/th-05-3.jpg"
       }
     ],
     "routes": [
@@ -4679,7 +4679,7 @@
       "th-edu-master",
       "th-pr-apply"
     ],
-    "image": "assets/travel/cities/th-05.jpg"
+    "image": "assets/images/travel/city/th-05.jpg"
   },
   {
     "id": "th-06",
@@ -4711,19 +4711,19 @@
         "name": "白庙",
         "intro": "白色艺术寺庙",
         "time": "2 小时",
-        "image": "assets/travel/attractions/th-06-1.jpg"
+        "image": "assets/images/travel/attractions/th-06-1.jpg"
       },
       {
         "name": "蓝庙",
         "intro": "蓝色艺术寺庙",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/th-06-2.jpg"
+        "image": "assets/images/travel/attractions/th-06-2.jpg"
       },
       {
         "name": "金三角",
         "intro": "三国交界与湄公河",
         "time": "半天",
-        "image": "assets/travel/attractions/th-06-3.jpg"
+        "image": "assets/images/travel/attractions/th-06-3.jpg"
       }
     ],
     "routes": [
@@ -4816,7 +4816,7 @@
       "th-edu-master",
       "th-pr-apply"
     ],
-    "image": "assets/travel/cities/th-06.jpg"
+    "image": "assets/images/travel/city/th-06.jpg"
   },
   {
     "id": "th-07",
@@ -4848,19 +4848,19 @@
         "name": "华欣海滩",
         "intro": "安静海滩与骑马",
         "time": "2 小时",
-        "image": "assets/travel/attractions/th-07-1.jpg"
+        "image": "assets/images/travel/attractions/th-07-1.jpg"
       },
       {
         "name": "华欣火车站",
         "intro": "皇室风格老车站",
         "time": "1 小时",
-        "image": "assets/travel/attractions/th-07-2.jpg"
+        "image": "assets/images/travel/attractions/th-07-2.jpg"
       },
       {
         "name": "拷汪宫",
         "intro": "山丘皇宫",
         "time": "2 小时",
-        "image": "assets/travel/attractions/th-07-3.jpg"
+        "image": "assets/images/travel/attractions/th-07-3.jpg"
       }
     ],
     "routes": [
@@ -4953,7 +4953,7 @@
       "th-edu-master",
       "th-pr-apply"
     ],
-    "image": "assets/travel/cities/th-07.jpg"
+    "image": "assets/images/travel/city/th-07.jpg"
   },
   {
     "id": "th-08",
@@ -4985,19 +4985,19 @@
         "name": "玛哈泰寺",
         "intro": "树抱佛头遗迹",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/th-08-1.jpg"
+        "image": "assets/images/travel/attractions/th-08-1.jpg"
       },
       {
         "name": "帕司山碧寺",
         "intro": "古都最大佛寺遗迹",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/th-08-2.jpg"
+        "image": "assets/images/travel/attractions/th-08-2.jpg"
       },
       {
         "name": "柴瓦塔那兰寺",
         "intro": "河畔佛塔群",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/th-08-3.jpg"
+        "image": "assets/images/travel/attractions/th-08-3.jpg"
       }
     ],
     "routes": [
@@ -5089,7 +5089,7 @@
       "th-edu-master",
       "th-pr-apply"
     ],
-    "image": "assets/travel/cities/th-08.jpg"
+    "image": "assets/images/travel/city/th-08.jpg"
   },
   {
     "id": "vn-01",
@@ -5121,19 +5121,19 @@
         "name": "还剑湖",
         "intro": "老城中心湖与龟塔",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/vn-01-1.jpg"
+        "image": "assets/images/travel/attractions/vn-01-1.jpg"
       },
       {
         "name": "巴亭广场",
         "intro": "胡志明陵与主席府",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/vn-01-2.jpg"
+        "image": "assets/images/travel/attractions/vn-01-2.jpg"
       },
       {
         "name": "三十六行街",
         "intro": "老城街区与夜市",
         "time": "2 小时",
-        "image": "assets/travel/attractions/vn-01-3.jpg"
+        "image": "assets/images/travel/attractions/vn-01-3.jpg"
       }
     ],
     "routes": [
@@ -5227,7 +5227,7 @@
       "vn-edu-master",
       "vn-pr-apply"
     ],
-    "image": "assets/travel/cities/vn-01.jpg"
+    "image": "assets/images/travel/city/vn-01.jpg"
   },
   {
     "id": "vn-02",
@@ -5259,19 +5259,19 @@
         "name": "中央邮局",
         "intro": "法式殖民建筑邮局",
         "time": "1 小时",
-        "image": "assets/travel/attractions/vn-02-1.jpg"
+        "image": "assets/images/travel/attractions/vn-02-1.jpg"
       },
       {
         "name": "统一宫",
         "intro": "历史建筑与花园",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/vn-02-2.jpg"
+        "image": "assets/images/travel/attractions/vn-02-2.jpg"
       },
       {
         "name": "滨城市场",
         "intro": "市中心传统市场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/vn-02-3.jpg"
+        "image": "assets/images/travel/attractions/vn-02-3.jpg"
       }
     ],
     "routes": [
@@ -5365,7 +5365,7 @@
       "vn-edu-master",
       "vn-pr-apply"
     ],
-    "image": "assets/travel/cities/vn-02.jpg"
+    "image": "assets/images/travel/city/vn-02.jpg"
   },
   {
     "id": "vn-03",
@@ -5397,19 +5397,19 @@
         "name": "金桥",
         "intro": "佛手托桥网红地标",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/vn-03-1.jpg"
+        "image": "assets/images/travel/attractions/vn-03-1.jpg"
       },
       {
         "name": "美溪海滩",
         "intro": "世界级海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/vn-03-2.jpg"
+        "image": "assets/images/travel/attractions/vn-03-2.jpg"
       },
       {
         "name": "五行山",
         "intro": "大理石山与洞穴",
         "time": "2 小时",
-        "image": "assets/travel/attractions/vn-03-3.jpg"
+        "image": "assets/images/travel/attractions/vn-03-3.jpg"
       }
     ],
     "routes": [
@@ -5503,7 +5503,7 @@
       "vn-edu-master",
       "vn-pr-apply"
     ],
-    "image": "assets/travel/cities/vn-03.jpg"
+    "image": "assets/images/travel/city/vn-03.jpg"
   },
   {
     "id": "vn-04",
@@ -5535,19 +5535,19 @@
         "name": "会安古城",
         "intro": "灯笼古镇与日式桥",
         "time": "2 小时",
-        "image": "assets/travel/attractions/vn-04-1.jpg"
+        "image": "assets/images/travel/attractions/vn-04-1.jpg"
       },
       {
         "name": "来远桥",
         "intro": "会安标志廊桥",
         "time": "1 小时",
-        "image": "assets/travel/attractions/vn-04-2.jpg"
+        "image": "assets/images/travel/attractions/vn-04-2.jpg"
       },
       {
         "name": "会安夜市",
         "intro": "河畔灯笼夜市",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/vn-04-3.jpg"
+        "image": "assets/images/travel/attractions/vn-04-3.jpg"
       }
     ],
     "routes": [
@@ -5640,7 +5640,7 @@
       "vn-edu-master",
       "vn-pr-apply"
     ],
-    "image": "assets/travel/cities/vn-04.jpg"
+    "image": "assets/images/travel/city/vn-04.jpg"
   },
   {
     "id": "vn-05",
@@ -5672,19 +5672,19 @@
         "name": "芽庄海滩",
         "intro": "城市海湾海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/vn-05-1.jpg"
+        "image": "assets/images/travel/attractions/vn-05-1.jpg"
       },
       {
         "name": "婆那加占婆塔",
         "intro": "占婆古塔遗迹",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/vn-05-2.jpg"
+        "image": "assets/images/travel/attractions/vn-05-2.jpg"
       },
       {
         "name": "芽庄大教堂",
         "intro": "哥特式石教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/vn-05-3.jpg"
+        "image": "assets/images/travel/attractions/vn-05-3.jpg"
       }
     ],
     "routes": [
@@ -5777,7 +5777,7 @@
       "vn-edu-master",
       "vn-pr-apply"
     ],
-    "image": "assets/travel/cities/vn-05.jpg"
+    "image": "assets/images/travel/city/vn-05.jpg"
   },
   {
     "id": "vn-06",
@@ -5809,19 +5809,19 @@
         "name": "下龙湾游船",
         "intro": "石灰岩群岛游船",
         "time": "半天",
-        "image": "assets/travel/attractions/vn-06-1.jpg"
+        "image": "assets/images/travel/attractions/vn-06-1.jpg"
       },
       {
         "name": "惊讶洞",
         "intro": "大型钟乳石洞穴",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/vn-06-2.jpg"
+        "image": "assets/images/travel/attractions/vn-06-2.jpg"
       },
       {
         "name": "天宫洞",
         "intro": "彩灯洞穴",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/vn-06-3.jpg"
+        "image": "assets/images/travel/attractions/vn-06-3.jpg"
       }
     ],
     "routes": [
@@ -5914,7 +5914,7 @@
       "vn-edu-master",
       "vn-pr-apply"
     ],
-    "image": "assets/travel/cities/vn-06.jpg"
+    "image": "assets/images/travel/city/vn-06.jpg"
   },
   {
     "id": "vn-07",
@@ -5946,19 +5946,19 @@
         "name": "番西邦峰",
         "intro": "中南半岛最高峰与缆车",
         "time": "半天",
-        "image": "assets/travel/attractions/vn-07-1.jpg"
+        "image": "assets/images/travel/attractions/vn-07-1.jpg"
       },
       {
         "name": "沙巴梯田",
         "intro": "层层梯田景观",
         "time": "半天",
-        "image": "assets/travel/attractions/vn-07-2.jpg"
+        "image": "assets/images/travel/attractions/vn-07-2.jpg"
       },
       {
         "name": "猫猫村",
         "intro": "黑苗村落徒步",
         "time": "2 小时",
-        "image": "assets/travel/attractions/vn-07-3.jpg"
+        "image": "assets/images/travel/attractions/vn-07-3.jpg"
       }
     ],
     "routes": [
@@ -6052,7 +6052,7 @@
       "vn-edu-master",
       "vn-pr-apply"
     ],
-    "image": "assets/travel/cities/vn-07.jpg"
+    "image": "assets/images/travel/city/vn-07.jpg"
   },
   {
     "id": "ae-01",
@@ -6084,19 +6084,19 @@
         "name": "哈利法塔",
         "intro": "世界最高建筑与观景台",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ae-01-1.jpg"
+        "image": "assets/images/travel/attractions/ae-01-1.jpg"
       },
       {
         "name": "迪拜购物中心",
         "intro": "巨型商业综合体",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ae-01-2.jpg"
+        "image": "assets/images/travel/attractions/ae-01-2.jpg"
       },
       {
         "name": "朱美拉海滩",
         "intro": "帆船酒店景观海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ae-01-3.jpg"
+        "image": "assets/images/travel/attractions/ae-01-3.jpg"
       }
     ],
     "routes": [
@@ -6188,7 +6188,7 @@
       "ae-edu-master",
       "ae-pr-apply"
     ],
-    "image": "assets/travel/cities/ae-01.jpg"
+    "image": "assets/images/travel/city/ae-01.jpg"
   },
   {
     "id": "ae-02",
@@ -6220,19 +6220,19 @@
         "name": "谢赫扎耶德大清真寺",
         "intro": "白色大理石清真寺",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ae-02-1.jpg"
+        "image": "assets/images/travel/attractions/ae-02-1.jpg"
       },
       {
         "name": "阿布扎比卢浮宫",
         "intro": "穹顶艺术博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ae-02-2.jpg"
+        "image": "assets/images/travel/attractions/ae-02-2.jpg"
       },
       {
         "name": "滨海大道",
         "intro": "海滨步行道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ae-02-3.jpg"
+        "image": "assets/images/travel/attractions/ae-02-3.jpg"
       }
     ],
     "routes": [
@@ -6324,7 +6324,7 @@
       "ae-edu-master",
       "ae-pr-apply"
     ],
-    "image": "assets/travel/cities/ae-02.jpg"
+    "image": "assets/images/travel/city/ae-02.jpg"
   },
   {
     "id": "ae-03",
@@ -6356,19 +6356,19 @@
         "name": "沙迦艺术博物馆",
         "intro": "当代与伊斯兰艺术",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ae-03-1.jpg"
+        "image": "assets/images/travel/attractions/ae-03-1.jpg"
       },
       {
         "name": "沙迦老集市",
         "intro": "传统市场与黄金街",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ae-03-2.jpg"
+        "image": "assets/images/travel/attractions/ae-03-2.jpg"
       },
       {
         "name": "文化广场",
         "intro": "地标雕塑与广场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ae-03-3.jpg"
+        "image": "assets/images/travel/attractions/ae-03-3.jpg"
       }
     ],
     "routes": [
@@ -6460,7 +6460,7 @@
       "ae-edu-master",
       "ae-pr-apply"
     ],
-    "image": "assets/travel/cities/ae-03.jpg"
+    "image": "assets/images/travel/city/ae-03.jpg"
   },
   {
     "id": "ae-04",
@@ -6492,19 +6492,19 @@
         "name": "杰贝勒贾伊斯山",
         "intro": "阿联酋最高峰与观景台",
         "time": "半天",
-        "image": "assets/travel/attractions/ae-04-1.jpg"
+        "image": "assets/images/travel/attractions/ae-04-1.jpg"
       },
       {
         "name": "阿尔马里安岛",
         "intro": "人工岛度假区",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ae-04-2.jpg"
+        "image": "assets/images/travel/attractions/ae-04-2.jpg"
       },
       {
         "name": "拉斯海马国家博物馆",
         "intro": "古堡改建博物馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ae-04-3.jpg"
+        "image": "assets/images/travel/attractions/ae-04-3.jpg"
       }
     ],
     "routes": [
@@ -6596,7 +6596,7 @@
       "ae-edu-master",
       "ae-pr-apply"
     ],
-    "image": "assets/travel/cities/ae-04.jpg"
+    "image": "assets/images/travel/city/ae-04.jpg"
   },
   {
     "id": "ae-05",
@@ -6628,19 +6628,19 @@
         "name": "富查伊拉堡",
         "intro": "古堡垒与村庄",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ae-05-1.jpg"
+        "image": "assets/images/travel/attractions/ae-05-1.jpg"
       },
       {
         "name": "富查伊拉海滩",
         "intro": "东海岸海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ae-05-2.jpg"
+        "image": "assets/images/travel/attractions/ae-05-2.jpg"
       },
       {
         "name": "瓦迪沃里",
         "intro": "山间溪谷徒步",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ae-05-3.jpg"
+        "image": "assets/images/travel/attractions/ae-05-3.jpg"
       }
     ],
     "routes": [
@@ -6732,7 +6732,7 @@
       "ae-edu-master",
       "ae-pr-apply"
     ],
-    "image": "assets/travel/cities/ae-05.jpg"
+    "image": "assets/images/travel/city/ae-05.jpg"
   },
   {
     "id": "tr-01",
@@ -6764,19 +6764,19 @@
         "name": "圣索菲亚大教堂",
         "intro": "拜占庭建筑奇迹",
         "time": "2 小时",
-        "image": "assets/travel/attractions/tr-01-1.jpg"
+        "image": "assets/images/travel/attractions/tr-01-1.jpg"
       },
       {
         "name": "蓝色清真寺",
         "intro": "六塔清真寺",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/tr-01-2.jpg"
+        "image": "assets/images/travel/attractions/tr-01-2.jpg"
       },
       {
         "name": "博斯普鲁斯海峡",
         "intro": "欧亚两岸游船",
         "time": "2 小时",
-        "image": "assets/travel/attractions/tr-01-3.jpg"
+        "image": "assets/images/travel/attractions/tr-01-3.jpg"
       }
     ],
     "routes": [
@@ -6870,7 +6870,7 @@
       "tr-edu-master",
       "tr-pr-apply"
     ],
-    "image": "assets/travel/cities/tr-01.jpg"
+    "image": "assets/images/travel/city/tr-01.jpg"
   },
   {
     "id": "tr-02",
@@ -6902,19 +6902,19 @@
         "name": "格雷梅露天博物馆",
         "intro": "岩石教堂壁画群",
         "time": "2 小时",
-        "image": "assets/travel/attractions/tr-02-1.jpg"
+        "image": "assets/images/travel/attractions/tr-02-1.jpg"
       },
       {
         "name": "热气球飞行",
         "intro": "清晨俯瞰奇特地貌",
         "time": "3 小时",
-        "image": "assets/travel/attractions/tr-02-2.jpg"
+        "image": "assets/images/travel/attractions/tr-02-2.jpg"
       },
       {
         "name": "乌奇希萨尔城堡",
         "intro": "火山岩城堡观景",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/tr-02-3.jpg"
+        "image": "assets/images/travel/attractions/tr-02-3.jpg"
       }
     ],
     "routes": [
@@ -7007,7 +7007,7 @@
       "tr-edu-master",
       "tr-pr-apply"
     ],
-    "image": "assets/travel/cities/tr-02.jpg"
+    "image": "assets/images/travel/city/tr-02.jpg"
   },
   {
     "id": "tr-03",
@@ -7039,19 +7039,19 @@
         "name": "棉花堡钙化池",
         "intro": "白色梯田温泉",
         "time": "2 小时",
-        "image": "assets/travel/attractions/tr-03-1.jpg"
+        "image": "assets/images/travel/attractions/tr-03-1.jpg"
       },
       {
         "name": "希拉波利斯古城",
         "intro": "罗马温泉古城遗址",
         "time": "2 小时",
-        "image": "assets/travel/attractions/tr-03-2.jpg"
+        "image": "assets/images/travel/attractions/tr-03-2.jpg"
       },
       {
         "name": "克利奥帕特拉泳池",
         "intro": "古泳池温泉",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/tr-03-3.jpg"
+        "image": "assets/images/travel/attractions/tr-03-3.jpg"
       }
     ],
     "routes": [
@@ -7144,7 +7144,7 @@
       "tr-edu-master",
       "tr-pr-apply"
     ],
-    "image": "assets/travel/cities/tr-03.jpg"
+    "image": "assets/images/travel/city/tr-03.jpg"
   },
   {
     "id": "tr-04",
@@ -7176,19 +7176,19 @@
         "name": "卡莱伊奇老城",
         "intro": "地中海老城与港口",
         "time": "2 小时",
-        "image": "assets/travel/attractions/tr-04-1.jpg"
+        "image": "assets/images/travel/attractions/tr-04-1.jpg"
       },
       {
         "name": "杜登瀑布",
         "intro": "入海瀑布",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/tr-04-2.jpg"
+        "image": "assets/images/travel/attractions/tr-04-2.jpg"
       },
       {
         "name": "安塔利亚博物馆",
         "intro": "古罗马雕像收藏",
         "time": "2 小时",
-        "image": "assets/travel/attractions/tr-04-3.jpg"
+        "image": "assets/images/travel/attractions/tr-04-3.jpg"
       }
     ],
     "routes": [
@@ -7282,7 +7282,7 @@
       "tr-edu-master",
       "tr-pr-apply"
     ],
-    "image": "assets/travel/cities/tr-04.jpg"
+    "image": "assets/images/travel/city/tr-04.jpg"
   },
   {
     "id": "tr-05",
@@ -7314,19 +7314,19 @@
         "name": "以弗所古城",
         "intro": "爱琴海畔古罗马遗迹",
         "time": "半天",
-        "image": "assets/travel/attractions/tr-05-1.jpg"
+        "image": "assets/images/travel/attractions/tr-05-1.jpg"
       },
       {
         "name": "钟楼广场",
         "intro": "城市中心钟楼",
         "time": "1 小时",
-        "image": "assets/travel/attractions/tr-05-2.jpg"
+        "image": "assets/images/travel/attractions/tr-05-2.jpg"
       },
       {
         "name": "爱琴海沿岸",
         "intro": "海滨长廊",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/tr-05-3.jpg"
+        "image": "assets/images/travel/attractions/tr-05-3.jpg"
       }
     ],
     "routes": [
@@ -7421,7 +7421,7 @@
       "tr-edu-master",
       "tr-pr-apply"
     ],
-    "image": "assets/travel/cities/tr-05.jpg"
+    "image": "assets/images/travel/city/tr-05.jpg"
   },
   {
     "id": "tr-06",
@@ -7453,19 +7453,19 @@
         "name": "国父陵",
         "intro": "阿塔图尔克陵墓",
         "time": "2 小时",
-        "image": "assets/travel/attractions/tr-06-1.jpg"
+        "image": "assets/images/travel/attractions/tr-06-1.jpg"
       },
       {
         "name": "安纳托利亚文明博物馆",
         "intro": "史前文物收藏",
         "time": "2 小时",
-        "image": "assets/travel/attractions/tr-06-2.jpg"
+        "image": "assets/images/travel/attractions/tr-06-2.jpg"
       },
       {
         "name": "安卡拉城堡",
         "intro": "老城山丘城堡",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/tr-06-3.jpg"
+        "image": "assets/images/travel/attractions/tr-06-3.jpg"
       }
     ],
     "routes": [
@@ -7558,7 +7558,7 @@
       "tr-edu-master",
       "tr-pr-apply"
     ],
-    "image": "assets/travel/cities/tr-06.jpg"
+    "image": "assets/images/travel/city/tr-06.jpg"
   },
   {
     "id": "tr-07",
@@ -7590,19 +7590,19 @@
         "name": "博德鲁姆城堡",
         "intro": "圣彼得城堡与水下考古",
         "time": "2 小时",
-        "image": "assets/travel/attractions/tr-07-1.jpg"
+        "image": "assets/images/travel/attractions/tr-07-1.jpg"
       },
       {
         "name": "博德鲁姆港",
         "intro": "游艇港湾",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/tr-07-2.jpg"
+        "image": "assets/images/travel/attractions/tr-07-2.jpg"
       },
       {
         "name": "风车山",
         "intro": "白色风车观景",
         "time": "1 小时",
-        "image": "assets/travel/attractions/tr-07-3.jpg"
+        "image": "assets/images/travel/attractions/tr-07-3.jpg"
       }
     ],
     "routes": [
@@ -7696,7 +7696,7 @@
       "tr-edu-master",
       "tr-pr-apply"
     ],
-    "image": "assets/travel/cities/tr-07.jpg"
+    "image": "assets/images/travel/city/tr-07.jpg"
   },
   {
     "id": "gb-01",
@@ -7728,19 +7728,19 @@
         "name": "伦敦塔桥",
         "intro": "泰晤士河地标桥梁",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/gb-01-1.jpg"
+        "image": "assets/images/travel/attractions/gb-01-1.jpg"
       },
       {
         "name": "大本钟",
         "intro": "议会大厦钟楼",
         "time": "1 小时",
-        "image": "assets/travel/attractions/gb-01-2.jpg"
+        "image": "assets/images/travel/attractions/gb-01-2.jpg"
       },
       {
         "name": "伦敦眼",
         "intro": "河畔摩天轮",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/gb-01-3.jpg"
+        "image": "assets/images/travel/attractions/gb-01-3.jpg"
       }
     ],
     "routes": [
@@ -7836,7 +7836,7 @@
       "gb-edu-master",
       "gb-pr-apply"
     ],
-    "image": "assets/travel/cities/gb-01.jpg"
+    "image": "assets/images/travel/city/gb-01.jpg"
   },
   {
     "id": "gb-02",
@@ -7868,19 +7868,19 @@
         "name": "爱丁堡城堡",
         "intro": "火山岩上的古堡",
         "time": "2 小时",
-        "image": "assets/travel/attractions/gb-02-1.jpg"
+        "image": "assets/images/travel/attractions/gb-02-1.jpg"
       },
       {
         "name": "皇家一英里",
         "intro": "老城主街",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/gb-02-2.jpg"
+        "image": "assets/images/travel/attractions/gb-02-2.jpg"
       },
       {
         "name": "亚瑟王座",
         "intro": "城市山丘观景",
         "time": "2 小时",
-        "image": "assets/travel/attractions/gb-02-3.jpg"
+        "image": "assets/images/travel/attractions/gb-02-3.jpg"
       }
     ],
     "routes": [
@@ -7974,7 +7974,7 @@
       "gb-edu-master",
       "gb-pr-apply"
     ],
-    "image": "assets/travel/cities/gb-02.jpg"
+    "image": "assets/images/travel/city/gb-02.jpg"
   },
   {
     "id": "gb-03",
@@ -8006,19 +8006,19 @@
         "name": "老特拉福德球场",
         "intro": "曼联主场",
         "time": "2 小时",
-        "image": "assets/travel/attractions/gb-03-1.jpg"
+        "image": "assets/images/travel/attractions/gb-03-1.jpg"
       },
       {
         "name": "科学与工业博物馆",
         "intro": "工业革命遗产",
         "time": "2 小时",
-        "image": "assets/travel/attractions/gb-03-2.jpg"
+        "image": "assets/images/travel/attractions/gb-03-2.jpg"
       },
       {
         "name": "曼彻斯特大教堂",
         "intro": "中世纪教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/gb-03-3.jpg"
+        "image": "assets/images/travel/attractions/gb-03-3.jpg"
       }
     ],
     "routes": [
@@ -8112,7 +8112,7 @@
       "gb-edu-master",
       "gb-pr-apply"
     ],
-    "image": "assets/travel/cities/gb-03.jpg"
+    "image": "assets/images/travel/city/gb-03.jpg"
   },
   {
     "id": "gb-04",
@@ -8144,19 +8144,19 @@
         "name": "披头士故事馆",
         "intro": "乐队主题博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/gb-04-1.jpg"
+        "image": "assets/images/travel/attractions/gb-04-1.jpg"
       },
       {
         "name": "阿尔伯特码头",
         "intro": "历史港口建筑群",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/gb-04-2.jpg"
+        "image": "assets/images/travel/attractions/gb-04-2.jpg"
       },
       {
         "name": "利物浦大教堂",
         "intro": "英国最大教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/gb-04-3.jpg"
+        "image": "assets/images/travel/attractions/gb-04-3.jpg"
       }
     ],
     "routes": [
@@ -8250,7 +8250,7 @@
       "gb-edu-master",
       "gb-pr-apply"
     ],
-    "image": "assets/travel/cities/gb-04.jpg"
+    "image": "assets/images/travel/city/gb-04.jpg"
   },
   {
     "id": "gb-05",
@@ -8282,19 +8282,19 @@
         "name": "罗马浴场",
         "intro": "古罗马温泉遗迹",
         "time": "2 小时",
-        "image": "assets/travel/attractions/gb-05-1.jpg"
+        "image": "assets/images/travel/attractions/gb-05-1.jpg"
       },
       {
         "name": "皇家新月楼",
         "intro": "乔治亚建筑地标",
         "time": "1 小时",
-        "image": "assets/travel/attractions/gb-05-2.jpg"
+        "image": "assets/images/travel/attractions/gb-05-2.jpg"
       },
       {
         "name": "巴斯修道院",
         "intro": "哥特式教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/gb-05-3.jpg"
+        "image": "assets/images/travel/attractions/gb-05-3.jpg"
       }
     ],
     "routes": [
@@ -8389,7 +8389,7 @@
       "gb-edu-master",
       "gb-pr-apply"
     ],
-    "image": "assets/travel/cities/gb-05.jpg"
+    "image": "assets/images/travel/city/gb-05.jpg"
   },
   {
     "id": "gb-06",
@@ -8421,19 +8421,19 @@
         "name": "国王学院礼拜堂",
         "intro": "哥特式教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/gb-06-1.jpg"
+        "image": "assets/images/travel/attractions/gb-06-1.jpg"
       },
       {
         "name": "康河撑船",
         "intro": "剑河泛舟",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/gb-06-2.jpg"
+        "image": "assets/images/travel/attractions/gb-06-2.jpg"
       },
       {
         "name": "三一学院",
         "intro": "牛顿母校",
         "time": "1 小时",
-        "image": "assets/travel/attractions/gb-06-3.jpg"
+        "image": "assets/images/travel/attractions/gb-06-3.jpg"
       }
     ],
     "routes": [
@@ -8528,7 +8528,7 @@
       "gb-edu-master",
       "gb-pr-apply"
     ],
-    "image": "assets/travel/cities/gb-06.jpg"
+    "image": "assets/images/travel/city/gb-06.jpg"
   },
   {
     "id": "gb-07",
@@ -8560,19 +8560,19 @@
         "name": "基督教堂学院",
         "intro": "学院与哈利波特食堂",
         "time": "2 小时",
-        "image": "assets/travel/attractions/gb-07-1.jpg"
+        "image": "assets/images/travel/attractions/gb-07-1.jpg"
       },
       {
         "name": "博德利图书馆",
         "intro": "古老图书馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/gb-07-2.jpg"
+        "image": "assets/images/travel/attractions/gb-07-2.jpg"
       },
       {
         "name": "拉德克利夫圆楼",
         "intro": "圆顶图书馆地标",
         "time": "1 小时",
-        "image": "assets/travel/attractions/gb-07-3.jpg"
+        "image": "assets/images/travel/attractions/gb-07-3.jpg"
       }
     ],
     "routes": [
@@ -8666,7 +8666,7 @@
       "gb-edu-master",
       "gb-pr-apply"
     ],
-    "image": "assets/travel/cities/gb-07.jpg"
+    "image": "assets/images/travel/city/gb-07.jpg"
   },
   {
     "id": "gb-08",
@@ -8698,19 +8698,19 @@
         "name": "约克大教堂",
         "intro": "欧洲最大哥特教堂之一",
         "time": "2 小时",
-        "image": "assets/travel/attractions/gb-08-1.jpg"
+        "image": "assets/images/travel/attractions/gb-08-1.jpg"
       },
       {
         "name": "肉铺街",
         "intro": "哈利波特对角巷原型",
         "time": "1 小时",
-        "image": "assets/travel/attractions/gb-08-2.jpg"
+        "image": "assets/images/travel/attractions/gb-08-2.jpg"
       },
       {
         "name": "约克城墙",
         "intro": "中世纪城墙漫步",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/gb-08-3.jpg"
+        "image": "assets/images/travel/attractions/gb-08-3.jpg"
       }
     ],
     "routes": [
@@ -8804,7 +8804,7 @@
       "gb-edu-master",
       "gb-pr-apply"
     ],
-    "image": "assets/travel/cities/gb-08.jpg"
+    "image": "assets/images/travel/city/gb-08.jpg"
   },
   {
     "id": "gb-09",
@@ -8836,19 +8836,19 @@
         "name": "泰坦尼克号博物馆",
         "intro": "造船主题博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/gb-09-1.jpg"
+        "image": "assets/images/travel/attractions/gb-09-1.jpg"
       },
       {
         "name": "市政厅",
         "intro": "文艺复兴风格建筑",
         "time": "1 小时",
-        "image": "assets/travel/attractions/gb-09-2.jpg"
+        "image": "assets/images/travel/attractions/gb-09-2.jpg"
       },
       {
         "name": "巨人之路",
         "intro": "火山岩柱海岸（近郊）",
         "time": "半天",
-        "image": "assets/travel/attractions/gb-09-3.jpg"
+        "image": "assets/images/travel/attractions/gb-09-3.jpg"
       }
     ],
     "routes": [
@@ -8942,7 +8942,7 @@
       "gb-edu-master",
       "gb-pr-apply"
     ],
-    "image": "assets/travel/cities/gb-09.jpg"
+    "image": "assets/images/travel/city/gb-09.jpg"
   },
   {
     "id": "de-01",
@@ -8974,19 +8974,19 @@
         "name": "勃兰登堡门",
         "intro": "柏林地标与历史广场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/de-01-1.jpg"
+        "image": "assets/images/travel/attractions/de-01-1.jpg"
       },
       {
         "name": "柏林墙纪念馆",
         "intro": "历史遗迹与纪念地",
         "time": "2 小时",
-        "image": "assets/travel/attractions/de-01-2.jpg"
+        "image": "assets/images/travel/attractions/de-01-2.jpg"
       },
       {
         "name": "博物馆岛",
         "intro": "五大博物馆建筑群",
         "time": "半天",
-        "image": "assets/travel/attractions/de-01-3.jpg"
+        "image": "assets/images/travel/attractions/de-01-3.jpg"
       }
     ],
     "routes": [
@@ -9081,7 +9081,7 @@
       "de-edu-master",
       "de-pr-apply"
     ],
-    "image": "assets/travel/cities/de-01.jpg"
+    "image": "assets/images/travel/city/de-01.jpg"
   },
   {
     "id": "de-02",
@@ -9113,19 +9113,19 @@
         "name": "玛利亚广场",
         "intro": "老城中心与新市政厅",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/de-02-1.jpg"
+        "image": "assets/images/travel/attractions/de-02-1.jpg"
       },
       {
         "name": "慕尼黑王宫",
         "intro": "巴伐利亚王宫",
         "time": "2 小时",
-        "image": "assets/travel/attractions/de-02-2.jpg"
+        "image": "assets/images/travel/attractions/de-02-2.jpg"
       },
       {
         "name": "英国花园",
         "intro": "城市大型公园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/de-02-3.jpg"
+        "image": "assets/images/travel/attractions/de-02-3.jpg"
       }
     ],
     "routes": [
@@ -9219,7 +9219,7 @@
       "de-edu-master",
       "de-pr-apply"
     ],
-    "image": "assets/travel/cities/de-02.jpg"
+    "image": "assets/images/travel/city/de-02.jpg"
   },
   {
     "id": "de-03",
@@ -9251,19 +9251,19 @@
         "name": "罗马广场",
         "intro": "中世纪老城广场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/de-03-1.jpg"
+        "image": "assets/images/travel/attractions/de-03-1.jpg"
       },
       {
         "name": "法兰克福大教堂",
         "intro": "哥特式皇帝教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/de-03-2.jpg"
+        "image": "assets/images/travel/attractions/de-03-2.jpg"
       },
       {
         "name": "美因塔观景台",
         "intro": "城市天际线观景",
         "time": "1 小时",
-        "image": "assets/travel/attractions/de-03-3.jpg"
+        "image": "assets/images/travel/attractions/de-03-3.jpg"
       }
     ],
     "routes": [
@@ -9357,7 +9357,7 @@
       "de-edu-master",
       "de-pr-apply"
     ],
-    "image": "assets/travel/cities/de-03.jpg"
+    "image": "assets/images/travel/city/de-03.jpg"
   },
   {
     "id": "de-04",
@@ -9389,19 +9389,19 @@
         "name": "易北爱乐音乐厅",
         "intro": "波浪形玻璃音乐厅",
         "time": "2 小时",
-        "image": "assets/travel/attractions/de-04-1.jpg"
+        "image": "assets/images/travel/attractions/de-04-1.jpg"
       },
       {
         "name": "仓库城",
         "intro": "红砖仓库历史区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/de-04-2.jpg"
+        "image": "assets/images/travel/attractions/de-04-2.jpg"
       },
       {
         "name": "汉堡港",
         "intro": "德国最大港口",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/de-04-3.jpg"
+        "image": "assets/images/travel/attractions/de-04-3.jpg"
       }
     ],
     "routes": [
@@ -9495,7 +9495,7 @@
       "de-edu-master",
       "de-pr-apply"
     ],
-    "image": "assets/travel/cities/de-04.jpg"
+    "image": "assets/images/travel/city/de-04.jpg"
   },
   {
     "id": "de-05",
@@ -9527,19 +9527,19 @@
         "name": "科隆大教堂",
         "intro": "哥特式大教堂",
         "time": "2 小时",
-        "image": "assets/travel/attractions/de-05-1.jpg"
+        "image": "assets/images/travel/attractions/de-05-1.jpg"
       },
       {
         "name": "霍亨索伦桥",
         "intro": "爱情锁桥与河景",
         "time": "1 小时",
-        "image": "assets/travel/attractions/de-05-2.jpg"
+        "image": "assets/images/travel/attractions/de-05-2.jpg"
       },
       {
         "name": "科隆老城",
         "intro": "老城广场与啤酒馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/de-05-3.jpg"
+        "image": "assets/images/travel/attractions/de-05-3.jpg"
       }
     ],
     "routes": [
@@ -9633,7 +9633,7 @@
       "de-edu-master",
       "de-pr-apply"
     ],
-    "image": "assets/travel/cities/de-05.jpg"
+    "image": "assets/images/travel/city/de-05.jpg"
   },
   {
     "id": "de-06",
@@ -9665,19 +9665,19 @@
         "name": "梅赛德斯奔驰博物馆",
         "intro": "汽车历史博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/de-06-1.jpg"
+        "image": "assets/images/travel/attractions/de-06-1.jpg"
       },
       {
         "name": "保时捷博物馆",
         "intro": "跑车品牌博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/de-06-2.jpg"
+        "image": "assets/images/travel/attractions/de-06-2.jpg"
       },
       {
         "name": "斯图加特王宫广场",
         "intro": "城市中心广场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/de-06-3.jpg"
+        "image": "assets/images/travel/attractions/de-06-3.jpg"
       }
     ],
     "routes": [
@@ -9771,7 +9771,7 @@
       "de-edu-master",
       "de-pr-apply"
     ],
-    "image": "assets/travel/cities/de-06.jpg"
+    "image": "assets/images/travel/city/de-06.jpg"
   },
   {
     "id": "de-07",
@@ -9803,19 +9803,19 @@
         "name": "茨温格宫",
         "intro": "巴洛克宫殿与画廊",
         "time": "2 小时",
-        "image": "assets/travel/attractions/de-07-1.jpg"
+        "image": "assets/images/travel/attractions/de-07-1.jpg"
       },
       {
         "name": "圣母教堂",
         "intro": "重建的圆顶教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/de-07-2.jpg"
+        "image": "assets/images/travel/attractions/de-07-2.jpg"
       },
       {
         "name": "布吕尔平台",
         "intro": "易北河畔观景台",
         "time": "1 小时",
-        "image": "assets/travel/attractions/de-07-3.jpg"
+        "image": "assets/images/travel/attractions/de-07-3.jpg"
       }
     ],
     "routes": [
@@ -9909,7 +9909,7 @@
       "de-edu-master",
       "de-pr-apply"
     ],
-    "image": "assets/travel/cities/de-07.jpg"
+    "image": "assets/images/travel/city/de-07.jpg"
   },
   {
     "id": "de-08",
@@ -9941,19 +9941,19 @@
         "name": "皇帝堡",
         "intro": "山丘古堡与观景",
         "time": "2 小时",
-        "image": "assets/travel/attractions/de-08-1.jpg"
+        "image": "assets/images/travel/attractions/de-08-1.jpg"
       },
       {
         "name": "圣洛伦茨教堂",
         "intro": "哥特式教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/de-08-2.jpg"
+        "image": "assets/images/travel/attractions/de-08-2.jpg"
       },
       {
         "name": "主集市广场",
         "intro": "圣诞市场会场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/de-08-3.jpg"
+        "image": "assets/images/travel/attractions/de-08-3.jpg"
       }
     ],
     "routes": [
@@ -10047,7 +10047,7 @@
       "de-edu-master",
       "de-pr-apply"
     ],
-    "image": "assets/travel/cities/de-08.jpg"
+    "image": "assets/images/travel/city/de-08.jpg"
   },
   {
     "id": "de-09",
@@ -10079,19 +10079,19 @@
         "name": "圣托马斯教堂",
         "intro": "巴赫任职教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/de-09-1.jpg"
+        "image": "assets/images/travel/attractions/de-09-1.jpg"
       },
       {
         "name": "莱比锡老市政厅",
         "intro": "文艺复兴建筑",
         "time": "1 小时",
-        "image": "assets/travel/attractions/de-09-2.jpg"
+        "image": "assets/images/travel/attractions/de-09-2.jpg"
       },
       {
         "name": "莱比锡动物园",
         "intro": "欧洲著名动物园",
         "time": "半天",
-        "image": "assets/travel/attractions/de-09-3.jpg"
+        "image": "assets/images/travel/attractions/de-09-3.jpg"
       }
     ],
     "routes": [
@@ -10185,7 +10185,7 @@
       "de-edu-master",
       "de-pr-apply"
     ],
-    "image": "assets/travel/cities/de-09.jpg"
+    "image": "assets/images/travel/city/de-09.jpg"
   },
   {
     "id": "fr-01",
@@ -10217,19 +10217,19 @@
         "name": "埃菲尔铁塔",
         "intro": "巴黎地标与观景台",
         "time": "2 小时",
-        "image": "assets/travel/attractions/fr-01-1.jpg"
+        "image": "assets/images/travel/attractions/fr-01-1.jpg"
       },
       {
         "name": "卢浮宫",
         "intro": "世界最大艺术博物馆",
         "time": "3 小时",
-        "image": "assets/travel/attractions/fr-01-2.jpg"
+        "image": "assets/images/travel/attractions/fr-01-2.jpg"
       },
       {
         "name": "凯旋门",
         "intro": "香榭丽舍大道地标",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fr-01-3.jpg"
+        "image": "assets/images/travel/attractions/fr-01-3.jpg"
       }
     ],
     "routes": [
@@ -10323,7 +10323,7 @@
       "fr-edu-master",
       "fr-pr-apply"
     ],
-    "image": "assets/travel/cities/fr-01.jpg"
+    "image": "assets/images/travel/city/fr-01.jpg"
   },
   {
     "id": "fr-02",
@@ -10355,19 +10355,19 @@
         "name": "天使湾",
         "intro": "蔚蓝海岸海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/fr-02-1.jpg"
+        "image": "assets/images/travel/attractions/fr-02-1.jpg"
       },
       {
         "name": "英国人漫步大道",
         "intro": "海滨步道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fr-02-2.jpg"
+        "image": "assets/images/travel/attractions/fr-02-2.jpg"
       },
       {
         "name": "尼斯老城",
         "intro": "彩色老城与市集",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fr-02-3.jpg"
+        "image": "assets/images/travel/attractions/fr-02-3.jpg"
       }
     ],
     "routes": [
@@ -10462,7 +10462,7 @@
       "fr-edu-master",
       "fr-pr-apply"
     ],
-    "image": "assets/travel/cities/fr-02.jpg"
+    "image": "assets/images/travel/city/fr-02.jpg"
   },
   {
     "id": "fr-03",
@@ -10494,19 +10494,19 @@
         "name": "富维耶圣母堂",
         "intro": "山丘白色教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fr-03-1.jpg"
+        "image": "assets/images/travel/attractions/fr-03-1.jpg"
       },
       {
         "name": "里昂老城",
         "intro": "文艺复兴街区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fr-03-2.jpg"
+        "image": "assets/images/travel/attractions/fr-03-2.jpg"
       },
       {
         "name": "白莱果广场",
         "intro": "欧洲最大步行广场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fr-03-3.jpg"
+        "image": "assets/images/travel/attractions/fr-03-3.jpg"
       }
     ],
     "routes": [
@@ -10601,7 +10601,7 @@
       "fr-edu-master",
       "fr-pr-apply"
     ],
-    "image": "assets/travel/cities/fr-03.jpg"
+    "image": "assets/images/travel/city/fr-03.jpg"
   },
   {
     "id": "fr-04",
@@ -10633,19 +10633,19 @@
         "name": "波尔多交易所广场",
         "intro": "镜面广场地标",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fr-04-1.jpg"
+        "image": "assets/images/travel/attractions/fr-04-1.jpg"
       },
       {
         "name": "圣安德烈大教堂",
         "intro": "哥特式教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fr-04-2.jpg"
+        "image": "assets/images/travel/attractions/fr-04-2.jpg"
       },
       {
         "name": "波尔多葡萄酒城",
         "intro": "葡萄酒博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/fr-04-3.jpg"
+        "image": "assets/images/travel/attractions/fr-04-3.jpg"
       }
     ],
     "routes": [
@@ -10739,7 +10739,7 @@
       "fr-edu-master",
       "fr-pr-apply"
     ],
-    "image": "assets/travel/cities/fr-04.jpg"
+    "image": "assets/images/travel/city/fr-04.jpg"
   },
   {
     "id": "fr-05",
@@ -10771,19 +10771,19 @@
         "name": "旧港",
         "intro": "历史港口与鱼市",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fr-05-1.jpg"
+        "image": "assets/images/travel/attractions/fr-05-1.jpg"
       },
       {
         "name": "圣母加德大教堂",
         "intro": "山顶金圣母像",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fr-05-2.jpg"
+        "image": "assets/images/travel/attractions/fr-05-2.jpg"
       },
       {
         "name": "卡朗格峡湾",
         "intro": "海岸峡湾徒步",
         "time": "半天",
-        "image": "assets/travel/attractions/fr-05-3.jpg"
+        "image": "assets/images/travel/attractions/fr-05-3.jpg"
       }
     ],
     "routes": [
@@ -10877,7 +10877,7 @@
       "fr-edu-master",
       "fr-pr-apply"
     ],
-    "image": "assets/travel/cities/fr-05.jpg"
+    "image": "assets/images/travel/city/fr-05.jpg"
   },
   {
     "id": "fr-06",
@@ -10909,19 +10909,19 @@
         "name": "斯特拉斯堡大教堂",
         "intro": "粉砂岩哥特教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fr-06-1.jpg"
+        "image": "assets/images/travel/attractions/fr-06-1.jpg"
       },
       {
         "name": "小法兰西",
         "intro": "运河木筋屋街区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fr-06-2.jpg"
+        "image": "assets/images/travel/attractions/fr-06-2.jpg"
       },
       {
         "name": "欧洲议会",
         "intro": "现代议会建筑",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fr-06-3.jpg"
+        "image": "assets/images/travel/attractions/fr-06-3.jpg"
       }
     ],
     "routes": [
@@ -11015,7 +11015,7 @@
       "fr-edu-master",
       "fr-pr-apply"
     ],
-    "image": "assets/travel/cities/fr-06.jpg"
+    "image": "assets/images/travel/city/fr-06.jpg"
   },
   {
     "id": "fr-07",
@@ -11047,19 +11047,19 @@
         "name": "教皇宫",
         "intro": "中世纪教皇宫殿",
         "time": "2 小时",
-        "image": "assets/travel/attractions/fr-07-1.jpg"
+        "image": "assets/images/travel/attractions/fr-07-1.jpg"
       },
       {
         "name": "圣贝内泽桥",
         "intro": "断桥地标",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fr-07-2.jpg"
+        "image": "assets/images/travel/attractions/fr-07-2.jpg"
       },
       {
         "name": "阿维尼翁城墙",
         "intro": "环绕古城墙",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fr-07-3.jpg"
+        "image": "assets/images/travel/attractions/fr-07-3.jpg"
       }
     ],
     "routes": [
@@ -11153,7 +11153,7 @@
       "fr-edu-master",
       "fr-pr-apply"
     ],
-    "image": "assets/travel/cities/fr-07.jpg"
+    "image": "assets/images/travel/city/fr-07.jpg"
   },
   {
     "id": "fr-08",
@@ -11185,19 +11185,19 @@
         "name": "里尔老交易所",
         "intro": "佛兰德斯建筑广场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fr-08-1.jpg"
+        "image": "assets/images/travel/attractions/fr-08-1.jpg"
       },
       {
         "name": "里尔美术宫",
         "intro": "重要美术馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/fr-08-2.jpg"
+        "image": "assets/images/travel/attractions/fr-08-2.jpg"
       },
       {
         "name": "戴高乐将军广场",
         "intro": "城市中心广场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fr-08-3.jpg"
+        "image": "assets/images/travel/attractions/fr-08-3.jpg"
       }
     ],
     "routes": [
@@ -11292,7 +11292,7 @@
       "fr-edu-master",
       "fr-pr-apply"
     ],
-    "image": "assets/travel/cities/fr-08.jpg"
+    "image": "assets/images/travel/city/fr-08.jpg"
   },
   {
     "id": "it-01",
@@ -11324,19 +11324,19 @@
         "name": "罗马斗兽场",
         "intro": "古罗马圆形剧场",
         "time": "2 小时",
-        "image": "assets/travel/attractions/it-01-1.jpg"
+        "image": "assets/images/travel/attractions/it-01-1.jpg"
       },
       {
         "name": "万神殿",
         "intro": "古罗马神庙建筑",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/it-01-2.jpg"
+        "image": "assets/images/travel/attractions/it-01-2.jpg"
       },
       {
         "name": "特雷维喷泉",
         "intro": "许愿池",
         "time": "1 小时",
-        "image": "assets/travel/attractions/it-01-3.jpg"
+        "image": "assets/images/travel/attractions/it-01-3.jpg"
       }
     ],
     "routes": [
@@ -11431,7 +11431,7 @@
       "it-edu-master",
       "it-pr-apply"
     ],
-    "image": "assets/travel/cities/it-01.jpg"
+    "image": "assets/images/travel/city/it-01.jpg"
   },
   {
     "id": "it-02",
@@ -11463,19 +11463,19 @@
         "name": "圣母百花大教堂",
         "intro": "红砖穹顶地标",
         "time": "2 小时",
-        "image": "assets/travel/attractions/it-02-1.jpg"
+        "image": "assets/images/travel/attractions/it-02-1.jpg"
       },
       {
         "name": "乌菲兹美术馆",
         "intro": "文艺复兴名画",
         "time": "2 小时",
-        "image": "assets/travel/attractions/it-02-2.jpg"
+        "image": "assets/images/travel/attractions/it-02-2.jpg"
       },
       {
         "name": "老桥",
         "intro": "阿尔诺河古桥",
         "time": "1 小时",
-        "image": "assets/travel/attractions/it-02-3.jpg"
+        "image": "assets/images/travel/attractions/it-02-3.jpg"
       }
     ],
     "routes": [
@@ -11569,7 +11569,7 @@
       "it-edu-master",
       "it-pr-apply"
     ],
-    "image": "assets/travel/cities/it-02.jpg"
+    "image": "assets/images/travel/city/it-02.jpg"
   },
   {
     "id": "it-03",
@@ -11601,19 +11601,19 @@
         "name": "圣马可广场",
         "intro": "水城中心广场",
         "time": "2 小时",
-        "image": "assets/travel/attractions/it-03-1.jpg"
+        "image": "assets/images/travel/attractions/it-03-1.jpg"
       },
       {
         "name": "里亚托桥",
         "intro": "大运河古桥",
         "time": "1 小时",
-        "image": "assets/travel/attractions/it-03-2.jpg"
+        "image": "assets/images/travel/attractions/it-03-2.jpg"
       },
       {
         "name": "贡多拉游船",
         "intro": "运河小船体验",
         "time": "1 小时",
-        "image": "assets/travel/attractions/it-03-3.jpg"
+        "image": "assets/images/travel/attractions/it-03-3.jpg"
       }
     ],
     "routes": [
@@ -11707,7 +11707,7 @@
       "it-edu-master",
       "it-pr-apply"
     ],
-    "image": "assets/travel/cities/it-03.jpg"
+    "image": "assets/images/travel/city/it-03.jpg"
   },
   {
     "id": "it-04",
@@ -11739,19 +11739,19 @@
         "name": "米兰大教堂",
         "intro": "哥特式大理石教堂",
         "time": "2 小时",
-        "image": "assets/travel/attractions/it-04-1.jpg"
+        "image": "assets/images/travel/attractions/it-04-1.jpg"
       },
       {
         "name": "埃马努埃莱二世长廊",
         "intro": "拱廊购物街",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/it-04-2.jpg"
+        "image": "assets/images/travel/attractions/it-04-2.jpg"
       },
       {
         "name": "斯福尔扎城堡",
         "intro": "中世纪城堡",
         "time": "2 小时",
-        "image": "assets/travel/attractions/it-04-3.jpg"
+        "image": "assets/images/travel/attractions/it-04-3.jpg"
       }
     ],
     "routes": [
@@ -11845,7 +11845,7 @@
       "it-edu-master",
       "it-pr-apply"
     ],
-    "image": "assets/travel/cities/it-04.jpg"
+    "image": "assets/images/travel/city/it-04.jpg"
   },
   {
     "id": "it-05",
@@ -11877,19 +11877,19 @@
         "name": "庞贝古城",
         "intro": "火山掩埋古城（近郊）",
         "time": "半天",
-        "image": "assets/travel/attractions/it-05-1.jpg"
+        "image": "assets/images/travel/attractions/it-05-1.jpg"
       },
       {
         "name": "新堡",
         "intro": "海滨城堡",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/it-05-2.jpg"
+        "image": "assets/images/travel/attractions/it-05-2.jpg"
       },
       {
         "name": "那不勒斯皇宫",
         "intro": "王宫建筑",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/it-05-3.jpg"
+        "image": "assets/images/travel/attractions/it-05-3.jpg"
       }
     ],
     "routes": [
@@ -11984,7 +11984,7 @@
       "it-edu-master",
       "it-pr-apply"
     ],
-    "image": "assets/travel/cities/it-05.jpg"
+    "image": "assets/images/travel/city/it-05.jpg"
   },
   {
     "id": "it-06",
@@ -12016,19 +12016,19 @@
         "name": "朱丽叶故居",
         "intro": "阳台与爱情墙",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/it-06-1.jpg"
+        "image": "assets/images/travel/attractions/it-06-1.jpg"
       },
       {
         "name": "维罗纳竞技场",
         "intro": "古罗马圆形剧场",
         "time": "2 小时",
-        "image": "assets/travel/attractions/it-06-2.jpg"
+        "image": "assets/images/travel/attractions/it-06-2.jpg"
       },
       {
         "name": "老城堡",
         "intro": "斯卡拉家族城堡",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/it-06-3.jpg"
+        "image": "assets/images/travel/attractions/it-06-3.jpg"
       }
     ],
     "routes": [
@@ -12122,7 +12122,7 @@
       "it-edu-master",
       "it-pr-apply"
     ],
-    "image": "assets/travel/cities/it-06.jpg"
+    "image": "assets/images/travel/city/it-06.jpg"
   },
   {
     "id": "it-07",
@@ -12154,19 +12154,19 @@
         "name": "国家汽车博物馆",
         "intro": "汽车历史博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/it-07-1.jpg"
+        "image": "assets/images/travel/attractions/it-07-1.jpg"
       },
       {
         "name": "都灵王宫",
         "intro": "萨伏依王宫",
         "time": "2 小时",
-        "image": "assets/travel/attractions/it-07-2.jpg"
+        "image": "assets/images/travel/attractions/it-07-2.jpg"
       },
       {
         "name": "安托内利尖塔",
         "intro": "城市地标尖塔",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/it-07-3.jpg"
+        "image": "assets/images/travel/attractions/it-07-3.jpg"
       }
     ],
     "routes": [
@@ -12260,7 +12260,7 @@
       "it-edu-master",
       "it-pr-apply"
     ],
-    "image": "assets/travel/cities/it-07.jpg"
+    "image": "assets/images/travel/city/it-07.jpg"
   },
   {
     "id": "it-08",
@@ -12292,19 +12292,19 @@
         "name": "双塔",
         "intro": "倾斜中世纪塔楼",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/it-08-1.jpg"
+        "image": "assets/images/travel/attractions/it-08-1.jpg"
       },
       {
         "name": "马焦雷广场",
         "intro": "城市中心广场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/it-08-2.jpg"
+        "image": "assets/images/travel/attractions/it-08-2.jpg"
       },
       {
         "name": "圣白托略大殿",
         "intro": "大型哥特教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/it-08-3.jpg"
+        "image": "assets/images/travel/attractions/it-08-3.jpg"
       }
     ],
     "routes": [
@@ -12399,7 +12399,7 @@
       "it-edu-master",
       "it-pr-apply"
     ],
-    "image": "assets/travel/cities/it-08.jpg"
+    "image": "assets/images/travel/city/it-08.jpg"
   },
   {
     "id": "it-09",
@@ -12431,19 +12431,19 @@
         "name": "斯科洛文尼礼拜堂",
         "intro": "乔托壁画杰作",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/it-09-1.jpg"
+        "image": "assets/images/travel/attractions/it-09-1.jpg"
       },
       {
         "name": "帕多瓦植物园",
         "intro": "世界最古老植物园",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/it-09-2.jpg"
+        "image": "assets/images/travel/attractions/it-09-2.jpg"
       },
       {
         "name": "圣安东尼大教堂",
         "intro": "朝圣大教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/it-09-3.jpg"
+        "image": "assets/images/travel/attractions/it-09-3.jpg"
       }
     ],
     "routes": [
@@ -12538,7 +12538,7 @@
       "it-edu-master",
       "it-pr-apply"
     ],
-    "image": "assets/travel/cities/it-09.jpg"
+    "image": "assets/images/travel/city/it-09.jpg"
   },
   {
     "id": "es-01",
@@ -12570,19 +12570,19 @@
         "name": "圣家堂",
         "intro": "高迪未完成杰作",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-01-1.jpg"
+        "image": "assets/images/travel/attractions/es-01-1.jpg"
       },
       {
         "name": "古埃尔公园",
         "intro": "高迪马赛克公园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-01-2.jpg"
+        "image": "assets/images/travel/attractions/es-01-2.jpg"
       },
       {
         "name": "兰布拉大道",
         "intro": "城市步行大道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/es-01-3.jpg"
+        "image": "assets/images/travel/attractions/es-01-3.jpg"
       }
     ],
     "routes": [
@@ -12677,7 +12677,7 @@
       "es-edu-master",
       "es-pr-apply"
     ],
-    "image": "assets/travel/cities/es-01.jpg"
+    "image": "assets/images/travel/city/es-01.jpg"
   },
   {
     "id": "es-02",
@@ -12709,19 +12709,19 @@
         "name": "普拉多博物馆",
         "intro": "西班牙艺术殿堂",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-02-1.jpg"
+        "image": "assets/images/travel/attractions/es-02-1.jpg"
       },
       {
         "name": "马德里王宫",
         "intro": "王室宫殿",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-02-2.jpg"
+        "image": "assets/images/travel/attractions/es-02-2.jpg"
       },
       {
         "name": "太阳门广场",
         "intro": "城市中心广场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/es-02-3.jpg"
+        "image": "assets/images/travel/attractions/es-02-3.jpg"
       }
     ],
     "routes": [
@@ -12815,7 +12815,7 @@
       "es-edu-master",
       "es-pr-apply"
     ],
-    "image": "assets/travel/cities/es-02.jpg"
+    "image": "assets/images/travel/city/es-02.jpg"
   },
   {
     "id": "es-03",
@@ -12847,19 +12847,19 @@
         "name": "塞维利亚王宫",
         "intro": "摩尔式宫殿",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-03-1.jpg"
+        "image": "assets/images/travel/attractions/es-03-1.jpg"
       },
       {
         "name": "塞维利亚大教堂",
         "intro": "世界最大哥特教堂之一",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-03-2.jpg"
+        "image": "assets/images/travel/attractions/es-03-2.jpg"
       },
       {
         "name": "西班牙广场",
         "intro": "半圆形广场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/es-03-3.jpg"
+        "image": "assets/images/travel/attractions/es-03-3.jpg"
       }
     ],
     "routes": [
@@ -12953,7 +12953,7 @@
       "es-edu-master",
       "es-pr-apply"
     ],
-    "image": "assets/travel/cities/es-03.jpg"
+    "image": "assets/images/travel/city/es-03.jpg"
   },
   {
     "id": "es-04",
@@ -12985,19 +12985,19 @@
         "name": "科学与艺术城",
         "intro": "未来主义建筑群",
         "time": "半天",
-        "image": "assets/travel/attractions/es-04-1.jpg"
+        "image": "assets/images/travel/attractions/es-04-1.jpg"
       },
       {
         "name": "瓦伦西亚大教堂",
         "intro": "老城哥特教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/es-04-2.jpg"
+        "image": "assets/images/travel/attractions/es-04-2.jpg"
       },
       {
         "name": "马尔瓦罗萨海滩",
         "intro": "城市海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-04-3.jpg"
+        "image": "assets/images/travel/attractions/es-04-3.jpg"
       }
     ],
     "routes": [
@@ -13091,7 +13091,7 @@
       "es-edu-master",
       "es-pr-apply"
     ],
-    "image": "assets/travel/cities/es-04.jpg"
+    "image": "assets/images/travel/city/es-04.jpg"
   },
   {
     "id": "es-05",
@@ -13123,19 +13123,19 @@
         "name": "阿尔罕布拉宫",
         "intro": "摩尔宫殿与花园",
         "time": "3 小时",
-        "image": "assets/travel/attractions/es-05-1.jpg"
+        "image": "assets/images/travel/attractions/es-05-1.jpg"
       },
       {
         "name": "阿尔拜辛区",
         "intro": "老城街区与观景台",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-05-2.jpg"
+        "image": "assets/images/travel/attractions/es-05-2.jpg"
       },
       {
         "name": "格拉纳达大教堂",
         "intro": "文艺复兴教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/es-05-3.jpg"
+        "image": "assets/images/travel/attractions/es-05-3.jpg"
       }
     ],
     "routes": [
@@ -13229,7 +13229,7 @@
       "es-edu-master",
       "es-pr-apply"
     ],
-    "image": "assets/travel/cities/es-05.jpg"
+    "image": "assets/images/travel/city/es-05.jpg"
   },
   {
     "id": "es-06",
@@ -13261,19 +13261,19 @@
         "name": "古根海姆博物馆",
         "intro": "钛金属曲面建筑",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-06-1.jpg"
+        "image": "assets/images/travel/attractions/es-06-1.jpg"
       },
       {
         "name": "老城区",
         "intro": "七条街老城",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/es-06-2.jpg"
+        "image": "assets/images/travel/attractions/es-06-2.jpg"
       },
       {
         "name": "苏里奥拉桥",
         "intro": "白色步行桥",
         "time": "1 小时",
-        "image": "assets/travel/attractions/es-06-3.jpg"
+        "image": "assets/images/travel/attractions/es-06-3.jpg"
       }
     ],
     "routes": [
@@ -13367,7 +13367,7 @@
       "es-edu-master",
       "es-pr-apply"
     ],
-    "image": "assets/travel/cities/es-06.jpg"
+    "image": "assets/images/travel/city/es-06.jpg"
   },
   {
     "id": "es-07",
@@ -13399,19 +13399,19 @@
         "name": "马拉加城堡",
         "intro": "摩尔城堡与花园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-07-1.jpg"
+        "image": "assets/images/travel/attractions/es-07-1.jpg"
       },
       {
         "name": "毕加索博物馆",
         "intro": "画家故乡博物馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/es-07-2.jpg"
+        "image": "assets/images/travel/attractions/es-07-2.jpg"
       },
       {
         "name": "马拉加海滩",
         "intro": "城市海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-07-3.jpg"
+        "image": "assets/images/travel/attractions/es-07-3.jpg"
       }
     ],
     "routes": [
@@ -13506,7 +13506,7 @@
       "es-edu-master",
       "es-pr-apply"
     ],
-    "image": "assets/travel/cities/es-07.jpg"
+    "image": "assets/images/travel/city/es-07.jpg"
   },
   {
     "id": "es-08",
@@ -13538,19 +13538,19 @@
         "name": "圣地亚哥大教堂",
         "intro": "朝圣终点大教堂",
         "time": "2 小时",
-        "image": "assets/travel/attractions/es-08-1.jpg"
+        "image": "assets/images/travel/attractions/es-08-1.jpg"
       },
       {
         "name": "老城区",
         "intro": "石砌老街",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/es-08-2.jpg"
+        "image": "assets/images/travel/attractions/es-08-2.jpg"
       },
       {
         "name": "加利西亚博物馆",
         "intro": "朝圣主题博物馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/es-08-3.jpg"
+        "image": "assets/images/travel/attractions/es-08-3.jpg"
       }
     ],
     "routes": [
@@ -13645,7 +13645,7 @@
       "es-edu-master",
       "es-pr-apply"
     ],
-    "image": "assets/travel/cities/es-08.jpg"
+    "image": "assets/images/travel/city/es-08.jpg"
   },
   {
     "id": "pt-01",
@@ -13677,19 +13677,19 @@
         "name": "贝伦塔",
         "intro": "大航海时代地标",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pt-01-1.jpg"
+        "image": "assets/images/travel/attractions/pt-01-1.jpg"
       },
       {
         "name": "热罗尼莫斯修道院",
         "intro": "曼努埃尔式建筑",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pt-01-2.jpg"
+        "image": "assets/images/travel/attractions/pt-01-2.jpg"
       },
       {
         "name": "圣胡斯塔升降机",
         "intro": "老城观景升降机",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pt-01-3.jpg"
+        "image": "assets/images/travel/attractions/pt-01-3.jpg"
       }
     ],
     "routes": [
@@ -13783,7 +13783,7 @@
       "pt-edu-master",
       "pt-pr-apply"
     ],
-    "image": "assets/travel/cities/pt-01.jpg"
+    "image": "assets/images/travel/city/pt-01.jpg"
   },
   {
     "id": "pt-02",
@@ -13815,19 +13815,19 @@
         "name": "路易一世大桥",
         "intro": "双层铁桥与河景",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pt-02-1.jpg"
+        "image": "assets/images/travel/attractions/pt-02-1.jpg"
       },
       {
         "name": "克莱里戈斯塔",
         "intro": "城市地标塔",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pt-02-2.jpg"
+        "image": "assets/images/travel/attractions/pt-02-2.jpg"
       },
       {
         "name": "圣本图火车站",
         "intro": "蓝白瓷砖车站",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pt-02-3.jpg"
+        "image": "assets/images/travel/attractions/pt-02-3.jpg"
       }
     ],
     "routes": [
@@ -13921,7 +13921,7 @@
       "pt-edu-master",
       "pt-pr-apply"
     ],
-    "image": "assets/travel/cities/pt-02.jpg"
+    "image": "assets/images/travel/city/pt-02.jpg"
   },
   {
     "id": "pt-03",
@@ -13953,19 +13953,19 @@
         "name": "佩纳宫",
         "intro": "彩色童话宫殿",
         "time": "2 小时",
-        "image": "assets/travel/attractions/pt-03-1.jpg"
+        "image": "assets/images/travel/attractions/pt-03-1.jpg"
       },
       {
         "name": "摩尔人城堡",
         "intro": "山脊古城墙",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pt-03-2.jpg"
+        "image": "assets/images/travel/attractions/pt-03-2.jpg"
       },
       {
         "name": "雷加莱拉庄园",
         "intro": "神秘庄园与深井",
         "time": "2 小时",
-        "image": "assets/travel/attractions/pt-03-3.jpg"
+        "image": "assets/images/travel/attractions/pt-03-3.jpg"
       }
     ],
     "routes": [
@@ -14059,7 +14059,7 @@
       "pt-edu-master",
       "pt-pr-apply"
     ],
-    "image": "assets/travel/cities/pt-03.jpg"
+    "image": "assets/images/travel/city/pt-03.jpg"
   },
   {
     "id": "pt-04",
@@ -14091,19 +14091,19 @@
         "name": "法鲁老城",
         "intro": "城墙环绕老城",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pt-04-1.jpg"
+        "image": "assets/images/travel/attractions/pt-04-1.jpg"
       },
       {
         "name": "法鲁大教堂",
         "intro": "老城大教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pt-04-2.jpg"
+        "image": "assets/images/travel/attractions/pt-04-2.jpg"
       },
       {
         "name": "荒岛海滩",
         "intro": "近海沙洲海滩",
         "time": "半天",
-        "image": "assets/travel/attractions/pt-04-3.jpg"
+        "image": "assets/images/travel/attractions/pt-04-3.jpg"
       }
     ],
     "routes": [
@@ -14197,7 +14197,7 @@
       "pt-edu-master",
       "pt-pr-apply"
     ],
-    "image": "assets/travel/cities/pt-04.jpg"
+    "image": "assets/images/travel/city/pt-04.jpg"
   },
   {
     "id": "pt-05",
@@ -14229,19 +14229,19 @@
         "name": "科英布拉大学",
         "intro": "世界遗产大学",
         "time": "2 小时",
-        "image": "assets/travel/attractions/pt-05-1.jpg"
+        "image": "assets/images/travel/attractions/pt-05-1.jpg"
       },
       {
         "name": "若昂尼娜图书馆",
         "intro": "巴洛克图书馆",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pt-05-2.jpg"
+        "image": "assets/images/travel/attractions/pt-05-2.jpg"
       },
       {
         "name": "老教堂",
         "intro": "罗马式教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pt-05-3.jpg"
+        "image": "assets/images/travel/attractions/pt-05-3.jpg"
       }
     ],
     "routes": [
@@ -14337,7 +14337,7 @@
       "pt-edu-master",
       "pt-pr-apply"
     ],
-    "image": "assets/travel/cities/pt-05.jpg"
+    "image": "assets/images/travel/city/pt-05.jpg"
   },
   {
     "id": "pt-06",
@@ -14369,19 +14369,19 @@
         "name": "戴安娜神庙",
         "intro": "古罗马神殿遗迹",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pt-06-1.jpg"
+        "image": "assets/images/travel/attractions/pt-06-1.jpg"
       },
       {
         "name": "埃武拉大教堂",
         "intro": "哥特式教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pt-06-2.jpg"
+        "image": "assets/images/travel/attractions/pt-06-2.jpg"
       },
       {
         "name": "人骨教堂",
         "intro": "人骨装饰礼拜堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pt-06-3.jpg"
+        "image": "assets/images/travel/attractions/pt-06-3.jpg"
       }
     ],
     "routes": [
@@ -14475,7 +14475,7 @@
       "pt-edu-master",
       "pt-pr-apply"
     ],
-    "image": "assets/travel/cities/pt-06.jpg"
+    "image": "assets/images/travel/city/pt-06.jpg"
   },
   {
     "id": "ch-01",
@@ -14507,19 +14507,19 @@
         "name": "班霍夫大街",
         "intro": "购物大道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ch-01-1.jpg"
+        "image": "assets/images/travel/attractions/ch-01-1.jpg"
       },
       {
         "name": "苏黎世大教堂",
         "intro": "双塔教堂与老城",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ch-01-2.jpg"
+        "image": "assets/images/travel/attractions/ch-01-2.jpg"
       },
       {
         "name": "苏黎世湖",
         "intro": "湖畔游船",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ch-01-3.jpg"
+        "image": "assets/images/travel/attractions/ch-01-3.jpg"
       }
     ],
     "routes": [
@@ -14613,7 +14613,7 @@
       "ch-edu-master",
       "ch-pr-apply"
     ],
-    "image": "assets/travel/cities/ch-01.jpg"
+    "image": "assets/images/travel/city/ch-01.jpg"
   },
   {
     "id": "ch-02",
@@ -14645,19 +14645,19 @@
         "name": "大喷泉",
         "intro": "日内瓦湖地标喷泉",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ch-02-1.jpg"
+        "image": "assets/images/travel/attractions/ch-02-1.jpg"
       },
       {
         "name": "花钟",
         "intro": "植物钟",
         "time": "0.5 小时",
-        "image": "assets/travel/attractions/ch-02-2.jpg"
+        "image": "assets/images/travel/attractions/ch-02-2.jpg"
       },
       {
         "name": "联合国万国宫",
         "intro": "联合国欧洲总部",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ch-02-3.jpg"
+        "image": "assets/images/travel/attractions/ch-02-3.jpg"
       }
     ],
     "routes": [
@@ -14751,7 +14751,7 @@
       "ch-edu-master",
       "ch-pr-apply"
     ],
-    "image": "assets/travel/cities/ch-02.jpg"
+    "image": "assets/images/travel/city/ch-02.jpg"
   },
   {
     "id": "ch-03",
@@ -14783,19 +14783,19 @@
         "name": "卡佩尔桥",
         "intro": "木桥与八角水塔",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ch-03-1.jpg"
+        "image": "assets/images/travel/attractions/ch-03-1.jpg"
       },
       {
         "name": "琉森湖游船",
         "intro": "湖区游船",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ch-03-2.jpg"
+        "image": "assets/images/travel/attractions/ch-03-2.jpg"
       },
       {
         "name": "垂死狮子像",
         "intro": "狮子纪念碑",
         "time": "0.5 小时",
-        "image": "assets/travel/attractions/ch-03-3.jpg"
+        "image": "assets/images/travel/attractions/ch-03-3.jpg"
       }
     ],
     "routes": [
@@ -14889,7 +14889,7 @@
       "ch-edu-master",
       "ch-pr-apply"
     ],
-    "image": "assets/travel/cities/ch-03.jpg"
+    "image": "assets/images/travel/city/ch-03.jpg"
   },
   {
     "id": "ch-04",
@@ -14921,19 +14921,19 @@
         "name": "少女峰",
         "intro": "欧洲之巅观景台",
         "time": "1 天",
-        "image": "assets/travel/attractions/ch-04-1.jpg"
+        "image": "assets/images/travel/attractions/ch-04-1.jpg"
       },
       {
         "name": "哈德库尔姆观景台",
         "intro": "两湖观景台",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ch-04-2.jpg"
+        "image": "assets/images/travel/attractions/ch-04-2.jpg"
       },
       {
         "name": "布里恩茨湖",
         "intro": "绿松石湖泊",
         "time": "半天",
-        "image": "assets/travel/attractions/ch-04-3.jpg"
+        "image": "assets/images/travel/attractions/ch-04-3.jpg"
       }
     ],
     "routes": [
@@ -15027,7 +15027,7 @@
       "ch-edu-master",
       "ch-pr-apply"
     ],
-    "image": "assets/travel/cities/ch-04.jpg"
+    "image": "assets/images/travel/city/ch-04.jpg"
   },
   {
     "id": "ch-05",
@@ -15059,19 +15059,19 @@
         "name": "钟楼",
         "intro": "中世纪天文钟塔",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ch-05-1.jpg"
+        "image": "assets/images/travel/attractions/ch-05-1.jpg"
       },
       {
         "name": "联邦国会大厦",
         "intro": "瑞士议会建筑",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ch-05-2.jpg"
+        "image": "assets/images/travel/attractions/ch-05-2.jpg"
       },
       {
         "name": "伯尔尼熊苑",
         "intro": "城市熊苑",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ch-05-3.jpg"
+        "image": "assets/images/travel/attractions/ch-05-3.jpg"
       }
     ],
     "routes": [
@@ -15165,7 +15165,7 @@
       "ch-edu-master",
       "ch-pr-apply"
     ],
-    "image": "assets/travel/cities/ch-05.jpg"
+    "image": "assets/images/travel/city/ch-05.jpg"
   },
   {
     "id": "ch-06",
@@ -15197,19 +15197,19 @@
         "name": "马特洪峰",
         "intro": "标志性尖峰",
         "time": "1 天",
-        "image": "assets/travel/attractions/ch-06-1.jpg"
+        "image": "assets/images/travel/attractions/ch-06-1.jpg"
       },
       {
         "name": "戈尔内格拉特",
         "intro": "观景台与徒步",
         "time": "半天",
-        "image": "assets/travel/attractions/ch-06-2.jpg"
+        "image": "assets/images/travel/attractions/ch-06-2.jpg"
       },
       {
         "name": "采尔马特小镇",
         "intro": "无车高山小镇",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ch-06-3.jpg"
+        "image": "assets/images/travel/attractions/ch-06-3.jpg"
       }
     ],
     "routes": [
@@ -15304,7 +15304,7 @@
       "ch-edu-master",
       "ch-pr-apply"
     ],
-    "image": "assets/travel/cities/ch-06.jpg"
+    "image": "assets/images/travel/city/ch-06.jpg"
   },
   {
     "id": "ch-07",
@@ -15336,19 +15336,19 @@
         "name": "奥林匹克博物馆",
         "intro": "奥运主题博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ch-07-1.jpg"
+        "image": "assets/images/travel/attractions/ch-07-1.jpg"
       },
       {
         "name": "洛桑大教堂",
         "intro": "哥特式大教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ch-07-2.jpg"
+        "image": "assets/images/travel/attractions/ch-07-2.jpg"
       },
       {
         "name": "乌希码头",
         "intro": "湖畔码头",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ch-07-3.jpg"
+        "image": "assets/images/travel/attractions/ch-07-3.jpg"
       }
     ],
     "routes": [
@@ -15442,7 +15442,7 @@
       "ch-edu-master",
       "ch-pr-apply"
     ],
-    "image": "assets/travel/cities/ch-07.jpg"
+    "image": "assets/images/travel/city/ch-07.jpg"
   },
   {
     "id": "nl-01",
@@ -15474,19 +15474,19 @@
         "name": "运河带",
         "intro": "环状运河与船屋",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nl-01-1.jpg"
+        "image": "assets/images/travel/attractions/nl-01-1.jpg"
       },
       {
         "name": "梵高博物馆",
         "intro": "梵高作品收藏",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nl-01-2.jpg"
+        "image": "assets/images/travel/attractions/nl-01-2.jpg"
       },
       {
         "name": "安妮之家",
         "intro": "二战历史纪念馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-01-3.jpg"
+        "image": "assets/images/travel/attractions/nl-01-3.jpg"
       }
     ],
     "routes": [
@@ -15580,7 +15580,7 @@
       "nl-edu-master",
       "nl-pr-apply"
     ],
-    "image": "assets/travel/cities/nl-01.jpg"
+    "image": "assets/images/travel/city/nl-01.jpg"
   },
   {
     "id": "nl-02",
@@ -15612,19 +15612,19 @@
         "name": "方块屋",
         "intro": "倾斜立方体建筑",
         "time": "1 小时",
-        "image": "assets/travel/attractions/nl-02-1.jpg"
+        "image": "assets/images/travel/attractions/nl-02-1.jpg"
       },
       {
         "name": "市场大厅",
         "intro": "拱形美食市场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-02-2.jpg"
+        "image": "assets/images/travel/attractions/nl-02-2.jpg"
       },
       {
         "name": "欧洲桅杆",
         "intro": "城市观景塔",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-02-3.jpg"
+        "image": "assets/images/travel/attractions/nl-02-3.jpg"
       }
     ],
     "routes": [
@@ -15718,7 +15718,7 @@
       "nl-edu-master",
       "nl-pr-apply"
     ],
-    "image": "assets/travel/cities/nl-02.jpg"
+    "image": "assets/images/travel/city/nl-02.jpg"
   },
   {
     "id": "nl-03",
@@ -15750,19 +15750,19 @@
         "name": "和平宫",
         "intro": "国际法院所在地",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-03-1.jpg"
+        "image": "assets/images/travel/attractions/nl-03-1.jpg"
       },
       {
         "name": "莫瑞泰斯美术馆",
         "intro": "戴珍珠耳环少女藏馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nl-03-2.jpg"
+        "image": "assets/images/travel/attractions/nl-03-2.jpg"
       },
       {
         "name": "席凡宁根海滩",
         "intro": "北海海滨度假区",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nl-03-3.jpg"
+        "image": "assets/images/travel/attractions/nl-03-3.jpg"
       }
     ],
     "routes": [
@@ -15856,7 +15856,7 @@
       "nl-edu-master",
       "nl-pr-apply"
     ],
-    "image": "assets/travel/cities/nl-03.jpg"
+    "image": "assets/images/travel/city/nl-03.jpg"
   },
   {
     "id": "nl-04",
@@ -15888,19 +15888,19 @@
         "name": "主教塔",
         "intro": "荷兰最高教堂塔",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-04-1.jpg"
+        "image": "assets/images/travel/attractions/nl-04-1.jpg"
       },
       {
         "name": "运河码头",
         "intro": "双层运河码头街",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-04-2.jpg"
+        "image": "assets/images/travel/attractions/nl-04-2.jpg"
       },
       {
         "name": "米菲博物馆",
         "intro": "米菲兔主题博物馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-04-3.jpg"
+        "image": "assets/images/travel/attractions/nl-04-3.jpg"
       }
     ],
     "routes": [
@@ -15994,7 +15994,7 @@
       "nl-edu-master",
       "nl-pr-apply"
     ],
-    "image": "assets/travel/cities/nl-04.jpg"
+    "image": "assets/images/travel/city/nl-04.jpg"
   },
   {
     "id": "nl-05",
@@ -16026,19 +16026,19 @@
         "name": "代尔夫特新教堂",
         "intro": "皇家教堂与塔楼",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-05-1.jpg"
+        "image": "assets/images/travel/attractions/nl-05-1.jpg"
       },
       {
         "name": "皇家代尔夫特蓝陶工厂",
         "intro": "蓝陶工坊参观",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-05-2.jpg"
+        "image": "assets/images/travel/attractions/nl-05-2.jpg"
       },
       {
         "name": "运河街区",
         "intro": "运河与老城漫步",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-05-3.jpg"
+        "image": "assets/images/travel/attractions/nl-05-3.jpg"
       }
     ],
     "routes": [
@@ -16132,7 +16132,7 @@
       "nl-edu-master",
       "nl-pr-apply"
     ],
-    "image": "assets/travel/cities/nl-05.jpg"
+    "image": "assets/images/travel/city/nl-05.jpg"
   },
   {
     "id": "nl-06",
@@ -16164,19 +16164,19 @@
         "name": "飞利浦博物馆",
         "intro": "电子工业历史",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-06-1.jpg"
+        "image": "assets/images/travel/attractions/nl-06-1.jpg"
       },
       {
         "name": "斯特莱普S",
         "intro": "创意园区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nl-06-2.jpg"
+        "image": "assets/images/travel/attractions/nl-06-2.jpg"
       },
       {
         "name": "埃因霍温灯塔",
         "intro": "城市地标灯塔",
         "time": "1 小时",
-        "image": "assets/travel/attractions/nl-06-3.jpg"
+        "image": "assets/images/travel/attractions/nl-06-3.jpg"
       }
     ],
     "routes": [
@@ -16270,7 +16270,7 @@
       "nl-edu-master",
       "nl-pr-apply"
     ],
-    "image": "assets/travel/cities/nl-06.jpg"
+    "image": "assets/images/travel/city/nl-06.jpg"
   },
   {
     "id": "se-01",
@@ -16302,19 +16302,19 @@
         "name": "老城",
         "intro": "中世纪老城与王宫",
         "time": "2 小时",
-        "image": "assets/travel/attractions/se-01-1.jpg"
+        "image": "assets/images/travel/attractions/se-01-1.jpg"
       },
       {
         "name": "瓦萨博物馆",
         "intro": "17 世纪战舰",
         "time": "2 小时",
-        "image": "assets/travel/attractions/se-01-2.jpg"
+        "image": "assets/images/travel/attractions/se-01-2.jpg"
       },
       {
         "name": "斯德哥尔摩市政厅",
         "intro": "诺贝尔晚宴场地",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/se-01-3.jpg"
+        "image": "assets/images/travel/attractions/se-01-3.jpg"
       }
     ],
     "routes": [
@@ -16408,7 +16408,7 @@
       "se-edu-master",
       "se-pr-apply"
     ],
-    "image": "assets/travel/cities/se-01.jpg"
+    "image": "assets/images/travel/city/se-01.jpg"
   },
   {
     "id": "se-02",
@@ -16440,19 +16440,19 @@
         "name": "里瑟本游乐园",
         "intro": "北欧大型游乐园",
         "time": "半天",
-        "image": "assets/travel/attractions/se-02-1.jpg"
+        "image": "assets/images/travel/attractions/se-02-1.jpg"
       },
       {
         "name": "鱼教堂市场",
         "intro": "海鲜市场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/se-02-2.jpg"
+        "image": "assets/images/travel/attractions/se-02-2.jpg"
       },
       {
         "name": "哥德堡艺术博物馆",
         "intro": "北欧艺术收藏",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/se-02-3.jpg"
+        "image": "assets/images/travel/attractions/se-02-3.jpg"
       }
     ],
     "routes": [
@@ -16546,7 +16546,7 @@
       "se-edu-master",
       "se-pr-apply"
     ],
-    "image": "assets/travel/cities/se-02.jpg"
+    "image": "assets/images/travel/city/se-02.jpg"
   },
   {
     "id": "se-03",
@@ -16578,19 +16578,19 @@
         "name": "旋转大厦",
         "intro": "扭曲摩天楼",
         "time": "1 小时",
-        "image": "assets/travel/attractions/se-03-1.jpg"
+        "image": "assets/images/travel/attractions/se-03-1.jpg"
       },
       {
         "name": "厄勒海峡大桥",
         "intro": "跨海大桥",
         "time": "1 小时",
-        "image": "assets/travel/attractions/se-03-2.jpg"
+        "image": "assets/images/travel/attractions/se-03-2.jpg"
       },
       {
         "name": "老城广场",
         "intro": "城市中心广场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/se-03-3.jpg"
+        "image": "assets/images/travel/attractions/se-03-3.jpg"
       }
     ],
     "routes": [
@@ -16684,7 +16684,7 @@
       "se-edu-master",
       "se-pr-apply"
     ],
-    "image": "assets/travel/cities/se-03.jpg"
+    "image": "assets/images/travel/city/se-03.jpg"
   },
   {
     "id": "se-04",
@@ -16716,19 +16716,19 @@
         "name": "乌普萨拉大教堂",
         "intro": "北欧最大教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/se-04-1.jpg"
+        "image": "assets/images/travel/attractions/se-04-1.jpg"
       },
       {
         "name": "乌普萨拉大学",
         "intro": "北欧最古老大学",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/se-04-2.jpg"
+        "image": "assets/images/travel/attractions/se-04-2.jpg"
       },
       {
         "name": "古斯塔维纳姆博物馆",
         "intro": "大学博物馆",
         "time": "1 小时",
-        "image": "assets/travel/attractions/se-04-3.jpg"
+        "image": "assets/images/travel/attractions/se-04-3.jpg"
       }
     ],
     "routes": [
@@ -16824,7 +16824,7 @@
       "se-edu-master",
       "se-pr-apply"
     ],
-    "image": "assets/travel/cities/se-04.jpg"
+    "image": "assets/images/travel/city/se-04.jpg"
   },
   {
     "id": "se-05",
@@ -16856,19 +16856,19 @@
         "name": "维斯比古城墙",
         "intro": "中世纪城墙",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/se-05-1.jpg"
+        "image": "assets/images/travel/attractions/se-05-1.jpg"
       },
       {
         "name": "维斯比大教堂",
         "intro": "哥特式教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/se-05-2.jpg"
+        "image": "assets/images/travel/attractions/se-05-2.jpg"
       },
       {
         "name": "哥特兰博物馆",
         "intro": "维京与中世纪文物",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/se-05-3.jpg"
+        "image": "assets/images/travel/attractions/se-05-3.jpg"
       }
     ],
     "routes": [
@@ -16963,7 +16963,7 @@
       "se-edu-master",
       "se-pr-apply"
     ],
-    "image": "assets/travel/cities/se-05.jpg"
+    "image": "assets/images/travel/city/se-05.jpg"
   },
   {
     "id": "se-06",
@@ -16995,19 +16995,19 @@
         "name": "瑞典空军博物馆",
         "intro": "航空主题博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/se-06-1.jpg"
+        "image": "assets/images/travel/attractions/se-06-1.jpg"
       },
       {
         "name": "老城区",
         "intro": "露天老城街区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/se-06-2.jpg"
+        "image": "assets/images/travel/attractions/se-06-2.jpg"
       },
       {
         "name": "大教堂",
         "intro": "哥特式教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/se-06-3.jpg"
+        "image": "assets/images/travel/attractions/se-06-3.jpg"
       }
     ],
     "routes": [
@@ -17101,7 +17101,7 @@
       "se-edu-master",
       "se-pr-apply"
     ],
-    "image": "assets/travel/cities/se-06.jpg"
+    "image": "assets/images/travel/city/se-06.jpg"
   },
   {
     "id": "no-01",
@@ -17133,19 +17133,19 @@
         "name": "奥斯陆歌剧院",
         "intro": "海滨白色建筑",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/no-01-1.jpg"
+        "image": "assets/images/travel/attractions/no-01-1.jpg"
       },
       {
         "name": "维格兰雕塑公园",
         "intro": "人生主题雕塑",
         "time": "2 小时",
-        "image": "assets/travel/attractions/no-01-2.jpg"
+        "image": "assets/images/travel/attractions/no-01-2.jpg"
       },
       {
         "name": "阿克斯胡斯城堡",
         "intro": "海滨古堡",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/no-01-3.jpg"
+        "image": "assets/images/travel/attractions/no-01-3.jpg"
       }
     ],
     "routes": [
@@ -17239,7 +17239,7 @@
       "no-edu-master",
       "no-pr-apply"
     ],
-    "image": "assets/travel/cities/no-01.jpg"
+    "image": "assets/images/travel/city/no-01.jpg"
   },
   {
     "id": "no-02",
@@ -17271,19 +17271,19 @@
         "name": "布吕根",
         "intro": "彩色木屋世界遗产",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/no-02-1.jpg"
+        "image": "assets/images/travel/attractions/no-02-1.jpg"
       },
       {
         "name": "弗洛伊恩山",
         "intro": "缆车观景",
         "time": "2 小时",
-        "image": "assets/travel/attractions/no-02-2.jpg"
+        "image": "assets/images/travel/attractions/no-02-2.jpg"
       },
       {
         "name": "卑尔根鱼市",
         "intro": "港口海鲜市场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/no-02-3.jpg"
+        "image": "assets/images/travel/attractions/no-02-3.jpg"
       }
     ],
     "routes": [
@@ -17377,7 +17377,7 @@
       "no-edu-master",
       "no-pr-apply"
     ],
-    "image": "assets/travel/cities/no-02.jpg"
+    "image": "assets/images/travel/city/no-02.jpg"
   },
   {
     "id": "no-03",
@@ -17409,19 +17409,19 @@
         "name": "北极大教堂",
         "intro": "三角形现代教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/no-03-1.jpg"
+        "image": "assets/images/travel/attractions/no-03-1.jpg"
       },
       {
         "name": "斯托尔斯蒂恩山缆车",
         "intro": "城市观景缆车",
         "time": "2 小时",
-        "image": "assets/travel/attractions/no-03-2.jpg"
+        "image": "assets/images/travel/attractions/no-03-2.jpg"
       },
       {
         "name": "极光观测",
         "intro": "冬季极光之旅",
         "time": "半天",
-        "image": "assets/travel/attractions/no-03-3.jpg"
+        "image": "assets/images/travel/attractions/no-03-3.jpg"
       }
     ],
     "routes": [
@@ -17515,7 +17515,7 @@
       "no-edu-master",
       "no-pr-apply"
     ],
-    "image": "assets/travel/cities/no-03.jpg"
+    "image": "assets/images/travel/city/no-03.jpg"
   },
   {
     "id": "no-04",
@@ -17547,19 +17547,19 @@
         "name": "布道石",
         "intro": "吕瑟峡湾悬崖",
         "time": "1 天",
-        "image": "assets/travel/attractions/no-04-1.jpg"
+        "image": "assets/images/travel/attractions/no-04-1.jpg"
       },
       {
         "name": "挪威石油博物馆",
         "intro": "能源主题博物馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/no-04-2.jpg"
+        "image": "assets/images/travel/attractions/no-04-2.jpg"
       },
       {
         "name": "斯塔万格老城",
         "intro": "白色木屋老城",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/no-04-3.jpg"
+        "image": "assets/images/travel/attractions/no-04-3.jpg"
       }
     ],
     "routes": [
@@ -17653,7 +17653,7 @@
       "no-edu-master",
       "no-pr-apply"
     ],
-    "image": "assets/travel/cities/no-04.jpg"
+    "image": "assets/images/travel/city/no-04.jpg"
   },
   {
     "id": "no-05",
@@ -17685,19 +17685,19 @@
         "name": "雷讷渔村",
         "intro": "世界级渔村景观",
         "time": "半天",
-        "image": "assets/travel/attractions/no-05-1.jpg"
+        "image": "assets/images/travel/attractions/no-05-1.jpg"
       },
       {
         "name": "亨宁斯维尔足球场",
         "intro": "海中足球场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/no-05-2.jpg"
+        "image": "assets/images/travel/attractions/no-05-2.jpg"
       },
       {
         "name": "罗弗敦冲浪",
         "intro": "北极冲浪海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/no-05-3.jpg"
+        "image": "assets/images/travel/attractions/no-05-3.jpg"
       }
     ],
     "routes": [
@@ -17791,7 +17791,7 @@
       "no-edu-master",
       "no-pr-apply"
     ],
-    "image": "assets/travel/cities/no-05.jpg"
+    "image": "assets/images/travel/city/no-05.jpg"
   },
   {
     "id": "no-06",
@@ -17823,19 +17823,19 @@
         "name": "阿克斯拉观景台",
         "intro": "城市全景观景台",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/no-06-1.jpg"
+        "image": "assets/images/travel/attractions/no-06-1.jpg"
       },
       {
         "name": "新艺术中心",
         "intro": "新艺术建筑博物馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/no-06-2.jpg"
+        "image": "assets/images/travel/attractions/no-06-2.jpg"
       },
       {
         "name": "大西洋之路",
         "intro": "海上公路景观",
         "time": "半天",
-        "image": "assets/travel/attractions/no-06-3.jpg"
+        "image": "assets/images/travel/attractions/no-06-3.jpg"
       }
     ],
     "routes": [
@@ -17929,7 +17929,7 @@
       "no-edu-master",
       "no-pr-apply"
     ],
-    "image": "assets/travel/cities/no-06.jpg"
+    "image": "assets/images/travel/city/no-06.jpg"
   },
   {
     "id": "dk-01",
@@ -17961,19 +17961,19 @@
         "name": "新港",
         "intro": "彩色港口街区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/dk-01-1.jpg"
+        "image": "assets/images/travel/attractions/dk-01-1.jpg"
       },
       {
         "name": "小美人鱼雕像",
         "intro": "滨海地标雕像",
         "time": "1 小时",
-        "image": "assets/travel/attractions/dk-01-2.jpg"
+        "image": "assets/images/travel/attractions/dk-01-2.jpg"
       },
       {
         "name": "蒂沃利乐园",
         "intro": "历史游乐园",
         "time": "半天",
-        "image": "assets/travel/attractions/dk-01-3.jpg"
+        "image": "assets/images/travel/attractions/dk-01-3.jpg"
       }
     ],
     "routes": [
@@ -18067,7 +18067,7 @@
       "dk-edu-master",
       "dk-pr-apply"
     ],
-    "image": "assets/travel/cities/dk-01.jpg"
+    "image": "assets/images/travel/city/dk-01.jpg"
   },
   {
     "id": "dk-02",
@@ -18099,19 +18099,19 @@
         "name": "老城博物馆",
         "intro": "露天城市博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/dk-02-1.jpg"
+        "image": "assets/images/travel/attractions/dk-02-1.jpg"
       },
       {
         "name": "ARoS 艺术博物馆",
         "intro": "彩虹全景走廊",
         "time": "2 小时",
-        "image": "assets/travel/attractions/dk-02-2.jpg"
+        "image": "assets/images/travel/attractions/dk-02-2.jpg"
       },
       {
         "name": "奥胡斯大教堂",
         "intro": "丹麦最长教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/dk-02-3.jpg"
+        "image": "assets/images/travel/attractions/dk-02-3.jpg"
       }
     ],
     "routes": [
@@ -18206,7 +18206,7 @@
       "dk-edu-master",
       "dk-pr-apply"
     ],
-    "image": "assets/travel/cities/dk-02.jpg"
+    "image": "assets/images/travel/city/dk-02.jpg"
   },
   {
     "id": "dk-03",
@@ -18238,19 +18238,19 @@
         "name": "安徒生博物馆",
         "intro": "童话作家生平",
         "time": "2 小时",
-        "image": "assets/travel/attractions/dk-03-1.jpg"
+        "image": "assets/images/travel/attractions/dk-03-1.jpg"
       },
       {
         "name": "安徒生故居",
         "intro": "作家童年小屋",
         "time": "1 小时",
-        "image": "assets/travel/attractions/dk-03-2.jpg"
+        "image": "assets/images/travel/attractions/dk-03-2.jpg"
       },
       {
         "name": "欧登塞动物园",
         "intro": "家庭动物园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/dk-03-3.jpg"
+        "image": "assets/images/travel/attractions/dk-03-3.jpg"
       }
     ],
     "routes": [
@@ -18345,7 +18345,7 @@
       "dk-edu-master",
       "dk-pr-apply"
     ],
-    "image": "assets/travel/cities/dk-03.jpg"
+    "image": "assets/images/travel/city/dk-03.jpg"
   },
   {
     "id": "dk-04",
@@ -18377,19 +18377,19 @@
         "name": "乌松中心",
         "intro": "悉尼歌剧院建筑师作品",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/dk-04-1.jpg"
+        "image": "assets/images/travel/attractions/dk-04-1.jpg"
       },
       {
         "name": "老城街区",
         "intro": "木屋老城",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/dk-04-2.jpg"
+        "image": "assets/images/travel/attractions/dk-04-2.jpg"
       },
       {
         "name": "林峡湾",
         "intro": "海峡滨水区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/dk-04-3.jpg"
+        "image": "assets/images/travel/attractions/dk-04-3.jpg"
       }
     ],
     "routes": [
@@ -18484,7 +18484,7 @@
       "dk-edu-master",
       "dk-pr-apply"
     ],
-    "image": "assets/travel/cities/dk-04.jpg"
+    "image": "assets/images/travel/city/dk-04.jpg"
   },
   {
     "id": "dk-05",
@@ -18515,19 +18515,19 @@
         "name": "乐高乐园",
         "intro": "乐高主题乐园",
         "time": "半天",
-        "image": "assets/travel/attractions/dk-05-1.jpg"
+        "image": "assets/images/travel/attractions/dk-05-1.jpg"
       },
       {
         "name": "乐高之家",
         "intro": "乐高体验中心",
         "time": "半天",
-        "image": "assets/travel/attractions/dk-05-2.jpg"
+        "image": "assets/images/travel/attractions/dk-05-2.jpg"
       },
       {
         "name": "乐高酒店",
         "intro": "主题酒店",
         "time": "1 小时",
-        "image": "assets/travel/attractions/dk-05-3.jpg"
+        "image": "assets/images/travel/attractions/dk-05-3.jpg"
       }
     ],
     "routes": [
@@ -18621,7 +18621,7 @@
       "dk-edu-master",
       "dk-pr-apply"
     ],
-    "image": "assets/travel/cities/dk-05.jpg"
+    "image": "assets/images/travel/city/dk-05.jpg"
   },
   {
     "id": "dk-06",
@@ -18653,19 +18653,19 @@
         "name": "维京船博物馆",
         "intro": "出土维京长船",
         "time": "2 小时",
-        "image": "assets/travel/attractions/dk-06-1.jpg"
+        "image": "assets/images/travel/attractions/dk-06-1.jpg"
       },
       {
         "name": "罗斯基勒大教堂",
         "intro": "皇室安葬大教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/dk-06-2.jpg"
+        "image": "assets/images/travel/attractions/dk-06-2.jpg"
       },
       {
         "name": "罗斯基勒音乐节",
         "intro": "北欧音乐节",
         "time": "1 天",
-        "image": "assets/travel/attractions/dk-06-3.jpg"
+        "image": "assets/images/travel/attractions/dk-06-3.jpg"
       }
     ],
     "routes": [
@@ -18759,7 +18759,7 @@
       "dk-edu-master",
       "dk-pr-apply"
     ],
-    "image": "assets/travel/cities/dk-06.jpg"
+    "image": "assets/images/travel/city/dk-06.jpg"
   },
   {
     "id": "fi-01",
@@ -18791,19 +18791,19 @@
         "name": "赫尔辛基大教堂",
         "intro": "白色教堂与广场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fi-01-1.jpg"
+        "image": "assets/images/travel/attractions/fi-01-1.jpg"
       },
       {
         "name": "岩石教堂",
         "intro": "岩洞中的教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fi-01-2.jpg"
+        "image": "assets/images/travel/attractions/fi-01-2.jpg"
       },
       {
         "name": "芬兰堡",
         "intro": "海上要塞世界遗产",
         "time": "3 小时",
-        "image": "assets/travel/attractions/fi-01-3.jpg"
+        "image": "assets/images/travel/attractions/fi-01-3.jpg"
       }
     ],
     "routes": [
@@ -18897,7 +18897,7 @@
       "fi-edu-master",
       "fi-pr-apply"
     ],
-    "image": "assets/travel/cities/fi-01.jpg"
+    "image": "assets/images/travel/city/fi-01.jpg"
   },
   {
     "id": "fi-02",
@@ -18929,19 +18929,19 @@
         "name": "坦佩雷大教堂",
         "intro": "民族浪漫主义教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fi-02-1.jpg"
+        "image": "assets/images/travel/attractions/fi-02-1.jpg"
       },
       {
         "name": "萨卡昆塔观景塔",
         "intro": "湖区观景与甜甜圈",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fi-02-2.jpg"
+        "image": "assets/images/travel/attractions/fi-02-2.jpg"
       },
       {
         "name": "芬兰蒸汽船博物馆",
         "intro": "湖区游乐园",
         "time": "半天",
-        "image": "assets/travel/attractions/fi-02-3.jpg"
+        "image": "assets/images/travel/attractions/fi-02-3.jpg"
       }
     ],
     "routes": [
@@ -19035,7 +19035,7 @@
       "fi-edu-master",
       "fi-pr-apply"
     ],
-    "image": "assets/travel/cities/fi-02.jpg"
+    "image": "assets/images/travel/city/fi-02.jpg"
   },
   {
     "id": "fi-03",
@@ -19067,19 +19067,19 @@
         "name": "图尔库城堡",
         "intro": "中世纪城堡",
         "time": "2 小时",
-        "image": "assets/travel/attractions/fi-03-1.jpg"
+        "image": "assets/images/travel/attractions/fi-03-1.jpg"
       },
       {
         "name": "图尔库大教堂",
         "intro": "芬兰国家圣殿",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fi-03-2.jpg"
+        "image": "assets/images/travel/attractions/fi-03-2.jpg"
       },
       {
         "name": "奥拉河畔",
         "intro": "河畔老城漫步",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fi-03-3.jpg"
+        "image": "assets/images/travel/attractions/fi-03-3.jpg"
       }
     ],
     "routes": [
@@ -19173,7 +19173,7 @@
       "fi-edu-master",
       "fi-pr-apply"
     ],
-    "image": "assets/travel/cities/fi-03.jpg"
+    "image": "assets/images/travel/city/fi-03.jpg"
   },
   {
     "id": "fi-04",
@@ -19205,19 +19205,19 @@
         "name": "圣诞老人村",
         "intro": "北极圈圣诞主题村",
         "time": "3 小时",
-        "image": "assets/travel/attractions/fi-04-1.jpg"
+        "image": "assets/images/travel/attractions/fi-04-1.jpg"
       },
       {
         "name": "北极圈线",
         "intro": "跨越北极圈标志",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fi-04-2.jpg"
+        "image": "assets/images/travel/attractions/fi-04-2.jpg"
       },
       {
         "name": "驯鹿农场",
         "intro": "驯鹿雪橇体验",
         "time": "2 小时",
-        "image": "assets/travel/attractions/fi-04-3.jpg"
+        "image": "assets/images/travel/attractions/fi-04-3.jpg"
       }
     ],
     "routes": [
@@ -19311,7 +19311,7 @@
       "fi-edu-master",
       "fi-pr-apply"
     ],
-    "image": "assets/travel/cities/fi-04.jpg"
+    "image": "assets/images/travel/city/fi-04.jpg"
   },
   {
     "id": "fi-05",
@@ -19343,19 +19343,19 @@
         "name": "波尔沃老城",
         "intro": "红色木屋老城",
         "time": "2 小时",
-        "image": "assets/travel/attractions/fi-05-1.jpg"
+        "image": "assets/images/travel/attractions/fi-05-1.jpg"
       },
       {
         "name": "波尔沃大教堂",
         "intro": "老城大教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fi-05-2.jpg"
+        "image": "assets/images/travel/attractions/fi-05-2.jpg"
       },
       {
         "name": "Brunberg 巧克力店",
         "intro": "百年巧克力工坊",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fi-05-3.jpg"
+        "image": "assets/images/travel/attractions/fi-05-3.jpg"
       }
     ],
     "routes": [
@@ -19449,7 +19449,7 @@
       "fi-edu-master",
       "fi-pr-apply"
     ],
-    "image": "assets/travel/cities/fi-05.jpg"
+    "image": "assets/images/travel/city/fi-05.jpg"
   },
   {
     "id": "fi-06",
@@ -19481,19 +19481,19 @@
         "name": "奥卢市场大厅",
         "intro": "百年市场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/fi-06-1.jpg"
+        "image": "assets/images/travel/attractions/fi-06-1.jpg"
       },
       {
         "name": "奥卢城堡公园",
         "intro": "河畔城堡遗址公园",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/fi-06-2.jpg"
+        "image": "assets/images/travel/attractions/fi-06-2.jpg"
       },
       {
         "name": "北极光观测",
         "intro": "冬季极光体验",
         "time": "半天",
-        "image": "assets/travel/attractions/fi-06-3.jpg"
+        "image": "assets/images/travel/attractions/fi-06-3.jpg"
       }
     ],
     "routes": [
@@ -19587,7 +19587,7 @@
       "fi-edu-master",
       "fi-pr-apply"
     ],
-    "image": "assets/travel/cities/fi-06.jpg"
+    "image": "assets/images/travel/city/fi-06.jpg"
   },
   {
     "id": "ie-01",
@@ -19619,19 +19619,19 @@
         "name": "圣三一学院",
         "intro": "学府与凯尔斯之书",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ie-01-1.jpg"
+        "image": "assets/images/travel/attractions/ie-01-1.jpg"
       },
       {
         "name": "都柏林城堡",
         "intro": "历史城堡与花园",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ie-01-2.jpg"
+        "image": "assets/images/travel/attractions/ie-01-2.jpg"
       },
       {
         "name": "健力士仓库",
         "intro": "啤酒博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ie-01-3.jpg"
+        "image": "assets/images/travel/attractions/ie-01-3.jpg"
       }
     ],
     "routes": [
@@ -19725,7 +19725,7 @@
       "ie-edu-master",
       "ie-pr-apply"
     ],
-    "image": "assets/travel/cities/ie-01.jpg"
+    "image": "assets/images/travel/city/ie-01.jpg"
   },
   {
     "id": "ie-02",
@@ -19757,19 +19757,19 @@
         "name": "英国市场",
         "intro": "传统食品市场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ie-02-1.jpg"
+        "image": "assets/images/travel/attractions/ie-02-1.jpg"
       },
       {
         "name": "圣芬巴尔大教堂",
         "intro": "哥特式大教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ie-02-2.jpg"
+        "image": "assets/images/travel/attractions/ie-02-2.jpg"
       },
       {
         "name": "科克市政厅",
         "intro": "河畔市政建筑",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ie-02-3.jpg"
+        "image": "assets/images/travel/attractions/ie-02-3.jpg"
       }
     ],
     "routes": [
@@ -19863,7 +19863,7 @@
       "ie-edu-master",
       "ie-pr-apply"
     ],
-    "image": "assets/travel/cities/ie-02.jpg"
+    "image": "assets/images/travel/city/ie-02.jpg"
   },
   {
     "id": "ie-03",
@@ -19895,19 +19895,19 @@
         "name": "西班牙拱门",
         "intro": "中世纪城墙拱门",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ie-03-1.jpg"
+        "image": "assets/images/travel/attractions/ie-03-1.jpg"
       },
       {
         "name": "盐山散步道",
         "intro": "海滨步道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ie-03-2.jpg"
+        "image": "assets/images/travel/attractions/ie-03-2.jpg"
       },
       {
         "name": "莫赫悬崖",
         "intro": "大西洋悬崖（近郊）",
         "time": "半天",
-        "image": "assets/travel/attractions/ie-03-3.jpg"
+        "image": "assets/images/travel/attractions/ie-03-3.jpg"
       }
     ],
     "routes": [
@@ -20001,7 +20001,7 @@
       "ie-edu-master",
       "ie-pr-apply"
     ],
-    "image": "assets/travel/cities/ie-03.jpg"
+    "image": "assets/images/travel/city/ie-03.jpg"
   },
   {
     "id": "ie-04",
@@ -20033,19 +20033,19 @@
         "name": "约翰王城堡",
         "intro": "中世纪城堡",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ie-04-1.jpg"
+        "image": "assets/images/travel/attractions/ie-04-1.jpg"
       },
       {
         "name": "亨特博物馆",
         "intro": "艺术文物收藏",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ie-04-2.jpg"
+        "image": "assets/images/travel/attractions/ie-04-2.jpg"
       },
       {
         "name": "香农河畔",
         "intro": "河畔步道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ie-04-3.jpg"
+        "image": "assets/images/travel/attractions/ie-04-3.jpg"
       }
     ],
     "routes": [
@@ -20139,7 +20139,7 @@
       "ie-edu-master",
       "ie-pr-apply"
     ],
-    "image": "assets/travel/cities/ie-04.jpg"
+    "image": "assets/images/travel/city/ie-04.jpg"
   },
   {
     "id": "ie-05",
@@ -20171,19 +20171,19 @@
         "name": "基拉尼国家公园",
         "intro": "湖泊与森林公园",
         "time": "半天",
-        "image": "assets/travel/attractions/ie-05-1.jpg"
+        "image": "assets/images/travel/attractions/ie-05-1.jpg"
       },
       {
         "name": "罗斯城堡",
         "intro": "湖畔古堡",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ie-05-2.jpg"
+        "image": "assets/images/travel/attractions/ie-05-2.jpg"
       },
       {
         "name": "莫克罗丝修道院",
         "intro": "森林修道院遗迹",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ie-05-3.jpg"
+        "image": "assets/images/travel/attractions/ie-05-3.jpg"
       }
     ],
     "routes": [
@@ -20277,7 +20277,7 @@
       "ie-edu-master",
       "ie-pr-apply"
     ],
-    "image": "assets/travel/cities/ie-05.jpg"
+    "image": "assets/images/travel/city/ie-05.jpg"
   },
   {
     "id": "ie-06",
@@ -20309,19 +20309,19 @@
         "name": "沃特福德水晶工厂",
         "intro": "水晶吹制工坊",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ie-06-1.jpg"
+        "image": "assets/images/travel/attractions/ie-06-1.jpg"
       },
       {
         "name": "摄政塔",
         "intro": "中世纪塔楼",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ie-06-2.jpg"
+        "image": "assets/images/travel/attractions/ie-06-2.jpg"
       },
       {
         "name": "沃特福德博物馆",
         "intro": "城市历史博物馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ie-06-3.jpg"
+        "image": "assets/images/travel/attractions/ie-06-3.jpg"
       }
     ],
     "routes": [
@@ -20415,7 +20415,7 @@
       "ie-edu-master",
       "ie-pr-apply"
     ],
-    "image": "assets/travel/cities/ie-06.jpg"
+    "image": "assets/images/travel/city/ie-06.jpg"
   },
   {
     "id": "at-01",
@@ -20447,19 +20447,19 @@
         "name": "美泉宫",
         "intro": "哈布斯堡夏宫与花园",
         "time": "半天",
-        "image": "assets/travel/attractions/at-01-1.jpg"
+        "image": "assets/images/travel/attractions/at-01-1.jpg"
       },
       {
         "name": "斯蒂芬大教堂",
         "intro": "哥特式地标教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/at-01-2.jpg"
+        "image": "assets/images/travel/attractions/at-01-2.jpg"
       },
       {
         "name": "维也纳国家歌剧院",
         "intro": "世界级歌剧院",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/at-01-3.jpg"
+        "image": "assets/images/travel/attractions/at-01-3.jpg"
       }
     ],
     "routes": [
@@ -20553,7 +20553,7 @@
       "at-edu-master",
       "at-pr-apply"
     ],
-    "image": "assets/travel/cities/at-01.jpg"
+    "image": "assets/images/travel/city/at-01.jpg"
   },
   {
     "id": "at-02",
@@ -20585,19 +20585,19 @@
         "name": "萨尔茨堡要塞",
         "intro": "山顶古要塞",
         "time": "2 小时",
-        "image": "assets/travel/attractions/at-02-1.jpg"
+        "image": "assets/images/travel/attractions/at-02-1.jpg"
       },
       {
         "name": "莫扎特故居",
         "intro": "音乐家故居",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/at-02-2.jpg"
+        "image": "assets/images/travel/attractions/at-02-2.jpg"
       },
       {
         "name": "米拉贝尔宫",
         "intro": "音乐之声取景花园",
         "time": "1 小时",
-        "image": "assets/travel/attractions/at-02-3.jpg"
+        "image": "assets/images/travel/attractions/at-02-3.jpg"
       }
     ],
     "routes": [
@@ -20691,7 +20691,7 @@
       "at-edu-master",
       "at-pr-apply"
     ],
-    "image": "assets/travel/cities/at-02.jpg"
+    "image": "assets/images/travel/city/at-02.jpg"
   },
   {
     "id": "at-03",
@@ -20723,19 +20723,19 @@
         "name": "黄金屋顶",
         "intro": "城市地标金色屋顶",
         "time": "1 小时",
-        "image": "assets/travel/attractions/at-03-1.jpg"
+        "image": "assets/images/travel/attractions/at-03-1.jpg"
       },
       {
         "name": "北链山缆车",
         "intro": "城市直达雪山缆车",
         "time": "半天",
-        "image": "assets/travel/attractions/at-03-2.jpg"
+        "image": "assets/images/travel/attractions/at-03-2.jpg"
       },
       {
         "name": "施华洛世奇水晶世界",
         "intro": "水晶艺术博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/at-03-3.jpg"
+        "image": "assets/images/travel/attractions/at-03-3.jpg"
       }
     ],
     "routes": [
@@ -20829,7 +20829,7 @@
       "at-edu-master",
       "at-pr-apply"
     ],
-    "image": "assets/travel/cities/at-03.jpg"
+    "image": "assets/images/travel/city/at-03.jpg"
   },
   {
     "id": "at-04",
@@ -20861,19 +20861,19 @@
         "name": "钟楼",
         "intro": "老城地标钟楼",
         "time": "1 小时",
-        "image": "assets/travel/attractions/at-04-1.jpg"
+        "image": "assets/images/travel/attractions/at-04-1.jpg"
       },
       {
         "name": "格拉茨城堡山",
         "intro": "山顶观景与步道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/at-04-2.jpg"
+        "image": "assets/images/travel/attractions/at-04-2.jpg"
       },
       {
         "name": "格拉茨艺术馆",
         "intro": "外星船造型建筑",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/at-04-3.jpg"
+        "image": "assets/images/travel/attractions/at-04-3.jpg"
       }
     ],
     "routes": [
@@ -20967,7 +20967,7 @@
       "at-edu-master",
       "at-pr-apply"
     ],
-    "image": "assets/travel/cities/at-04.jpg"
+    "image": "assets/images/travel/city/at-04.jpg"
   },
   {
     "id": "at-05",
@@ -20999,19 +20999,19 @@
         "name": "哈尔施塔特湖",
         "intro": "高山湖泊小镇全景",
         "time": "2 小时",
-        "image": "assets/travel/attractions/at-05-1.jpg"
+        "image": "assets/images/travel/attractions/at-05-1.jpg"
       },
       {
         "name": "盐矿",
         "intro": "千年盐矿探险",
         "time": "2 小时",
-        "image": "assets/travel/attractions/at-05-2.jpg"
+        "image": "assets/images/travel/attractions/at-05-2.jpg"
       },
       {
         "name": "人骨教堂",
         "intro": "小型人骨礼拜堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/at-05-3.jpg"
+        "image": "assets/images/travel/attractions/at-05-3.jpg"
       }
     ],
     "routes": [
@@ -21105,7 +21105,7 @@
       "at-edu-master",
       "at-pr-apply"
     ],
-    "image": "assets/travel/cities/at-05.jpg"
+    "image": "assets/images/travel/city/at-05.jpg"
   },
   {
     "id": "at-06",
@@ -21137,19 +21137,19 @@
         "name": "林茨电子艺术中心",
         "intro": "科技艺术博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/at-06-1.jpg"
+        "image": "assets/images/travel/attractions/at-06-1.jpg"
       },
       {
         "name": "林茨主广场",
         "intro": "老城中心广场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/at-06-2.jpg"
+        "image": "assets/images/travel/attractions/at-06-2.jpg"
       },
       {
         "name": "多瑙河畔",
         "intro": "河畔步道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/at-06-3.jpg"
+        "image": "assets/images/travel/attractions/at-06-3.jpg"
       }
     ],
     "routes": [
@@ -21243,7 +21243,7 @@
       "at-edu-master",
       "at-pr-apply"
     ],
-    "image": "assets/travel/cities/at-06.jpg"
+    "image": "assets/images/travel/city/at-06.jpg"
   },
   {
     "id": "be-01",
@@ -21275,19 +21275,19 @@
         "name": "大广场",
         "intro": "世界遗产金饰广场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/be-01-1.jpg"
+        "image": "assets/images/travel/attractions/be-01-1.jpg"
       },
       {
         "name": "原子球塔",
         "intro": "现代地标建筑",
         "time": "2 小时",
-        "image": "assets/travel/attractions/be-01-2.jpg"
+        "image": "assets/images/travel/attractions/be-01-2.jpg"
       },
       {
         "name": "圣米歇尔圣古都勒大教堂",
         "intro": "哥特式大教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/be-01-3.jpg"
+        "image": "assets/images/travel/attractions/be-01-3.jpg"
       }
     ],
     "routes": [
@@ -21381,7 +21381,7 @@
       "be-edu-master",
       "be-pr-apply"
     ],
-    "image": "assets/travel/cities/be-01.jpg"
+    "image": "assets/images/travel/city/be-01.jpg"
   },
   {
     "id": "be-02",
@@ -21413,19 +21413,19 @@
         "name": "布鲁日钟楼",
         "intro": "老城钟楼登顶",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/be-02-1.jpg"
+        "image": "assets/images/travel/attractions/be-02-1.jpg"
       },
       {
         "name": "运河游船",
         "intro": "中世纪运河游船",
         "time": "1 小时",
-        "image": "assets/travel/attractions/be-02-2.jpg"
+        "image": "assets/images/travel/attractions/be-02-2.jpg"
       },
       {
         "name": "圣血圣殿",
         "intro": "圣血教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/be-02-3.jpg"
+        "image": "assets/images/travel/attractions/be-02-3.jpg"
       }
     ],
     "routes": [
@@ -21519,7 +21519,7 @@
       "be-edu-master",
       "be-pr-apply"
     ],
-    "image": "assets/travel/cities/be-02.jpg"
+    "image": "assets/images/travel/city/be-02.jpg"
   },
   {
     "id": "be-03",
@@ -21551,19 +21551,19 @@
         "name": "安特卫普圣母教堂",
         "intro": "哥特式大教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/be-03-1.jpg"
+        "image": "assets/images/travel/attractions/be-03-1.jpg"
       },
       {
         "name": "中央车站",
         "intro": "百年火车站",
         "time": "1 小时",
-        "image": "assets/travel/attractions/be-03-2.jpg"
+        "image": "assets/images/travel/attractions/be-03-2.jpg"
       },
       {
         "name": "MAS 博物馆",
         "intro": "河畔现代博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/be-03-3.jpg"
+        "image": "assets/images/travel/attractions/be-03-3.jpg"
       }
     ],
     "routes": [
@@ -21657,7 +21657,7 @@
       "be-edu-master",
       "be-pr-apply"
     ],
-    "image": "assets/travel/cities/be-03.jpg"
+    "image": "assets/images/travel/city/be-03.jpg"
   },
   {
     "id": "be-04",
@@ -21689,19 +21689,19 @@
         "name": "圣巴沃大教堂",
         "intro": "神秘羔羊之爱藏馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/be-04-1.jpg"
+        "image": "assets/images/travel/attractions/be-04-1.jpg"
       },
       {
         "name": "根特钟楼",
         "intro": "老城钟楼",
         "time": "1 小时",
-        "image": "assets/travel/attractions/be-04-2.jpg"
+        "image": "assets/images/travel/attractions/be-04-2.jpg"
       },
       {
         "name": "伯爵城堡",
         "intro": "中世纪水城城堡",
         "time": "2 小时",
-        "image": "assets/travel/attractions/be-04-3.jpg"
+        "image": "assets/images/travel/attractions/be-04-3.jpg"
       }
     ],
     "routes": [
@@ -21796,7 +21796,7 @@
       "be-edu-master",
       "be-pr-apply"
     ],
-    "image": "assets/travel/cities/be-04.jpg"
+    "image": "assets/images/travel/city/be-04.jpg"
   },
   {
     "id": "be-05",
@@ -21828,19 +21828,19 @@
         "name": "列日大教堂",
         "intro": "圣保罗大教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/be-05-1.jpg"
+        "image": "assets/images/travel/attractions/be-05-1.jpg"
       },
       {
         "name": "布埃伦山",
         "intro": "374 级台阶观景",
         "time": "1 小时",
-        "image": "assets/travel/attractions/be-05-2.jpg"
+        "image": "assets/images/travel/attractions/be-05-2.jpg"
       },
       {
         "name": "列日市场",
         "intro": "周日河边集市",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/be-05-3.jpg"
+        "image": "assets/images/travel/attractions/be-05-3.jpg"
       }
     ],
     "routes": [
@@ -21934,7 +21934,7 @@
       "be-edu-master",
       "be-pr-apply"
     ],
-    "image": "assets/travel/cities/be-05.jpg"
+    "image": "assets/images/travel/city/be-05.jpg"
   },
   {
     "id": "be-06",
@@ -21966,19 +21966,19 @@
         "name": "那慕尔城堡",
         "intro": "山丘古堡",
         "time": "2 小时",
-        "image": "assets/travel/attractions/be-06-1.jpg"
+        "image": "assets/images/travel/attractions/be-06-1.jpg"
       },
       {
         "name": "圣欧班大教堂",
         "intro": "老城大教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/be-06-2.jpg"
+        "image": "assets/images/travel/attractions/be-06-2.jpg"
       },
       {
         "name": "桑布尔河畔",
         "intro": "河畔漫步",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/be-06-3.jpg"
+        "image": "assets/images/travel/attractions/be-06-3.jpg"
       }
     ],
     "routes": [
@@ -22072,7 +22072,7 @@
       "be-edu-master",
       "be-pr-apply"
     ],
-    "image": "assets/travel/cities/be-06.jpg"
+    "image": "assets/images/travel/city/be-06.jpg"
   },
   {
     "id": "pl-01",
@@ -22104,19 +22104,19 @@
         "name": "华沙老城",
         "intro": "重建的世界遗产老城",
         "time": "2 小时",
-        "image": "assets/travel/attractions/pl-01-1.jpg"
+        "image": "assets/images/travel/attractions/pl-01-1.jpg"
       },
       {
         "name": "皇家城堡",
         "intro": "老城王宫",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pl-01-2.jpg"
+        "image": "assets/images/travel/attractions/pl-01-2.jpg"
       },
       {
         "name": "科学文化宫",
         "intro": "城市地标建筑",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pl-01-3.jpg"
+        "image": "assets/images/travel/attractions/pl-01-3.jpg"
       }
     ],
     "routes": [
@@ -22210,7 +22210,7 @@
       "pl-edu-master",
       "pl-pr-apply"
     ],
-    "image": "assets/travel/cities/pl-01.jpg"
+    "image": "assets/images/travel/city/pl-01.jpg"
   },
   {
     "id": "pl-02",
@@ -22242,19 +22242,19 @@
         "name": "中央集市广场",
         "intro": "欧洲最大中世纪广场",
         "time": "2 小时",
-        "image": "assets/travel/attractions/pl-02-1.jpg"
+        "image": "assets/images/travel/attractions/pl-02-1.jpg"
       },
       {
         "name": "瓦维尔城堡",
         "intro": "王室城堡与大教堂",
         "time": "2 小时",
-        "image": "assets/travel/attractions/pl-02-2.jpg"
+        "image": "assets/images/travel/attractions/pl-02-2.jpg"
       },
       {
         "name": "圣玛丽教堂",
         "intro": "哥特式教堂与号声",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pl-02-3.jpg"
+        "image": "assets/images/travel/attractions/pl-02-3.jpg"
       }
     ],
     "routes": [
@@ -22349,7 +22349,7 @@
       "pl-edu-master",
       "pl-pr-apply"
     ],
-    "image": "assets/travel/cities/pl-02.jpg"
+    "image": "assets/images/travel/city/pl-02.jpg"
   },
   {
     "id": "pl-03",
@@ -22381,19 +22381,19 @@
         "name": "长街",
         "intro": "老城主街与市政厅",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pl-03-1.jpg"
+        "image": "assets/images/travel/attractions/pl-03-1.jpg"
       },
       {
         "name": "格但斯克起重机",
         "intro": "港口中世纪起重机",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pl-03-2.jpg"
+        "image": "assets/images/travel/attractions/pl-03-2.jpg"
       },
       {
         "name": "莫特拉瓦河畔",
         "intro": "河畔彩色建筑",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pl-03-3.jpg"
+        "image": "assets/images/travel/attractions/pl-03-3.jpg"
       }
     ],
     "routes": [
@@ -22487,7 +22487,7 @@
       "pl-edu-master",
       "pl-pr-apply"
     ],
-    "image": "assets/travel/cities/pl-03.jpg"
+    "image": "assets/images/travel/city/pl-03.jpg"
   },
   {
     "id": "pl-04",
@@ -22519,19 +22519,19 @@
         "name": "中央广场",
         "intro": "彩色老城广场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pl-04-1.jpg"
+        "image": "assets/images/travel/attractions/pl-04-1.jpg"
       },
       {
         "name": "小矮人铜像",
         "intro": "城市小铜像寻宝",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pl-04-2.jpg"
+        "image": "assets/images/travel/attractions/pl-04-2.jpg"
       },
       {
         "name": "弗罗茨瓦夫大学",
         "intro": "巴洛克大学建筑",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pl-04-3.jpg"
+        "image": "assets/images/travel/attractions/pl-04-3.jpg"
       }
     ],
     "routes": [
@@ -22625,7 +22625,7 @@
       "pl-edu-master",
       "pl-pr-apply"
     ],
-    "image": "assets/travel/cities/pl-04.jpg"
+    "image": "assets/images/travel/city/pl-04.jpg"
   },
   {
     "id": "pl-05",
@@ -22657,19 +22657,19 @@
         "name": "老城广场",
         "intro": "彩色市政厅广场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pl-05-1.jpg"
+        "image": "assets/images/travel/attractions/pl-05-1.jpg"
       },
       {
         "name": "波兹南大教堂",
         "intro": "奥斯特鲁姆岛大教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pl-05-2.jpg"
+        "image": "assets/images/travel/attractions/pl-05-2.jpg"
       },
       {
         "name": "帝国城堡",
         "intro": "20 世纪初城堡",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pl-05-3.jpg"
+        "image": "assets/images/travel/attractions/pl-05-3.jpg"
       }
     ],
     "routes": [
@@ -22763,7 +22763,7 @@
       "pl-edu-master",
       "pl-pr-apply"
     ],
-    "image": "assets/travel/cities/pl-05.jpg"
+    "image": "assets/images/travel/city/pl-05.jpg"
   },
   {
     "id": "pl-06",
@@ -22795,19 +22795,19 @@
         "name": "西里西亚博物馆",
         "intro": "工业遗产改造博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/pl-06-1.jpg"
+        "image": "assets/images/travel/attractions/pl-06-1.jpg"
       },
       {
         "name": "卡托维兹音乐厅",
         "intro": "现代音乐厅",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/pl-06-2.jpg"
+        "image": "assets/images/travel/attractions/pl-06-2.jpg"
       },
       {
         "name": "斯波德克体育馆",
         "intro": "飞碟造型场馆",
         "time": "1 小时",
-        "image": "assets/travel/attractions/pl-06-3.jpg"
+        "image": "assets/images/travel/attractions/pl-06-3.jpg"
       }
     ],
     "routes": [
@@ -22901,7 +22901,7 @@
       "pl-edu-master",
       "pl-pr-apply"
     ],
-    "image": "assets/travel/cities/pl-06.jpg"
+    "image": "assets/images/travel/city/pl-06.jpg"
   },
   {
     "id": "us-01",
@@ -22933,19 +22933,19 @@
         "name": "时代广场",
         "intro": "霓虹中心广场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/us-01-1.jpg"
+        "image": "assets/images/travel/attractions/us-01-1.jpg"
       },
       {
         "name": "中央公园",
         "intro": "城市绿肺",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-01-2.jpg"
+        "image": "assets/images/travel/attractions/us-01-2.jpg"
       },
       {
         "name": "自由女神像",
         "intro": "纽约港自由象征",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-01-3.jpg"
+        "image": "assets/images/travel/attractions/us-01-3.jpg"
       }
     ],
     "routes": [
@@ -23040,7 +23040,7 @@
       "us-edu-master",
       "us-pr-apply"
     ],
-    "image": "assets/travel/cities/us-01.jpg"
+    "image": "assets/images/travel/city/us-01.jpg"
   },
   {
     "id": "us-02",
@@ -23072,19 +23072,19 @@
         "name": "好莱坞标志",
         "intro": "山间电影地标",
         "time": "1 小时",
-        "image": "assets/travel/attractions/us-02-1.jpg"
+        "image": "assets/images/travel/attractions/us-02-1.jpg"
       },
       {
         "name": "圣莫尼卡码头",
         "intro": "海滨码头游乐园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-02-2.jpg"
+        "image": "assets/images/travel/attractions/us-02-2.jpg"
       },
       {
         "name": "格里菲斯天文台",
         "intro": "城市观景天文台",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-02-3.jpg"
+        "image": "assets/images/travel/attractions/us-02-3.jpg"
       }
     ],
     "routes": [
@@ -23179,7 +23179,7 @@
       "us-edu-master",
       "us-pr-apply"
     ],
-    "image": "assets/travel/cities/us-02.jpg"
+    "image": "assets/images/travel/city/us-02.jpg"
   },
   {
     "id": "us-03",
@@ -23211,19 +23211,19 @@
         "name": "金门大桥",
         "intro": "红色悬索桥地标",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/us-03-1.jpg"
+        "image": "assets/images/travel/attractions/us-03-1.jpg"
       },
       {
         "name": "渔人码头",
         "intro": "海滨码头与海狮",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/us-03-2.jpg"
+        "image": "assets/images/travel/attractions/us-03-2.jpg"
       },
       {
         "name": "九曲花街",
         "intro": "弯曲花园街道",
         "time": "1 小时",
-        "image": "assets/travel/attractions/us-03-3.jpg"
+        "image": "assets/images/travel/attractions/us-03-3.jpg"
       }
     ],
     "routes": [
@@ -23318,7 +23318,7 @@
       "us-edu-master",
       "us-pr-apply"
     ],
-    "image": "assets/travel/cities/us-03.jpg"
+    "image": "assets/images/travel/city/us-03.jpg"
   },
   {
     "id": "us-04",
@@ -23350,19 +23350,19 @@
         "name": "太空针塔",
         "intro": "城市地标观景塔",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/us-04-1.jpg"
+        "image": "assets/images/travel/attractions/us-04-1.jpg"
       },
       {
         "name": "派克市场",
         "intro": "海鲜市场与咖啡起源",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-04-2.jpg"
+        "image": "assets/images/travel/attractions/us-04-2.jpg"
       },
       {
         "name": "奇胡利玻璃艺术馆",
         "intro": "玻璃艺术展",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/us-04-3.jpg"
+        "image": "assets/images/travel/attractions/us-04-3.jpg"
       }
     ],
     "routes": [
@@ -23456,7 +23456,7 @@
       "us-edu-master",
       "us-pr-apply"
     ],
-    "image": "assets/travel/cities/us-04.jpg"
+    "image": "assets/images/travel/city/us-04.jpg"
   },
   {
     "id": "us-05",
@@ -23488,19 +23488,19 @@
         "name": "南海滩",
         "intro": "装饰艺术海滩区",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-05-1.jpg"
+        "image": "assets/images/travel/attractions/us-05-1.jpg"
       },
       {
         "name": "小哈瓦那",
         "intro": "古巴风情街区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/us-05-2.jpg"
+        "image": "assets/images/travel/attractions/us-05-2.jpg"
       },
       {
         "name": "维兹卡亚花园博物馆",
         "intro": "海滨庄园博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-05-3.jpg"
+        "image": "assets/images/travel/attractions/us-05-3.jpg"
       }
     ],
     "routes": [
@@ -23596,7 +23596,7 @@
       "us-edu-master",
       "us-pr-apply"
     ],
-    "image": "assets/travel/cities/us-05.jpg"
+    "image": "assets/images/travel/city/us-05.jpg"
   },
   {
     "id": "us-06",
@@ -23628,19 +23628,19 @@
         "name": "拉斯维加斯大道",
         "intro": "霓虹酒店大道",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-06-1.jpg"
+        "image": "assets/images/travel/attractions/us-06-1.jpg"
       },
       {
         "name": "贝拉吉奥喷泉",
         "intro": "音乐喷泉秀",
         "time": "1 小时",
-        "image": "assets/travel/attractions/us-06-2.jpg"
+        "image": "assets/images/travel/attractions/us-06-2.jpg"
       },
       {
         "name": "胡佛水坝",
         "intro": "近郊工程奇观",
         "time": "半天",
-        "image": "assets/travel/attractions/us-06-3.jpg"
+        "image": "assets/images/travel/attractions/us-06-3.jpg"
       }
     ],
     "routes": [
@@ -23734,7 +23734,7 @@
       "us-edu-master",
       "us-pr-apply"
     ],
-    "image": "assets/travel/cities/us-06.jpg"
+    "image": "assets/images/travel/city/us-06.jpg"
   },
   {
     "id": "us-07",
@@ -23766,19 +23766,19 @@
         "name": "自由之路",
         "intro": "历史遗址步行线",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-07-1.jpg"
+        "image": "assets/images/travel/attractions/us-07-1.jpg"
       },
       {
         "name": "波士顿公共花园",
         "intro": "城市公园",
         "time": "1 小时",
-        "image": "assets/travel/attractions/us-07-2.jpg"
+        "image": "assets/images/travel/attractions/us-07-2.jpg"
       },
       {
         "name": "哈佛大学",
         "intro": "世界学府（近郊）",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-07-3.jpg"
+        "image": "assets/images/travel/attractions/us-07-3.jpg"
       }
     ],
     "routes": [
@@ -23873,7 +23873,7 @@
       "us-edu-master",
       "us-pr-apply"
     ],
-    "image": "assets/travel/cities/us-07.jpg"
+    "image": "assets/images/travel/city/us-07.jpg"
   },
   {
     "id": "us-08",
@@ -23905,19 +23905,19 @@
         "name": "云门",
         "intro": "大豆子雕塑",
         "time": "1 小时",
-        "image": "assets/travel/attractions/us-08-1.jpg"
+        "image": "assets/images/travel/attractions/us-08-1.jpg"
       },
       {
         "name": "威利斯大厦观景台",
         "intro": "玻璃悬空观景台",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/us-08-2.jpg"
+        "image": "assets/images/travel/attractions/us-08-2.jpg"
       },
       {
         "name": "千禧公园",
         "intro": "湖畔公园",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/us-08-3.jpg"
+        "image": "assets/images/travel/attractions/us-08-3.jpg"
       }
     ],
     "routes": [
@@ -24011,7 +24011,7 @@
       "us-edu-master",
       "us-pr-apply"
     ],
-    "image": "assets/travel/cities/us-08.jpg"
+    "image": "assets/images/travel/city/us-08.jpg"
   },
   {
     "id": "us-09",
@@ -24043,19 +24043,19 @@
         "name": "国家广场",
         "intro": "纪念碑与博物馆大道",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-09-1.jpg"
+        "image": "assets/images/travel/attractions/us-09-1.jpg"
       },
       {
         "name": "美国国会大厦",
         "intro": "国会建筑",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/us-09-2.jpg"
+        "image": "assets/images/travel/attractions/us-09-2.jpg"
       },
       {
         "name": "林肯纪念堂",
         "intro": "纪念堂与倒影池",
         "time": "1 小时",
-        "image": "assets/travel/attractions/us-09-3.jpg"
+        "image": "assets/images/travel/attractions/us-09-3.jpg"
       }
     ],
     "routes": [
@@ -24149,7 +24149,7 @@
       "us-edu-master",
       "us-pr-apply"
     ],
-    "image": "assets/travel/cities/us-09.jpg"
+    "image": "assets/images/travel/city/us-09.jpg"
   },
   {
     "id": "us-10",
@@ -24181,19 +24181,19 @@
         "name": "威基基海滩",
         "intro": "世界著名海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-10-1.jpg"
+        "image": "assets/images/travel/attractions/us-10-1.jpg"
       },
       {
         "name": "钻石头山",
         "intro": "火山口徒步观景",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-10-2.jpg"
+        "image": "assets/images/travel/attractions/us-10-2.jpg"
       },
       {
         "name": "珍珠港纪念馆",
         "intro": "历史纪念馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-10-3.jpg"
+        "image": "assets/images/travel/attractions/us-10-3.jpg"
       }
     ],
     "routes": [
@@ -24287,7 +24287,7 @@
       "us-edu-master",
       "us-pr-apply"
     ],
-    "image": "assets/travel/cities/us-10.jpg"
+    "image": "assets/images/travel/city/us-10.jpg"
   },
   {
     "id": "us-11",
@@ -24319,19 +24319,19 @@
         "name": "丹佛艺术博物馆",
         "intro": "现代建筑博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/us-11-1.jpg"
+        "image": "assets/images/travel/attractions/us-11-1.jpg"
       },
       {
         "name": "红岩剧场",
         "intro": "天然岩石剧场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/us-11-2.jpg"
+        "image": "assets/images/travel/attractions/us-11-2.jpg"
       },
       {
         "name": "丹佛联合车站",
         "intro": "历史车站街区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/us-11-3.jpg"
+        "image": "assets/images/travel/attractions/us-11-3.jpg"
       }
     ],
     "routes": [
@@ -24425,7 +24425,7 @@
       "us-edu-master",
       "us-pr-apply"
     ],
-    "image": "assets/travel/cities/us-11.jpg"
+    "image": "assets/images/travel/city/us-11.jpg"
   },
   {
     "id": "ca-01",
@@ -24457,19 +24457,19 @@
         "name": "CN 塔",
         "intro": "城市地标观景塔",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ca-01-1.jpg"
+        "image": "assets/images/travel/attractions/ca-01-1.jpg"
       },
       {
         "name": "尼亚加拉大瀑布",
         "intro": "跨国瀑布（近郊）",
         "time": "半天",
-        "image": "assets/travel/attractions/ca-01-2.jpg"
+        "image": "assets/images/travel/attractions/ca-01-2.jpg"
       },
       {
         "name": "多伦多群岛",
         "intro": "湖心岛与城市天际线",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ca-01-3.jpg"
+        "image": "assets/images/travel/attractions/ca-01-3.jpg"
       }
     ],
     "routes": [
@@ -24565,7 +24565,7 @@
       "ca-edu-master",
       "ca-pr-apply"
     ],
-    "image": "assets/travel/cities/ca-01.jpg"
+    "image": "assets/images/travel/city/ca-01.jpg"
   },
   {
     "id": "ca-02",
@@ -24597,19 +24597,19 @@
         "name": "史丹利公园",
         "intro": "城市森林与海堤",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ca-02-1.jpg"
+        "image": "assets/images/travel/attractions/ca-02-1.jpg"
       },
       {
         "name": "卡皮拉诺吊桥",
         "intro": "森林吊桥",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ca-02-2.jpg"
+        "image": "assets/images/travel/attractions/ca-02-2.jpg"
       },
       {
         "name": "格兰维尔岛",
         "intro": "市场与艺术区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ca-02-3.jpg"
+        "image": "assets/images/travel/attractions/ca-02-3.jpg"
       }
     ],
     "routes": [
@@ -24704,7 +24704,7 @@
       "ca-edu-master",
       "ca-pr-apply"
     ],
-    "image": "assets/travel/cities/ca-02.jpg"
+    "image": "assets/images/travel/city/ca-02.jpg"
   },
   {
     "id": "ca-03",
@@ -24736,19 +24736,19 @@
         "name": "蒙特利尔老城",
         "intro": "法式老城与港口",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ca-03-1.jpg"
+        "image": "assets/images/travel/attractions/ca-03-1.jpg"
       },
       {
         "name": "圣母大教堂",
         "intro": "金碧辉煌教堂",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ca-03-2.jpg"
+        "image": "assets/images/travel/attractions/ca-03-2.jpg"
       },
       {
         "name": "皇家山",
         "intro": "城市观景山丘",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ca-03-3.jpg"
+        "image": "assets/images/travel/attractions/ca-03-3.jpg"
       }
     ],
     "routes": [
@@ -24842,7 +24842,7 @@
       "ca-edu-master",
       "ca-pr-apply"
     ],
-    "image": "assets/travel/cities/ca-03.jpg"
+    "image": "assets/images/travel/city/ca-03.jpg"
   },
   {
     "id": "ca-04",
@@ -24874,19 +24874,19 @@
         "name": "卡尔加里牛仔节",
         "intro": "世界牛仔节（7 月）",
         "time": "1 天",
-        "image": "assets/travel/attractions/ca-04-1.jpg"
+        "image": "assets/images/travel/attractions/ca-04-1.jpg"
       },
       {
         "name": "卡尔加里塔",
         "intro": "城市观景塔",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ca-04-2.jpg"
+        "image": "assets/images/travel/attractions/ca-04-2.jpg"
       },
       {
         "name": "斯蒂芬大道",
         "intro": "步行购物街",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ca-04-3.jpg"
+        "image": "assets/images/travel/attractions/ca-04-3.jpg"
       }
     ],
     "routes": [
@@ -24980,7 +24980,7 @@
       "ca-edu-master",
       "ca-pr-apply"
     ],
-    "image": "assets/travel/cities/ca-04.jpg"
+    "image": "assets/images/travel/city/ca-04.jpg"
   },
   {
     "id": "ca-05",
@@ -25012,19 +25012,19 @@
         "name": "国会山",
         "intro": "哥特式国会建筑",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ca-05-1.jpg"
+        "image": "assets/images/travel/attractions/ca-05-1.jpg"
       },
       {
         "name": "里多运河",
         "intro": "冬季溜冰世界遗产",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ca-05-2.jpg"
+        "image": "assets/images/travel/attractions/ca-05-2.jpg"
       },
       {
         "name": "加拿大国家美术馆",
         "intro": "玻璃穹顶美术馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ca-05-3.jpg"
+        "image": "assets/images/travel/attractions/ca-05-3.jpg"
       }
     ],
     "routes": [
@@ -25118,7 +25118,7 @@
       "ca-edu-master",
       "ca-pr-apply"
     ],
-    "image": "assets/travel/cities/ca-05.jpg"
+    "image": "assets/images/travel/city/ca-05.jpg"
   },
   {
     "id": "ca-06",
@@ -25150,19 +25150,19 @@
         "name": "班夫国家公园",
         "intro": "落基山脉国家公园",
         "time": "1 天",
-        "image": "assets/travel/attractions/ca-06-1.jpg"
+        "image": "assets/images/travel/attractions/ca-06-1.jpg"
       },
       {
         "name": "路易斯湖",
         "intro": "冰川湖与城堡酒店",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ca-06-2.jpg"
+        "image": "assets/images/travel/attractions/ca-06-2.jpg"
       },
       {
         "name": "硫磺山缆车",
         "intro": "小镇观景缆车",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ca-06-3.jpg"
+        "image": "assets/images/travel/attractions/ca-06-3.jpg"
       }
     ],
     "routes": [
@@ -25256,7 +25256,7 @@
       "ca-edu-master",
       "ca-pr-apply"
     ],
-    "image": "assets/travel/cities/ca-06.jpg"
+    "image": "assets/images/travel/city/ca-06.jpg"
   },
   {
     "id": "ca-07",
@@ -25288,19 +25288,19 @@
         "name": "芳堤娜城堡酒店",
         "intro": "地标城堡酒店",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ca-07-1.jpg"
+        "image": "assets/images/travel/attractions/ca-07-1.jpg"
       },
       {
         "name": "小香普兰街",
         "intro": "鹅卵石老城街区",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ca-07-2.jpg"
+        "image": "assets/images/travel/attractions/ca-07-2.jpg"
       },
       {
         "name": "星形城堡",
         "intro": "山丘军事城堡",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ca-07-3.jpg"
+        "image": "assets/images/travel/attractions/ca-07-3.jpg"
       }
     ],
     "routes": [
@@ -25394,7 +25394,7 @@
       "ca-edu-master",
       "ca-pr-apply"
     ],
-    "image": "assets/travel/cities/ca-07.jpg"
+    "image": "assets/images/travel/city/ca-07.jpg"
   },
   {
     "id": "ca-08",
@@ -25426,19 +25426,19 @@
         "name": "哈利法克斯海港",
         "intro": "海港木栈道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ca-08-1.jpg"
+        "image": "assets/images/travel/attractions/ca-08-1.jpg"
       },
       {
         "name": "城堡山",
         "intro": "星形堡垒",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ca-08-2.jpg"
+        "image": "assets/images/travel/attractions/ca-08-2.jpg"
       },
       {
         "name": "佩吉湾",
         "intro": "灯塔海岬（近郊）",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ca-08-3.jpg"
+        "image": "assets/images/travel/attractions/ca-08-3.jpg"
       }
     ],
     "routes": [
@@ -25532,7 +25532,7 @@
       "ca-edu-master",
       "ca-pr-apply"
     ],
-    "image": "assets/travel/cities/ca-08.jpg"
+    "image": "assets/images/travel/city/ca-08.jpg"
   },
   {
     "id": "ca-09",
@@ -25564,19 +25564,19 @@
         "name": "布查特花园",
         "intro": "世界级花园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/ca-09-1.jpg"
+        "image": "assets/images/travel/attractions/ca-09-1.jpg"
       },
       {
         "name": "省议会大厦",
         "intro": "英式议会建筑",
         "time": "1 小时",
-        "image": "assets/travel/attractions/ca-09-2.jpg"
+        "image": "assets/images/travel/attractions/ca-09-2.jpg"
       },
       {
         "name": "渔人码头",
         "intro": "彩色浮屋码头",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/ca-09-3.jpg"
+        "image": "assets/images/travel/attractions/ca-09-3.jpg"
       }
     ],
     "routes": [
@@ -25670,7 +25670,7 @@
       "ca-edu-master",
       "ca-pr-apply"
     ],
-    "image": "assets/travel/cities/ca-09.jpg"
+    "image": "assets/images/travel/city/ca-09.jpg"
   },
   {
     "id": "au-01",
@@ -25702,19 +25702,19 @@
         "name": "悉尼歌剧院",
         "intro": "世界遗产建筑地标",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-01-1.jpg"
+        "image": "assets/images/travel/attractions/au-01-1.jpg"
       },
       {
         "name": "海港大桥",
         "intro": "攀桥与海港景观",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/au-01-2.jpg"
+        "image": "assets/images/travel/attractions/au-01-2.jpg"
       },
       {
         "name": "邦迪海滩",
         "intro": "冲浪海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-01-3.jpg"
+        "image": "assets/images/travel/attractions/au-01-3.jpg"
       }
     ],
     "routes": [
@@ -25808,7 +25808,7 @@
       "au-edu-master",
       "au-pr-apply"
     ],
-    "image": "assets/travel/cities/au-01.jpg"
+    "image": "assets/images/travel/city/au-01.jpg"
   },
   {
     "id": "au-02",
@@ -25840,19 +25840,19 @@
         "name": "联邦广场",
         "intro": "现代广场地标",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/au-02-1.jpg"
+        "image": "assets/images/travel/attractions/au-02-1.jpg"
       },
       {
         "name": "大洋路",
         "intro": "十二门徒海岸公路",
         "time": "1 天",
-        "image": "assets/travel/attractions/au-02-2.jpg"
+        "image": "assets/images/travel/attractions/au-02-2.jpg"
       },
       {
         "name": "维多利亚女王市场",
         "intro": "百年露天市场",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-02-3.jpg"
+        "image": "assets/images/travel/attractions/au-02-3.jpg"
       }
     ],
     "routes": [
@@ -25945,7 +25945,7 @@
       "au-edu-master",
       "au-pr-apply"
     ],
-    "image": "assets/travel/cities/au-02.jpg"
+    "image": "assets/images/travel/city/au-02.jpg"
   },
   {
     "id": "au-03",
@@ -25977,19 +25977,19 @@
         "name": "南岸公园",
         "intro": "河畔公园与泳池",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-03-1.jpg"
+        "image": "assets/images/travel/attractions/au-03-1.jpg"
       },
       {
         "name": "故事桥",
         "intro": "城市地标桥",
         "time": "1 小时",
-        "image": "assets/travel/attractions/au-03-2.jpg"
+        "image": "assets/images/travel/attractions/au-03-2.jpg"
       },
       {
         "name": "龙柏考拉保护区",
         "intro": "考拉与袋鼠",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-03-3.jpg"
+        "image": "assets/images/travel/attractions/au-03-3.jpg"
       }
     ],
     "routes": [
@@ -26082,7 +26082,7 @@
       "au-edu-master",
       "au-pr-apply"
     ],
-    "image": "assets/travel/cities/au-03.jpg"
+    "image": "assets/images/travel/city/au-03.jpg"
   },
   {
     "id": "au-04",
@@ -26114,19 +26114,19 @@
         "name": "国王公园",
         "intro": "城市公园与天际线",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-04-1.jpg"
+        "image": "assets/images/travel/attractions/au-04-1.jpg"
       },
       {
         "name": "科茨洛海滩",
         "intro": "日落海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-04-2.jpg"
+        "image": "assets/images/travel/attractions/au-04-2.jpg"
       },
       {
         "name": "罗特尼斯岛",
         "intro": "短尾矮袋鼠岛",
         "time": "1 天",
-        "image": "assets/travel/attractions/au-04-3.jpg"
+        "image": "assets/images/travel/attractions/au-04-3.jpg"
       }
     ],
     "routes": [
@@ -26219,7 +26219,7 @@
       "au-edu-master",
       "au-pr-apply"
     ],
-    "image": "assets/travel/cities/au-04.jpg"
+    "image": "assets/images/travel/city/au-04.jpg"
   },
   {
     "id": "au-05",
@@ -26251,19 +26251,19 @@
         "name": "冲浪者天堂",
         "intro": "冲浪海滩与高层建筑",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-05-1.jpg"
+        "image": "assets/images/travel/attractions/au-05-1.jpg"
       },
       {
         "name": "华纳兄弟电影世界",
         "intro": "电影主题乐园",
         "time": "半天",
-        "image": "assets/travel/attractions/au-05-2.jpg"
+        "image": "assets/images/travel/attractions/au-05-2.jpg"
       },
       {
         "name": "库兰加塔海滩",
         "intro": "南端海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-05-3.jpg"
+        "image": "assets/images/travel/attractions/au-05-3.jpg"
       }
     ],
     "routes": [
@@ -26356,7 +26356,7 @@
       "au-edu-master",
       "au-pr-apply"
     ],
-    "image": "assets/travel/cities/au-05.jpg"
+    "image": "assets/images/travel/city/au-05.jpg"
   },
   {
     "id": "au-06",
@@ -26388,19 +26388,19 @@
         "name": "大堡礁游船",
         "intro": "世界最大珊瑚礁",
         "time": "1 天",
-        "image": "assets/travel/attractions/au-06-1.jpg"
+        "image": "assets/images/travel/attractions/au-06-1.jpg"
       },
       {
         "name": "库兰达雨林缆车",
         "intro": "雨林缆车",
         "time": "半天",
-        "image": "assets/travel/attractions/au-06-2.jpg"
+        "image": "assets/images/travel/attractions/au-06-2.jpg"
       },
       {
         "name": "埃斯普拉纳德海滨",
         "intro": "海滨步道与泳池",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/au-06-3.jpg"
+        "image": "assets/images/travel/attractions/au-06-3.jpg"
       }
     ],
     "routes": [
@@ -26493,7 +26493,7 @@
       "au-edu-master",
       "au-pr-apply"
     ],
-    "image": "assets/travel/cities/au-06.jpg"
+    "image": "assets/images/travel/city/au-06.jpg"
   },
   {
     "id": "au-07",
@@ -26525,19 +26525,19 @@
         "name": "阿德莱德山",
         "intro": "酒庄与田园",
         "time": "半天",
-        "image": "assets/travel/attractions/au-07-1.jpg"
+        "image": "assets/images/travel/attractions/au-07-1.jpg"
       },
       {
         "name": "巴罗萨谷",
         "intro": "葡萄酒产区",
         "time": "1 天",
-        "image": "assets/travel/attractions/au-07-2.jpg"
+        "image": "assets/images/travel/attractions/au-07-2.jpg"
       },
       {
         "name": "阿德莱德中央市场",
         "intro": "美食市场",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/au-07-3.jpg"
+        "image": "assets/images/travel/attractions/au-07-3.jpg"
       }
     ],
     "routes": [
@@ -26630,7 +26630,7 @@
       "au-edu-master",
       "au-pr-apply"
     ],
-    "image": "assets/travel/cities/au-07.jpg"
+    "image": "assets/images/travel/city/au-07.jpg"
   },
   {
     "id": "au-08",
@@ -26662,19 +26662,19 @@
         "name": "萨拉曼卡广场",
         "intro": "乔治亚建筑市场",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-08-1.jpg"
+        "image": "assets/images/travel/attractions/au-08-1.jpg"
       },
       {
         "name": "威灵顿山",
         "intro": "城市观景山",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-08-2.jpg"
+        "image": "assets/images/travel/attractions/au-08-2.jpg"
       },
       {
         "name": "古今艺术博物馆",
         "intro": "现代艺术博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-08-3.jpg"
+        "image": "assets/images/travel/attractions/au-08-3.jpg"
       }
     ],
     "routes": [
@@ -26768,7 +26768,7 @@
       "au-edu-master",
       "au-pr-apply"
     ],
-    "image": "assets/travel/cities/au-08.jpg"
+    "image": "assets/images/travel/city/au-08.jpg"
   },
   {
     "id": "au-09",
@@ -26800,19 +26800,19 @@
         "name": "明迪尔海滩日落市场",
         "intro": "夜市与日落",
         "time": "2 小时",
-        "image": "assets/travel/attractions/au-09-1.jpg"
+        "image": "assets/images/travel/attractions/au-09-1.jpg"
       },
       {
         "name": "卡卡杜国家公园",
         "intro": "湿地与岩画（近郊）",
         "time": "1 天",
-        "image": "assets/travel/attractions/au-09-2.jpg"
+        "image": "assets/images/travel/attractions/au-09-2.jpg"
       },
       {
         "name": "鳄鱼湾",
         "intro": "城市鳄鱼体验",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/au-09-3.jpg"
+        "image": "assets/images/travel/attractions/au-09-3.jpg"
       }
     ],
     "routes": [
@@ -26905,7 +26905,7 @@
       "au-edu-master",
       "au-pr-apply"
     ],
-    "image": "assets/travel/cities/au-09.jpg"
+    "image": "assets/images/travel/city/au-09.jpg"
   },
   {
     "id": "nz-01",
@@ -26937,19 +26937,19 @@
         "name": "天空塔",
         "intro": "城市地标观景塔",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nz-01-1.jpg"
+        "image": "assets/images/travel/attractions/nz-01-1.jpg"
       },
       {
         "name": "使命湾",
         "intro": "海滨街区",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nz-01-2.jpg"
+        "image": "assets/images/travel/attractions/nz-01-2.jpg"
       },
       {
         "name": "怀希基岛",
         "intro": "酒庄与海滩岛屿",
         "time": "1 天",
-        "image": "assets/travel/attractions/nz-01-3.jpg"
+        "image": "assets/images/travel/attractions/nz-01-3.jpg"
       }
     ],
     "routes": [
@@ -27042,7 +27042,7 @@
       "nz-edu-master",
       "nz-pr-apply"
     ],
-    "image": "assets/travel/cities/nz-01.jpg"
+    "image": "assets/images/travel/city/nz-01.jpg"
   },
   {
     "id": "nz-02",
@@ -27074,19 +27074,19 @@
         "name": "瓦卡蒂普湖",
         "intro": "冰川湖泊",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nz-02-1.jpg"
+        "image": "assets/images/travel/attractions/nz-02-1.jpg"
       },
       {
         "name": "天空缆车",
         "intro": "湖景缆车与滑板车",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nz-02-2.jpg"
+        "image": "assets/images/travel/attractions/nz-02-2.jpg"
       },
       {
         "name": "米尔福德峡湾",
         "intro": "世界遗产峡湾（近郊）",
         "time": "1 天",
-        "image": "assets/travel/attractions/nz-02-3.jpg"
+        "image": "assets/images/travel/attractions/nz-02-3.jpg"
       }
     ],
     "routes": [
@@ -27179,7 +27179,7 @@
       "nz-edu-master",
       "nz-pr-apply"
     ],
-    "image": "assets/travel/cities/nz-02.jpg"
+    "image": "assets/images/travel/city/nz-02.jpg"
   },
   {
     "id": "nz-03",
@@ -27211,19 +27211,19 @@
         "name": "植物园",
         "intro": "城市花园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nz-03-1.jpg"
+        "image": "assets/images/travel/attractions/nz-03-1.jpg"
       },
       {
         "name": "纸板大教堂",
         "intro": "重建临时教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/nz-03-2.jpg"
+        "image": "assets/images/travel/attractions/nz-03-2.jpg"
       },
       {
         "name": "基督城电车",
         "intro": "老城观光电车",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nz-03-3.jpg"
+        "image": "assets/images/travel/attractions/nz-03-3.jpg"
       }
     ],
     "routes": [
@@ -27316,7 +27316,7 @@
       "nz-edu-master",
       "nz-pr-apply"
     ],
-    "image": "assets/travel/cities/nz-03.jpg"
+    "image": "assets/images/travel/city/nz-03.jpg"
   },
   {
     "id": "nz-04",
@@ -27348,19 +27348,19 @@
         "name": "蒂帕帕国家博物馆",
         "intro": "国家博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nz-04-1.jpg"
+        "image": "assets/images/travel/attractions/nz-04-1.jpg"
       },
       {
         "name": "缆车",
         "intro": "城市观景缆车",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nz-04-2.jpg"
+        "image": "assets/images/travel/attractions/nz-04-2.jpg"
       },
       {
         "name": "维塔工作室",
         "intro": "电影特效工作室",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nz-04-3.jpg"
+        "image": "assets/images/travel/attractions/nz-04-3.jpg"
       }
     ],
     "routes": [
@@ -27453,7 +27453,7 @@
       "nz-edu-master",
       "nz-pr-apply"
     ],
-    "image": "assets/travel/cities/nz-04.jpg"
+    "image": "assets/images/travel/city/nz-04.jpg"
   },
   {
     "id": "nz-05",
@@ -27485,19 +27485,19 @@
         "name": "蒂普亚地热村",
         "intro": "间歇泉与毛利工艺",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nz-05-1.jpg"
+        "image": "assets/images/travel/attractions/nz-05-1.jpg"
       },
       {
         "name": "怀奥塔普地热世界",
         "intro": "彩色地热池",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nz-05-2.jpg"
+        "image": "assets/images/travel/attractions/nz-05-2.jpg"
       },
       {
         "name": "波利尼西亚温泉",
         "intro": "湖畔温泉",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nz-05-3.jpg"
+        "image": "assets/images/travel/attractions/nz-05-3.jpg"
       }
     ],
     "routes": [
@@ -27590,7 +27590,7 @@
       "nz-edu-master",
       "nz-pr-apply"
     ],
-    "image": "assets/travel/cities/nz-05.jpg"
+    "image": "assets/images/travel/city/nz-05.jpg"
   },
   {
     "id": "nz-06",
@@ -27622,19 +27622,19 @@
         "name": "芒格努伊山",
         "intro": "海滩与火山丘",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nz-06-1.jpg"
+        "image": "assets/images/travel/attractions/nz-06-1.jpg"
       },
       {
         "name": "陶朗加海滨",
         "intro": "海港步道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nz-06-2.jpg"
+        "image": "assets/images/travel/attractions/nz-06-2.jpg"
       },
       {
         "name": "霍比特人村",
         "intro": "电影取景地（近郊）",
         "time": "3 小时",
-        "image": "assets/travel/attractions/nz-06-3.jpg"
+        "image": "assets/images/travel/attractions/nz-06-3.jpg"
       }
     ],
     "routes": [
@@ -27727,7 +27727,7 @@
       "nz-edu-master",
       "nz-pr-apply"
     ],
-    "image": "assets/travel/cities/nz-06.jpg"
+    "image": "assets/images/travel/city/nz-06.jpg"
   },
   {
     "id": "nz-07",
@@ -27759,19 +27759,19 @@
         "name": "装饰艺术街区",
         "intro": "1930 年代建筑群",
         "time": "2 小时",
-        "image": "assets/travel/attractions/nz-07-1.jpg"
+        "image": "assets/images/travel/attractions/nz-07-1.jpg"
       },
       {
         "name": "海洋步道",
         "intro": "海滨步道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/nz-07-2.jpg"
+        "image": "assets/images/travel/attractions/nz-07-2.jpg"
       },
       {
         "name": "霍克湾酒庄",
         "intro": "葡萄酒产区",
         "time": "半天",
-        "image": "assets/travel/attractions/nz-07-3.jpg"
+        "image": "assets/images/travel/attractions/nz-07-3.jpg"
       }
     ],
     "routes": [
@@ -27864,7 +27864,7 @@
       "nz-edu-master",
       "nz-pr-apply"
     ],
-    "image": "assets/travel/cities/nz-07.jpg"
+    "image": "assets/images/travel/city/nz-07.jpg"
   },
   {
     "id": "br-01",
@@ -27896,19 +27896,19 @@
         "name": "基督救世主像",
         "intro": "山巅巨型雕像",
         "time": "2 小时",
-        "image": "assets/travel/attractions/br-01-1.jpg"
+        "image": "assets/images/travel/attractions/br-01-1.jpg"
       },
       {
         "name": "科帕卡巴纳海滩",
         "intro": "新月形海滩",
         "time": "2 小时",
-        "image": "assets/travel/attractions/br-01-2.jpg"
+        "image": "assets/images/travel/attractions/br-01-2.jpg"
       },
       {
         "name": "面包山",
         "intro": "海湾观景缆车",
         "time": "2 小时",
-        "image": "assets/travel/attractions/br-01-3.jpg"
+        "image": "assets/images/travel/attractions/br-01-3.jpg"
       }
     ],
     "routes": [
@@ -28002,7 +28002,7 @@
       "br-edu-master",
       "br-pr-apply"
     ],
-    "image": "assets/travel/cities/br-01.jpg"
+    "image": "assets/images/travel/city/br-01.jpg"
   },
   {
     "id": "br-02",
@@ -28034,19 +28034,19 @@
         "name": "圣保罗艺术博物馆",
         "intro": "悬挑建筑美术馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/br-02-1.jpg"
+        "image": "assets/images/travel/attractions/br-02-1.jpg"
       },
       {
         "name": "伊比拉普埃拉公园",
         "intro": "城市公园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/br-02-2.jpg"
+        "image": "assets/images/travel/attractions/br-02-2.jpg"
       },
       {
         "name": "保利斯塔大道",
         "intro": "城市大道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/br-02-3.jpg"
+        "image": "assets/images/travel/attractions/br-02-3.jpg"
       }
     ],
     "routes": [
@@ -28140,7 +28140,7 @@
       "br-edu-master",
       "br-pr-apply"
     ],
-    "image": "assets/travel/cities/br-02.jpg"
+    "image": "assets/images/travel/city/br-02.jpg"
   },
   {
     "id": "br-03",
@@ -28172,19 +28172,19 @@
         "name": "佩洛尼奥",
         "intro": "彩色历史城区",
         "time": "2 小时",
-        "image": "assets/travel/attractions/br-03-1.jpg"
+        "image": "assets/images/travel/attractions/br-03-1.jpg"
       },
       {
         "name": "圣弗朗西斯科教堂",
         "intro": "黄金装饰教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/br-03-2.jpg"
+        "image": "assets/images/travel/attractions/br-03-2.jpg"
       },
       {
         "name": "邦芬教堂",
         "intro": "彩带许愿教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/br-03-3.jpg"
+        "image": "assets/images/travel/attractions/br-03-3.jpg"
       }
     ],
     "routes": [
@@ -28278,7 +28278,7 @@
       "br-edu-master",
       "br-pr-apply"
     ],
-    "image": "assets/travel/cities/br-03.jpg"
+    "image": "assets/images/travel/city/br-03.jpg"
   },
   {
     "id": "br-04",
@@ -28310,19 +28310,19 @@
         "name": "伊瓜苏瀑布",
         "intro": "世界最大瀑布群",
         "time": "1 天",
-        "image": "assets/travel/attractions/br-04-1.jpg"
+        "image": "assets/images/travel/attractions/br-04-1.jpg"
       },
       {
         "name": "鸟园",
         "intro": "热带鸟类公园",
         "time": "2 小时",
-        "image": "assets/travel/attractions/br-04-2.jpg"
+        "image": "assets/images/travel/attractions/br-04-2.jpg"
       },
       {
         "name": "三国界碑",
         "intro": "三国交界地标",
         "time": "1 小时",
-        "image": "assets/travel/attractions/br-04-3.jpg"
+        "image": "assets/images/travel/attractions/br-04-3.jpg"
       }
     ],
     "routes": [
@@ -28416,7 +28416,7 @@
       "br-edu-master",
       "br-pr-apply"
     ],
-    "image": "assets/travel/cities/br-04.jpg"
+    "image": "assets/images/travel/city/br-04.jpg"
   },
   {
     "id": "br-05",
@@ -28448,19 +28448,19 @@
         "name": "大教堂",
         "intro": "皇冠造型教堂",
         "time": "1 小时",
-        "image": "assets/travel/attractions/br-05-1.jpg"
+        "image": "assets/images/travel/attractions/br-05-1.jpg"
       },
       {
         "name": "三权广场",
         "intro": "政府建筑群",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/br-05-2.jpg"
+        "image": "assets/images/travel/attractions/br-05-2.jpg"
       },
       {
         "name": "JK 纪念堂",
         "intro": "总统纪念建筑",
         "time": "1 小时",
-        "image": "assets/travel/attractions/br-05-3.jpg"
+        "image": "assets/images/travel/attractions/br-05-3.jpg"
       }
     ],
     "routes": [
@@ -28554,7 +28554,7 @@
       "br-edu-master",
       "br-pr-apply"
     ],
-    "image": "assets/travel/cities/br-05.jpg"
+    "image": "assets/images/travel/city/br-05.jpg"
   },
   {
     "id": "br-06",
@@ -28586,19 +28586,19 @@
         "name": "伊拉斯米纳海滩",
         "intro": "城市海滩与灯塔",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/br-06-1.jpg"
+        "image": "assets/images/travel/attractions/br-06-1.jpg"
       },
       {
         "name": "穆库里佩海滩",
         "intro": "渔港海滩",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/br-06-2.jpg"
+        "image": "assets/images/travel/attractions/br-06-2.jpg"
       },
       {
         "name": "市场大楼",
         "intro": "手工艺市场",
         "time": "1 小时",
-        "image": "assets/travel/attractions/br-06-3.jpg"
+        "image": "assets/images/travel/attractions/br-06-3.jpg"
       }
     ],
     "routes": [
@@ -28693,7 +28693,7 @@
       "br-edu-master",
       "br-pr-apply"
     ],
-    "image": "assets/travel/cities/br-06.jpg"
+    "image": "assets/images/travel/city/br-06.jpg"
   },
   {
     "id": "br-07",
@@ -28725,19 +28725,19 @@
         "name": "植物园",
         "intro": "玻璃温室花园",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/br-07-1.jpg"
+        "image": "assets/images/travel/attractions/br-07-1.jpg"
       },
       {
         "name": "奥斯卡尼迈耶博物馆",
         "intro": "眼睛造型博物馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/br-07-2.jpg"
+        "image": "assets/images/travel/attractions/br-07-2.jpg"
       },
       {
         "name": "市政公园",
         "intro": "城市公园",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/br-07-3.jpg"
+        "image": "assets/images/travel/attractions/br-07-3.jpg"
       }
     ],
     "routes": [
@@ -28831,7 +28831,7 @@
       "br-edu-master",
       "br-pr-apply"
     ],
-    "image": "assets/travel/cities/br-07.jpg"
+    "image": "assets/images/travel/city/br-07.jpg"
   },
   {
     "id": "za-01",
@@ -28863,19 +28863,19 @@
         "name": "桌山",
         "intro": "平顶山与缆车",
         "time": "半天",
-        "image": "assets/travel/attractions/za-01-1.jpg"
+        "image": "assets/images/travel/attractions/za-01-1.jpg"
       },
       {
         "name": "好望角",
         "intro": "非洲大陆西南角",
         "time": "3 小时",
-        "image": "assets/travel/attractions/za-01-2.jpg"
+        "image": "assets/images/travel/attractions/za-01-2.jpg"
       },
       {
         "name": "维多利亚码头",
         "intro": "海滨码头区",
         "time": "2 小时",
-        "image": "assets/travel/attractions/za-01-3.jpg"
+        "image": "assets/images/travel/attractions/za-01-3.jpg"
       }
     ],
     "routes": [
@@ -28969,7 +28969,7 @@
       "za-edu-master",
       "za-pr-apply"
     ],
-    "image": "assets/travel/cities/za-01.jpg"
+    "image": "assets/images/travel/city/za-01.jpg"
   },
   {
     "id": "za-02",
@@ -29001,19 +29001,19 @@
         "name": "宪法山",
         "intro": "历史法院与博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/za-02-1.jpg"
+        "image": "assets/images/travel/attractions/za-02-1.jpg"
       },
       {
         "name": "曼德拉故居",
         "intro": "索韦托故居博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/za-02-2.jpg"
+        "image": "assets/images/travel/attractions/za-02-2.jpg"
       },
       {
         "name": "种族隔离博物馆",
         "intro": "历史主题博物馆",
         "time": "2 小时",
-        "image": "assets/travel/attractions/za-02-3.jpg"
+        "image": "assets/images/travel/attractions/za-02-3.jpg"
       }
     ],
     "routes": [
@@ -29107,7 +29107,7 @@
       "za-edu-master",
       "za-pr-apply"
     ],
-    "image": "assets/travel/cities/za-02.jpg"
+    "image": "assets/images/travel/city/za-02.jpg"
   },
   {
     "id": "za-03",
@@ -29139,19 +29139,19 @@
         "name": "黄金一英里",
         "intro": "海滨步道",
         "time": "2 小时",
-        "image": "assets/travel/attractions/za-03-1.jpg"
+        "image": "assets/images/travel/attractions/za-03-1.jpg"
       },
       {
         "name": "摩西马布海达球场",
         "intro": "拱门观景缆车",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/za-03-2.jpg"
+        "image": "assets/images/travel/attractions/za-03-2.jpg"
       },
       {
         "name": "德班植物园",
         "intro": "老植物园",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/za-03-3.jpg"
+        "image": "assets/images/travel/attractions/za-03-3.jpg"
       }
     ],
     "routes": [
@@ -29246,7 +29246,7 @@
       "za-edu-master",
       "za-pr-apply"
     ],
-    "image": "assets/travel/cities/za-03.jpg"
+    "image": "assets/images/travel/city/za-03.jpg"
   },
   {
     "id": "za-04",
@@ -29278,19 +29278,19 @@
         "name": "橡木大道",
         "intro": "老城橡树大道",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/za-04-1.jpg"
+        "image": "assets/images/travel/attractions/za-04-1.jpg"
       },
       {
         "name": "酒庄品鉴",
         "intro": "葡萄酒庄园",
         "time": "半天",
-        "image": "assets/travel/attractions/za-04-2.jpg"
+        "image": "assets/images/travel/attractions/za-04-2.jpg"
       },
       {
         "name": "乡村博物馆",
         "intro": "历史民居博物馆",
         "time": "1.5 小时",
-        "image": "assets/travel/attractions/za-04-3.jpg"
+        "image": "assets/images/travel/attractions/za-04-3.jpg"
       }
     ],
     "routes": [
@@ -29385,7 +29385,7 @@
       "za-edu-master",
       "za-pr-apply"
     ],
-    "image": "assets/travel/cities/za-04.jpg"
+    "image": "assets/images/travel/city/za-04.jpg"
   },
   {
     "id": "za-05",
@@ -29417,19 +29417,19 @@
         "name": "五大兽游猎",
         "intro": "非洲五霸观兽",
         "time": "1 天",
-        "image": "assets/travel/attractions/za-05-1.jpg"
+        "image": "assets/images/travel/attractions/za-05-1.jpg"
       },
       {
         "name": "萨比沙保护区",
         "intro": "私人保护区营地",
         "time": "1 天",
-        "image": "assets/travel/attractions/za-05-2.jpg"
+        "image": "assets/images/travel/attractions/za-05-2.jpg"
       },
       {
         "name": "布莱德河峡谷",
         "intro": "世界第三大峡谷",
         "time": "半天",
-        "image": "assets/travel/attractions/za-05-3.jpg"
+        "image": "assets/images/travel/attractions/za-05-3.jpg"
       }
     ],
     "routes": [
@@ -29523,7 +29523,7 @@
       "za-edu-master",
       "za-pr-apply"
     ],
-    "image": "assets/travel/cities/za-05.jpg"
+    "image": "assets/images/travel/city/za-05.jpg"
   },
   {
     "id": "za-06",
@@ -29555,19 +29555,19 @@
         "name": "失落之城",
         "intro": "主题宫殿度假村",
         "time": "2 小时",
-        "image": "assets/travel/attractions/za-06-1.jpg"
+        "image": "assets/images/travel/attractions/za-06-1.jpg"
       },
       {
         "name": "水上乐园",
         "intro": "波浪泳池乐园",
         "time": "半天",
-        "image": "assets/travel/attractions/za-06-2.jpg"
+        "image": "assets/images/travel/attractions/za-06-2.jpg"
       },
       {
         "name": "皮拉内斯堡保护区",
         "intro": "火山口保护区",
         "time": "1 天",
-        "image": "assets/travel/attractions/za-06-3.jpg"
+        "image": "assets/images/travel/attractions/za-06-3.jpg"
       }
     ],
     "routes": [
@@ -29661,6 +29661,6 @@
       "za-edu-master",
       "za-pr-apply"
     ],
-    "image": "assets/travel/cities/za-06.jpg"
+    "image": "assets/images/travel/city/za-06.jpg"
   }
 ]

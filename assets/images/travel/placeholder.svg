@@ -1,0 +1,14 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="旅游图片暂不可用">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0A3D73"/>
+      <stop offset="1" stop-color="#041B3A"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect x="12" y="12" width="776" height="476" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5" rx="12"/>
+  <path d="M 240 300 C 300 320, 380 300, 430 230" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 430 186 C 432 214, 452 226, 480 228 C 452 230, 432 242, 430 270 C 428 242, 408 230, 380 228 C 408 226, 428 214, 430 186 Z" fill="#C9A227"/>
+  <path d="M 232 302 L 300 252 L 254 320 L 240 314 Z" fill="#FFFFFF"/>
+  <text x="400" y="388" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="20" letter-spacing="6" fill="rgba(255,255,255,0.55)">全球旅游探索</text>
+</svg>
