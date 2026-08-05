@@ -1,4 +1,3 @@
-﻿/* 首页入口脚本 · 预留页面级逻辑
-   第一阶段各区块由组件自渲染；未来可在此接入数据请求、路由等 */
-document.title = Istra.brand.cn + ' · ' + Istra.brand.tagline;
+﻿/* 页面入口脚本 */
+document.title = '全球出国项目大全 · ' + Istra.brand.cn;
 Istra.reveal.observe(document);

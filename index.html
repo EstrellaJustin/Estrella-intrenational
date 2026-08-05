@@ -3,57 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>伊斯特拉国际 · 全球身份规划与国际发展智能平台</title>
-  <meta name="description" content="伊斯特拉国际 — 通过全球国家数据库、全球项目数据库与AI智能分析，帮助用户探索适合自己的国际发展路径。" />
-  <meta name="theme-color" content="#071A2B" />
+  <title>全球出国项目大全 · 伊斯特拉国际</title>
+  <meta name="description" content="伊斯特拉国际 — 全球出国项目智能数据库：50+ 国家、200+ 项目，覆盖工作、教育、投资、创业与身份规划。" />
+  <meta name="theme-color" content="#041B3A" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 
-  <!-- 设计系统 -->
-  <link rel="stylesheet" href="assets/fonts/fonts.css" />`n  <link rel="stylesheet" href="src/styles/tokens.css" />
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="src/styles/tokens.css" />
   <link rel="stylesheet" href="src/styles/base.css" />
-  <!-- 组件样式 -->
   <link rel="stylesheet" href="src/styles/navbar.css" />
-  <link rel="stylesheet" href="src/styles/hero.css" />
-  <link rel="stylesheet" href="src/styles/services.css" />
-  <link rel="stylesheet" href="src/styles/philosophy.css" />
-  <link rel="stylesheet" href="src/styles/countries.css" />
-  <link rel="stylesheet" href="src/styles/ai-cta.css" />
+  <link rel="stylesheet" href="src/styles/home.css" />
   <link rel="stylesheet" href="src/styles/footer.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要内容</a>
-
   <is-navbar page="home"></is-navbar>
-
-  <main id="main">
-    <is-hero></is-hero>
-    <is-services></is-services>
-    <is-philosophy></is-philosophy>
-    <is-countries></is-countries>
-    <is-ai-cta></is-ai-cta>
-  </main>
-
+  <main id="main"><is-home></is-home></main>
   <is-footer></is-footer>
-
-  <!-- 数据层（模拟数据，未来替换为接口） -->
   <script src="src/data/brand.js"></script>
   <script src="src/data/nav.js"></script>
-  <script src="src/data/services.js"></script>
-  <script src="src/data/countries.js"></script>
   <script src="src/data/footer.js"></script>
-  <!-- 工具 -->
+  <script src="src/data/countries.js"></script>
+  <script src="src/data/categories.js"></script>
+  <script src="src/data/projects.js"></script>
   <script src="src/utils/icons.js"></script>
   <script src="src/utils/reveal.js"></script>
-  <!-- 组件 -->
   <script src="src/components/site-navbar.js"></script>
-  <script src="src/components/site-hero.js"></script>
-  <script src="src/components/site-services.js"></script>
-  <script src="src/components/site-philosophy.js"></script>
-  <script src="src/components/site-countries.js"></script>
-  <script src="src/components/site-ai-cta.js"></script>
   <script src="src/components/site-footer.js"></script>
-  <!-- 页面逻辑 -->
+  <script src="src/components/site-home.js"></script>
   <script src="src/pages/home.js"></script>
 </body>
 </html>
-

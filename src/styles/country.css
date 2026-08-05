@@ -1,0 +1,53 @@
+﻿/* ============================================================
+   国家页 · is-country（国家详情 + 该国项目分组）
+   ============================================================ */
+
+is-country { display: block; }
+
+.country__head {
+  padding: calc(var(--nav-h) + clamp(2.5rem, 6vw, 4.5rem)) 0 clamp(2rem, 4vw, 3rem);
+  background:
+    radial-gradient(52% 44% at 84% 0%, rgba(10, 61, 115, 0.5), transparent 70%),
+    var(--color-ink);
+  border-bottom: 1px solid var(--color-line-soft);
+  color: var(--color-heading);
+}
+.country__crumbs { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.75rem; color: var(--color-text-faint); }
+.country__crumbs a { color: var(--color-text-muted); transition: color var(--dur) var(--ease); }
+.country__crumbs a:hover { color: var(--color-heading); }
+.country__crumbs .sep { opacity: 0.5; }
+
+.country__head-main { margin-top: 1.75rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+.country__flag { width: 64px; height: 48px; border-radius: var(--radius-s); overflow: hidden; box-shadow: 0 4px 14px -4px rgba(2, 19, 38, 0.9); }
+.country__flag img { width: 100%; height: 100%; object-fit: cover; }
+.country__name { margin-top: 1rem; font-size: clamp(1.75rem, 3.4vw, 2.75rem); font-weight: 700; color: var(--color-heading); }
+.country__en { margin-top: 0.25rem; font-size: 0.875rem; color: var(--color-text-muted); letter-spacing: 0.06em; }
+.country__region { display: inline-block; margin-top: 0.75rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.16em; color: var(--color-accent); }
+.country__brief { margin-top: 0.875rem; max-width: 560px; font-size: var(--fs-lead); color: var(--color-text-muted); }
+
+.country__stats { display: flex; gap: 2.5rem; }
+.country__stat { display: flex; flex-direction: column; align-items: flex-end; gap: 0.15rem; }
+.country__stat-num { font-size: 1.75rem; font-weight: 700; color: var(--color-accent); line-height: 1; }
+.country__stat-label { font-size: 0.6875rem; letter-spacing: 0.12em; color: var(--color-text-faint); }
+
+.country__body { padding-block: clamp(2rem, 4vw, 3rem) var(--section-pad); }
+
+.country__group { margin-bottom: 2.5rem; }
+.country__group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 0;
+  border-top: 1px solid var(--color-line-soft);
+  border-bottom: 1px solid var(--color-line-soft);
+  margin-bottom: 1.25rem;
+}
+.country__group-name { font-size: 1.125rem; font-weight: 700; color: var(--color-heading); }
+.country__group-count { font-size: 0.8125rem; color: var(--color-text-muted); }
+
+.country__list { display: flex; flex-direction: column; gap: 0.875rem; }
+
+.country__empty { text-align: center; padding: 3rem 1rem; border: 1px dashed var(--color-line); border-radius: var(--radius-panel); color: var(--color-text-muted); }
+
+@media (max-width: 720px) { .country__stats { gap: 1.5rem; } }

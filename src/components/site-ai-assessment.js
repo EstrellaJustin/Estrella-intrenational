@@ -98,12 +98,11 @@ class SiteAiAssessment extends HTMLElement {
         </div>`;
     }
     if (i === 2) {
-      const countries = (Istra.countries || []).concat([
-        { id: 'sg', cn: '新加坡', flag: 'sg.svg' },
-        { id: 'gb', cn: '英国', flag: 'gb.svg' },
-        { id: 'nz', cn: '新西兰', flag: 'nz.svg' },
-        { id: 'ae', cn: '阿联酋', flag: 'ae.svg' }
-      ]);
+      const countryList = Istra.countries || [];
+      const featured = ['us', 'ca', 'jp', 'de', 'au', 'sg', 'gb', 'nz', 'ae', 'fr', 'es', 'kr'];
+      const countries = featured
+        .map((id) => countryList.find((c) => c.id === id))
+        .filter(Boolean);
       return `
         <h2 class="wizard__panel-title">目标国家与方向</h2>
         <p class="wizard__panel-desc">选择您关注的发展方向与意向国家（可多选）。</p>
@@ -306,5 +305,6 @@ class SiteAiAssessment extends HTMLElement {
 }
 
 customElements.define('is-ai-assessment', SiteAiAssessment);
+
 
 

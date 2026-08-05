@@ -1,6 +1,6 @@
 ﻿/* ============================================================
-   组件：is-project-detail · 项目详情页（咨询报告风格）
-   通过 ?id=xxx 从 Istra.projects 读取项目
+   组件：is-project-detail · 项目详情（咨询报告 · 9 大模块）
+   数据来自 Istra.projects（projects.json 生成）
    ============================================================ */
 
 class SiteProjectDetail extends HTMLElement {
@@ -11,16 +11,23 @@ class SiteProjectDetail extends HTMLElement {
     Istra.reveal.observe(this);
   }
 
+  budgetLabel(v) {
+    return { low: '50 万以内', mid: '50–150 万', high: '150–300 万', vip: '300 万以上' }[v] || '以官方公布为准';
+  }
+
   render() {
     if (!this.project) { this.renderMissing(); return; }
     const p = this.project;
-    const m = p.modules;
+    const c = p.country;
 
     const sideFacts = [
-      { label: '国家', value: p.country.cn },
+      { label: '国家', value: c.cn },
       { label: '签证类型', value: p.visaType },
-      { label: '项目类别', value: p.category }
-    ].concat((m.cost || []).map((c) => ({ label: c.label, value: c.value })));
+      { label: '一级分类', value: p.category.name },
+      { label: '子分类', value: p.subcategory.name },
+      { label: '办理周期', value: p.duration },
+      { label: '预算参考', value: this.budgetLabel(p.budget) }
+    ];
 
     this.innerHTML = `
       <article class="detail">
@@ -28,27 +35,28 @@ class SiteProjectDetail extends HTMLElement {
           <div class="container">
             <nav class="detail__crumbs" aria-label="面包屑">
               <a href="index.html">首页</a><span class="sep">/</span>
-              <a href="projects.html">全球项目</a><span class="sep">/</span>
+              <a href="projects.html">项目大全</a><span class="sep">/</span>
               <span>${p.name}</span>
             </nav>
             <div class="detail__head-main">
               <div data-reveal>
                 <div class="detail__country">
-                  <span class="detail__flag"><img src="assets/flags/${p.country.flag}" alt="${p.country.cn} 国旗" width="56" height="42" /></span>
+                  <span class="detail__flag"><img src="assets/flags/${c.flag}" alt="${c.cn} 国旗" width="56" height="42" /></span>
                   <div>
-                    <p class="detail__country-cn">${p.country.cn}</p>
-                    <p class="detail__country-en">${p.country.en} · ${p.country.region}</p>
+                    <p class="detail__country-cn">${c.cn}</p>
+                    <p class="detail__country-en">${c.en} · ${c.region}</p>
                   </div>
                 </div>
                 <h1 class="detail__title">${p.name}</h1>
                 <div class="detail__badges">
                   <span class="detail__badge">${p.visaType}</span>
-                  <span class="detail__badge detail__badge--plain">${p.category}</span>
+                  <span class="detail__badge detail__badge--plain">${p.category.name}</span>
+                  <span class="detail__badge detail__badge--plain">${p.subcategory.name}</span>
                 </div>
               </div>
               <div class="detail__head-actions" data-reveal>
                 <a class="btn btn--primary" href="ai-assessment.html">立即评估 <span class="btn-arrow">→</span></a>
-                <a class="btn btn--ghost-light" href="projects.html">返回项目列表</a>
+                <a class="btn btn--ghost-light" href="projects.html">返回项目大全</a>
               </div>
             </div>
           </div>
@@ -59,28 +67,28 @@ class SiteProjectDetail extends HTMLElement {
             <div class="report" data-reveal>
               <section class="report__module">
                 <div class="report__module-head"><span class="report__module-num">01</span><h2 class="report__module-title">项目介绍</h2></div>
-                <p class="report__body">${m.overview}</p>
+                <p class="report__body">${p.introduction}</p>
               </section>
 
               <section class="report__module">
                 <div class="report__module-head"><span class="report__module-num">02</span><h2 class="report__module-title">适合人群</h2></div>
-                <ul class="report__list report__body">${(m.audience || []).map((t) => `<li>${t}</li>`).join('')}</ul>
+                <ul class="report__list report__body">${(p.targetUsers || []).map((t) => `<li>${t}</li>`).join('')}</ul>
               </section>
 
               <section class="report__module">
                 <div class="report__module-head"><span class="report__module-num">03</span><h2 class="report__module-title">申请条件</h2></div>
-                <ul class="report__list report__body">${(m.conditions || []).map((t) => `<li>${t}</li>`).join('')}</ul>
+                <ul class="report__list report__body">${(p.requirements || []).map((t) => `<li>${t}</li>`).join('')}</ul>
               </section>
 
               <section class="report__module">
-                <div class="report__module-head"><span class="report__module-num">04</span><h2 class="report__module-title">申请材料</h2></div>
-                <ul class="report__list report__body">${(m.materials || []).map((t) => `<li>${t}</li>`).join('')}</ul>
+                <div class="report__module-head"><span class="report__module-num">04</span><h2 class="report__module-title">所需材料</h2></div>
+                <ul class="report__list report__body">${(p.documents || []).map((t) => `<li>${t}</li>`).join('')}</ul>
               </section>
 
               <section class="report__module">
                 <div class="report__module-head"><span class="report__module-num">05</span><h2 class="report__module-title">申请流程</h2></div>
                 <div class="report__steps report__body">
-                  ${(m.process || []).map((t, i) => `
+                  ${(p.process || []).map((t, i) => `
                     <div class="report__step">
                       <span class="report__step-num">${String(i + 1).padStart(2, '0')}</span>
                       <span class="report__step-text">${t}</span>
@@ -91,25 +99,29 @@ class SiteProjectDetail extends HTMLElement {
               <section class="report__module">
                 <div class="report__module-head"><span class="report__module-num">06</span><h2 class="report__module-title">费用与周期</h2></div>
                 <div class="report__cost report__body">
-                  ${(m.cost || []).map((c) => `<div class="report__cost-row"><span class="report__cost-label">${c.label}</span><span class="report__cost-value">${c.value}</span></div>`).join('')}
+                  ${(p.cost || []).map((x) => `<div class="report__cost-row"><span class="report__cost-label">${x.label}</span><span class="report__cost-value">${x.value}</span></div>`).join('')}
+                  <div class="report__cost-row"><span class="report__cost-label">办理周期</span><span class="report__cost-value">${p.duration}</span></div>
                 </div>
               </section>
 
               <section class="report__module">
-                <div class="report__module-head"><span class="report__module-num">07</span><h2 class="report__module-title">优势与限制</h2></div>
-                <div class="report__proscons report__body">
-                  <div>
-                    <h3>优势</h3>
-                    <ul class="report__list report__list--check">
-                      ${(m.prosCons.pros || []).map((t) => `<li>${t}</li>`).join('')}
-                    </ul>
-                  </div>
-                  <div>
-                    <h3>限制</h3>
-                    <ul class="report__list report__list--minus">
-                      ${(m.prosCons.cons || []).map((t) => `<li>${t}</li>`).join('')}
-                    </ul>
-                  </div>
+                <div class="report__module-head"><span class="report__module-num">07</span><h2 class="report__module-title">优势</h2></div>
+                <ul class="report__list report__list--check report__body">${(p.advantages || []).map((t) => `<li>${t}</li>`).join('')}</ul>
+              </section>
+
+              <section class="report__module">
+                <div class="report__module-head"><span class="report__module-num">08</span><h2 class="report__module-title">限制</h2></div>
+                <ul class="report__list report__list--minus report__body">${(p.limitations || []).map((t) => `<li>${t}</li>`).join('')}</ul>
+              </section>
+
+              <section class="report__module">
+                <div class="report__module-head"><span class="report__module-num">09</span><h2 class="report__module-title">常见问题</h2></div>
+                <div class="report__faq report__body">
+                  ${(p.faq || []).map((f) => `
+                    <details class="faq-item">
+                      <summary>${f.q}</summary>
+                      <p>${f.a}</p>
+                    </details>`).join('')}
                 </div>
               </section>
             </div>
@@ -124,9 +136,9 @@ class SiteProjectDetail extends HTMLElement {
               <div class="side-panel" data-reveal>
                 <div class="side-panel__actions">
                   <a class="btn btn--primary" href="ai-assessment.html">立即评估 <span class="btn-arrow">→</span></a>
-                  <a class="btn btn--ghost-dark" href="projects.html">返回项目列表</a>
+                  <a class="btn btn--ghost-dark" href="projects.html">返回项目大全</a>
                 </div>
-                <p class="side-panel__note">* 本项目信息为展示数据，具体政策、费用与周期以官方最新公布为准。AI 分析引擎将在后续阶段接入。</p>
+                <p class="side-panel__note">* 项目信息为数据库展示内容，具体政策、费用与周期以各国官方最新公布为准。</p>
               </div>
             </aside>
           </div>
@@ -145,4 +157,5 @@ class SiteProjectDetail extends HTMLElement {
     `;
   }
 }
+
 customElements.define('is-project-detail', SiteProjectDetail);

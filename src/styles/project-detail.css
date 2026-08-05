@@ -161,3 +161,38 @@ is-project-detail { display: block; }
   .detail__head-actions { width: 100%; }
   .detail__head-actions .btn { width: 100%; }
 }
+
+/* —— 常见问题（FAQ 折叠） —— */
+.report__faq { display: flex; flex-direction: column; }
+.faq-item {
+  border-bottom: 1px solid var(--color-line-soft);
+}
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-heading);
+  list-style: none;
+  transition: color var(--dur) var(--ease);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+";
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--color-accent);
+  transition: transform var(--dur) var(--ease);
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item summary:hover { color: var(--color-accent); }
+.faq-item p {
+  padding: 0 0 1rem;
+  font-size: 0.875rem;
+  line-height: 1.9;
+  color: var(--color-text);
+}

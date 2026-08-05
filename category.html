@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>项目分类 · 伊斯特拉国际</title>
+  <meta name="description" content="伊斯特拉国际 — 全球出国项目分类浏览。" />
+  <meta name="theme-color" content="#041B3A" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="src/styles/tokens.css" />
+  <link rel="stylesheet" href="src/styles/base.css" />
+  <link rel="stylesheet" href="src/styles/navbar.css" />
+  <link rel="stylesheet" href="src/styles/category.css" />
+  <link rel="stylesheet" href="src/styles/projects.css" />
+  <link rel="stylesheet" href="src/styles/footer.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要内容</a>
+  <is-navbar page="projects"></is-navbar>
+  <main id="main"><is-category></is-category></main>
+  <is-footer></is-footer>
+  <script src="src/data/brand.js"></script>
+  <script src="src/data/nav.js"></script>
+  <script src="src/data/footer.js"></script>
+  <script src="src/data/countries.js"></script>
+  <script src="src/data/categories.js"></script>
+  <script src="src/data/projects.js"></script>
+  <script src="src/utils/icons.js"></script>
+  <script src="src/utils/reveal.js"></script>
+  <script src="src/components/site-navbar.js"></script>
+  <script src="src/components/site-footer.js"></script>
+  <script src="src/components/site-category.js"></script>
+  <script src="src/pages/category.js"></script>
+</body>
+</html>

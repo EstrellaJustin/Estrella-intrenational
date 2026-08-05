@@ -1,0 +1,66 @@
+﻿/* ============================================================
+   关于我们页 · is-about
+   ============================================================ */
+
+is-about { display: block; }
+
+.about__head {
+  padding: calc(var(--nav-h) + clamp(3rem, 7vw, 5rem)) 0 clamp(2rem, 4vw, 3rem);
+  background:
+    radial-gradient(52% 44% at 84% 0%, rgba(10, 61, 115, 0.5), transparent 70%),
+    var(--color-ink);
+  border-bottom: 1px solid var(--color-line-soft);
+  color: var(--color-heading);
+  text-align: center;
+}
+.about__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.about__eyebrow::before, .about__eyebrow::after { content: ""; width: 1.75rem; height: 1px; background: currentColor; }
+.about__title { margin-top: 1.125rem; font-size: var(--fs-h1); font-weight: 700; color: var(--color-heading); }
+.about__sub { margin: 0.875rem auto 0; max-width: 640px; font-size: var(--fs-lead); color: var(--color-text-muted); }
+
+.about__body { padding-block: clamp(2.5rem, 5vw, 4rem) var(--section-pad); }
+.about__intro {
+  max-width: 820px;
+  margin-inline: auto;
+  text-align: center;
+  font-size: var(--fs-lead);
+  line-height: 2.1;
+  color: var(--color-text);
+}
+
+.about__caps { margin-top: 3.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.875rem; }
+.about__cap {
+  padding: 1.75rem;
+  background: rgba(6, 43, 85, 0.32);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.about__cap:hover { background: rgba(6, 43, 85, 0.65); border-color: rgba(59, 130, 246, 0.45); transform: translateY(-2px); }
+.about__cap-num { font-size: 0.8125rem; font-weight: 700; color: var(--color-accent); letter-spacing: 0.1em; }
+.about__cap-title { margin-top: 0.75rem; font-size: 1.0625rem; font-weight: 700; color: var(--color-heading); }
+.about__cap-desc { margin-top: 0.5rem; font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.9; }
+
+.about__principles { margin-top: 3.5rem; }
+.about__principles-head { text-align: center; margin-bottom: 2rem; }
+.about__principles-head .title { font-size: var(--fs-h2); }
+.about__principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.875rem; }
+.about__principle {
+  padding: 1.5rem;
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-panel);
+}
+.about__principle-idx { font-size: 0.8125rem; font-weight: 700; color: var(--color-accent); }
+.about__principle-title { margin-top: 0.625rem; font-size: 1rem; font-weight: 700; color: var(--color-heading); }
+.about__principle-desc { margin-top: 0.4rem; font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.9; }
+
+@media (max-width: 1024px) { .about__caps, .about__principles-grid { grid-template-columns: 1fr; } }

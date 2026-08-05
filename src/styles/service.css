@@ -1,0 +1,114 @@
+﻿/* ============================================================
+   服务咨询页 · is-service
+   ============================================================ */
+
+is-service { display: block; }
+
+.service__head {
+  padding: calc(var(--nav-h) + clamp(3rem, 7vw, 5rem)) 0 clamp(2rem, 4vw, 3rem);
+  background:
+    radial-gradient(52% 44% at 84% 0%, rgba(10, 61, 115, 0.5), transparent 70%),
+    var(--color-ink);
+  border-bottom: 1px solid var(--color-line-soft);
+  color: var(--color-heading);
+  text-align: center;
+}
+.service__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.service__eyebrow::before, .service__eyebrow::after { content: ""; width: 1.75rem; height: 1px; background: currentColor; }
+.service__title { margin-top: 1.125rem; font-size: var(--fs-h1); font-weight: 700; color: var(--color-heading); }
+.service__sub { margin: 0.875rem auto 0; max-width: 620px; font-size: var(--fs-lead); color: var(--color-text-muted); }
+
+.service__body { padding-block: clamp(2.5rem, 5vw, 4rem) var(--section-pad); }
+.service__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+
+/* 咨询流程 */
+.service__block-title { font-size: 1.0625rem; font-weight: 700; color: var(--color-heading); margin-bottom: 1.25rem; }
+.service__steps { display: flex; flex-direction: column; }
+.service__step {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--color-line-soft);
+}
+.service__step:first-child { border-top: 1px solid var(--color-line-soft); }
+.service__step-num { font-size: 0.875rem; font-weight: 700; color: var(--color-accent); flex: none; width: 2rem; }
+.service__step-title { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.service__step-desc { margin-top: 0.3rem; font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.8; }
+
+/* 服务范围 */
+.service__scope-list { display: flex; flex-direction: column; }
+.service__scope {
+  display: flex;
+  gap: 0.875rem;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--color-line-soft);
+  font-size: 0.9375rem;
+  color: var(--color-text);
+}
+.service__scope::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--color-accent); margin-top: 0.7em; flex: none; }
+
+/* 咨询表单 */
+.service__form {
+  margin-top: 2rem;
+  padding: 1.75rem;
+  background: var(--color-ink-2);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-panel);
+}
+.service__form-title { font-size: 1rem; font-weight: 700; color: var(--color-heading); }
+.service__form-desc { margin-top: 0.375rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+.service__form-fields { margin-top: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.service__field { display: flex; flex-direction: column; gap: 0.4rem; }
+.service__field--full { grid-column: 1 / -1; }
+.service__field label { font-size: 0.75rem; font-weight: 600; color: #CBD5E1; }
+.service__field input, .service__field select, .service__field textarea {
+  padding: 0 0.75rem;
+  height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-m);
+  background: rgba(4, 27, 58, 0.6);
+  color: var(--color-heading);
+  font-family: inherit;
+  font-size: 0.875rem;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  appearance: none;
+}
+.service__field textarea { height: auto; min-height: 110px; padding: 0.75rem; resize: vertical; }
+.service__field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+.service__field select option { background: var(--color-ink-2); color: var(--color-heading); }
+.service__field input:focus, .service__field select:focus, .service__field textarea:focus { outline: none; border-color: var(--color-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); }
+.service__form-submit { margin-top: 1.25rem; width: 100%; }
+.service__form-success {
+  display: none;
+  margin-top: 1rem;
+  padding: 0.875rem 1.25rem;
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-s);
+  color: #E5D9B0;
+  font-size: 0.875rem;
+}
+.service__form.is-sent .service__form-fields,
+.service__form.is-sent .service__form-submit { display: none; }
+.service__form.is-sent .service__form-success { display: block; }
+
+.service__contact { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.service__contact-item { display: flex; align-items: center; gap: 0.75rem; font-size: 0.875rem; color: var(--color-text); }
+.service__contact-item .tag { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.12em; color: var(--color-accent); width: 3.5rem; flex: none; }
+
+@media (max-width: 1024px) { .service__grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+@media (max-width: 640px) { .service__form-fields { grid-template-columns: 1fr; } }
