@@ -93,21 +93,21 @@ const G = {
 /* ---------- 一级分类 × 子分类 ---------- */
 const CATEGORIES = [
   {
-    id: 'work', name: '工作就业类', en: 'WORK & EMPLOYMENT',
-    desc: '以就业为驱动的国际发展路径，覆盖高技能、雇主担保、技术人才与蓝领就业等项目。',
+    id: 'work', name: '工作就业', en: 'WORK & EMPLOYMENT',
+    desc: '以就业为驱动的国际发展路径，覆盖高技能、雇主担保、技术人才、普通就业与蓝领就业等项目。',
     subs: [
       { id: 'work-highskill', name: '高技能工作签证', visaType: '工作签证', budget: 'mid', duration: '1–3 个月', role: '高技能专业人士', focus: '专业技能岗位' },
-      { id: 'work-regular', name: '普通工作签证', visaType: '工作签证', budget: 'low', duration: '1–3 个月', role: '普通职业申请人', focus: '常规就业岗位' },
-      { id: 'work-employer', name: '雇主担保项目', visaType: '雇主担保', budget: 'mid', duration: '3–6 个月', role: '获得雇主担保的申请人', focus: '雇主驱动的就业路径' },
-      { id: 'work-skilled', name: '技术人才项目', visaType: '技术移民', budget: 'mid', duration: '3–6 个月', role: '技术型专业人才', focus: '技能评估与打分' },
-      { id: 'work-bluecollar', name: '蓝领就业项目', visaType: '工作签证', budget: 'low', duration: '1–3 个月', role: '蓝领技能从业者', focus: '技能型就业岗位' }
+      { id: 'work-employer', name: '雇主担保', visaType: '雇主担保', budget: 'mid', duration: '3–6 个月', role: '获得雇主担保的申请人', focus: '雇主驱动的就业路径' },
+      { id: 'work-skilled', name: '技术人才', visaType: '技术移民', budget: 'mid', duration: '3–6 个月', role: '技术型专业人才', focus: '技能评估与打分' },
+      { id: 'work-regular', name: '普通就业', visaType: '工作签证', budget: 'low', duration: '1–3 个月', role: '普通职业申请人', focus: '常规就业岗位' },
+      { id: 'work-bluecollar', name: '蓝领就业', visaType: '工作签证', budget: 'low', duration: '1–3 个月', role: '蓝领技能从业者', focus: '技能型就业岗位' }
     ]
   },
   {
-    id: 'tech', name: '技术人才类', en: 'TECH TALENT',
-    desc: '面向 IT、工程、科研、医疗与高学历人才的专项引进路径。',
+    id: 'tech', name: '技术人才', en: 'TECH TALENT',
+    desc: '面向 IT、工程师、科研、医疗与高学历人才的专项引进路径。',
     subs: [
-      { id: 'tech-it', name: 'IT 人才', visaType: '技术人才签证', budget: 'mid', duration: '1–3 个月', role: 'IT 与软件人才', focus: '科技与数字化岗位' },
+      { id: 'tech-it', name: 'IT人才', visaType: '技术人才签证', budget: 'mid', duration: '1–3 个月', role: 'IT 与软件人才', focus: '科技与数字化岗位' },
       { id: 'tech-engineer', name: '工程师', visaType: '技术人才签证', budget: 'mid', duration: '1–3 个月', role: '工程领域人才', focus: '工程与制造岗位' },
       { id: 'tech-research', name: '科研人才', visaType: '研究签证', budget: 'mid', duration: '1–3 个月', role: '科研人员', focus: '科研与学术岗位' },
       { id: 'tech-medical', name: '医疗人才', visaType: '技术人才签证', budget: 'mid', duration: '1–3 个月', role: '医疗健康人才', focus: '医疗护理岗位' },
@@ -115,18 +115,18 @@ const CATEGORIES = [
     ]
   },
   {
-    id: 'edu', name: '留学教育类', en: 'STUDY & EDUCATION',
-    desc: '覆盖本科、硕士、博士、语言课程与职业教育的留学发展路径。',
+    id: 'edu', name: '留学教育', en: 'STUDY & EDUCATION',
+    desc: '覆盖本科、硕士、博士、职业教育与语言课程的留学发展路径。',
     subs: [
-      { id: 'edu-bachelor', name: '本科留学', visaType: '学生签证', budget: 'mid', duration: '3–6 个月', role: '计划攻读本科的学生', focus: '本科学位教育' },
-      { id: 'edu-master', name: '硕士留学', visaType: '学生签证', budget: 'mid', duration: '3–6 个月', role: '计划攻读硕士的学生', focus: '硕士学位教育' },
-      { id: 'edu-phd', name: '博士项目', visaType: '学生签证', budget: 'high', duration: '6–12 个月', role: '计划攻读博士的研究者', focus: '博士学位与研究' },
-      { id: 'edu-language', name: '语言课程', visaType: '学生签证', budget: 'low', duration: '1–2 个月', role: '语言学习者', focus: '语言能力提升' },
-      { id: 'edu-vocational', name: '职业教育', visaType: '学生签证', budget: 'low', duration: '1–3 个月', role: '职业技能学习者', focus: '职业资格培训' }
+      { id: 'edu-bachelor', name: '本科', visaType: '学生签证', budget: 'mid', duration: '3–6 个月', role: '计划攻读本科的学生', focus: '本科学位教育' },
+      { id: 'edu-master', name: '硕士', visaType: '学生签证', budget: 'mid', duration: '3–6 个月', role: '计划攻读硕士的学生', focus: '硕士学位教育' },
+      { id: 'edu-phd', name: '博士', visaType: '学生签证', budget: 'high', duration: '6–12 个月', role: '计划攻读博士的研究者', focus: '博士学位与研究' },
+      { id: 'edu-vocational', name: '职业教育', visaType: '学生签证', budget: 'low', duration: '1–3 个月', role: '职业技能学习者', focus: '职业资格培训' },
+      { id: 'edu-language', name: '语言课程', visaType: '学生签证', budget: 'low', duration: '1–2 个月', role: '语言学习者', focus: '语言能力提升' }
     ]
   },
   {
-    id: 'invest', name: '投资创业类', en: 'INVEST & ENTREPRENEUR',
+    id: 'invest', name: '投资创业', en: 'INVEST & ENTREPRENEUR',
     desc: '以投资与创业为驱动的身份与居留路径，适合高净值人士与企业创始人。',
     subs: [
       { id: 'invest-immigration', name: '投资移民', visaType: '投资移民', budget: 'vip', duration: '12–24 个月', role: '高净值投资者', focus: '合规投资获取身份' },
@@ -136,58 +136,55 @@ const CATEGORIES = [
     ]
   },
   {
-    id: 'talent', name: '人才移民类', en: 'TALENT MIGRATION',
-    desc: '国家人才计划、杰出人才与国家邀请等定向人才引进项目。',
+    id: 'talent', name: '人才移民', en: 'TALENT MIGRATION',
+    desc: '杰出人才、国家人才计划与高端人才项目等定向人才引进路径。',
     subs: [
-      { id: 'talent-national', name: '国家人才计划', visaType: '人才签证', budget: 'mid', duration: '3–6 个月', role: '优秀人才', focus: '国家人才引进' },
       { id: 'talent-exceptional', name: '杰出人才', visaType: '杰出人才', budget: 'mid', duration: '3–9 个月', role: '各领域杰出人士', focus: '国际认可成就' },
-      { id: 'talent-invitation', name: '国家邀请项目', visaType: '人才签证', budget: 'mid', duration: '3–9 个月', role: '受邀人才', focus: '定向邀请引进' }
+      { id: 'talent-national', name: '国家人才计划', visaType: '人才签证', budget: 'mid', duration: '3–6 个月', role: '优秀人才', focus: '国家人才引进' },
+      { id: 'talent-invitation', name: '高端人才项目', visaType: '人才签证', budget: 'mid', duration: '3–9 个月', role: '受邀人才', focus: '定向邀请引进' }
     ]
   },
   {
-    id: 'family', name: '家庭团聚类', en: 'FAMILY REUNION',
-    desc: '面向配偶、子女、父母及其他家庭成员的团聚居留路径。',
+    id: 'family', name: '家庭团聚', en: 'FAMILY REUNION',
+    desc: '面向配偶、子女与父母的家庭团聚居留路径。',
     subs: [
-      { id: 'family-spouse', name: '配偶团聚', visaType: '家庭团聚', budget: 'mid', duration: '3–12 个月', role: '配偶', focus: '配偶团聚' },
-      { id: 'family-child', name: '子女团聚', visaType: '家庭团聚', budget: 'mid', duration: '3–12 个月', role: '未成年子女', focus: '子女随行团聚' },
-      { id: 'family-parent', name: '父母团聚', visaType: '家庭团聚', budget: 'mid', duration: '6–18 个月', role: '父母', focus: '父母团聚' },
-      { id: 'family-reunion', name: '家庭团聚', visaType: '家庭团聚', budget: 'mid', duration: '6–18 个月', role: '家庭成员', focus: '家庭整体团聚' }
+      { id: 'family-spouse', name: '配偶', visaType: '家庭团聚', budget: 'mid', duration: '3–12 个月', role: '配偶', focus: '配偶团聚' },
+      { id: 'family-child', name: '子女', visaType: '家庭团聚', budget: 'mid', duration: '3–12 个月', role: '未成年子女', focus: '子女随行团聚' },
+      { id: 'family-parent', name: '父母', visaType: '家庭团聚', budget: 'mid', duration: '6–18 个月', role: '父母', focus: '父母团聚' }
     ]
   },
   {
-    id: 'pr', name: '永久居留类', en: 'PERMANENT RESIDENCE',
-    desc: '永居申请、长期居留与身份转换等长期身份规划项目。',
+    id: 'pr', name: '永久居留', en: 'PERMANENT RESIDENCE',
+    desc: '永居项目、长期居留与身份转换等长期身份规划路径。',
     subs: [
-      { id: 'pr-apply', name: '永居申请', visaType: '永居申请', budget: 'mid', duration: '12–24 个月', role: '长期居留申请人', focus: '永久居留身份' },
+      { id: 'pr-apply', name: '永居项目', visaType: '永居申请', budget: 'mid', duration: '12–24 个月', role: '长期居留申请人', focus: '永久居留身份' },
       { id: 'pr-longterm', name: '长期居留', visaType: '长期居留', budget: 'mid', duration: '6–18 个月', role: '长期居留申请人', focus: '长期合法居留' },
       { id: 'pr-convert', name: '身份转换', visaType: '永居申请', budget: 'mid', duration: '6–18 个月', role: '已居留申请人', focus: '身份层级转换' }
     ]
   },
   {
-    id: 'nomad', name: '数字游民类', en: 'DIGITAL NOMAD',
+    id: 'nomad', name: '数字游民', en: 'DIGITAL NOMAD',
     desc: '面向远程工作者与自由职业者的数字游民与远程工作签证。',
     subs: [
       { id: 'nomad-visa', name: '数字游民签证', visaType: '数字游民签证', budget: 'low', duration: '2–6 周', role: '远程工作者', focus: '远程工作与旅居' },
-      { id: 'nomad-remote', name: '远程工作签证', visaType: '数字游民签证', budget: 'low', duration: '2–6 周', role: '远程雇员', focus: '远程就业居留' }
+      { id: 'nomad-remote', name: '远程工作', visaType: '数字游民签证', budget: 'low', duration: '2–6 周', role: '远程雇员', focus: '远程就业居留' }
     ]
   },
   {
-    id: 'youth', name: '青年交流类', en: 'YOUTH & EXCHANGE',
-    desc: '工作假期、青年项目与国际交流等面向青年群体的发展路径。',
+    id: 'youth', name: '青年交流', en: 'YOUTH & EXCHANGE',
+    desc: '工作假期与国际交流等面向青年群体的发展路径。',
     subs: [
       { id: 'youth-working-holiday', name: '工作假期', visaType: '工作假期', budget: 'low', duration: '2–6 周', role: '青年申请人', focus: '边工作边旅行' },
-      { id: 'youth-program', name: '青年项目', visaType: '交流签证', budget: 'low', duration: '1–3 个月', role: '青年申请人', focus: '青年交流与实习' },
       { id: 'youth-exchange', name: '国际交流', visaType: '交流签证', budget: 'low', duration: '1–3 个月', role: '交流参与者', focus: '文化与学术交流' }
     ]
   },
   {
-    id: 'special', name: '特殊身份类', en: 'SPECIAL STATUS',
-    desc: '面向宗教人士、艺术人才、运动员与高净值投资人士的特殊身份路径。',
+    id: 'special', name: '特殊人才', en: 'SPECIAL TALENT',
+    desc: '面向艺术人才、运动员与宗教人士的特殊身份路径。',
     subs: [
-      { id: 'special-religious', name: '宗教人士', visaType: '特殊签证', budget: 'mid', duration: '1–3 个月', role: '宗教从业人士', focus: '宗教服务与居留' },
       { id: 'special-art', name: '艺术人才', visaType: '特殊签证', budget: 'mid', duration: '1–3 个月', role: '艺术创作者', focus: '艺术创作与展演' },
       { id: 'special-athlete', name: '运动员', visaType: '特殊签证', budget: 'mid', duration: '1–3 个月', role: '职业运动员', focus: '训练与参赛' },
-      { id: 'special-investor', name: '投资人士', visaType: '特殊签证', budget: 'vip', duration: '3–6 个月', role: '高净值投资者', focus: '大额投资居留' }
+      { id: 'special-religious', name: '宗教人士', visaType: '特殊签证', budget: 'mid', duration: '1–3 个月', role: '宗教从业人士', focus: '宗教服务与居留' }
     ]
   }
 ];
@@ -201,18 +198,36 @@ const BASE = ['work-highskill', 'edu-master', 'pr-apply'];
 const ADD = {
   'work-skilled': ['au', 'nz', 'ca', 'gb', 'ie', 'de', 'nl', 'se', 'dk', 'sg'],
   'work-employer': ['ca', 'au', 'nz', 'gb', 'ie', 'de', 'sg', 'us', 'fr', 'nl'],
+  'work-regular': ['pl', 'cz', 'hu', 'ro', 'bg', 'mx'],
+  'work-bluecollar': ['pl', 'cz', 'hu', 'ro', 'bg', 'si'],
   'tech-it': ['us', 'ca', 'gb', 'de', 'ie', 'nl', 'se', 'fi', 'sg', 'jp', 'kr', 'il'],
   'tech-engineer': ['de', 'jp', 'kr', 'sg', 'ch', 'se', 'fi', 'nl', 'au', 'ca'],
   'tech-degree': ['us', 'ca', 'gb', 'de', 'fr', 'nl', 'sg', 'jp', 'kr', 'il'],
+  'tech-research': ['us', 'ca', 'gb', 'de', 'fr', 'nl'],
+  'tech-medical': ['gb', 'ca', 'au', 'nz', 'us', 'ie'],
   'edu-bachelor': ['us', 'ca', 'gb', 'au', 'nz', 'ie', 'sg', 'my', 'th', 'ae'],
+  'edu-phd': ['us', 'ca', 'gb', 'de', 'fr', 'nl'],
+  'edu-language': ['es', 'it', 'fr', 'de', 'jp', 'kr'],
+  'edu-vocational': ['de', 'ch', 'at', 'au', 'ca', 'jp'],
+  'invest-immigration': ['us', 'ca', 'gb', 'au', 'nz', 'sg'],
   'invest-business': ['us', 'ca', 'gb', 'de', 'fr', 'nl', 'ch', 'sg', 'jp', 'kr', 'au', 'nz', 'ae', 'es', 'pt', 'gr', 'cy', 'mt'],
   'invest-startup': ['ca', 'gb', 'au', 'nz', 'sg', 'ae', 'es', 'pt', 'fr', 'nl', 'ie', 'ch'],
+  'invest-entrepreneur': ['us', 'ca', 'gb', 'de', 'fr', 'nl'],
   'talent-national': ['us', 'ca', 'gb', 'de', 'jp', 'sg', 'ae', 'qa', 'sa', 'il'],
   'talent-exceptional': ['us', 'ca', 'gb', 'au', 'nz', 'jp', 'kr', 'sg', 'il', 'ae'],
+  'talent-invitation': ['us', 'ca', 'au', 'nz', 'jp', 'sg'],
   'family-spouse': ['us', 'ca', 'gb', 'de', 'fr', 'nl', 'au', 'nz', 'jp', 'sg', 'it', 'es', 'pt', 'se', 'dk', 'fi', 'kr', 'my'],
+  'family-child': ['us', 'ca', 'gb', 'de', 'fr', 'nl'],
+  'family-parent': ['us', 'ca', 'gb', 'de', 'fr', 'nl'],
+  'pr-longterm': ['us', 'ca', 'gb', 'de', 'fr', 'nl'],
+  'pr-convert': ['us', 'ca', 'gb', 'de', 'fr', 'nl'],
   'nomad-visa': ['es', 'pt', 'gr', 'cy', 'mt', 'hr', 'ee', 'lt', 'lv', 'ro', 'bg', 'cz', 'hu', 'th', 'my'],
+  'nomad-remote': ['es', 'pt', 'gr', 'cy', 'mt', 'hr'],
   'youth-working-holiday': ['au', 'nz', 'ca', 'gb', 'jp', 'kr', 'fr', 'de', 'nl', 'se'],
-  'special-art': ['us', 'ca', 'gb', 'fr', 'it', 'es', 'jp', 'kr']
+  'youth-exchange': ['us', 'ca', 'gb', 'de', 'fr', 'nl'],
+  'special-art': ['us', 'ca', 'gb', 'fr', 'it', 'es', 'jp', 'kr'],
+  'special-athlete': ['us', 'ca', 'gb', 'de', 'fr', 'it'],
+  'special-religious': ['us', 'ca', 'gb', 'de', 'fr', 'it']
 };
 
 const SPECIAL = {
@@ -472,5 +487,6 @@ function build() {
 }
 
 build();
+
 
 

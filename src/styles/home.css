@@ -1,25 +1,21 @@
 ﻿/* ============================================================
-   首页 · is-home（全球出国项目搜索中心）
-   全屏深蓝 / 搜索框 / 分类大模块 / 热门国家
+   首页 · is-home（全球出国项目分类系统）
+   仅保留：标题 + 一级分类 → 展开二级分类 → 进入项目列表页
+   深蓝主题 / 透明深蓝模块 / 细边框 / 轻微发光 / 0.3s 平滑展开
    ============================================================ */
 
 is-home { display: block; }
 
-/* —— 首屏搜索区 —— */
-.home__hero {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: calc(var(--nav-h) + clamp(3rem, 8vw, 6rem)) 0 clamp(2.5rem, 5vw, 4rem);
+/* —— 页头 —— */
+.home__head {
+  padding: calc(var(--nav-h) + clamp(3rem, 8vw, 6rem)) 0 clamp(2rem, 4vw, 3rem);
   background:
     radial-gradient(56% 46% at 82% 6%, rgba(10, 61, 115, 0.5), transparent 70%),
     radial-gradient(40% 34% at 8% 90%, rgba(6, 43, 85, 0.5), transparent 70%),
     var(--color-ink);
   border-bottom: 1px solid var(--color-line-soft);
+  text-align: center;
 }
-
 .home__eyebrow {
   display: inline-flex;
   align-items: center;
@@ -31,150 +27,99 @@ is-home { display: block; }
   color: var(--color-accent);
 }
 .home__eyebrow::before, .home__eyebrow::after { content: ""; width: 2rem; height: 1px; background: rgba(201, 162, 39, 0.5); }
+.home__title { margin-top: 1.5rem; font-size: var(--fs-h1); font-weight: 700; line-height: 1.3; color: var(--color-heading); }
+.home__sub { margin-top: 1rem; font-size: var(--fs-lead); color: var(--color-text-muted); }
 
-.home__title {
-  margin-top: 1.5rem;
-  font-size: var(--fs-h1);
-  font-weight: 700;
-  line-height: 1.3;
-  color: var(--color-heading);
-}
-.home__sub {
-  margin-top: 1rem;
-  max-width: 640px;
-  font-size: var(--fs-lead);
-  color: var(--color-text-muted);
-}
-
-/* —— 搜索面板 —— */
-.home__search {
-  margin-top: 2.5rem;
-  width: min(100%, 980px);
-  padding: 1.25rem;
-  background: rgba(6, 43, 85, 0.55);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-panel);
-  text-align: left;
-}
-.home__search-fields {
-  display: grid;
-  grid-template-columns: 1.1fr 1.6fr 1fr 1.2fr auto;
-  gap: 0.75rem;
-  align-items: end;
-}
-.home__search-field { display: flex; flex-direction: column; gap: 0.4rem; }
-.home__search-field label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.1em; color: var(--color-text-muted); }
-.home__search-field select, .home__search-field input {
-  height: 46px;
-  padding: 0 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: var(--radius-m);
-  background: rgba(4, 27, 58, 0.6);
-  color: var(--color-heading);
-  font-family: inherit;
-  font-size: 0.875rem;
-  appearance: none;
-  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
-}
-.home__search-field select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  padding-right: 2rem;
-}
-.home__search-field select option { background: var(--color-ink-2); color: var(--color-heading); }
-.home__search-field select:focus, .home__search-field input:focus {
-  outline: none;
-  border-color: var(--color-blue);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-}
-.home__search-submit {
-  min-height: 46px;
-  padding: 0 1.5rem;
-}
-
-/* 统计 */
-.home__stats {
-  margin-top: 2.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 2.5rem;
-}
-.home__stat { display: flex; align-items: baseline; gap: 0.5rem; }
-.home__stat-num { font-size: 1.75rem; font-weight: 700; color: var(--color-accent); line-height: 1; }
-.home__stat-label { font-size: 0.75rem; letter-spacing: 0.12em; color: var(--color-text-muted); }
-
-/* —— 分类大模块 —— */
-.home__cats { padding-block: var(--section-pad); }
-.home__cats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; }
+/* —— 分类手风琴 —— */
+.home__cats { padding-block: clamp(2rem, 4vw, 3rem) var(--section-pad); }
+.home__accordion { display: flex; flex-direction: column; gap: 0.875rem; }
 
 .home__cat {
-  position: relative;
-  display: grid;
-  grid-template-columns: 56px 1fr auto;
-  align-items: center;
-  gap: 1.25rem;
-  padding: 1.5rem 1.75rem;
   background: rgba(6, 43, 85, 0.32);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-panel);
-  transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease),
-              border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease),
+              transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
-.home__cat:hover {
-  background: rgba(6, 43, 85, 0.65);
+.home__cat:hover { border-color: rgba(59, 130, 246, 0.45); }
+.home__cat.is-open {
+  background: rgba(6, 43, 85, 0.6);
   border-color: rgba(59, 130, 246, 0.45);
-  transform: translateY(-2px);
   box-shadow: var(--color-glow);
 }
-.home__cat-num { font-size: 1.125rem; font-weight: 700; color: var(--color-accent); letter-spacing: 0.08em; }
-.home__cat-name { font-size: 1.125rem; font-weight: 700; color: var(--color-heading); }
-.home__cat-en { font-size: 0.625rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-text-muted); margin-top: 0.2rem; }
-.home__cat-meta { display: flex; align-items: center; gap: 1rem; }
-.home__cat-count {
-  padding: 0.2rem 0.625rem;
-  background: var(--color-accent-soft);
-  border: 1px solid var(--color-accent-line);
-  border-radius: 999px;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--color-accent);
-  white-space: nowrap;
-}
-.home__cat-arrow { color: var(--color-text-muted); font-size: 1rem; transition: color var(--dur) var(--ease), transform var(--dur) var(--ease); }
-.home__cat:hover .home__cat-arrow { color: var(--color-accent); transform: translateX(3px); }
 
-/* —— 热门国家 —— */
-.home__countries { padding-bottom: var(--section-pad); }
-.home__country-list {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.875rem;
-}
-.home__country {
+.home__cat-head {
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1rem;
-  background: rgba(6, 43, 85, 0.32);
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease);
+}
+.home__cat-head:hover { background: rgba(255, 255, 255, 0.03); }
+.home__cat-num { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.1em; color: var(--color-accent); flex: none; width: 2rem; }
+.home__cat-name { font-size: 1.125rem; font-weight: 700; color: var(--color-heading); }
+.home__cat-en { margin-left: 0.5rem; font-size: 0.625rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-text-muted); }
+.home__cat-arrow {
+  margin-left: auto;
+  width: 28px; height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--color-line);
-  border-radius: var(--radius-m);
-  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  line-height: 1;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
-.home__country:hover { background: rgba(6, 43, 85, 0.65); border-color: rgba(59, 130, 246, 0.45); transform: translateY(-2px); }
-.home__country img { width: 26px; height: 19px; border-radius: 2px; object-fit: cover; box-shadow: 0 2px 6px -2px rgba(2, 19, 38, 0.8); }
-.home__country span { font-size: 0.875rem; font-weight: 600; color: var(--color-text); }
+.home__cat-head:hover .home__cat-arrow { color: var(--color-accent); border-color: var(--color-accent-line); }
+.home__cat.is-open .home__cat-arrow { color: var(--color-accent); border-color: var(--color-accent-line); }
 
-@media (max-width: 1080px) {
-  .home__search-fields { grid-template-columns: 1fr 1fr; }
-  .home__search-submit { grid-column: 1 / -1; width: 100%; }
-  .home__country-list { grid-template-columns: repeat(3, 1fr); }
+/* 展开/收起：grid-rows 0fr→1fr，0.3s 平滑（无旋转动画） */
+.home__cat-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur) var(--ease);
 }
-@media (max-width: 760px) {
-  .home__cats-grid { grid-template-columns: 1fr; }
-  .home__country-list { grid-template-columns: repeat(2, 1fr); }
-  .home__search-fields { grid-template-columns: 1fr; }
-  .home__stats { gap: 1.25rem 2rem; }
+.home__cat.is-open .home__cat-body { grid-template-rows: 1fr; }
+.home__cat-inner { overflow: hidden; }
+
+.home__subs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  padding: 0 1.5rem 1.25rem;
+}
+.home__sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: rgba(4, 27, 58, 0.5);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease),
+              background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.home__sub .arr { opacity: 0; transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
+.home__sub:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  transform: translateY(-1px);
+}
+.home__sub:hover .arr { opacity: 1; transform: translateX(2px); }
+
+@media (max-width: 640px) {
+  .home__cat-en { display: none; }
+  .home__cat-head { padding: 1.125rem 1.125rem; gap: 0.875rem; }
+  .home__subs { padding: 0 1.125rem 1.125rem; }
 }

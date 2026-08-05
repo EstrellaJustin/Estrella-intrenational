@@ -5,7 +5,7 @@ Istra.footer = {
       title: '平台',
       links: [
         { label: '首页', href: 'index.html' },
-        { label: '全球国家', href: 'countries.html' },
+        { label: '国家浏览', href: 'countries.html' },
         { label: '项目大全', href: 'projects.html' },
         { label: 'AI 评估', href: 'ai-assessment.html' }
       ]
@@ -13,7 +13,7 @@ Istra.footer = {
     {
       title: '服务',
       links: [
-        { label: '服务咨询', href: 'service.html' },
+        { label: '咨询服务', href: 'service.html' },
         { label: '关于我们', href: 'about.html' },
         { label: '品牌理念', href: 'about.html#philosophy' }
       ]

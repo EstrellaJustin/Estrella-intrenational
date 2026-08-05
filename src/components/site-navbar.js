@@ -49,7 +49,6 @@ class SiteNavbar extends HTMLElement {
           <ul class="nav__links">${links}</ul>
         </nav>
 
-        <a class="btn btn--primary nav__cta" href="ai-assessment.html">开始评估</a>
 
         <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="打开菜单">
           ${Istra.icon('menu')}
@@ -101,4 +100,5 @@ class SiteNavbar extends HTMLElement {
 }
 
 customElements.define('is-navbar', SiteNavbar);
+
 
