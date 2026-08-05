@@ -263,3 +263,78 @@ a.report__project:hover { border-color: rgba(59, 130, 246, 0.55); background: rg
 
 .report__actions { margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
 .report__note { margin-top: 1.25rem; font-size: 0.75rem; line-height: 1.9; color: var(--color-text-faint); text-align: center; }
+
+/* ============================================================
+   v8 新增：对话式问卷 / 方向标签 / 不推荐方向
+   ============================================================ */
+
+/* 对话式阶段标签 */
+.wizard__panel-q {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  margin-bottom: 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--color-accent);
+}
+.wizard__panel-q span { font-size: 0.6875rem; font-weight: 600; color: var(--color-text-faint); }
+
+/* textarea（深色透明 + 白色边框） */
+.field textarea {
+  padding: 0.75rem 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--radius-m);
+  background: rgba(4, 27, 58, 0.6);
+  color: var(--color-heading);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  resize: vertical;
+  min-height: 96px;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.field textarea:focus { outline: none; border-color: var(--color-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); }
+.field.is-invalid textarea { border-color: #F87171; }
+
+/* 项目匹配中的方向标签 */
+.report__dir {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent-line);
+  border-radius: 999px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  vertical-align: middle;
+}
+
+/* 不推荐方向 */
+.report__notrec { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.report__notrec-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(4, 27, 58, 0.45);
+  border: 1px solid var(--color-line-soft);
+  border-left: 3px solid var(--color-text-faint);
+  border-radius: var(--radius-m);
+}
+.report__notrec-tag {
+  flex: none;
+  padding: 0.2rem 0.625rem;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 999px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  height: fit-content;
+}
+.report__notrec-title { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.report__notrec-reason { margin-top: 0.3rem; font-size: 0.8125rem; line-height: 1.9; color: var(--color-text-muted); }
