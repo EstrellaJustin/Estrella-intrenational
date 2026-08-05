@@ -1,10 +1,10 @@
 ﻿/* ============================================================
-   AI 评估入口 · is-ai-cta（v2）
+   AI 评估入口 · is-ai-cta（v3 · 深蓝面板 + 金色 VIP 点缀）
    ============================================================ */
 
 is-ai-cta { display: block; }
 
-.ai-cta { padding-block: var(--section-pad); background: var(--color-bg); }
+.ai-cta { padding-block: var(--section-pad); background: transparent; }
 
 .ai-cta__panel {
   position: relative;
@@ -13,9 +13,12 @@ is-ai-cta { display: block; }
   gap: clamp(2rem, 5vw, 4rem);
   align-items: center;
   padding: clamp(2rem, 5vw, 4rem);
-  background: var(--color-ink);
+  background:
+    radial-gradient(70% 80% at 90% 0%, rgba(10, 61, 115, 0.55), transparent 70%),
+    var(--color-ink-2);
+  border: 1px solid var(--color-line-soft);
   border-radius: var(--radius-panel);
-  color: var(--color-on-dark);
+  color: var(--color-heading);
   overflow: hidden;
 }
 .ai-cta__panel::before {
@@ -23,7 +26,7 @@ is-ai-cta { display: block; }
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 3px;
-  background: var(--color-accent);
+  background: linear-gradient(180deg, var(--color-accent), rgba(201, 162, 39, 0.25));
 }
 
 .ai-cta__badge {
@@ -31,59 +34,38 @@ is-ai-cta { display: block; }
   align-items: center;
   gap: 0.5rem;
   padding: 0.35rem 0.875rem;
-  background: rgba(37, 99, 235, 0.16);
-  border: 1px solid rgba(96, 165, 250, 0.35);
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent-line);
   border-radius: 999px;
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.12em;
-  color: #BFDBFE;
+  color: var(--color-accent);
 }
 .ai-cta__badge .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
 
-.ai-cta__title {
-  margin-top: 1.25rem;
-  font-size: var(--fs-h2);
-  font-weight: 700;
-  line-height: 1.4;
-  color: var(--color-on-dark);
-}
-.ai-cta__desc { margin-top: 0.875rem; font-size: var(--fs-lead); color: var(--color-on-dark-2); }
+.ai-cta__title { margin-top: 1.25rem; font-size: var(--fs-h2); font-weight: 700; line-height: 1.4; color: var(--color-heading); }
+.ai-cta__desc { margin-top: 0.875rem; font-size: var(--fs-lead); color: var(--color-text-muted); }
 .ai-cta__actions { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; }
 
-.ai-cta__side { border-left: 1px solid var(--color-line-dark); padding-left: clamp(1.5rem, 3vw, 2.5rem); }
-.ai-cta__side-label {
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #60A5FA;
-}
+.ai-cta__side { border-left: 1px solid var(--color-line-soft); padding-left: clamp(1.5rem, 3vw, 2.5rem); }
+.ai-cta__side-label { font-size: 0.625rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-accent); }
 .ai-cta__side-list { margin-top: 1.25rem; display: flex; flex-direction: column; }
 .ai-cta__side-item {
   display: flex;
   align-items: center;
   gap: 0.875rem;
   padding: 0.625rem 0;
-  border-bottom: 1px solid var(--color-line-dark);
+  border-bottom: 1px solid var(--color-line-soft);
   font-size: 0.9375rem;
-  color: var(--color-on-dark-2);
+  color: var(--color-text);
 }
 .ai-cta__side-item:last-child { border-bottom: none; }
-.ai-cta__side-item .idx {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: #60A5FA;
-  width: 1.5rem; flex: none;
-}
-.ai-cta__side-note {
-  margin-top: 1.25rem;
-  font-size: 0.75rem;
-  color: var(--color-on-dark-3);
-}
+.ai-cta__side-item .idx { font-size: 0.6875rem; font-weight: 700; color: var(--color-accent); width: 1.5rem; flex: none; }
+.ai-cta__side-note { margin-top: 1.25rem; font-size: 0.75rem; color: var(--color-text-faint); }
 
 @media (max-width: 1024px) {
   .ai-cta__panel { grid-template-columns: 1fr; }
-  .ai-cta__side { border-left: none; border-top: 1px solid var(--color-line-dark); padding-left: 0; padding-top: 1.5rem; }
+  .ai-cta__side { border-left: none; border-top: 1px solid var(--color-line-soft); padding-left: 0; padding-top: 1.5rem; }
 }
 @media (max-width: 768px) { .ai-cta__actions .btn { width: 100%; } }

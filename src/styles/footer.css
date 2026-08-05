@@ -1,13 +1,14 @@
 ﻿/* ============================================================
-   页脚 · is-footer（v2）
+   页脚 · is-footer（v3 · 最深蓝）
    ============================================================ */
 
 is-footer { display: block; }
 
 .footer {
   background: var(--color-ink-deep);
-  color: var(--color-on-dark-2);
+  color: var(--color-text-muted);
   padding-top: clamp(3rem, 6vw, 5rem);
+  border-top: 1px solid var(--color-line-soft);
 }
 
 .footer__main {
@@ -15,42 +16,17 @@ is-footer { display: block; }
   grid-template-columns: 1.5fr 1fr 1fr 1fr;
   gap: clamp(2rem, 4vw, 4rem);
   padding-bottom: clamp(2.25rem, 4vw, 3rem);
-  border-bottom: 1px solid var(--color-line-dark);
+  border-bottom: 1px solid var(--color-line-soft);
 }
 
-.footer__brand-name {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--color-on-dark);
-  font-size: 1.0625rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
+.footer__brand-name { display: flex; align-items: center; gap: 0.75rem; color: var(--color-heading); font-size: 1.0625rem; font-weight: 700; letter-spacing: 0.04em; }
 .footer__brand-mark { width: 36px; height: 36px; flex: none; }
-.footer__brand-tagline {
-  margin-top: 0.875rem;
-  font-size: 0.875rem;
-  color: var(--color-on-dark-3);
-  max-width: 300px;
-  line-height: 1.9;
-}
+.footer__brand-tagline { margin-top: 0.875rem; font-size: 0.875rem; color: var(--color-text-faint); max-width: 300px; line-height: 1.9; }
 
-.footer__col-title {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #60A5FA;
-  margin-bottom: 1.125rem;
-}
+.footer__col-title { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 1.125rem; }
 .footer__col-list { display: flex; flex-direction: column; gap: 0.75rem; }
-.footer__col-link {
-  font-size: 0.875rem;
-  color: var(--color-on-dark-2);
-  transition: color var(--dur) var(--ease);
-}
-.footer__col-link:hover { color: var(--color-on-dark); }
+.footer__col-link { font-size: 0.875rem; color: var(--color-text-muted); transition: color var(--dur) var(--ease); }
+.footer__col-link:hover { color: var(--color-heading); }
 
 .footer__bottom {
   display: flex;
@@ -60,7 +36,7 @@ is-footer { display: block; }
   gap: 1rem;
   padding-block: 1.5rem;
   font-size: 0.75rem;
-  color: var(--color-on-dark-3);
+  color: var(--color-text-faint);
 }
 
 @media (max-width: 1024px) { .footer__main { grid-template-columns: 1fr 1fr; } }

@@ -1,5 +1,5 @@
 ﻿/* ============================================================
-   建设中页面 · is-coming-soon（v2）
+   建设中页面 · is-coming-soon（v3）
    ============================================================ */
 
 is-coming-soon { display: block; }
@@ -13,9 +13,9 @@ is-coming-soon { display: block; }
   text-align: center;
   padding: calc(var(--nav-h) + 3rem) 1.5rem 4rem;
   background:
-    radial-gradient(50% 45% at 80% 10%, rgba(11, 46, 89, 0.5), transparent 70%),
+    radial-gradient(50% 45% at 80% 10%, rgba(10, 61, 115, 0.45), transparent 70%),
     var(--color-ink);
-  color: var(--color-on-dark);
+  color: var(--color-heading);
   overflow: hidden;
 }
 .soon__watermark {
@@ -25,28 +25,13 @@ is-coming-soon { display: block; }
   transform: translate(-50%, -50%);
   font-size: clamp(10rem, 28vw, 24rem);
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.025);
+  color: rgba(255, 255, 255, 0.02);
   pointer-events: none;
   user-select: none;
 }
 
 .soon__inner { position: relative; max-width: 640px; }
-.soon__code {
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.24em;
-  color: #60A5FA;
-}
-.soon__title {
-  margin-top: 1.25rem;
-  font-size: clamp(1.625rem, 4vw, 2.5rem);
-  font-weight: 700;
-  color: var(--color-on-dark);
-}
-.soon__desc {
-  margin-top: 1rem;
-  font-size: var(--fs-lead);
-  color: var(--color-on-dark-2);
-  line-height: 2;
-}
+.soon__code { font-size: 0.625rem; font-weight: 600; letter-spacing: 0.24em; color: var(--color-accent); }
+.soon__title { margin-top: 1.25rem; font-size: clamp(1.625rem, 4vw, 2.5rem); font-weight: 700; color: var(--color-heading); }
+.soon__desc { margin-top: 1rem; font-size: var(--fs-lead); color: var(--color-text-muted); line-height: 2; }
 .soon__actions { margin-top: 2.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }

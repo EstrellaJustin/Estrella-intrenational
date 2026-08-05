@@ -1,38 +1,40 @@
 ﻿/* ============================================================
-   伊斯特拉国际 · Design Tokens（v2 · 深蓝 + 白）
-   主色 #061A33 / 辅助蓝 #0B2E59 / 背景 #F8FAFC / 强调 #2563EB
-   风格：高级、简洁、商务、国际化（禁止鲜艳色与花哨渐变）
+   伊斯特拉国际 · Design Tokens（v3 · 深蓝主导 + 白色点缀）
+   主色 #041B3A / 辅助深蓝 #062B55 / 高级蓝 #0A3D73
+   金色 #C9A227 仅用于高级标签、重要数字、VIP 元素
+   风格：90% 深蓝空间 · 10% 白色元素 · 国际咨询/私人银行质感
    ============================================================ */
 
 :root {
-  /* —— 品牌色 —— */
-  --color-ink:        #061A33;   /* 深海蓝（主色） */
-  --color-ink-2:      #0B2E59;   /* 辅助蓝 */
-  --color-ink-deep:   #041120;   /* 深海蓝 · 最深（页脚/叠加） */
+  /* —— 深蓝体系 —— */
+  --color-ink:        #041B3A;   /* 深海蓝（主色 · 页面背景） */
+  --color-ink-2:      #062B55;   /* 辅助深蓝（模块表面） */
+  --color-ink-3:      #0A3D73;   /* 高级蓝（层级提升 / hover） */
+  --color-ink-deep:   #021326;   /* 最深蓝（页脚） */
 
-  /* —— 中性色 —— */
-  --color-bg:         #F8FAFC;   /* 页面背景 */
-  --color-surface:    #FFFFFF;   /* 卡片/内容面 */
-  --color-heading:    #0A1628;   /* 主标题 */
-  --color-text:       #475569;   /* 正文 */
-  --color-text-muted: #64748B;   /* 次要文字 */
-  --color-text-faint: #94A3B8;   /* 弱化文字 */
-
-  /* —— 强调 —— */
-  --color-accent:       #2563EB; /* 强调蓝 */
-  --color-accent-dark:  #1D4ED8; /* 强调蓝 · hover */
-  --color-accent-soft:  rgba(37, 99, 235, 0.08);
-  --color-accent-line:  rgba(37, 99, 235, 0.35);
-
-  /* —— 深色背景上的文字 —— */
+  /* —— 文字 —— */
+  --color-heading:    #FFFFFF;   /* 标题：白色 */
+  --color-text:       #B7C3D4;   /* 正文：浅蓝灰 */
+  --color-text-muted: #94A3B8;   /* 辅助灰 */
+  --color-text-faint: #64748B;   /* 弱化文字 */
   --color-on-dark:    #FFFFFF;
-  --color-on-dark-2:  rgba(255, 255, 255, 0.72);
+  --color-on-dark-2:  rgba(255, 255, 255, 0.78);
   --color-on-dark-3:  rgba(255, 255, 255, 0.45);
 
+  /* —— 强调（金色 · 少量使用） —— */
+  --color-accent:       #C9A227;  /* 金色 */
+  --color-accent-dark:  #A8871D;  /* 金色 · hover */
+  --color-accent-soft:  rgba(201, 162, 39, 0.14);
+  --color-accent-line:  rgba(201, 162, 39, 0.45);
+
+  /* —— 功能蓝（进度线 / 焦点 / 光效，非主色） —— */
+  --color-blue:        #3B82F6;
+  --color-blue-soft:   rgba(59, 130, 246, 0.22);
+  --color-glow:        0 18px 44px -18px rgba(59, 130, 246, 0.45);
+
   /* —— 线条 —— */
-  --color-line:         rgba(10, 22, 40, 0.08);
-  --color-line-strong:  rgba(10, 22, 40, 0.14);
-  --color-line-dark:    rgba(255, 255, 255, 0.14);
+  --color-line:       rgba(255, 255, 255, 0.12);
+  --color-line-soft:  rgba(255, 255, 255, 0.08);
 
   /* —— 字体（Inter + 思源黑体，自托管） —— */
   --font-sans: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
@@ -63,19 +65,18 @@
   --nav-h: 76px;
   --nav-h-scrolled: 62px;
 
-  /* —— 圆角（克制：不超过 8px） —— */
+  /* —— 圆角（克制） —— */
   --radius-s: 4px;
   --radius-m: 6px;
   --radius-btn: 6px;
   --radius-panel: 8px;
 
-  /* —— 动效（统一 0.3s ease） —— */
+  /* —— 动效（0.3–0.5s ease） —— */
   --dur: 0.3s;
   --ease: ease;
   --dur-slow: 0.5s;
 
   /* —— 阴影（克制） —— */
-  --shadow-sm: 0 4px 14px -6px rgba(6, 26, 51, 0.10);
-  --shadow-md: 0 16px 40px -20px rgba(6, 26, 51, 0.18);
-  --shadow-blue: 0 10px 24px -10px rgba(37, 99, 235, 0.45);
+  --shadow-sm: 0 10px 28px -16px rgba(2, 19, 38, 0.8);
+  --shadow-md: 0 24px 60px -28px rgba(2, 19, 38, 0.9);
 }

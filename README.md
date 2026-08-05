@@ -3,7 +3,8 @@
 > 高端国际身份规划平台
 > 通过全球出国项目数据库与 AI 智能匹配系统，为个人与家庭提供国际发展方案。
 
-**v2 已完成整体 UI 重设计**：深蓝 + 白视觉体系（Inter + 思源黑体），新增「全球项目大全」「项目详情（咨询报告）」「国际身份评估中心」三个页面。功能逻辑与组件架构保持不变。
+**v3 视觉升级**：深蓝主导沉浸式 UI（90% 深蓝空间 + 10% 白色元素），金色仅少量用于高级标签与重要数字。
+功能逻辑与页面结构保持不变。
 
 ---
 
@@ -24,38 +25,38 @@
 | 页面 | 说明 | 状态 |
 | --- | --- | --- |
 | `index.html` | 首页：Hero / 核心服务 / 品牌理念 / 热门国家 / AI 评估入口 / 页脚 | ✅ |
-| `projects.html` | 全球项目大全：高级列表布局（旗帜 + 国家 / 项目 + 签证类型 / 查看详情） | ✅ |
-| `project-detail.html?id=xxx` | 项目详情：咨询报告风格（深蓝报告头 + 七大模块 + 关键信息侧栏） | ✅ |
-| `ai-assessment.html` | 国际身份评估中心：Step 01–04 步骤式流程 + 进度条（仅界面） | ✅ |
+| `projects.html` | 全球项目大全：深蓝透明模块列表（旗帜 + 国家 / 项目 + 签证类型 / 查看详情） | ✅ |
+| `project-detail.html?id=xxx` | 项目详情：深蓝咨询报告（Banner + 七大模块 + 关键信息侧栏） | ✅ |
+| `ai-assessment.html` | 国际身份评估中心：Step 01–04 + 蓝色进度线 + 深色透明输入框 | ✅ |
 | `coming-soon.html` | 各模块占位页（国家浏览 / 联系我们等） | ✅（占位） |
 
 ---
 
-## 三、设计系统（v2 · 深蓝 + 白）
+## 三、设计系统（v3 · 深蓝主导）
 
 | Token | 值 | 用途 |
 | --- | --- | --- |
-| `--color-ink` | `#061A33` | 深海蓝 · 主色 |
-| `--color-ink-2` | `#0B2E59` | 辅助蓝 |
-| `--color-bg` | `#F8FAFC` | 页面背景 |
-| `--color-heading` | `#0A1628` | 主标题 |
-| `--color-text` | `#475569` | 正文 |
-| `--color-accent` | `#2563EB` | 强调蓝 |
-| `--font-sans` | Inter + 思源黑体 | 标题粗体 / 正文常规 |
+| `--color-ink` | `#041B3A` | 深海蓝 · 页面背景 |
+| `--color-ink-2` | `#062B55` | 辅助深蓝 · 模块表面 |
+| `--color-ink-3` | `#0A3D73` | 高级蓝 · 层级提升 |
+| `--color-ink-deep` | `#021326` | 最深蓝 · 页脚 |
+| `--color-text-muted` | `#94A3B8` | 辅助灰（正文/次要文字） |
+| `--color-accent` | `#C9A227` | 金色（仅高级标签/重要数字/VIP） |
+| `--color-blue` | `#3B82F6` | 功能蓝（进度线/焦点/光效） |
+| `--color-heading` | `#FFFFFF` | 标题白色 |
 
-规范：圆角 ≤ 8px（按钮 6px）、阴影克制、动效统一 `0.3s ease`、
-页面进入淡入、按钮 hover、列表行轻微上浮；**无旋转 / 夸张动画**。
-所有变量集中于 `src/styles/tokens.css`。
-
-### 字体
-- **Inter**（400/500/600/700）与 **思源黑体 Noto Sans SC**（400/500/700）已自托管于 `assets/fonts/`。
-- 思源黑体为按站点当前用字生成的子集（约 384 字）；后续新增文案若含未收录字，将自动回退到系统中文黑体。
+规范：
+- 主要页面背景全部深蓝；白色仅用于标题、按钮文字、重要信息突出与局部内容区
+- 项目模块：透明深蓝 + 边框 `rgba(255,255,255,0.12)`，hover 轻微上移 + 蓝色光效
+- 详情模块：背景 `#041B3A` / 模块 `#062B55` 层级 + 细线分割，无白色卡片
+- 输入框：深色透明背景 + 白色边框；进度线蓝色；步骤数字白色
+- 动效：页面淡入 / hover 浮动 / 背景微光，`0.3–0.5s ease`，无旋转/弹跳
 
 ---
 
 ## 四、技术架构
 
-**零依赖 Web Components（原生 Custom Elements）+ CSS Design Tokens + 数据驱动渲染。**
+**零依赖 Web Components（原生 Custom Elements）+ CSS Design Tokens + 数据驱动渲染。**（与 v2 一致）
 
 ```
 istra-international/
@@ -66,29 +67,24 @@ istra-international/
 │   ├── flags/            # 国家旗帜 SVG（9 国）
 │   ├── brand-mark.svg / favicon.svg
 ├── src/
-│   ├── styles/           # tokens / base / navbar / hero / services / philosophy /
-│   │                     # countries / ai-cta / projects / project-detail /
-│   │                     # ai-assessment / footer / coming-soon
-│   ├── components/       # is-navbar / is-hero / is-services / is-philosophy /
-│   │                     # is-countries / is-ai-cta / is-projects /
-│   │                     # is-project-detail / is-ai-assessment / is-footer / is-coming-soon
-│   ├── data/             # brand / nav / services / countries / projects / footer（模拟数据）
+│   ├── styles/           # 各组件样式（tokens / base / navbar / hero / services /
+│   │                     # philosophy / countries / ai-cta / projects / project-detail /
+│   │                     # ai-assessment / footer / coming-soon）
+│   ├── components/       # 11 个自定义元素组件
+│   ├── data/             # brand / nav / services / countries / projects / footer
 │   ├── pages/            # 页面级入口脚本
 │   └── utils/            # icons / reveal
 └── scripts/serve.js      # 零依赖静态服务器
 ```
 
-- 项目数据：`src/data/projects.js`（10 个项目，含详情模块），列表页与详情页共用。
-- 未来接入：将 `data/*.js` 替换为 API 调用即可，组件与字段结构不变。
-
 ---
 
-## 五、验收（42/42 通过）
+## 五、验收（43/43 通过）
 
-- 5 个页面 HTTP 与 file:// 双击均可打开，无控制台错误、无横向溢出、全部链接可达
-- 导航 5 项（首页 / 国家浏览 / 全球项目 / AI评估 / 联系我们），滚动后白色半透明毛玻璃 + 深色文字
-- Hero：深蓝背景、中央大标题、立即评估 / 浏览项目、无营销图片
-- 项目大全：10 行高级列表（旗帜 / 国家 / 项目 / 签证类型 / 简介 / 查看详情），hover 平滑上浮
-- 项目详情：咨询报告七大模块 + 关键信息侧栏，细线分割、无大圆角卡片
-- AI 评估中心：四步向导 + 进度条 + 必填校验 + 摘要生成
-- 统一深蓝白体系：背景 #F8FAFC / 强调 #2563EB / 圆角 ≤ 8px / 动效 0.3s
+- 5 个页面 HTTP 与 file:// 均可打开，无控制台错误、无横向溢出、全部链接可达
+- 导航：深蓝透明 → 滚动后深蓝半透明毛玻璃，浅灰白文字
+- Hero：全屏深蓝、白色大标题、白底主按钮 + 白边次按钮，无普通图片
+- 项目大全：深蓝透明模块、白色细边框、hover 上移 + 蓝色光效
+- 项目详情：深蓝 Banner + 深蓝层级模块 + 细线分割，无白色卡片
+- AI 评估：蓝色进度线、白色数字、深色透明输入框 + 白色边框
+- 全站深蓝白体系：背景 #041B3A / 金色眉题 #C9A227 / 主按钮白底深蓝字
