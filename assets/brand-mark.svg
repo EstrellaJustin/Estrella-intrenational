@@ -1,5 +1,10 @@
 ﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="伊斯特拉国际">
-  <rect x="3" y="3" width="58" height="58" rx="14" fill="#0A3D73" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
-  <rect x="28" y="15" width="8" height="34" rx="2" fill="#FFFFFF"/>
-  <circle cx="44" cy="20" r="3.5" fill="#C9A227"/>
+  <!-- 深蓝品牌底 -->
+  <rect x="1.5" y="1.5" width="61" height="61" rx="14" fill="#041B3A" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/>
+  <!-- 航线弧线（白色 · 优雅连接） -->
+  <path d="M20 48 C 28 52, 39 44, 43 25.5" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+  <!-- 星星（金色 · 机遇/目标/未来） -->
+  <path d="M48 14.5 C48.8 18.8, 51.2 21.2, 55.5 22 C51.2 22.8, 48.8 25.2, 48 29.5 C47.2 25.2, 44.8 22.8, 40.5 22 C44.8 21.2, 47.2 18.8, 48 14.5 Z" fill="#C9A227"/>
+  <!-- 飞机（白色极简 · 国际连接/跨境移动） -->
+  <path d="M14 40 L32 26 L18 46 L24 42 Z" fill="#FFFFFF"/>
 </svg>
