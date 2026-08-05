@@ -37,7 +37,7 @@ class SiteTravel extends HTMLElement {
               ${list.map((t, i) => `
                 <a class="tcard" href="travel-country.html?id=${t.id}" data-reveal>
                   <div class="tcard__media">
-                    <img src="assets/travel/${t.id}.jpg" alt="${t.country.cn} 风景" loading="lazy" />
+                    <img src="${t.image}" alt="${t.country.cn} 风景" loading="lazy" />
                     <span class="tcard__flag"><img src="assets/flags/${t.country.flag}" alt="" width="30" height="22" /></span>
                     <p class="tcard__name">${t.country.cn}<small>${t.country.en}</small></p>
                   </div>

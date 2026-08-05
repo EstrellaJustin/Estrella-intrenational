@@ -295,3 +295,7 @@ is-travel, is-travel-country { display: block; }
   .city__overview { grid-template-columns: 1fr; }
   .city__spots, .city__routes, .city__visa { grid-template-columns: 1fr; }
 }
+
+/* —— 城市卡片缩略图（图片独立绑定） —— */
+.tdetail__city-thumb { width: 72px; height: 54px; flex: none; border-radius: var(--radius-s); overflow: hidden; box-shadow: 0 2px 8px -2px rgba(2, 19, 38, 0.8); }
+.tdetail__city-thumb img { width: 100%; height: 100%; object-fit: cover; }

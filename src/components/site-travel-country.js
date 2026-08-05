@@ -28,7 +28,7 @@ class SiteTravelCountry extends HTMLElement {
     this.innerHTML = `
       <div class="tdetail">
         <header class="tdetail__hero">
-          <div class="tdetail__hero-bg" style="background-image:url('assets/travel/${t.id}.jpg')"></div>
+          <div class="tdetail__hero-bg" style="background-image:url('${t.image}')"></div>
           <div class="container tdetail__hero-inner">
             <nav class="tdetail__crumbs" aria-label="面包屑">
               <a href="index.html">首页</a><span class="sep">/</span>
@@ -75,6 +75,7 @@ class SiteTravelCountry extends HTMLElement {
               <div class="tdetail__cities">
                 ${cities.map((city) => `
                   <a class="tdetail__city" href="travel-city.html?id=${city.id}">
+                    <span class="tdetail__city-thumb"><img src="${city.image}" alt="${city.city} 实景" loading="lazy" width="72" height="54" /></span>
                     <div>
                       <p class="tdetail__city-name">${city.city}</p>
                       <p class="tdetail__city-note">${city.note}</p>

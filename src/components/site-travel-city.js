@@ -29,7 +29,7 @@ class SiteTravelCity extends HTMLElement {
     this.innerHTML = `
       <div class="city">
         <header class="city__hero">
-          <div class="city__hero-bg" style="background-image:url('assets/travel/${c.id}.jpg')"></div>
+          <div class="city__hero-bg" style="background-image:url('${city.image}')"></div>
           <div class="container city__hero-inner">
             <nav class="city__crumbs" aria-label="面包屑">
               <a href="index.html">首页</a><span class="sep">/</span>
@@ -64,7 +64,7 @@ class SiteTravelCity extends HTMLElement {
               <div class="city__spots">
                 ${(city.attractions || []).map((a) => `
                   <div class="city__spot">
-                    <div class="city__spot-media"><img src="assets/travel/themes/${a.img}" alt="${a.name}" loading="lazy" /><span class="city__spot-time">${a.time}</span></div>
+                    <div class="city__spot-media"><img src="${a.image}" alt="${a.name}" loading="lazy" /><span class="city__spot-time">${a.time}</span></div>
                     <div class="city__spot-body">
                       <h3 class="city__spot-name">${a.name}</h3>
                       <p class="city__spot-intro">${a.intro}</p>
