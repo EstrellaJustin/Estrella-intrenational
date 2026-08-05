@@ -165,3 +165,133 @@ is-travel, is-travel-country { display: block; }
   .tdetail__overview, .tdetail__cities { grid-template-columns: 1fr; }
   .tdetail__exp { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   全球城市探索系统 · 城市详情页 + 国家页城市入口
+   ============================================================ */
+
+/* —— 国家页：城市入口 —— */
+.tdetail__city-hint { margin-top: 0.75rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+.tdetail__city { text-decoration: none; }
+.tdetail__city-cta { margin-left: auto; font-size: 0.75rem; font-weight: 600; color: var(--color-accent); white-space: nowrap; }
+
+/* —— 城市详情 Hero —— */
+.city__hero {
+  position: relative;
+  min-height: 54svh;
+  display: flex;
+  align-items: flex-end;
+  padding: calc(var(--nav-h) + 3rem) 0 3rem;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-line-soft);
+}
+.city__hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; filter: saturate(0.85); }
+.city__hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4, 27, 58, 0.72) 0%, rgba(4, 27, 58, 0.35) 45%, var(--color-ink) 100%); }
+.city__hero-inner { position: relative; z-index: 1; width: 100%; }
+.city__crumbs { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.75rem; color: var(--color-text-faint); margin-bottom: 1.25rem; }
+.city__crumbs a { color: var(--color-text-muted); transition: color var(--dur) var(--ease); }
+.city__crumbs a:hover { color: var(--color-heading); }
+.city__crumbs .sep { opacity: 0.5; }
+.city__country { display: flex; align-items: center; gap: 0.75rem; }
+.city__flag { width: 44px; height: 33px; border-radius: var(--radius-s); overflow: hidden; box-shadow: 0 4px 14px -4px rgba(2, 19, 38, 0.9); }
+.city__flag img { width: 100%; height: 100%; object-fit: cover; }
+.city__country-name { font-size: 0.9375rem; font-weight: 600; color: var(--color-text); letter-spacing: 0.04em; }
+.city__title { margin-top: 0.875rem; font-size: clamp(2rem, 4vw, 3.25rem); font-weight: 700; color: var(--color-heading); }
+.city__tagline { margin-top: 0.75rem; max-width: 640px; font-size: var(--fs-lead); color: var(--color-text-muted); }
+
+/* —— 城市内容区 —— */
+.city__body { padding-block: clamp(2rem, 5vw, 3.5rem) var(--section-pad); }
+.city__section { margin-top: 1.25rem; padding: clamp(1.5rem, 4vw, 2.25rem); background: var(--color-ink-2); border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); }
+.city__section:first-child { margin-top: 0; }
+.city__section-title { display: flex; align-items: baseline; gap: 0.75rem; font-size: 1.125rem; font-weight: 700; color: var(--color-heading); }
+.city__section-title span { font-size: 0.75rem; font-weight: 700; color: var(--color-accent); }
+
+/* 城市介绍 */
+.city__overview { margin-top: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 2rem; }
+.city__ov { padding: 1rem 0; border-top: 1px solid var(--color-line-soft); }
+.city__ov--full { grid-column: 1 / -1; }
+.city__ov-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-faint); }
+.city__ov-value { margin-top: 0.4rem; font-size: 0.9375rem; color: var(--color-text); line-height: 1.9; }
+
+/* 城市风景 */
+.city__spots { margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.city__spot { border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); overflow: hidden; background: rgba(4, 27, 58, 0.45); transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+.city__spot:hover { border-color: rgba(59, 130, 246, 0.5); transform: translateY(-2px); box-shadow: var(--color-glow); }
+.city__spot-media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
+.city__spot-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.city__spot:hover .city__spot-media img { transform: scale(1.04); }
+.city__spot-time { position: absolute; right: 0.75rem; bottom: 0.75rem; padding: 0.25rem 0.625rem; background: rgba(4, 27, 58, 0.75); border: 1px solid var(--color-line-soft); border-radius: 999px; font-size: 0.6875rem; color: var(--color-text); }
+.city__spot-body { padding: 1rem 1.25rem 1.125rem; }
+.city__spot-name { font-size: 1rem; font-weight: 700; color: var(--color-heading); }
+.city__spot-intro { margin-top: 0.3rem; font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.8; }
+
+/* 游玩攻略 */
+.city__routes { margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.city__route { padding: 1.25rem; background: rgba(4, 27, 58, 0.45); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.city__route-head { display: flex; align-items: baseline; gap: 0.75rem; }
+.city__route-tag { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent); }
+.city__route-name { font-size: 1rem; font-weight: 700; color: var(--color-heading); }
+.city__route-items { margin-top: 0.875rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.city__route-items li { position: relative; padding-left: 1.125rem; font-size: 0.875rem; color: var(--color-text); }
+.city__route-items li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 5px; height: 5px; border-radius: 50%; background: var(--color-blue); }
+
+/* 旅行预算 */
+.city__budget { margin-top: 1.25rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.city__budget-level { padding: 1.25rem; background: rgba(4, 27, 58, 0.45); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.city__budget-head { display: flex; flex-direction: column; gap: 0.35rem; }
+.city__budget-name { font-size: 1rem; font-weight: 700; color: var(--color-heading); }
+.city__budget-daily { font-size: 0.75rem; font-weight: 600; color: var(--color-accent); }
+.city__budget-items { margin-top: 0.875rem; display: flex; flex-direction: column; }
+.city__budget-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--color-line-soft); font-size: 0.8125rem; }
+.city__budget-row:last-child { border-bottom: none; }
+.city__budget-row span { color: var(--color-text-muted); }
+.city__budget-row b { color: var(--color-text); font-weight: 600; text-align: right; }
+
+/* 适合季节 */
+.city__seasons { margin-top: 1.25rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.875rem; }
+.city__season { padding: 1.125rem 1.25rem; background: rgba(4, 27, 58, 0.45); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.city__season-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--color-accent); }
+.city__season-tip { margin-top: 0.5rem; font-size: 0.875rem; color: var(--color-text); }
+.city__season-note { margin-top: 1rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+
+/* 签证推荐 */
+.city__visa { margin-top: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.city__visa-grid { display: flex; flex-direction: column; }
+.city__visa-item { display: flex; justify-content: space-between; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--color-line-soft); font-size: 0.9375rem; }
+.city__visa-item:first-child { border-top: 1px solid var(--color-line-soft); }
+.city__visa-label { color: var(--color-text-muted); flex: none; }
+.city__visa-value { color: var(--color-heading); font-weight: 600; text-align: right; }
+.city__visa-conditions { padding: 1.25rem; background: rgba(4, 27, 58, 0.45); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.city__visa-conditions-title { font-size: 0.8125rem; font-weight: 700; color: var(--color-heading); }
+.city__visa-list { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.city__visa-list li { padding: 0.35rem 0.75rem; background: var(--color-accent-soft); border: 1px solid var(--color-accent-line); border-radius: 999px; font-size: 0.75rem; color: var(--color-accent); }
+
+/* 如果你喜欢这里 */
+.city__related-hint { margin-top: 0.75rem; font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.9; }
+.city__related { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.city__related-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(4, 27, 58, 0.45);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-m);
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.city__related-item:hover { border-color: rgba(59, 130, 246, 0.55); background: rgba(10, 61, 115, 0.45); transform: translateY(-2px); }
+.city__related-item img { width: 34px; height: 25px; flex: none; border-radius: 3px; object-fit: cover; }
+.city__related-name { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.city__related-type { font-size: 0.6875rem; color: var(--color-accent); font-weight: 600; }
+.city__related-cta { margin-left: auto; font-size: 0.75rem; font-weight: 600; color: var(--color-accent); white-space: nowrap; }
+
+.city__note { margin-top: 1.5rem; font-size: 0.75rem; line-height: 1.9; color: var(--color-text-faint); text-align: center; }
+
+@media (max-width: 1080px) {
+  .city__budget { grid-template-columns: 1fr; }
+  .city__seasons { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 760px) {
+  .city__overview { grid-template-columns: 1fr; }
+  .city__spots, .city__routes, .city__visa { grid-template-columns: 1fr; }
+}

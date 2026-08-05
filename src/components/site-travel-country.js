@@ -1,6 +1,6 @@
 ﻿/* ============================================================
-   组件：is-travel-country · 国家旅游详情页
-   概览 / 热门城市 / 旅行信息 / 特色体验 / 长期发展关联
+   组件：is-travel-country · 国家旅游详情页（升级版）
+   国家概览（7 项）+ 热门城市（5-10 城，链接城市详情）+ 旅行信息 + 特色体验 + 长期发展关联
    ============================================================ */
 
 class SiteTravelCountry extends HTMLElement {
@@ -20,6 +20,10 @@ class SiteTravelCountry extends HTMLElement {
       .map((pid) => projects.find((p) => p.id === pid))
       .filter(Boolean)
       .slice(0, 3);
+
+    /* 城市列表（来自城市数据库） */
+    const cities = (Istra.cities || []).filter((x) => x.country.id === t.id);
+    const location = cities[0] ? cities[0].location : '';
 
     this.innerHTML = `
       <div class="tdetail">
@@ -45,6 +49,7 @@ class SiteTravelCountry extends HTMLElement {
               <span class="tdetail__fact">气候 <b>${t.climate}</b></span>
               <span class="tdetail__fact">语言 <b>${t.language}</b></span>
               <span class="tdetail__fact">货币 <b>${t.currency}</b></span>
+              <span class="tdetail__fact">城市探索 <b>${cities.length} 城</b></span>
             </div>
           </div>
         </header>
@@ -55,21 +60,27 @@ class SiteTravelCountry extends HTMLElement {
               <h2 class="tdetail__section-title"><span>01</span>国家概览</h2>
               <div class="tdetail__overview">
                 <div class="tdetail__ov"><p class="tdetail__ov-label">国家简介</p><p class="tdetail__ov-value"><b>${c.cn}（${c.en}）</b> — ${t.intro}</p></div>
-                <div class="tdetail__ov"><p class="tdetail__ov-label">最佳旅行季节</p><p class="tdetail__ov-value">${t.bestSeason}</p></div>
+                <div class="tdetail__ov"><p class="tdetail__ov-label">地理位置</p><p class="tdetail__ov-value">${location}</p></div>
                 <div class="tdetail__ov"><p class="tdetail__ov-label">气候特点</p><p class="tdetail__ov-value">${t.climate}</p></div>
-                <div class="tdetail__ov"><p class="tdetail__ov-label">语言</p><p class="tdetail__ov-value">${t.language}</p></div>
+                <div class="tdetail__ov"><p class="tdetail__ov-label">最佳旅游时间</p><p class="tdetail__ov-value">${t.bestSeason}</p></div>
+                <div class="tdetail__ov"><p class="tdetail__ov-label">文化特色</p><p class="tdetail__ov-value">${(t.culture || []).join('、')}</p></div>
                 <div class="tdetail__ov"><p class="tdetail__ov-label">货币</p><p class="tdetail__ov-value">${t.currency}</p></div>
+                <div class="tdetail__ov"><p class="tdetail__ov-label">语言</p><p class="tdetail__ov-value">${t.language}</p></div>
               </div>
             </section>
 
             <section class="tdetail__section" data-reveal>
-              <h2 class="tdetail__section-title"><span>02</span>热门城市</h2>
+              <h2 class="tdetail__section-title"><span>02</span>热门城市 · 全球城市探索</h2>
+              <p class="tdetail__city-hint">每个城市都有独立详情页：城市介绍、景点、游玩攻略、旅行预算与签证推荐。</p>
               <div class="tdetail__cities">
-                ${(t.cities || []).map((city) => `
-                  <div class="tdetail__city">
-                    <p class="tdetail__city-name">${city.name}</p>
-                    <p class="tdetail__city-note">${city.note}</p>
-                  </div>`).join('')}
+                ${cities.map((city) => `
+                  <a class="tdetail__city" href="travel-city.html?id=${city.id}">
+                    <div>
+                      <p class="tdetail__city-name">${city.city}</p>
+                      <p class="tdetail__city-note">${city.note}</p>
+                    </div>
+                    <span class="tdetail__city-cta">进入城市 →</span>
+                  </a>`).join('')}
               </div>
             </section>
 
