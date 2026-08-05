@@ -5,9 +5,10 @@ Istra.footer = {
       title: '平台',
       links: [
         { label: '首页', href: 'index.html' },
-        { label: '国家浏览', href: 'countries.html' },
-        { label: '项目大全', href: 'projects.html' },
-        { label: 'AI 评估', href: 'ai-assessment.html' }
+        { label: '全球国家', href: 'countries.html' },
+        { label: '全球项目', href: 'projects.html' },
+        { label: 'AI 评估', href: 'ai-assessment.html' },
+        { label: '旅游探索', href: 'travel.html' }
       ]
     },
     {

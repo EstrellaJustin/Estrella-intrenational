@@ -1,0 +1,1212 @@
+[
+  {
+    "id": "jp",
+    "country": {
+      "cn": "日本",
+      "en": "Japan",
+      "flag": "jp.svg"
+    },
+    "region": "ASIA",
+    "intro": "融合千年传统与前沿科技的岛国，四季分明、秩序井然，从东京的都市脉搏到京都的庭院禅意，为旅行者提供丰富而精致的体验。",
+    "climate": "四季分明，夏季温热多雨，冬季较冷；春秋最为宜人。",
+    "bestSeason": "3–5 月（樱花）与 10–11 月（红叶）",
+    "language": "日语；主要城市英语标识与基础服务较完善",
+    "currency": "日元（JPY）",
+    "visaInfo": "持中国护照需办理签证，多数情况可获 15–30 天旅游签证；具体以日本使领馆为准。",
+    "duration": "建议 7–14 天",
+    "budget": "中等偏上；东京住宿与交通成本较高，中小城市性价比更佳",
+    "transport": "JR 铁路通票 + 城市地铁 + 新干线，公共交通极为发达",
+    "accommodation": "商务酒店、日式旅馆（Ryokan）、胶囊酒店与民宿选择丰富",
+    "cities": [
+      {
+        "name": "东京",
+        "note": "现代都市、购物与美食中心"
+      },
+      {
+        "name": "京都",
+        "note": "千年古都，寺庙与庭院文化"
+      },
+      {
+        "name": "大阪",
+        "note": "关西美食之都，城市活力"
+      },
+      {
+        "name": "北海道",
+        "note": "自然风光与冬季滑雪"
+      }
+    ],
+    "attractions": [
+      "富士山与箱根温泉",
+      "京都伏见稻荷千本鸟居",
+      "奈良东大寺与小鹿",
+      "东京浅草寺与晴空塔"
+    ],
+    "culture": [
+      "茶道、花道与和服体验",
+      "神社寺庙参拜礼仪",
+      "动漫与流行文化"
+    ],
+    "food": [
+      "寿司与刺身",
+      "拉面与居酒屋",
+      "抹茶甜点与和果子"
+    ],
+    "relatedProjects": [
+      "jp-work-highskill",
+      "jp-edu-master",
+      "jp-pr-apply"
+    ]
+  },
+  {
+    "id": "kr",
+    "country": {
+      "cn": "韩国",
+      "en": "South Korea",
+      "flag": "kr.svg"
+    },
+    "region": "ASIA",
+    "intro": "首尔与釜山之间的现代都市与历史文化交织，K-pop、韩剧与美食让韩国成为充满活力的亚洲目的地。",
+    "climate": "四季分明，冬季寒冷，夏季温热；春秋最佳。",
+    "bestSeason": "4–5 月（樱花）与 9–10 月（秋色）",
+    "language": "韩语；旅游区英语与中文服务较多",
+    "currency": "韩元（KRW）",
+    "visaInfo": "持中国护照通常需办理签证；济州岛对部分国家实行免签政策，具体以官方为准。",
+    "duration": "建议 5–10 天",
+    "budget": "中等；首尔住宿与餐饮选择丰俭由人",
+    "transport": "地铁 + 高速列车（KTX）+ 公交，城市间交通便捷",
+    "accommodation": "商务酒店、设计酒店、民宿与汗蒸幕体验",
+    "cities": [
+      {
+        "name": "首尔",
+        "note": "都市活力、时尚与历史并存"
+      },
+      {
+        "name": "釜山",
+        "note": "海滨城市，海鲜与夜景"
+      },
+      {
+        "name": "济州岛",
+        "note": "火山地貌与自然风光"
+      },
+      {
+        "name": "庆州",
+        "note": "千年古都，历史遗迹"
+      }
+    ],
+    "attractions": [
+      "首尔景福宫与北村韩屋",
+      "南山首尔塔",
+      "釜山海云台",
+      "济州岛汉拿山"
+    ],
+    "culture": [
+      "韩服体验与宫廷文化",
+      "传统市场与夜市",
+      "K-pop 与音乐现场"
+    ],
+    "food": [
+      "韩式烤肉",
+      "拌饭与部队锅",
+      "街头小吃（辣炒年糕、鱼饼）"
+    ],
+    "relatedProjects": [
+      "kr-work-highskill",
+      "kr-edu-master",
+      "kr-pr-apply"
+    ]
+  },
+  {
+    "id": "sg",
+    "country": {
+      "cn": "新加坡",
+      "en": "Singapore",
+      "flag": "sg.svg"
+    },
+    "region": "ASIA",
+    "intro": "花园城市与全球金融中心，多元文化交汇，美食与城市景观兼具，是安全、便捷的高品质旅行目的地。",
+    "climate": "热带气候，全年温暖湿润，多阵雨。",
+    "bestSeason": "全年皆宜；2–4 月相对干爽",
+    "language": "英语、华语、马来语、泰米尔语",
+    "currency": "新加坡元（SGD）",
+    "visaInfo": "持中国护照可免签短期停留（以官方最新政策为准）。",
+    "duration": "建议 4–7 天",
+    "budget": "偏高；但公共交通与街头美食性价比好",
+    "transport": "地铁（MRT）+ 公交 + 出租车，覆盖全岛",
+    "accommodation": "滨海湾高端酒店、市区商务酒店与精品民宿",
+    "cities": [
+      {
+        "name": "新加坡市区",
+        "note": "滨海湾、乌节路与牛车水"
+      },
+      {
+        "name": "圣淘沙",
+        "note": "海滩、主题乐园与度假村"
+      },
+      {
+        "name": "小印度与甘榜格南",
+        "note": "多元文化与街区风情"
+      }
+    ],
+    "attractions": [
+      "滨海湾金沙与超级树",
+      "鱼尾狮公园",
+      "圣淘沙岛",
+      "环球影城"
+    ],
+    "culture": [
+      "多元种族街区探索",
+      "夜间动物园",
+      "滨海花园灯光秀"
+    ],
+    "food": [
+      "海南鸡饭",
+      "辣椒螃蟹",
+      "叻沙与肉骨茶"
+    ],
+    "relatedProjects": [
+      "sg-work-highskill",
+      "sg-edu-master",
+      "sg-pr-apply"
+    ]
+  },
+  {
+    "id": "my",
+    "country": {
+      "cn": "马来西亚",
+      "en": "Malaysia",
+      "flag": "my.svg"
+    },
+    "region": "ASIA",
+    "intro": "多元文化共生的东南亚国度，吉隆坡的摩天楼与槟城的南洋风情、沙巴的自然海岛相映成趣。",
+    "climate": "热带雨林气候，全年温暖湿润。",
+    "bestSeason": "全年皆宜；东海岸 3–10 月较佳",
+    "language": "马来语；英语通用，华语通行",
+    "currency": "马来西亚林吉特（MYR）",
+    "visaInfo": "持中国护照可免签短期停留（以官方最新政策为准）。",
+    "duration": "建议 6–10 天",
+    "budget": "亲民；住宿与餐饮性价比高",
+    "transport": "国内航班 + 长途巴士 + 轻快铁（LRT）",
+    "accommodation": "吉隆坡城市酒店、槟城老城民宿、海岛度假村",
+    "cities": [
+      {
+        "name": "吉隆坡",
+        "note": "双子塔与多元都市"
+      },
+      {
+        "name": "槟城",
+        "note": "世界遗产老城与美食"
+      },
+      {
+        "name": "马六甲",
+        "note": "历史古城与南洋风情"
+      },
+      {
+        "name": "沙巴",
+        "note": "海岛与自然生态"
+      }
+    ],
+    "attractions": [
+      "吉隆坡双子塔",
+      "槟城乔治市壁画街",
+      "马六甲荷兰红屋",
+      "沙巴仙本那海岛"
+    ],
+    "culture": [
+      "多元种族节日与集市",
+      "娘惹文化",
+      "热带雨林生态"
+    ],
+    "food": [
+      "椰浆饭",
+      "肉骨茶",
+      "榴莲与热带水果"
+    ],
+    "relatedProjects": [
+      "my-work-highskill",
+      "my-edu-master",
+      "my-pr-apply"
+    ]
+  },
+  {
+    "id": "th",
+    "country": {
+      "cn": "泰国",
+      "en": "Thailand",
+      "flag": "th.svg"
+    },
+    "region": "ASIA",
+    "intro": "微笑之国，曼谷的都市繁华、清迈的古城宁静与普吉、苏梅的海岛风光，让泰国成为亚洲最受欢迎的旅行地之一。",
+    "climate": "热带气候，全年温暖；分热季、雨季与凉季。",
+    "bestSeason": "11–2 月（凉季）最舒适",
+    "language": "泰语；旅游区英语较普及",
+    "currency": "泰铢（THB）",
+    "visaInfo": "持中国护照可免签短期停留（以官方最新政策为准）。",
+    "duration": "建议 7–12 天",
+    "budget": "亲民；高端海岛度假另计",
+    "transport": "国内航班 + 曼谷地铁/轻轨 + 包车与嘟嘟车",
+    "accommodation": "从平价旅馆到奢华海岛度假村，选择极广",
+    "cities": [
+      {
+        "name": "曼谷",
+        "note": "大皇宫、夜市与水上市场"
+      },
+      {
+        "name": "清迈",
+        "note": "古城寺庙与山间慢生活"
+      },
+      {
+        "name": "普吉",
+        "note": "海岛度假与夜生活"
+      },
+      {
+        "name": "苏梅岛",
+        "note": "静谧海滩与奢华度假"
+      }
+    ],
+    "attractions": [
+      "曼谷大皇宫与卧佛寺",
+      "清迈双龙寺",
+      "普吉岛海滩",
+      "拜县山野风光"
+    ],
+    "culture": [
+      "寺庙文化与僧侣布施",
+      "泰式按摩与水疗",
+      "传统节庆（泼水节/水灯节）"
+    ],
+    "food": [
+      "冬阴功汤",
+      "泰式炒河粉",
+      "芒果糯米饭"
+    ],
+    "relatedProjects": [
+      "th-work-highskill",
+      "th-edu-master",
+      "th-pr-apply"
+    ]
+  },
+  {
+    "id": "vn",
+    "country": {
+      "cn": "越南",
+      "en": "Vietnam",
+      "flag": "vn.svg"
+    },
+    "region": "ASIA",
+    "intro": "从北越的山水到南越的活力都市，越南以自然风光、历史遗迹与街头美食吸引全球旅行者。",
+    "climate": "南北差异大；北部四季分明，南部常年温暖。",
+    "bestSeason": "北越 10–4 月，南越 12–4 月",
+    "language": "越南语；旅游区英语与中文服务渐多",
+    "currency": "越南盾（VND）",
+    "visaInfo": "持中国护照需办理签证（电子签/落地签），具体以官方为准。",
+    "duration": "建议 8–12 天",
+    "budget": "亲民；整体消费较低",
+    "transport": "国内航班 + 火车 + 摩托车城市交通",
+    "accommodation": "河内老城酒店、会安古城民宿、岘港海滨度假村",
+    "cities": [
+      {
+        "name": "河内",
+        "note": "千年古城与法式风情"
+      },
+      {
+        "name": "岘港",
+        "note": "海滨城市与网红桥梁"
+      },
+      {
+        "name": "会安",
+        "note": "灯笼古镇，世界遗产"
+      },
+      {
+        "name": "胡志明市",
+        "note": "南越都市活力"
+      }
+    ],
+    "attractions": [
+      "下龙湾海上桂林",
+      "河内还剑湖与老城区",
+      "会安古镇",
+      "岘港巴拿山"
+    ],
+    "culture": [
+      "水上木偶戏",
+      "传统市集",
+      "咖啡文化"
+    ],
+    "food": [
+      "越南河粉",
+      "法棍三明治",
+      "滴漏咖啡"
+    ],
+    "relatedProjects": [
+      "vn-work-highskill",
+      "vn-edu-master",
+      "vn-pr-apply"
+    ]
+  },
+  {
+    "id": "ae",
+    "country": {
+      "cn": "阿联酋",
+      "en": "UAE",
+      "flag": "ae.svg"
+    },
+    "region": "ASIA",
+    "intro": "沙漠中的现代奇迹，迪拜与阿布扎比的摩天建筑、奢华体验与沙漠文化，构成极具反差感的旅行目的地。",
+    "climate": "热带沙漠气候，夏季酷热，冬季温暖宜人。",
+    "bestSeason": "11–3 月（冬季）最佳",
+    "language": "阿拉伯语；英语广泛使用",
+    "currency": "阿联酋迪拉姆（AED）",
+    "visaInfo": "持中国护照可免签短期停留（以官方最新政策为准）。",
+    "duration": "建议 5–8 天",
+    "budget": "偏高；中端酒店与公共交通也有丰富选择",
+    "transport": "地铁 + 出租车 + 包车；迪拜地铁覆盖核心区",
+    "accommodation": "世界级奢华酒店与中端商务酒店",
+    "cities": [
+      {
+        "name": "迪拜",
+        "note": "哈利法塔、购物与沙漠体验"
+      },
+      {
+        "name": "阿布扎比",
+        "note": "大清真寺与卢浮宫"
+      },
+      {
+        "name": "沙迦",
+        "note": "文化艺术之城"
+      }
+    ],
+    "attractions": [
+      "哈利法塔",
+      "迪拜购物中心",
+      "阿布扎比谢赫扎耶德大清真寺",
+      "沙漠冲沙"
+    ],
+    "culture": [
+      "贝都因沙漠文化",
+      "奢华生活方式",
+      "多元国际社区"
+    ],
+    "food": [
+      "阿拉伯烤肉",
+      "鹰嘴豆泥与皮塔饼",
+      "椰枣与阿拉伯咖啡"
+    ],
+    "relatedProjects": [
+      "ae-work-highskill",
+      "ae-edu-master",
+      "ae-pr-apply"
+    ]
+  },
+  {
+    "id": "tr",
+    "country": {
+      "cn": "土耳其",
+      "en": "Turkey",
+      "flag": "tr.svg"
+    },
+    "region": "ASIA",
+    "intro": "横跨欧亚的文明交汇之地，伊斯坦布尔的千年古迹、卡帕多奇亚的奇特地貌与爱琴海沿岸的风光令人难忘。",
+    "climate": "地中海气候与大陆性气候并存，沿海温和、内陆冬冷夏热。",
+    "bestSeason": "4–5 月与 9–10 月",
+    "language": "土耳其语；旅游区英语较普及",
+    "currency": "土耳其里拉（TRY）",
+    "visaInfo": "持中国护照可申请电子签证，具体以官方为准。",
+    "duration": "建议 8–12 天",
+    "budget": "中等；里拉汇率下整体性价比高",
+    "transport": "国内航班 + 长途巴士 + 城市轨道交通",
+    "accommodation": "伊斯坦布尔老城酒店、卡帕多奇亚洞穴酒店、爱琴海度假村",
+    "cities": [
+      {
+        "name": "伊斯坦布尔",
+        "note": "欧亚交汇的历史之都"
+      },
+      {
+        "name": "卡帕多奇亚",
+        "note": "热气球与奇幻地貌"
+      },
+      {
+        "name": "棉花堡",
+        "note": "白色钙化梯田温泉"
+      },
+      {
+        "name": "安塔利亚",
+        "note": "地中海海滨度假"
+      }
+    ],
+    "attractions": [
+      "圣索菲亚大教堂与蓝色清真寺",
+      "卡帕多奇亚热气球",
+      "棉花堡",
+      "以弗所古城"
+    ],
+    "culture": [
+      "土耳其浴与咖啡馆文化",
+      "地毯与陶艺手工艺",
+      "旋转舞与奥斯曼历史"
+    ],
+    "food": [
+      "土耳其烤肉",
+      "土耳其披萨（Pide）",
+      "果仁蜜饼"
+    ],
+    "relatedProjects": [
+      "tr-work-highskill",
+      "tr-edu-master",
+      "tr-pr-apply"
+    ]
+  },
+  {
+    "id": "gb",
+    "country": {
+      "cn": "英国",
+      "en": "United Kingdom",
+      "flag": "gb.svg"
+    },
+    "region": "EUROPE",
+    "intro": "历史与创意交织的国度，伦敦的博物馆与音乐剧、爱丁堡的古堡节庆、湖区与苏格兰高地的自然风光各具魅力。",
+    "climate": "温带海洋性气候，全年温和湿润。",
+    "bestSeason": "5–9 月（夏季）",
+    "language": "英语",
+    "currency": "英镑（GBP）",
+    "visaInfo": "持中国护照需办理英国访问签证，具体以英国签证中心为准。",
+    "duration": "建议 7–14 天",
+    "budget": "偏高；伦敦消费较高，乡村相对友好",
+    "transport": "铁路 + 地铁 + 长途巴士；Oyster 卡便捷",
+    "accommodation": "伦敦酒店、英式民宿（B&B）、城堡酒店体验",
+    "cities": [
+      {
+        "name": "伦敦",
+        "note": "博物馆、音乐剧与多元都市"
+      },
+      {
+        "name": "爱丁堡",
+        "note": "古城堡与艺术节"
+      },
+      {
+        "name": "曼彻斯特",
+        "note": "足球与音乐文化"
+      },
+      {
+        "name": "巴斯",
+        "note": "罗马浴场与乔治亚建筑"
+      }
+    ],
+    "attractions": [
+      "大英博物馆",
+      "伦敦塔桥与伦敦眼",
+      "爱丁堡城堡",
+      "湖区国家公园"
+    ],
+    "culture": [
+      "下午茶文化",
+      "剧院与音乐剧",
+      "王室与历史遗产"
+    ],
+    "food": [
+      "英式早餐",
+      "炸鱼薯条",
+      "司康与下午茶"
+    ],
+    "relatedProjects": [
+      "gb-work-highskill",
+      "gb-edu-master",
+      "gb-pr-apply"
+    ]
+  },
+  {
+    "id": "de",
+    "country": {
+      "cn": "德国",
+      "en": "Germany",
+      "flag": "de.svg"
+    },
+    "region": "EUROPE",
+    "intro": "从柏林的创意活力到巴伐利亚的童话城堡，德国以历史、工程与啤酒文化呈现多元魅力。",
+    "climate": "温带气候，四季分明，冬季较冷。",
+    "bestSeason": "5–9 月；圣诞市场季（12 月）别具风味",
+    "language": "德语；大城市英语普及度高",
+    "currency": "欧元（EUR）",
+    "visaInfo": "持中国护照需办理申根签证，可通行大部分欧洲国家。",
+    "duration": "建议 8–12 天",
+    "budget": "中等；住宿与交通成本合理",
+    "transport": "ICE 高铁 + 城市交通 + 自驾（浪漫之路）",
+    "accommodation": "城市酒店、乡村旅馆与城堡酒店",
+    "cities": [
+      {
+        "name": "柏林",
+        "note": "历史与当代艺术"
+      },
+      {
+        "name": "慕尼黑",
+        "note": "啤酒节与巴伐利亚风情"
+      },
+      {
+        "name": "法兰克福",
+        "note": "金融都市与天际线"
+      },
+      {
+        "name": "科隆",
+        "note": "哥特大教堂与莱茵河"
+      }
+    ],
+    "attractions": [
+      "柏林墙纪念馆",
+      "新天鹅堡",
+      "科隆大教堂",
+      "莱茵河谷"
+    ],
+    "culture": [
+      "啤酒与啤酒节文化",
+      "圣诞市场",
+      "音乐与哲学传统"
+    ],
+    "food": [
+      "德国香肠与猪肘",
+      "啤酒与碱水面包",
+      "黑森林蛋糕"
+    ],
+    "relatedProjects": [
+      "de-work-highskill",
+      "de-edu-master",
+      "de-pr-apply"
+    ]
+  },
+  {
+    "id": "fr",
+    "country": {
+      "cn": "法国",
+      "en": "France",
+      "flag": "fr.svg"
+    },
+    "region": "EUROPE",
+    "intro": "巴黎的浪漫艺术、普罗旺斯的薰衣草田、蔚蓝海岸与卢瓦尔河谷的城堡，让法国成为经典旅行目的地。",
+    "climate": "温带海洋性气候与地中海气候并存。",
+    "bestSeason": "4–6 月与 9–10 月",
+    "language": "法语；旅游区英语普及",
+    "currency": "欧元（EUR）",
+    "visaInfo": "持中国护照需办理申根签证。",
+    "duration": "建议 8–12 天",
+    "budget": "中等偏上；巴黎较高，南法乡村相对亲民",
+    "transport": "TGV 高铁 + 巴黎地铁 + 自驾",
+    "accommodation": "巴黎精品酒店、城堡酒店、南法民宿",
+    "cities": [
+      {
+        "name": "巴黎",
+        "note": "艺术、时尚与历史"
+      },
+      {
+        "name": "尼斯",
+        "note": "蔚蓝海岸度假"
+      },
+      {
+        "name": "里昂",
+        "note": "美食之都"
+      },
+      {
+        "name": "波尔多",
+        "note": "葡萄酒产区"
+      }
+    ],
+    "attractions": [
+      "埃菲尔铁塔与卢浮宫",
+      "凡尔赛宫",
+      "普罗旺斯薰衣草田",
+      "圣米歇尔山"
+    ],
+    "culture": [
+      "咖啡馆与街头艺术",
+      "博物馆与时尚",
+      "葡萄酒文化"
+    ],
+    "food": [
+      "法棍与可颂",
+      "蜗牛与鹅肝",
+      "马卡龙与甜点"
+    ],
+    "relatedProjects": [
+      "fr-work-highskill",
+      "fr-edu-master",
+      "fr-pr-apply"
+    ]
+  },
+  {
+    "id": "it",
+    "country": {
+      "cn": "意大利",
+      "en": "Italy",
+      "flag": "it.svg"
+    },
+    "region": "EUROPE",
+    "intro": "文艺复兴的发源地，罗马的千年遗迹、佛罗伦萨的艺术、威尼斯的运河与托斯卡纳的田园风光令人沉醉。",
+    "climate": "地中海气候，夏季温暖干燥，冬季温和。",
+    "bestSeason": "4–6 月与 9–10 月",
+    "language": "意大利语；旅游区英语普及",
+    "currency": "欧元（EUR）",
+    "visaInfo": "持中国护照需办理申根签证。",
+    "duration": "建议 8–14 天",
+    "budget": "中等；南部与乡村更实惠",
+    "transport": "高铁（Frecciarossa）+ 城市步行 + 区域火车",
+    "accommodation": "罗马历史酒店、威尼斯运河酒店、托斯卡纳庄园",
+    "cities": [
+      {
+        "name": "罗马",
+        "note": "永恒之城的千年遗迹"
+      },
+      {
+        "name": "佛罗伦萨",
+        "note": "文艺复兴艺术殿堂"
+      },
+      {
+        "name": "威尼斯",
+        "note": "水城浪漫"
+      },
+      {
+        "name": "米兰",
+        "note": "时尚与设计之都"
+      }
+    ],
+    "attractions": [
+      "罗马斗兽场与许愿池",
+      "佛罗伦萨圣母百花大教堂",
+      "威尼斯圣马可广场",
+      "五渔村海岸"
+    ],
+    "culture": [
+      "博物馆与文艺复兴",
+      "咖啡与街头生活",
+      "节庆与歌剧"
+    ],
+    "food": [
+      "意面与披萨",
+      "意式冰淇淋",
+      "浓缩咖啡与提拉米苏"
+    ],
+    "relatedProjects": [
+      "it-work-highskill",
+      "it-edu-master",
+      "it-pr-apply"
+    ]
+  },
+  {
+    "id": "es",
+    "country": {
+      "cn": "西班牙",
+      "en": "Spain",
+      "flag": "es.svg"
+    },
+    "region": "EUROPE",
+    "intro": "巴塞罗那的高迪建筑、马德里的艺术博物馆、安达卢西亚的摩尔风情与地中海海岛，构成热情多彩的西班牙。",
+    "climate": "地中海气候，阳光充足。",
+    "bestSeason": "4–6 月与 9–10 月",
+    "language": "西班牙语；旅游区英语普及",
+    "currency": "欧元（EUR）",
+    "visaInfo": "持中国护照需办理申根签证。",
+    "duration": "建议 8–12 天",
+    "budget": "中等；性价比在南欧中表现良好",
+    "transport": "AVE 高铁 + 城市地铁 + 区域巴士",
+    "accommodation": "巴塞罗那设计酒店、安达卢西亚庭院旅馆、海岛度假村",
+    "cities": [
+      {
+        "name": "巴塞罗那",
+        "note": "高迪建筑与地中海"
+      },
+      {
+        "name": "马德里",
+        "note": "艺术与都市生活"
+      },
+      {
+        "name": "塞维利亚",
+        "note": "弗拉明戈与摩尔风情"
+      },
+      {
+        "name": "瓦伦西亚",
+        "note": "科学与艺术城"
+      }
+    ],
+    "attractions": [
+      "圣家堂与古埃尔公园",
+      "普拉多博物馆",
+      "塞维利亚王宫",
+      "巴利阿里群岛"
+    ],
+    "culture": [
+      "弗拉明戈舞蹈",
+      "斗牛与节庆",
+      "tapas 文化"
+    ],
+    "food": [
+      "海鲜饭",
+      "伊比利亚火腿",
+      "吉事果与桑格利亚"
+    ],
+    "relatedProjects": [
+      "es-work-highskill",
+      "es-edu-master",
+      "es-pr-apply"
+    ]
+  },
+  {
+    "id": "pt",
+    "country": {
+      "cn": "葡萄牙",
+      "en": "Portugal",
+      "flag": "pt.svg"
+    },
+    "region": "EUROPE",
+    "intro": "大西洋边的温暖国度，里斯本的电车与山丘、波尔图的酒庄与杜罗河谷、阿尔加维的海岸线，宁静而迷人。",
+    "climate": "地中海气候与海洋性气候并存，冬季温和。",
+    "bestSeason": "4–6 月与 9–10 月",
+    "language": "葡萄牙语；旅游区英语普及",
+    "currency": "欧元（EUR）",
+    "visaInfo": "持中国护照需办理申根签证。",
+    "duration": "建议 6–10 天",
+    "budget": "中等；南欧中性价比突出",
+    "transport": "里斯本电车 + 城际火车 + 沿海公路",
+    "accommodation": "里斯本老城公寓、波尔图河景酒店、阿尔加维度假村",
+    "cities": [
+      {
+        "name": "里斯本",
+        "note": "电车、山丘与海风"
+      },
+      {
+        "name": "波尔图",
+        "note": "酒庄与杜罗河谷"
+      },
+      {
+        "name": "辛特拉",
+        "note": "童话宫殿"
+      },
+      {
+        "name": "法鲁",
+        "note": "阿尔加维海岸"
+      }
+    ],
+    "attractions": [
+      "贝伦塔与热罗尼莫斯修道院",
+      "佩纳宫",
+      "罗卡角（欧亚大陆最西端）",
+      "杜罗河谷"
+    ],
+    "culture": [
+      "法多音乐",
+      "瓷砖艺术（Azulejo）",
+      "海边慢生活"
+    ],
+    "food": [
+      "葡式蛋挞",
+      "海鲜锅",
+      "波特酒"
+    ],
+    "relatedProjects": [
+      "pt-work-highskill",
+      "pt-edu-master",
+      "pt-pr-apply"
+    ]
+  },
+  {
+    "id": "ch",
+    "country": {
+      "cn": "瑞士",
+      "en": "Switzerland",
+      "flag": "ch.svg"
+    },
+    "region": "EUROPE",
+    "intro": "阿尔卑斯山间的精致国度，少女峰的雪山、琉森湖畔的宁静与因特拉肯的户外运动，成就世界级的自然旅行体验。",
+    "climate": "山地气候，夏季凉爽，冬季多雪。",
+    "bestSeason": "6–9 月（徒步）与 12–3 月（滑雪）",
+    "language": "德语、法语、意大利语；英语普及",
+    "currency": "瑞士法郎（CHF）",
+    "visaInfo": "持中国护照需办理申根签证。",
+    "duration": "建议 5–8 天",
+    "budget": "较高；交通与住宿成本高，但风景值得",
+    "transport": "瑞士旅行通票（Swiss Travel Pass）+ 登山火车",
+    "accommodation": "湖畔酒店、山间小木屋、滑雪度假村",
+    "cities": [
+      {
+        "name": "苏黎世",
+        "note": "金融都市与湖光山色"
+      },
+      {
+        "name": "日内瓦",
+        "note": "国际都市与日内瓦湖"
+      },
+      {
+        "name": "琉森",
+        "note": "湖畔古城与雪山"
+      },
+      {
+        "name": "因特拉肯",
+        "note": "户外运动与少女峰门户"
+      }
+    ],
+    "attractions": [
+      "少女峰",
+      "马特洪峰",
+      "琉森湖与卡佩尔桥",
+      "伯尔尼老城"
+    ],
+    "culture": [
+      "精密制造与钟表文化",
+      "奶酪火锅传统",
+      "高山徒步文化"
+    ],
+    "food": [
+      "奶酪火锅",
+      "瑞士巧克力",
+      "土豆饼（Rösti）"
+    ],
+    "relatedProjects": [
+      "ch-work-highskill",
+      "ch-edu-master",
+      "ch-pr-apply"
+    ]
+  },
+  {
+    "id": "us",
+    "country": {
+      "cn": "美国",
+      "en": "United States",
+      "flag": "us.svg"
+    },
+    "region": "NORTH AMERICA",
+    "intro": "从纽约的都市天际线到黄石的自然奇观，从西海岸的公路旅行到南方的音乐文化，美国是一个多元而辽阔的旅行目的地。",
+    "climate": "气候多样：东部四季分明，西部干燥，南部温暖，北部寒冷。",
+    "bestSeason": "5–10 月（多数地区）",
+    "language": "英语",
+    "currency": "美元（USD）",
+    "visaInfo": "持中国护照需办理 B1/B2 访问签证，具体以美国使领馆为准。",
+    "duration": "建议 10–16 天",
+    "budget": "较高；机票与住宿为主要开销",
+    "transport": "自驾（公路旅行）+ 国内航班 + 城市公共交通",
+    "accommodation": "城市酒店、国家公园木屋、汽车旅馆",
+    "cities": [
+      {
+        "name": "纽约",
+        "note": "都市地标与百老汇"
+      },
+      {
+        "name": "洛杉矶",
+        "note": "好莱坞与海滩"
+      },
+      {
+        "name": "旧金山",
+        "note": "金门大桥与湾区"
+      },
+      {
+        "name": "芝加哥",
+        "note": "建筑与湖滨"
+      }
+    ],
+    "attractions": [
+      "大峡谷国家公园",
+      "黄石国家公园",
+      "纽约中央公园与时代广场",
+      "尼亚加拉瀑布"
+    ],
+    "culture": [
+      "公路旅行文化",
+      "音乐节与百老汇",
+      "多元移民文化"
+    ],
+    "food": [
+      "美式汉堡与牛排",
+      "纽约披萨",
+      "加州寿司卷"
+    ],
+    "relatedProjects": [
+      "us-work-highskill",
+      "us-edu-master",
+      "us-invest-business"
+    ]
+  },
+  {
+    "id": "ca",
+    "country": {
+      "cn": "加拿大",
+      "en": "Canada",
+      "flag": "ca.svg"
+    },
+    "region": "NORTH AMERICA",
+    "intro": "以自然著称的国度，班夫的落基山脉、温哥华的海与山、魁北克的法式风情，四季各有精彩。",
+    "climate": "四季分明，冬季寒冷，夏季温和。",
+    "bestSeason": "6–9 月（户外）与 12–3 月（滑雪）",
+    "language": "英语、法语",
+    "currency": "加拿大元（CAD）",
+    "visaInfo": "持中国护照需办理加拿大访问签证（可申请多年多次），具体以官方为准。",
+    "duration": "建议 8–14 天",
+    "budget": "中等偏上；国家公园与住宿为主要开销",
+    "transport": "自驾 + 国内航班 + 城市公交",
+    "accommodation": "温哥华城市酒店、班夫木屋度假村、蒙特利尔老城酒店",
+    "cities": [
+      {
+        "name": "温哥华",
+        "note": "山海相依的宜居都市"
+      },
+      {
+        "name": "多伦多",
+        "note": "多元文化与 CN 塔"
+      },
+      {
+        "name": "蒙特利尔",
+        "note": "法式风情老城"
+      },
+      {
+        "name": "班夫",
+        "note": "落基山脉门户"
+      }
+    ],
+    "attractions": [
+      "班夫国家公园与路易斯湖",
+      "尼亚加拉大瀑布",
+      "魁北克老城",
+      "贾斯珀国家公园"
+    ],
+    "culture": [
+      "户外与自然生活方式",
+      "双语与多元文化",
+      "枫糖与秋色"
+    ],
+    "food": [
+      "枫糖浆与煎饼",
+      "蒙特利尔熏肉",
+      "肉汁奶酪薯条（Poutine）"
+    ],
+    "relatedProjects": [
+      "ca-work-highskill",
+      "ca-edu-master",
+      "ca-pr-apply"
+    ]
+  },
+  {
+    "id": "au",
+    "country": {
+      "cn": "澳大利亚",
+      "en": "Australia",
+      "flag": "au.svg"
+    },
+    "region": "OCEANIA",
+    "intro": "阳光、海滩与独特野生动物，悉尼的歌剧院、墨尔本的咖啡文化、大堡礁的海洋生态，构成南半球的旅行魅力。",
+    "climate": "四季与北半球相反；北部热带，南部温带。",
+    "bestSeason": "9–11 月与 3–5 月（春秋）",
+    "language": "英语",
+    "currency": "澳大利亚元（AUD）",
+    "visaInfo": "持中国护照需办理访客签证（600 类），具体以官方为准。",
+    "duration": "建议 10–16 天",
+    "budget": "较高；国内航班与住宿为主",
+    "transport": "国内航班 + 自驾 + 城市电车/火车",
+    "accommodation": "悉尼港景酒店、墨尔本市区公寓、凯恩斯度假村",
+    "cities": [
+      {
+        "name": "悉尼",
+        "note": "歌剧院与海港"
+      },
+      {
+        "name": "墨尔本",
+        "note": "咖啡与艺术文化"
+      },
+      {
+        "name": "布里斯班",
+        "note": "阳光之城"
+      },
+      {
+        "name": "珀斯",
+        "note": "西澳海岸"
+      }
+    ],
+    "attractions": [
+      "悉尼歌剧院与海港大桥",
+      "大堡礁",
+      "大洋路十二门徒",
+      "乌鲁鲁巨岩"
+    ],
+    "culture": [
+      "海滩生活方式",
+      "咖啡文化",
+      "原住民艺术"
+    ],
+    "food": [
+      "海鲜与澳洲牛排",
+      "肉派",
+      "早午餐（Brunch）"
+    ],
+    "relatedProjects": [
+      "au-work-highskill",
+      "au-edu-master",
+      "au-pr-apply"
+    ]
+  },
+  {
+    "id": "nz",
+    "country": {
+      "cn": "新西兰",
+      "en": "New Zealand",
+      "flag": "nz.svg"
+    },
+    "region": "OCEANIA",
+    "intro": "纯净的中土世界，南岛的冰川与星空、北岛的地热与毛利文化，为旅行者带来贴近自然的沉浸体验。",
+    "climate": "温带海洋性气候，四季温和。",
+    "bestSeason": "11–4 月（夏季）",
+    "language": "英语、毛利语",
+    "currency": "新西兰元（NZD）",
+    "visaInfo": "持中国护照需办理新西兰访问签证（电子签），具体以官方为准。",
+    "duration": "建议 10–14 天",
+    "budget": "中等偏上；自驾与活动项目为主",
+    "transport": "自驾（推荐）+ 国内航班 + 城际巴士",
+    "accommodation": "皇后镇湖景酒店、农场民宿、南岛木屋",
+    "cities": [
+      {
+        "name": "奥克兰",
+        "note": "帆船之都"
+      },
+      {
+        "name": "皇后镇",
+        "note": "冒险之都"
+      },
+      {
+        "name": "基督城",
+        "note": "花园城市"
+      },
+      {
+        "name": "惠灵顿",
+        "note": "风都与文化"
+      }
+    ],
+    "attractions": [
+      "皇后镇与米尔福德峡湾",
+      "库克山国家公园",
+      "罗托鲁瓦地热",
+      "霍比特人村"
+    ],
+    "culture": [
+      "毛利文化",
+      "户外与极限运动",
+      "环保生活方式"
+    ],
+    "food": [
+      "新西兰羊肉",
+      "绿唇贻贝",
+      "帕夫洛娃蛋糕"
+    ],
+    "relatedProjects": [
+      "nz-work-highskill",
+      "nz-edu-master",
+      "nz-pr-apply"
+    ]
+  },
+  {
+    "id": "br",
+    "country": {
+      "cn": "巴西",
+      "en": "Brazil",
+      "flag": "br.svg"
+    },
+    "region": "SOUTH AMERICA",
+    "intro": "热情奔放的南美大国，里约热内卢的海滩与基督像、亚马逊雨林与伊瓜苏瀑布，展现自然与活力的双重魅力。",
+    "climate": "热带气候为主，部分地区亚热带；全年温暖。",
+    "bestSeason": "12–3 月（夏季/狂欢节）",
+    "language": "葡萄牙语；旅游区英语有限",
+    "currency": "巴西雷亚尔（BRL）",
+    "visaInfo": "持中国护照需办理巴西签证，具体以官方为准。",
+    "duration": "建议 8–12 天",
+    "budget": "中等；国际机票占比高",
+    "transport": "国内航班 + 城市地铁 + 出租车",
+    "accommodation": "里约海滩酒店、圣保罗商务酒店、亚马逊丛林营地",
+    "cities": [
+      {
+        "name": "里约热内卢",
+        "note": "基督像与科帕卡巴纳海滩"
+      },
+      {
+        "name": "圣保罗",
+        "note": "南美经济中心"
+      },
+      {
+        "name": "萨尔瓦多",
+        "note": "非洲文化传承之城"
+      },
+      {
+        "name": "伊瓜苏",
+        "note": "瀑布之城"
+      }
+    ],
+    "attractions": [
+      "基督救世主像",
+      "科帕卡巴纳海滩",
+      "伊瓜苏瀑布",
+      "亚马逊雨林"
+    ],
+    "culture": [
+      "桑巴与狂欢节",
+      "足球文化",
+      "海滩生活方式"
+    ],
+    "food": [
+      "巴西烤肉",
+      "黑豆饭（Feijoada）",
+      "巴西莓碗"
+    ],
+    "relatedProjects": [
+      "br-work-highskill",
+      "br-edu-master",
+      "br-pr-apply"
+    ]
+  },
+  {
+    "id": "za",
+    "country": {
+      "cn": "南非",
+      "en": "South Africa",
+      "flag": "za.svg"
+    },
+    "region": "AFRICA",
+    "intro": "非洲大陆的精彩入口，开普敦的桌山与海岸、克鲁格国家公园的野生动物、好望角的壮阔海景，构成难忘的旅行。",
+    "climate": "地中海气候与亚热带气候并存，冬季温和。",
+    "bestSeason": "5–10 月（观兽季）",
+    "language": "英语、南非荷兰语等 11 种官方语言",
+    "currency": "南非兰特（ZAR）",
+    "visaInfo": "持中国护照需办理南非签证，具体以官方为准。",
+    "duration": "建议 8–12 天",
+    "budget": "中等；性价比高，活动项目另计",
+    "transport": "自驾 + 国内航班 + 包车游猎",
+    "accommodation": "开普敦滨海酒店、克鲁格保护区营地、葡萄酒庄酒店",
+    "cities": [
+      {
+        "name": "开普敦",
+        "note": "桌山与滨海风光"
+      },
+      {
+        "name": "约翰内斯堡",
+        "note": "经济中心"
+      },
+      {
+        "name": "德班",
+        "note": "印度洋海岸"
+      },
+      {
+        "name": "斯泰伦博斯",
+        "note": "葡萄酒产区"
+      }
+    ],
+    "attractions": [
+      "桌山",
+      "好望角",
+      "克鲁格国家公园",
+      "花园大道"
+    ],
+    "culture": [
+      "野生动物保护文化",
+      "多元种族历史",
+      "葡萄酒庄园"
+    ],
+    "food": [
+      "南非烤肉（Braai）",
+      "比尔通肉干",
+      "南非葡萄酒"
+    ],
+    "relatedProjects": [
+      "za-work-highskill",
+      "za-edu-master",
+      "za-pr-apply"
+    ]
+  }
+]

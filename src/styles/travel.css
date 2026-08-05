@@ -1,0 +1,167 @@
+﻿/* ============================================================
+   全球旅游探索 · is-travel / is-travel-country
+   深蓝高级商务风 · 国际旅行杂志质感 · 高级图片展示
+   ============================================================ */
+
+is-travel, is-travel-country { display: block; }
+
+/* —— 旅游首页 Hero（图片 + 深蓝蒙层） —— */
+.travel__hero {
+  position: relative;
+  min-height: 62svh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--nav-h) + 3rem) 0 4rem;
+  overflow: hidden;
+  color: var(--color-heading);
+  border-bottom: 1px solid var(--color-line-soft);
+}
+.travel__hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.85);
+}
+.travel__hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(4, 27, 58, 0.78) 0%, rgba(4, 27, 58, 0.55) 50%, var(--color-ink) 100%);
+}
+.travel__hero-inner { position: relative; z-index: 1; }
+.travel__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.875rem;
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.travel__eyebrow::before { content: ""; width: 2rem; height: 1px; background: rgba(201, 162, 39, 0.5); }
+.travel__title { margin-top: 1.5rem; font-size: var(--fs-h1); font-weight: 700; color: var(--color-heading); }
+.travel__sub { margin-top: 1rem; max-width: 620px; font-size: var(--fs-lead); color: var(--color-text-muted); }
+.travel__meta { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; }
+.travel__meta-item { display: flex; align-items: center; gap: 0.625rem; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.06em; color: var(--color-text-muted); }
+.travel__meta-item::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--color-accent); }
+
+/* —— 区域板块 —— */
+.travel__body { padding-block: var(--section-pad); }
+.travel__region + .travel__region { margin-top: 3.5rem; }
+.travel__region-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+.travel__region-title { font-size: 1.375rem; font-weight: 700; color: var(--color-heading); }
+.travel__region-en { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-text-faint); }
+.travel__region-count { font-size: 0.8125rem; color: var(--color-text-muted); }
+
+.travel__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+
+/* —— 国家卡片（高级图片展示） —— */
+.tcard {
+  position: relative;
+  display: block;
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+  border: 1px solid var(--color-line-soft);
+  background: var(--color-ink-2);
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.tcard:hover { transform: translateY(-3px); border-color: rgba(59, 130, 246, 0.55); box-shadow: var(--color-glow); }
+.tcard__media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
+.tcard__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.tcard:hover .tcard__media img { transform: scale(1.05); }
+.tcard__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(4, 27, 58, 0.85) 100%); }
+.tcard__flag { position: absolute; top: 0.875rem; left: 0.875rem; z-index: 2; width: 30px; height: 22px; border-radius: 3px; overflow: hidden; box-shadow: 0 2px 8px rgba(2, 19, 38, 0.6); }
+.tcard__flag img { width: 100%; height: 100%; object-fit: cover; }
+.tcard__name { position: absolute; left: 0.875rem; bottom: 0.75rem; z-index: 2; font-size: 1.25rem; font-weight: 700; color: var(--color-heading); }
+.tcard__name small { display: block; margin-top: 0.15rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-muted); }
+.tcard__body { padding: 1rem 1.25rem 1.125rem; }
+.tcard__season { font-size: 0.8125rem; color: var(--color-text-muted); }
+.tcard__season b { color: var(--color-accent); font-weight: 600; }
+
+/* —— 详情页 —— */
+.tdetail__hero {
+  position: relative;
+  min-height: 56svh;
+  display: flex;
+  align-items: flex-end;
+  padding: calc(var(--nav-h) + 3rem) 0 3rem;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-line-soft);
+}
+.tdetail__hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; filter: saturate(0.85); }
+.tdetail__hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4, 27, 58, 0.72) 0%, rgba(4, 27, 58, 0.35) 45%, var(--color-ink) 100%); }
+.tdetail__hero-inner { position: relative; z-index: 1; width: 100%; }
+.tdetail__crumbs { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.75rem; color: var(--color-text-faint); margin-bottom: 1.25rem; }
+.tdetail__crumbs a { color: var(--color-text-muted); transition: color var(--dur) var(--ease); }
+.tdetail__crumbs a:hover { color: var(--color-heading); }
+.tdetail__crumbs .sep { opacity: 0.5; }
+.tdetail__country { display: flex; align-items: center; gap: 0.875rem; }
+.tdetail__flag { width: 48px; height: 36px; border-radius: var(--radius-s); overflow: hidden; box-shadow: 0 4px 14px -4px rgba(2, 19, 38, 0.9); }
+.tdetail__flag img { width: 100%; height: 100%; object-fit: cover; }
+.tdetail__country-cn { font-size: 1.125rem; font-weight: 700; color: var(--color-heading); }
+.tdetail__country-en { font-size: 0.75rem; color: var(--color-text-muted); letter-spacing: 0.04em; }
+.tdetail__title { margin-top: 1rem; font-size: clamp(1.75rem, 3.4vw, 2.75rem); font-weight: 700; color: var(--color-heading); }
+.tdetail__intro { margin-top: 0.875rem; max-width: 680px; font-size: var(--fs-lead); color: var(--color-text-muted); line-height: 2; }
+.tdetail__facts { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.625rem; }
+.tdetail__fact { padding: 0.4rem 0.9rem; background: rgba(4, 27, 58, 0.55); border: 1px solid var(--color-line-soft); border-radius: 999px; font-size: 0.75rem; color: var(--color-text); }
+.tdetail__fact b { color: var(--color-accent); font-weight: 600; }
+
+.tdetail__body { padding-block: clamp(2rem, 5vw, 3.5rem) var(--section-pad); }
+.tdetail__section { margin-top: 1.25rem; padding: clamp(1.5rem, 4vw, 2.25rem); background: var(--color-ink-2); border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); }
+.tdetail__section:first-child { margin-top: 0; }
+.tdetail__section-title { display: flex; align-items: baseline; gap: 0.75rem; font-size: 1.125rem; font-weight: 700; color: var(--color-heading); }
+.tdetail__section-title span { font-size: 0.75rem; font-weight: 700; color: var(--color-accent); }
+
+/* 概览 */
+.tdetail__overview { margin-top: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 2rem; }
+.tdetail__ov { padding: 1rem 0; border-top: 1px solid var(--color-line-soft); }
+.tdetail__ov-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-faint); }
+.tdetail__ov-value { margin-top: 0.4rem; font-size: 0.9375rem; color: var(--color-text); line-height: 1.8; }
+.tdetail__ov-value b { color: var(--color-heading); }
+
+/* 城市 */
+.tdetail__cities { margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.875rem; }
+.tdetail__city { padding: 1.125rem 1.25rem; background: rgba(4, 27, 58, 0.45); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+.tdetail__city:hover { border-color: rgba(59, 130, 246, 0.5); background: rgba(10, 61, 115, 0.45); transform: translateY(-2px); }
+.tdetail__city-name { font-size: 1rem; font-weight: 700; color: var(--color-heading); }
+.tdetail__city-note { margin-top: 0.3rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+
+/* 体验 */
+.tdetail__exp { margin-top: 1.25rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.875rem; }
+.tdetail__exp-item { padding: 1.25rem; background: rgba(4, 27, 58, 0.45); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.tdetail__exp-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); }
+.tdetail__exp-list { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.tdetail__exp-list li { position: relative; padding-left: 1rem; font-size: 0.875rem; color: var(--color-text); }
+.tdetail__exp-list li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 4px; height: 4px; border-radius: 50%; background: var(--color-blue); }
+
+/* 长期发展关联 */
+.tdetail__related { margin-top: 1.25rem; }
+.tdetail__related-hint { font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.9; }
+.tdetail__related-list { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.tdetail__related-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(4, 27, 58, 0.45);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-m);
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.tdetail__related-item:hover { border-color: rgba(59, 130, 246, 0.55); background: rgba(10, 61, 115, 0.45); transform: translateY(-2px); }
+.tdetail__related-item img { width: 34px; height: 25px; flex: none; border-radius: 3px; object-fit: cover; }
+.tdetail__related-name { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.tdetail__related-type { font-size: 0.6875rem; color: var(--color-accent); font-weight: 600; }
+.tdetail__related-cta { margin-left: auto; font-size: 0.75rem; font-weight: 600; color: var(--color-accent); white-space: nowrap; }
+
+.tdetail__note { margin-top: 1.5rem; font-size: 0.75rem; line-height: 1.9; color: var(--color-text-faint); text-align: center; }
+
+@media (max-width: 1080px) { .travel__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px) {
+  .travel__grid { grid-template-columns: 1fr; }
+  .tdetail__overview, .tdetail__cities { grid-template-columns: 1fr; }
+  .tdetail__exp { grid-template-columns: 1fr; }
+}
