@@ -1,27 +1,21 @@
 ﻿/* ============================================================
-   AI 评估入口 · is-ai-cta
+   AI 评估入口 · is-ai-cta（v2）
    ============================================================ */
 
 is-ai-cta { display: block; }
 
-.ai-cta {
-  padding-block: var(--section-pad);
-  background: var(--color-cream-deep);
-}
+.ai-cta { padding-block: var(--section-pad); background: var(--color-bg); }
 
 .ai-cta__panel {
   position: relative;
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: clamp(2.5rem, 5vw, 5rem);
+  gap: clamp(2rem, 5vw, 4rem);
   align-items: center;
-  padding: clamp(2.5rem, 6vw, 5.5rem);
-  background:
-    radial-gradient(50% 60% at 92% 0%, rgba(12, 41, 64, 0.5), transparent 70%),
-    linear-gradient(140deg, var(--color-ink-deep) 0%, var(--color-ink) 72%);
-  border: 1px solid var(--color-line-gold);
-  border-radius: var(--radius-l);
-  color: var(--color-white);
+  padding: clamp(2rem, 5vw, 4rem);
+  background: var(--color-ink);
+  border-radius: var(--radius-panel);
+  color: var(--color-on-dark);
   overflow: hidden;
 }
 .ai-cta__panel::before {
@@ -29,69 +23,67 @@ is-ai-cta { display: block; }
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 3px;
-  background: linear-gradient(180deg, var(--color-gold-light), var(--color-gold), transparent);
+  background: var(--color-accent);
 }
 
 .ai-cta__badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.4rem 0.9rem;
-  border: 1px solid var(--color-line-gold);
+  padding: 0.35rem 0.875rem;
+  background: rgba(37, 99, 235, 0.16);
+  border: 1px solid rgba(96, 165, 250, 0.35);
   border-radius: 999px;
   font-size: 0.6875rem;
-  letter-spacing: 0.24em;
-  color: var(--color-gold-light);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #BFDBFE;
 }
-.ai-cta__badge .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--color-gold); animation: dot-breathe 2.4s ease-in-out infinite; }
+.ai-cta__badge .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
 
 .ai-cta__title {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   font-size: var(--fs-h2);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.4;
-  letter-spacing: 0.05em;
+  color: var(--color-on-dark);
 }
-.ai-cta__desc {
-  margin-top: 1rem;
-  font-size: var(--fs-lead);
-  color: var(--color-text-on-dark-2);
-}
-.ai-cta__actions { margin-top: 2.25rem; display: flex; flex-wrap: wrap; gap: 1rem; }
+.ai-cta__desc { margin-top: 0.875rem; font-size: var(--fs-lead); color: var(--color-on-dark-2); }
+.ai-cta__actions { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; }
 
-.ai-cta__side { border-left: 1px solid var(--color-line-dark); padding-left: clamp(1.5rem, 3vw, 3rem); }
+.ai-cta__side { border-left: 1px solid var(--color-line-dark); padding-left: clamp(1.5rem, 3vw, 2.5rem); }
 .ai-cta__side-label {
   font-size: 0.625rem;
-  letter-spacing: 0.32em;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: #60A5FA;
 }
-.ai-cta__side-list { list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+.ai-cta__side-list { margin-top: 1.25rem; display: flex; flex-direction: column; }
 .ai-cta__side-item {
   display: flex;
   align-items: center;
   gap: 0.875rem;
+  padding: 0.625rem 0;
+  border-bottom: 1px solid var(--color-line-dark);
   font-size: 0.9375rem;
-  letter-spacing: 0.1em;
-  color: var(--color-text-on-dark-2);
+  color: var(--color-on-dark-2);
 }
+.ai-cta__side-item:last-child { border-bottom: none; }
 .ai-cta__side-item .idx {
-  font-family: var(--font-serif);
-  font-size: 0.75rem;
-  color: var(--color-gold);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #60A5FA;
   width: 1.5rem; flex: none;
 }
 .ai-cta__side-note {
-  margin-top: 1.75rem;
+  margin-top: 1.25rem;
   font-size: 0.75rem;
-  line-height: 1.9;
-  color: var(--color-text-on-dark-3);
-  letter-spacing: 0.05em;
+  color: var(--color-on-dark-3);
 }
 
 @media (max-width: 1024px) {
   .ai-cta__panel { grid-template-columns: 1fr; }
-  .ai-cta__side { border-left: none; border-top: 1px solid var(--color-line-dark); padding-left: 0; padding-top: 2rem; }
+  .ai-cta__side { border-left: none; border-top: 1px solid var(--color-line-dark); padding-left: 0; padding-top: 1.5rem; }
 }
 @media (max-width: 768px) { .ai-cta__actions .btn { width: 100%; } }
-

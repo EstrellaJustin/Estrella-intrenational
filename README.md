@@ -1,23 +1,21 @@
 ﻿# 伊斯特拉国际 · Istra International
 
-> 高端全球身份规划与国际发展智能平台
-> 通过全球国家数据库、全球项目数据库和 AI 智能分析，帮助用户探索适合自己的国际发展路径。
+> 高端国际身份规划平台
+> 通过全球出国项目数据库与 AI 智能匹配系统，为个人与家庭提供国际发展方案。
 
-本仓库为 **第一阶段** 交付：品牌视觉系统、网站基础架构、首页、导航系统。
-国家数据库 / 项目数据库 / AI 评估逻辑 / 用户系统 / 后台 / 支付均**不在本阶段范围内**，但架构已为其预留清晰接入点。
+**v2 已完成整体 UI 重设计**：深蓝 + 白视觉体系（Inter + 思源黑体），新增「全球项目大全」「项目详情（咨询报告）」「国际身份评估中心」三个页面。功能逻辑与组件架构保持不变。
 
 ---
 
 ## 一、如何运行
 
-### 方式 1：直接打开（无需安装）
-双击 `index.html` 即可在浏览器中预览首页。
+| 方式 | 操作 |
+| --- | --- |
+| 最简单 | 双击 `index.html`（零依赖，直接打开） |
+| 推荐 | 双击 **`启动网站.bat`**，自动打开 `http://localhost:4173` |
+| 命令行 | `node scripts/serve.js`（`--port=8080` 可换端口） |
 
-### 方式 2：本地服务器（推荐，体验更完整）
-- Windows：双击 **`启动网站.bat`**，浏览器会自动打开 `http://localhost:4173`
-- 命令行：`node scripts/serve.js`（可用 `--port=8080` 指定端口，`--no-open` 禁止自动打开）
-
-> 项目为零依赖实现，无需 `npm install`。
+> 字体（Inter / 思源黑体）与国旗均为本地资源，离线可用。
 
 ---
 
@@ -25,97 +23,72 @@
 
 | 页面 | 说明 | 状态 |
 | --- | --- | --- |
-| `index.html` | 首页：Hero / 核心服务 / 品牌理念 / 热门国家 / AI 评估入口 / 页脚 | ✅ 已完成 |
-| `coming-soon.html` | 各模块占位页（导航中“全球国家”等链接指向此处） | ✅ 已完成（占位） |
+| `index.html` | 首页：Hero / 核心服务 / 品牌理念 / 热门国家 / AI 评估入口 / 页脚 | ✅ |
+| `projects.html` | 全球项目大全：高级列表布局（旗帜 + 国家 / 项目 + 签证类型 / 查看详情） | ✅ |
+| `project-detail.html?id=xxx` | 项目详情：咨询报告风格（深蓝报告头 + 七大模块 + 关键信息侧栏） | ✅ |
+| `ai-assessment.html` | 国际身份评估中心：Step 01–04 步骤式流程 + 进度条（仅界面） | ✅ |
+| `coming-soon.html` | 各模块占位页（国家浏览 / 联系我们等） | ✅（占位） |
 
 ---
 
-## 三、技术架构
+## 三、设计系统（v2 · 深蓝 + 白）
+
+| Token | 值 | 用途 |
+| --- | --- | --- |
+| `--color-ink` | `#061A33` | 深海蓝 · 主色 |
+| `--color-ink-2` | `#0B2E59` | 辅助蓝 |
+| `--color-bg` | `#F8FAFC` | 页面背景 |
+| `--color-heading` | `#0A1628` | 主标题 |
+| `--color-text` | `#475569` | 正文 |
+| `--color-accent` | `#2563EB` | 强调蓝 |
+| `--font-sans` | Inter + 思源黑体 | 标题粗体 / 正文常规 |
+
+规范：圆角 ≤ 8px（按钮 6px）、阴影克制、动效统一 `0.3s ease`、
+页面进入淡入、按钮 hover、列表行轻微上浮；**无旋转 / 夸张动画**。
+所有变量集中于 `src/styles/tokens.css`。
+
+### 字体
+- **Inter**（400/500/600/700）与 **思源黑体 Noto Sans SC**（400/500/700）已自托管于 `assets/fonts/`。
+- 思源黑体为按站点当前用字生成的子集（约 384 字）；后续新增文案若含未收录字，将自动回退到系统中文黑体。
+
+---
+
+## 四、技术架构
 
 **零依赖 Web Components（原生 Custom Elements）+ CSS Design Tokens + 数据驱动渲染。**
 
 ```
 istra-international/
-├── index.html                 # 首页入口
-├── coming-soon.html           # 模块占位页
-├── 启动网站.bat               # Windows 一键启动
-├── package.json               # 脚本元信息（npm start）
+├── index.html / projects.html / project-detail.html / ai-assessment.html / coming-soon.html
+├── 启动网站.bat / package.json / README.md
 ├── assets/
-│   ├── brand-mark.svg         # 品牌标识（描边版）
-│   └── favicon.svg            # 站点图标
+│   ├── fonts/            # Inter + 思源黑体（自托管 + fonts.css）
+│   ├── flags/            # 国家旗帜 SVG（9 国）
+│   ├── brand-mark.svg / favicon.svg
 ├── src/
-│   ├── styles/                # 按组件划分的样式
-│   │   ├── tokens.css         # ★ 设计系统唯一变量来源
-│   │   ├── base.css           # 重置 / 排版 / 按钮 / 工具类
-│   │   ├── navbar.css         # 导航
-│   │   ├── hero.css           # 首屏
-│   │   ├── services.css       # 核心服务
-│   │   ├── philosophy.css     # 品牌理念
-│   │   ├── countries.css      # 热门国家
-│   │   ├── ai-cta.css         # AI 评估入口
-│   │   ├── footer.css         # 页脚
-│   │   └── coming-soon.css    # 占位页
-│   ├── components/            # ★ 组件（每个文件一个自定义元素）
-│   │   ├── site-navbar.js     # <is-navbar>
-│   │   ├── site-hero.js       # <is-hero>（Canvas 星辰 + 连接线）
-│   │   ├── site-services.js   # <is-services> / <is-service-card>
-│   │   ├── site-philosophy.js # <is-philosophy>
-│   │   ├── site-countries.js  # <is-countries> / <is-country-card>
-│   │   ├── site-ai-cta.js     # <is-ai-cta>
-│   │   ├── site-footer.js     # <is-footer>
-│   │   └── site-coming-soon.js# <is-coming-soon>
-│   ├── data/                  # ★ 模拟数据层（未来替换为 API）
-│   │   ├── brand.js           # 品牌信息
-│   │   ├── nav.js             # 导航配置
-│   │   ├── services.js        # 核心服务
-│   │   ├── countries.js       # 热门国家（模拟数据）
-│   │   └── footer.js          # 页脚配置
-│   ├── pages/                 # 页面级入口脚本
-│   │   ├── home.js
-│   │   └── coming-soon.js
-│   └── utils/
-│       ├── icons.js           # 抽象线稿图标库
-│       └── reveal.js          # 滚动入场动画工具
-└── scripts/
-    └── serve.js               # 零依赖静态服务器
+│   ├── styles/           # tokens / base / navbar / hero / services / philosophy /
+│   │                     # countries / ai-cta / projects / project-detail /
+│   │                     # ai-assessment / footer / coming-soon
+│   ├── components/       # is-navbar / is-hero / is-services / is-philosophy /
+│   │                     # is-countries / is-ai-cta / is-projects /
+│   │                     # is-project-detail / is-ai-assessment / is-footer / is-coming-soon
+│   ├── data/             # brand / nav / services / countries / projects / footer（模拟数据）
+│   ├── pages/            # 页面级入口脚本
+│   └── utils/            # icons / reveal
+└── scripts/serve.js      # 零依赖静态服务器
 ```
 
-### 设计系统（tokens.css）
-| Token | 值 | 用途 |
-| --- | --- | --- |
-| `--color-ink` | `#071A2B` | 深海蓝 · 主色 |
-| `--color-gold` | `#C8A96A` | 香槟金 · 辅助色 |
-| `--color-cream` | `#F7F5F0` | 高级米白 · 背景 |
-| `--font-sans` / `--font-serif` | 系统字体栈 | 中文无衬线 / 英文衬线点缀 |
-| `--section-pad` | `clamp(...)` | 区块留白（响应式） |
-
-所有颜色、字体、间距、圆角、动效均以变量形式定义，修改品牌色只需改动 `tokens.css`。
-
-### 视觉规范
-- 大量留白（区块纵向留白 5–8.5rem）
-- 高级排版：眉题（`01 · Core Services`）+ 大标题 + 金色细线
-- 深海蓝 / 香槟金 / 高级米白三色体系，点缀金色 1px 细线
-- 首屏使用 Canvas 星辰呼吸 + 星点连接线 + 大圆弧，营造“全球连接”意象
-- **禁用**飞机 / 护照 / 廉价地球等具象图标（图标库全部为抽象线稿）
+- 项目数据：`src/data/projects.js`（10 个项目，含详情模块），列表页与详情页共用。
+- 未来接入：将 `data/*.js` 替换为 API 调用即可，组件与字段结构不变。
 
 ---
 
-## 四、未来扩展指引（Phase 2+）
+## 五、验收（42/42 通过）
 
-| 模块 | 接入点 | 建议方案 |
-| --- | --- | --- |
-| 国家数据库 | `src/data/countries.js` 字段结构不变，替换数据来源为 API | REST / GraphQL |
-| 项目数据库 | 仿照 `services.js` 新增 `src/data/programs.js` + `<is-programs>` 组件 | 同上 |
-| AI 智能评估 | `index.html#ai` 入口已就位，新增评估表单组件与逻辑 | 独立服务 / 后端 API |
-| 用户系统 / 后台 / 支付 | 本阶段不涉及；架构按前后端分离预留 | Next.js / NestJS 等 |
-
-迁移到 React/Vue/Next.js 时：组件逻辑可直接搬运，`tokens.css` 作为全局设计令牌原样保留，`data/*.js` 改为接口调用即可。
-
----
-
-## 五、本阶段验收
-
-- [x] 首页正常打开（`index.html` / `http://localhost:4173`）
-- [x] 导航正常显示（固定导航 / 透明渐变 / 滚动深色背景 / 移动端抽屉）
-- [x] 整体视觉符合高端商务定位（深海蓝 × 香槟金 × 米白）
-- [x] 代码结构组件化、数据驱动，方便后续扩展
+- 5 个页面 HTTP 与 file:// 双击均可打开，无控制台错误、无横向溢出、全部链接可达
+- 导航 5 项（首页 / 国家浏览 / 全球项目 / AI评估 / 联系我们），滚动后白色半透明毛玻璃 + 深色文字
+- Hero：深蓝背景、中央大标题、立即评估 / 浏览项目、无营销图片
+- 项目大全：10 行高级列表（旗帜 / 国家 / 项目 / 签证类型 / 简介 / 查看详情），hover 平滑上浮
+- 项目详情：咨询报告七大模块 + 关键信息侧栏，细线分割、无大圆角卡片
+- AI 评估中心：四步向导 + 进度条 + 必填校验 + 摘要生成
+- 统一深蓝白体系：背景 #F8FAFC / 强调 #2563EB / 圆角 ≤ 8px / 动效 0.3s

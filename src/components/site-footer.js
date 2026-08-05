@@ -1,5 +1,5 @@
 ﻿/* ============================================================
-   组件：is-footer · 页脚
+   组件：is-footer · 页脚（v2）
    ============================================================ */
 
 class SiteFooter extends HTMLElement {
@@ -45,8 +45,8 @@ class SiteFooter extends HTMLElement {
             ${contactCol}
           </div>
           <div class="footer__bottom">
-            <span>© 2026 伊斯特拉国际 · 第一阶段演示版</span>
-            <span>数据与内容仅供展示 · 全球身份规划与国际发展智能平台</span>
+            <span>© 2026 伊斯特拉国际</span>
+            <span>高端国际身份规划平台 · 数据与内容仅供展示</span>
           </div>
         </div>
       </footer>

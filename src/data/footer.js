@@ -4,18 +4,17 @@ Istra.footer = {
     {
       title: '平台',
       links: [
-        { label: '全球国家', href: 'coming-soon.html?name=全球国家&code=COUNTRIES' },
-        { label: '全球项目', href: 'coming-soon.html?name=全球项目&code=PROGRAMS' },
-        { label: 'AI智能评估', href: 'coming-soon.html?name=AI智能评估&code=AI' },
-        { label: '国际资讯', href: 'coming-soon.html?name=国际资讯&code=INSIGHTS' }
+        { label: '国家浏览', href: 'coming-soon.html?name=国家浏览&code=COUNTRIES' },
+        { label: '全球项目', href: 'projects.html' },
+        { label: 'AI 评估', href: 'ai-assessment.html' },
+        { label: '联系我们', href: 'coming-soon.html?name=联系我们&code=CONTACT' }
       ]
     },
     {
       title: '关于',
       links: [
         { label: '关于我们', href: 'coming-soon.html?name=关于我们&code=ABOUT' },
-        { label: '品牌理念', href: 'index.html#philosophy' },
-        { label: '联系方式', href: 'coming-soon.html?name=联系方式&code=CONTACT' }
+        { label: '品牌理念', href: 'index.html#philosophy' }
       ]
     }
   ],

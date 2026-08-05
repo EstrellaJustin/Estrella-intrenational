@@ -4,6 +4,6 @@ window.Istra = window.Istra || {};
 Istra.brand = {
   cn: '伊斯特拉国际',
   en: 'ISTRA INTERNATIONAL',
-  tagline: '全球身份规划与国际发展智能平台',
-  desc: '通过全球国家数据库、全球项目数据库与 AI 智能分析，帮助用户探索适合自己的国际发展路径。'
+  tagline: '高端国际身份规划平台',
+  desc: '通过全球出国项目数据库与 AI 智能匹配系统，为个人与家庭提供国际发展方案。'
 };

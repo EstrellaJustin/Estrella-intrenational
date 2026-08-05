@@ -3,23 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>伊斯特拉国际 · 模块建设中</title>
-  <meta name="theme-color" content="#071A2B" />
+  <title>项目详情 · 伊斯特拉国际</title>
+  <meta name="description" content="伊斯特拉国际 — 国际项目咨询报告：项目介绍、适合人群、申请条件、材料、流程、费用周期与优势限制。" />
+  <meta name="theme-color" content="#061A33" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 
-  <link rel="stylesheet" href="assets/fonts/fonts.css" />`n  <link rel="stylesheet" href="src/styles/tokens.css" />
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="src/styles/tokens.css" />
   <link rel="stylesheet" href="src/styles/base.css" />
   <link rel="stylesheet" href="src/styles/navbar.css" />
-  <link rel="stylesheet" href="src/styles/coming-soon.css" />
+  <link rel="stylesheet" href="src/styles/project-detail.css" />
   <link rel="stylesheet" href="src/styles/footer.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要内容</a>
 
-  <is-navbar></is-navbar>
+  <is-navbar page="projects"></is-navbar>
 
   <main id="main">
-    <is-coming-soon></is-coming-soon>
+    <is-project-detail></is-project-detail>
   </main>
 
   <is-footer></is-footer>
@@ -27,12 +29,12 @@
   <script src="src/data/brand.js"></script>
   <script src="src/data/nav.js"></script>
   <script src="src/data/footer.js"></script>
+  <script src="src/data/projects.js"></script>
   <script src="src/utils/icons.js"></script>
   <script src="src/utils/reveal.js"></script>
   <script src="src/components/site-navbar.js"></script>
-  <script src="src/components/site-coming-soon.js"></script>
+  <script src="src/components/site-project-detail.js"></script>
   <script src="src/components/site-footer.js"></script>
-  <script src="src/pages/coming-soon.js"></script>
+  <script src="src/pages/project-detail.js"></script>
 </body>
 </html>
-

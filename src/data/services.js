@@ -3,25 +3,25 @@ Istra.services = [
   {
     num: '01',
     icon: 'compass',
-    title: '全球国家探索',
-    en: 'GLOBAL COUNTRIES',
-    desc: '了解不同国家的发展机会、人才政策和身份路径。',
-    href: 'coming-soon.html?name=全球国家探索&code=COUNTRIES'
+    title: '全球国家浏览',
+    en: 'COUNTRIES',
+    desc: '了解不同国家的发展机会、人才政策与身份路径。',
+    href: 'coming-soon.html?name=国家浏览&code=COUNTRIES'
   },
   {
     num: '02',
     icon: 'database',
-    title: '全球项目数据库',
-    en: 'GLOBAL PROGRAMS',
-    desc: '探索工作、学习、投资、创业等国际发展项目。',
-    href: 'coming-soon.html?name=全球项目数据库&code=PROGRAMS'
+    title: '全球项目大全',
+    en: 'PROGRAMS',
+    desc: '浏览工作、学习、投资、创业等国际发展项目。',
+    href: 'projects.html'
   },
   {
     num: '03',
     icon: 'network',
-    title: 'AI智能评估',
+    title: 'AI 智能评估',
     en: 'AI ASSESSMENT',
-    desc: '根据个人背景，智能分析适合的发展路线。',
-    href: 'coming-soon.html?name=AI智能评估&code=AI'
+    desc: '根据个人与家庭背景，智能匹配适合的国际发展路线。',
+    href: 'ai-assessment.html'
   }
 ];

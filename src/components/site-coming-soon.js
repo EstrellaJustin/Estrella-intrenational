@@ -1,6 +1,5 @@
 ﻿/* ============================================================
-   组件：is-coming-soon · 模块建设中占位页
-   用法：<is-coming-soon name="全球国家" code="COUNTRIES"></is-coming-soon>
+   组件：is-coming-soon · 模块建设中占位页（v2）
    ============================================================ */
 
 class SiteComingSoon extends HTMLElement {
@@ -21,8 +20,8 @@ class SiteComingSoon extends HTMLElement {
           <h1 class="soon__title" data-reveal>${this.name} · 即将上线</h1>
           <p class="soon__desc" data-reveal>该模块将在后续阶段逐步开放，敬请期待。</p>
           <div class="soon__actions" data-reveal>
-            <a class="btn btn--ghost" href="index.html">返回首页</a>
-            <a class="btn btn--gold" href="coming-soon.html?name=AI智能评估&code=AI">开始AI智能评估</a>
+            <a class="btn btn--ghost-light" href="index.html">返回首页</a>
+            <a class="btn btn--primary" href="ai-assessment.html">立即评估</a>
           </div>
         </div>
       </section>

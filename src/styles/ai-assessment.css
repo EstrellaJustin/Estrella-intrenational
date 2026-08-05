@@ -1,0 +1,221 @@
+﻿/* ============================================================
+   AI 评估中心 · is-ai-assessment（v2 · 国际身份评估中心）
+   步骤式流程 + 进度条 + 高级表单
+   ============================================================ */
+
+is-ai-assessment { display: block; }
+
+/* —— 页头：深蓝带 —— */
+.assessment__head {
+  padding: calc(var(--nav-h) + clamp(3rem, 7vw, 5rem)) 0 clamp(2rem, 4vw, 3rem);
+  background:
+    radial-gradient(52% 44% at 84% 0%, rgba(11, 46, 89, 0.55), transparent 70%),
+    var(--color-ink);
+  color: var(--color-on-dark);
+  text-align: center;
+}
+.assessment__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #60A5FA;
+}
+.assessment__eyebrow::before, .assessment__eyebrow::after { content: ""; width: 1.75rem; height: 1px; background: currentColor; }
+.assessment__title {
+  margin-top: 1.125rem;
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  color: var(--color-on-dark);
+}
+.assessment__sub {
+  margin: 0.875rem auto 0;
+  max-width: 620px;
+  font-size: var(--fs-lead);
+  color: var(--color-on-dark-2);
+}
+
+/* —— 评估向导 —— */
+.assessment__body { padding-block: clamp(2rem, 5vw, 3.5rem) var(--section-pad); }
+
+.wizard {
+  max-width: 920px;
+  margin-inline: auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* 步骤条 */
+.wizard__steps { padding: 2rem 2.5rem 1.5rem; border-bottom: 1px solid var(--color-line); }
+.wizard__track { position: relative; display: flex; justify-content: space-between; }
+.wizard__track-line {
+  position: absolute;
+  top: 17px; left: 8%; right: 8%;
+  height: 2px;
+  background: var(--color-line);
+}
+.wizard__track-fill {
+  position: absolute;
+  top: 17px; left: 8%;
+  height: 2px;
+  width: 0;
+  background: var(--color-accent);
+  transition: width var(--dur-slow) var(--ease);
+}
+
+.wizard__step {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 25%;
+}
+.wizard__step-dot {
+  width: 34px; height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.wizard__step.is-active .wizard__step-dot { background: var(--color-accent); border-color: var(--color-accent); color: #FFFFFF; }
+.wizard__step.is-done .wizard__step-dot { background: var(--color-accent-soft); border-color: var(--color-accent-line); color: var(--color-accent); }
+.wizard__step-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+.wizard__step.is-active .wizard__step-label { color: var(--color-heading); }
+.wizard__step.is-done .wizard__step-label { color: var(--color-accent); }
+
+/* 步骤内容 */
+.wizard__content { padding: 2.25rem 2.5rem 2rem; min-height: 360px; }
+.wizard__panel { display: none; }
+.wizard__panel.is-active { display: block; animation: panel-in var(--dur) var(--ease); }
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.wizard__panel-title { font-size: 1.25rem; font-weight: 700; color: var(--color-heading); }
+.wizard__panel-desc { margin-top: 0.375rem; font-size: 0.875rem; color: var(--color-text-muted); }
+
+.field-grid { margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 1.5rem; }
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.field--full { grid-column: 1 / -1; }
+.field label { font-size: 0.8125rem; font-weight: 600; color: var(--color-heading); }
+.field select, .field input {
+  height: 48px;
+  padding: 0 0.875rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  color: var(--color-heading);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  appearance: none;
+}
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2364748B' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  padding-right: 2.25rem;
+}
+.field select:focus, .field input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+.field.is-invalid select { border-color: #DC2626; }
+.field .field-error { display: none; font-size: 0.75rem; color: #DC2626; }
+.field.is-invalid .field-error { display: block; }
+
+/* 国家多选 chips */
+.chip-grid { display: flex; flex-wrap: wrap; gap: 0.625rem; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease), background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.chip img { width: 18px; height: 13.5px; border-radius: 2px; object-fit: cover; }
+.chip:hover { border-color: var(--color-accent-line); transform: translateY(-1px); }
+.chip.is-selected { background: var(--color-accent-soft); border-color: var(--color-accent); color: var(--color-accent); font-weight: 600; }
+
+/* 第四步：评估摘要 */
+.summary { margin-top: 1.5rem; border: 1px solid var(--color-line); border-radius: var(--radius-panel); overflow: hidden; }
+.summary__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--color-line);
+  font-size: 0.9375rem;
+}
+.summary__row:last-child { border-bottom: none; }
+.summary__label { color: var(--color-text-muted); flex: none; }
+.summary__value { color: var(--color-heading); font-weight: 600; text-align: right; }
+.summary__value--chips { display: flex; flex-wrap: wrap; gap: 0.375rem; justify-content: flex-end; }
+.summary__value .mini-chip {
+  padding: 0.2rem 0.625rem;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.assessment__note {
+  margin-top: 1.25rem;
+  padding: 0.875rem 1.25rem;
+  background: var(--color-bg);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-s);
+  font-size: 0.8125rem;
+  color: var(--color-text);
+  line-height: 1.9;
+}
+
+/* 底部按钮 */
+.wizard__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 2.5rem 2rem;
+  border-top: 1px solid var(--color-line);
+}
+.wizard__actions-right { display: flex; gap: 0.75rem; }
+
+@media (max-width: 768px) {
+  .field-grid { grid-template-columns: 1fr; }
+  .wizard__content { padding: 1.75rem 1.25rem 1.5rem; }
+  .wizard__steps { padding: 1.5rem 1.25rem 1.25rem; }
+  .wizard__actions { flex-direction: column-reverse; align-items: stretch; padding: 1.25rem; }
+  .wizard__actions-right { flex-direction: column; }
+  .wizard__actions .btn { width: 100%; }
+  .wizard__step-label { font-size: 0.5625rem; letter-spacing: 0.04em; }
+}

@@ -3,23 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>伊斯特拉国际 · 模块建设中</title>
-  <meta name="theme-color" content="#071A2B" />
+  <title>全球项目大全 · 伊斯特拉国际</title>
+  <meta name="description" content="伊斯特拉国际 — 全球项目数据库：浏览工作、学习、投资、创业等国际发展项目。" />
+  <meta name="theme-color" content="#061A33" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 
-  <link rel="stylesheet" href="assets/fonts/fonts.css" />`n  <link rel="stylesheet" href="src/styles/tokens.css" />
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="src/styles/tokens.css" />
   <link rel="stylesheet" href="src/styles/base.css" />
   <link rel="stylesheet" href="src/styles/navbar.css" />
-  <link rel="stylesheet" href="src/styles/coming-soon.css" />
+  <link rel="stylesheet" href="src/styles/projects.css" />
   <link rel="stylesheet" href="src/styles/footer.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要内容</a>
 
-  <is-navbar></is-navbar>
+  <is-navbar page="projects"></is-navbar>
 
   <main id="main">
-    <is-coming-soon></is-coming-soon>
+    <is-projects></is-projects>
   </main>
 
   <is-footer></is-footer>
@@ -27,12 +29,12 @@
   <script src="src/data/brand.js"></script>
   <script src="src/data/nav.js"></script>
   <script src="src/data/footer.js"></script>
+  <script src="src/data/projects.js"></script>
   <script src="src/utils/icons.js"></script>
   <script src="src/utils/reveal.js"></script>
   <script src="src/components/site-navbar.js"></script>
-  <script src="src/components/site-coming-soon.js"></script>
+  <script src="src/components/site-projects.js"></script>
   <script src="src/components/site-footer.js"></script>
-  <script src="src/pages/coming-soon.js"></script>
+  <script src="src/pages/projects.js"></script>
 </body>
 </html>
-

@@ -1,51 +1,50 @@
 ﻿/* ============================================================
-   伊斯特拉国际 · Design Tokens
-   品牌：深海蓝 / 香槟金 / 高级米白
-   用途：全站唯一设计变量来源，未来框架迁移时可直接复用
+   伊斯特拉国际 · Design Tokens（v2 · 深蓝 + 白）
+   主色 #061A33 / 辅助蓝 #0B2E59 / 背景 #F8FAFC / 强调 #2563EB
+   风格：高级、简洁、商务、国际化（禁止鲜艳色与花哨渐变）
    ============================================================ */
 
 :root {
   /* —— 品牌色 —— */
-  --color-ink:        #071A2B;   /* 深海蓝（主色） */
-  --color-ink-deep:   #040F19;   /* 深海蓝 · 深 */
-  --color-ink-soft:   #0C2940;   /* 深海蓝 · 亮 */
-  --color-ink-glass:  rgba(7, 26, 43, 0.92);
+  --color-ink:        #061A33;   /* 深海蓝（主色） */
+  --color-ink-2:      #0B2E59;   /* 辅助蓝 */
+  --color-ink-deep:   #041120;   /* 深海蓝 · 最深（页脚/叠加） */
 
-  --color-gold:       #C8A96A;   /* 香槟金（辅助） */
-  --color-gold-light: #E6D2A4;   /* 香槟金 · 亮 */
-  --color-gold-deep:  #A8894E;   /* 香槟金 · 深 */
+  /* —— 中性色 —— */
+  --color-bg:         #F8FAFC;   /* 页面背景 */
+  --color-surface:    #FFFFFF;   /* 卡片/内容面 */
+  --color-heading:    #0A1628;   /* 主标题 */
+  --color-text:       #475569;   /* 正文 */
+  --color-text-muted: #64748B;   /* 次要文字 */
+  --color-text-faint: #94A3B8;   /* 弱化文字 */
 
-  --color-cream:      #F7F5F0;   /* 高级米白（背景） */
-  --color-cream-deep: #EFEAE0;   /* 高级米白 · 深 */
-  --color-white:      #FFFFFF;
+  /* —— 强调 —— */
+  --color-accent:       #2563EB; /* 强调蓝 */
+  --color-accent-dark:  #1D4ED8; /* 强调蓝 · hover */
+  --color-accent-soft:  rgba(37, 99, 235, 0.08);
+  --color-accent-line:  rgba(37, 99, 235, 0.35);
 
-  /* —— 文字 —— */
-  --color-text:       #22303C;
-  --color-text-soft:  #46545F;
-  --color-text-muted: #6E7A85;
-  --color-text-on-dark:    rgba(255, 255, 255, 0.92);
-  --color-text-on-dark-2:  rgba(255, 255, 255, 0.62);
-  --color-text-on-dark-3:  rgba(255, 255, 255, 0.38);
+  /* —— 深色背景上的文字 —— */
+  --color-on-dark:    #FFFFFF;
+  --color-on-dark-2:  rgba(255, 255, 255, 0.72);
+  --color-on-dark-3:  rgba(255, 255, 255, 0.45);
 
   /* —— 线条 —— */
-  --color-line:       rgba(7, 26, 43, 0.10);
-  --color-line-soft:  rgba(7, 26, 43, 0.06);
-  --color-line-dark:  rgba(255, 255, 255, 0.14);
-  --color-line-gold:  rgba(200, 169, 106, 0.45);
+  --color-line:         rgba(10, 22, 40, 0.08);
+  --color-line-strong:  rgba(10, 22, 40, 0.14);
+  --color-line-dark:    rgba(255, 255, 255, 0.14);
 
-  /* —— 字体 —— */
-  --font-sans:  "PingFang SC", "Microsoft YaHei", "微软雅黑", "Helvetica Neue", "Segoe UI", Arial, sans-serif;
-  --font-serif: "Palatino Linotype", "Book Antiqua", "Georgia", "Songti SC", "SimSun", "宋体", serif;
+  /* —— 字体（Inter + 思源黑体，自托管） —— */
+  --font-sans: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
 
-  /* —— 字号（桌面 / 移动 clamp） —— */
-  --fs-micro:   0.6875rem;   /* 11px 微标签 */
-  --fs-small:   0.8125rem;   /* 13px */
-  --fs-body:    1rem;        /* 16px */
-  --fs-lead:    clamp(1rem, 1.2vw + 0.6rem, 1.1875rem);
-  --fs-h3:      clamp(1.25rem, 1.2vw + 0.9rem, 1.5rem);
-  --fs-h2:      clamp(1.75rem, 2.4vw + 1rem, 2.625rem);
-  --fs-h1:      clamp(2.4rem, 5.2vw + 1rem, 4.5rem);
-  --fs-hero-cn: clamp(2rem, 4.6vw + 0.8rem, 3.75rem);
+  /* —— 字号 —— */
+  --fs-micro:   0.6875rem;
+  --fs-small:   0.8125rem;
+  --fs-body:    1rem;
+  --fs-lead:    clamp(1rem, 0.8vw + 0.7rem, 1.125rem);
+  --fs-h3:      clamp(1.125rem, 0.8vw + 0.8rem, 1.3125rem);
+  --fs-h2:      clamp(1.625rem, 1.8vw + 1rem, 2.25rem);
+  --fs-h1:      clamp(2.125rem, 4.2vw + 1rem, 3.5rem);
 
   /* —— 间距 —— */
   --space-1: 0.25rem;
@@ -55,24 +54,28 @@
   --space-5: 1.5rem;
   --space-6: 2rem;
   --space-7: 3rem;
-  --space-8: 4rem;
-  --space-9: 6rem;
-  --section-pad: clamp(5rem, 9vw, 8.5rem);
+  --space-8: 4.5rem;
+  --section-pad: clamp(4.5rem, 8vw, 7.5rem);
 
   /* —— 布局 —— */
-  --container: 1200px;
-  --container-narrow: 860px;
-  --nav-h: 78px;
-  --nav-h-scrolled: 64px;
-  --radius-s: 4px;
-  --radius-m: 8px;
-  --radius-l: 16px;
+  --container: 1180px;
+  --container-narrow: 820px;
+  --nav-h: 76px;
+  --nav-h-scrolled: 62px;
 
-  /* —— 动效 —— */
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-s: 0.25s;
-  --dur-m: 0.5s;
-  --dur-l: 0.9s;
-  --shadow-card: 0 20px 50px -24px rgba(7, 26, 43, 0.18);
-  --shadow-lift: 0 30px 60px -28px rgba(7, 26, 43, 0.28);
+  /* —— 圆角（克制：不超过 8px） —— */
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-btn: 6px;
+  --radius-panel: 8px;
+
+  /* —— 动效（统一 0.3s ease） —— */
+  --dur: 0.3s;
+  --ease: ease;
+  --dur-slow: 0.5s;
+
+  /* —— 阴影（克制） —— */
+  --shadow-sm: 0 4px 14px -6px rgba(6, 26, 51, 0.10);
+  --shadow-md: 0 16px 40px -20px rgba(6, 26, 51, 0.18);
+  --shadow-blue: 0 10px 24px -10px rgba(37, 99, 235, 0.45);
 }
