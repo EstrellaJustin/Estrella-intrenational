@@ -1,7 +1,10 @@
-﻿/* ============================================================
-   组件：is-world-map · 全球地图（v2 · 国旗 + 信息卡 + 区域展开）
+/* ============================================================
+   组件：is-world-map · 全球地图（v3 · 国旗区域填充 + 缩放平移 + 国家信息卡）
    数据源：Istra.countries（flag / is_available）+ Istra.worldMap
-   桌面：悬停信息卡 + 国旗；移动：区域展开列表（避免国旗重叠）
+   + Istra.countryCities / Istra.countryScenery / Istra.mapCountryInfo / Istra.projects
+   - 真实国家边界路径用对应国旗元素填充（不使用固定国旗图标代替）
+   - 滚轮缩放 / 拖拽平移 / 触屏双指缩放
+   - 点击国家弹出信息卡：城市与风景 / 气候环境 / 工作机会 / 签证项目 / 详情入口
    预留：highlight(isoList) 供未来 AI 匹配高亮
    ============================================================ */
 
@@ -15,33 +18,45 @@ class SiteWorldMap extends HTMLElement {
   render() {
     const db = Istra.countries || [];
     const map = Istra.worldMap || { paths: [], centroids: {}, width: 2000, height: 1000 };
+    const W = map.width;
+    const H = map.height;
     const avail = db.filter((c) => c.is_available !== false);
     const availIso = new Set(avail.map((c) => c.id.toUpperCase()));
     const posOf = (iso) => {
       const pt = (map.centroids || {})[iso];
-      return pt ? { x: ((pt[0] + 180) / 360) * map.width, y: ((90 - pt[1]) / 180) * map.height } : null;
+      return pt ? { x: ((pt[0] + 180) / 360) * W, y: ((90 - pt[1]) / 180) * H } : null;
     };
+
+    const withPath = new Set((map.paths || []).map((p) => p.iso));
+
+    /* 国旗图案定义：有真实边界的国家，区域用对应国旗元素填充 */
+    const patternDefs = avail
+      .filter((c) => withPath.has(c.id.toUpperCase()))
+      .map((c) => {
+        const iso = c.id.toUpperCase();
+        return `<pattern id="flag-${iso}" patternUnits="objectBoundingBox" patternContentUnits="objectBoundingBox" width="1" height="1"><image href="assets/flags/${c.flag}" width="1" height="1" preserveAspectRatio="xMidYMid slice"/></pattern>`;
+      })
+      .join('');
 
     const pathHtml = (map.paths || [])
       .map((p) => {
         const ok = availIso.has(p.iso);
-        return `<path class="map__country${ok ? ' is-available' : ''}" data-iso="${p.iso}" d="${p.d}"${ok ? ' data-link="country.html?id=' + p.iso.toLowerCase() + '"' : ''}><title>${p.name}</title></path>`;
+        return `<path class="map__country${ok ? ' is-available' : ''}" data-iso="${p.iso}" d="${p.d}"${ok ? ` style="fill:url(#flag-${p.iso})" data-link="country.html?id=${p.iso.toLowerCase()}"` : ''}><title>${p.name}</title></path>`;
       })
       .join('');
 
-    const withPath = new Set((map.paths || []).map((p) => p.iso));
-    const flagHtml = avail
+    /* 无真实路径的小国：保留中心点 + 国旗标记（如新加坡/马耳他） */
+    const dotFlag = avail.filter((c) => !withPath.has(c.id.toUpperCase()));
+    const flagHtml = dotFlag
       .map((c) => {
         const iso = c.id.toUpperCase();
         const pos = posOf(iso);
         if (!pos) return '';
-        const kind = withPath.has(iso) ? 'path' : 'dot';
         return `<image class="map__flag" data-iso="${iso}" data-link="country.html?id=${c.id}" href="assets/flags/${c.flag}" x="${(pos.x - 9).toFixed(1)}" y="${(pos.y - 6).toFixed(1)}" width="18" height="12"><title>${c.cn}</title></image>`;
       })
       .join('');
 
-    const dotHtml = avail
-      .filter((c) => !withPath.has(c.id.toUpperCase()))
+    const dotHtml = dotFlag
       .map((c) => {
         const pos = posOf(c.id.toUpperCase());
         if (!pos) return '';
@@ -84,7 +99,7 @@ class SiteWorldMap extends HTMLElement {
           <div class="container">
             <p class="map__eyebrow" data-reveal>Global Map</p>
             <h1 class="map__title" data-reveal>全球地图</h1>
-            <p class="map__sub" data-reveal>已建立数据的国家自动点亮并显示国旗；未开放国家保持灰色。桌面悬停查看信息，移动端按区域展开。</p>
+            <p class="map__sub" data-reveal>已收录国家以真实边界 + 国旗元素点亮，点击国家查看城市、气候与项目信息；支持滚轮缩放与拖拽。</p>
           </div>
         </header>
         <div class="map__body">
@@ -95,17 +110,24 @@ class SiteWorldMap extends HTMLElement {
               <div class="map__stat"><p class="map__stat-num">${total - avail.length + (avail.length - withPath.size)}</p><p class="map__stat-label">建设中</p></div>
             </div>
             <div class="map__panel" data-reveal>
-              <svg class="map__canvas" viewBox="0 0 ${map.width} ${map.height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="全球地图">
+              <svg class="map__canvas" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="全球地图">
+                <defs>${patternDefs}</defs>
                 ${pathHtml}
                 ${dotHtml}
                 ${flagHtml}
               </svg>
+              <div class="map__zoom" aria-label="地图缩放">
+                <button type="button" class="map__zoom-btn" data-zoom="in" aria-label="放大">＋</button>
+                <button type="button" class="map__zoom-btn" data-zoom="out" aria-label="缩小">−</button>
+                <button type="button" class="map__zoom-btn" data-zoom="reset" aria-label="复位">⌂</button>
+              </div>
               <div class="map__legend">
                 <span class="map__legend-item"><span class="map__legend-swatch map__legend-swatch--on"></span>已开放（${avail.length}）</span>
                 <span class="map__legend-item"><span class="map__legend-swatch map__legend-swatch--off"></span>建设中</span>
                 <span class="map__legend-item"><span class="map__legend-swatch map__legend-swatch--ai"></span>AI 匹配高亮</span>
               </div>
               <div class="map__tooltip" id="map-tooltip" aria-hidden="true"></div>
+              <div class="map__card" id="map-card" aria-hidden="true"></div>
             </div>
 
             <section class="map__regions" aria-label="国家区域">
@@ -121,19 +143,127 @@ class SiteWorldMap extends HTMLElement {
   }
 
   bind() {
+    const svg = this.querySelector('.map__canvas');
+    const panel = this.querySelector('.map__panel');
+    const tooltip = this.querySelector('#map-tooltip');
+    const map = Istra.worldMap || { width: 2000, height: 1000 };
+
+    /* ---------- 视图：viewBox 缩放 / 平移 ---------- */
+    this._vb = { x: 0, y: 0, w: map.width, h: map.height };
+    this._k = 1;
+    this._dragged = false;
+    const clampVb = () => {
+      this._vb.x = Math.min(Math.max(0, this._vb.x), map.width - this._vb.w);
+      this._vb.y = Math.min(Math.max(0, this._vb.y), map.height - this._vb.h);
+    };
+    const applyView = () => {
+      svg.setAttribute('viewBox', `${this._vb.x.toFixed(2)} ${this._vb.y.toFixed(2)} ${this._vb.w.toFixed(2)} ${this._vb.h.toFixed(2)}`);
+    };
+    this._setZoom = (k, clientX, clientY) => {
+      const rect = svg.getBoundingClientRect();
+      const mx = rect.width ? (clientX - rect.left) / rect.width : 0.5;
+      const my = rect.height ? (clientY - rect.top) / rect.height : 0.5;
+      const k2 = Math.min(12, Math.max(1, k));
+      const w2 = map.width / k2;
+      const h2 = map.height / k2;
+      const px = this._vb.x + mx * this._vb.w;
+      const py = this._vb.y + my * this._vb.h;
+      this._vb.w = w2;
+      this._vb.h = h2;
+      this._vb.x = px - mx * w2;
+      this._vb.y = py - my * h2;
+      clampVb();
+      this._k = k2;
+      applyView();
+    };
+    this._resetView = () => {
+      this._vb = { x: 0, y: 0, w: map.width, h: map.height };
+      this._k = 1;
+      applyView();
+    };
+
+    /* 滚轮缩放 */
+    svg.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      this._setZoom(this._k * (e.deltaY < 0 ? 1.25 : 0.8), e.clientX, e.clientY);
+    }, { passive: false });
+
+    /* 指针：拖拽平移 + 双指缩放（桌面/移动通用） */
+    const ptrs = new Map();
+    let pinchStart = null;
+    svg.addEventListener('pointerdown', (e) => {
+      svg.setPointerCapture(e.pointerId);
+      ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      svg.classList.add('is-dragging');
+      if (ptrs.size === 2) {
+        const arr = [...ptrs.values()];
+        pinchStart = {
+          dist: Math.hypot(arr[0].x - arr[1].x, arr[0].y - arr[1].y),
+          midX: (arr[0].x + arr[1].x) / 2,
+          midY: (arr[0].y + arr[1].y) / 2,
+          k: this._k
+        };
+      }
+    });
+    svg.addEventListener('pointermove', (e) => {
+      const p = ptrs.get(e.pointerId);
+      if (!p) return;
+      const dx = e.clientX - p.x;
+      const dy = e.clientY - p.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) this._dragged = true;
+      p.x = e.clientX;
+      p.y = e.clientY;
+      if (ptrs.size === 1) {
+        if (pinchStart) pinchStart = null;
+        const rect = svg.getBoundingClientRect();
+        if (rect.width) {
+          this._vb.x -= (dx / rect.width) * this._vb.w;
+          this._vb.y -= (dy / rect.height) * this._vb.h;
+          clampVb();
+          applyView();
+        }
+      } else if (ptrs.size === 2 && pinchStart) {
+        const arr = [...ptrs.values()];
+        const dist = Math.hypot(arr[0].x - arr[1].x, arr[0].y - arr[1].y);
+        const midX = (arr[0].x + arr[1].x) / 2;
+        const midY = (arr[0].y + arr[1].y) / 2;
+        this._setZoom(Math.min(12, Math.max(1, pinchStart.k * (dist / Math.max(1, pinchStart.dist)))), midX, midY);
+      }
+    });
+    const endPointer = (e) => {
+      ptrs.delete(e.pointerId);
+      if (ptrs.size < 2) pinchStart = null;
+      if (!ptrs.size) svg.classList.remove('is-dragging');
+    };
+    svg.addEventListener('pointerup', endPointer);
+    svg.addEventListener('pointercancel', endPointer);
+
+    /* 缩放控件 */
+    this.querySelectorAll('[data-zoom]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const rect = svg.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const z = btn.getAttribute('data-zoom');
+        if (z === 'in') this._setZoom(this._k * 1.5, cx, cy);
+        else if (z === 'out') this._setZoom(this._k / 1.5, cx, cy);
+        else this._resetView();
+      });
+    });
+
+    /* 国家点击：可用 → 信息卡；未开放 → 建设中 */
     this.querySelectorAll('[data-iso]').forEach((el) => {
       el.addEventListener('click', () => {
+        if (this._dragged) { this._dragged = false; return; }
+        const iso = el.getAttribute('data-iso');
         const link = el.getAttribute('data-link');
-        if (link) { location.href = link; return; }
+        if (link) { this.openCard(iso); return; }
         const name = el.querySelector('title')?.textContent || '该国家';
         this.toast(`「${name}」数据建设中，敬请期待`);
       });
     });
 
     /* 桌面：悬停信息卡 */
-    const svg = this.querySelector('.map__canvas');
-    const panel = this.querySelector('.map__panel');
-    const tooltip = this.querySelector('#map-tooltip');
     if (svg && tooltip && panel) {
       let lastIso = '';
       svg.addEventListener('mousemove', (e) => {
@@ -142,11 +272,10 @@ class SiteWorldMap extends HTMLElement {
         const iso = t.getAttribute('data-iso');
         if (iso !== lastIso) {
           lastIso = iso;
-          const link = t.getAttribute('data-link');
           const c = (Istra.countries || []).find((x) => x.id.toUpperCase() === iso);
           tooltip.innerHTML = c
             ? `<div class="map__tip-flag"><img src="assets/flags/${c.flag}" alt="${c.cn} 国旗" width="34" height="25" /></div>
-               <div class="map__tip-info"><p class="map__tip-name">${c.cn} <small>${c.en}</small></p><p class="map__tip-meta">${c.region} · 已开放</p></div>`
+               <div class="map__tip-info"><p class="map__tip-name">${c.cn} <small>${c.en}</small></p><p class="map__tip-meta">${c.region} · 已开放 · 点击查看详情</p></div>`
             : `<div class="map__tip-info"><p class="map__tip-name">${t.querySelector('title')?.textContent || iso}</p><p class="map__tip-meta">建设中</p></div>`;
         }
         const rect = panel.getBoundingClientRect();
@@ -173,6 +302,88 @@ class SiteWorldMap extends HTMLElement {
         btn.setAttribute('aria-expanded', String(!open));
       });
     });
+
+    /* Esc 关闭信息卡 */
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') this.closeCard(); });
+  }
+
+  /* 国家信息卡 */
+  openCard(iso) {
+    const c = (Istra.countries || []).find((x) => x.id.toUpperCase() === iso);
+    const card = this.querySelector('#map-card');
+    if (!c || !card) return;
+    card.innerHTML = this.cardHtml(c);
+    card.classList.add('is-show');
+    card.setAttribute('aria-hidden', 'false');
+    const close = card.querySelector('.map__card-close');
+    if (close) close.addEventListener('click', () => this.closeCard());
+  }
+
+  closeCard() {
+    const card = this.querySelector('#map-card');
+    if (!card) return;
+    card.classList.remove('is-show');
+    card.setAttribute('aria-hidden', 'true');
+  }
+
+  cardHtml(c) {
+    const cities = (Istra.countryCities || []).filter((x) => x.country_id === c.id);
+    const scenery = (Istra.countryScenery || []).filter((x) => x.country_id === c.id);
+    const info = (Istra.mapCountryInfo || []).find((x) => x.id === c.id);
+    const projects = Istra.projects || [];
+    const work = projects.filter((p) => p.country.id === c.id && p.category.id === 'work').slice(0, 3);
+    const visaCats = ['pr', 'invest', 'talent', 'family', 'nomad', 'youth', 'special'];
+    const visa = projects.filter((p) => p.country.id === c.id && visaCats.includes(p.category.id)).slice(0, 3);
+
+    const placeRow = (x, imgKey, nameKey, descKey, alt) => `
+      <div class="map__card-item">
+        <span class="map__card-thumb"><img src="${x[imgKey]}" alt="${x[nameKey]} ${alt}" loading="lazy" /></span>
+        <div class="map__card-item-body">
+          <p class="map__card-item-name">${x[nameKey]}</p>
+          <p class="map__card-item-desc">${x[descKey]}</p>
+        </div>
+      </div>`;
+    const projRow = (p) => `
+      <a class="map__card-proj" href="project-detail.html?id=${p.id}">
+        <span class="map__card-proj-name">${p.name}</span>
+        <span class="map__card-proj-type">${p.visaType}</span>
+      </a>`;
+
+    return `
+      <div class="map__card-head">
+        <span class="map__card-flag"><img src="assets/flags/${c.flag}" alt="${c.cn} 国旗" /></span>
+        <div class="map__card-titlebox">
+          <p class="map__card-title">${c.cn}</p>
+          <p class="map__card-sub">${c.en} · ${c.region}</p>
+        </div>
+        <button type="button" class="map__card-close" aria-label="关闭">×</button>
+      </div>
+      <div class="map__card-body">
+        <section class="map__card-sec">
+          <h3 class="map__card-sec-title"><span>01</span>城市与风景</h3>
+          ${cities.length ? `<div class="map__card-subhead">热门城市</div><div class="map__card-list">${cities.map((x) => placeRow(x, 'image', 'city_name', 'description', '城市实景')).join('')}</div>` : ''}
+          ${scenery.length ? `<div class="map__card-subhead">代表风景</div><div class="map__card-list">${scenery.map((x) => placeRow(x, 'image', 'name', 'description', '实景')).join('')}</div>` : ''}
+        </section>
+        <section class="map__card-sec">
+          <h3 class="map__card-sec-title"><span>02</span>气候环境</h3>
+          <div class="map__card-facts">
+            <div class="map__card-fact"><span>气候特点</span><p>${info ? info.climate : '—'}</p></div>
+            <div class="map__card-fact"><span>最佳季节</span><p>${info ? info.bestSeason : '—'}</p></div>
+          </div>
+        </section>
+        <section class="map__card-sec">
+          <h3 class="map__card-sec-title"><span>03</span>工作与就业机会</h3>
+          <div class="map__card-projs">${work.length ? work.map(projRow).join('') : '<p class="map__card-empty">暂无收录</p>'}</div>
+        </section>
+        <section class="map__card-sec">
+          <h3 class="map__card-sec-title"><span>04</span>签证与移民项目</h3>
+          <div class="map__card-projs">${visa.length ? visa.map(projRow).join('') : '<p class="map__card-empty">暂无收录</p>'}</div>
+        </section>
+      </div>
+      <div class="map__card-foot">
+        <a class="btn btn--primary" href="country.html?id=${c.id}">进入国家详情页 <span class="btn-arrow">→</span></a>
+      </div>
+    `;
   }
 
   /* 未来 AI 匹配高亮：highlight(['US','JP',...]) */

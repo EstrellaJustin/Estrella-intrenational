@@ -123,3 +123,185 @@ is-world-map { display: block; }
   .map__region-list { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 560px) { .map__region-list { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   v3 · 国旗区域填充 / 缩放平移 / 国家信息卡
+   ============================================================ */
+
+.map__panel { position: relative; }
+.map__canvas { touch-action: none; cursor: grab; }
+.map__canvas.is-dragging { cursor: grabbing; }
+
+/* 国旗填充区域：hover 提亮 + 描边，不使用纯色覆盖 */
+.map__country.is-available:hover { filter: brightness(1.22) saturate(1.08); stroke: rgba(255, 255, 255, 0.85); stroke-width: 1.1; }
+
+/* AI 高亮（国旗填充下用描边 + 光晕，避免覆盖国旗） */
+.map__country.is-ai-highlight { stroke: var(--color-accent); stroke-width: 2.2; filter: drop-shadow(0 0 8px rgba(201, 162, 39, 0.75)); }
+.map__dot.is-ai-highlight { fill: var(--color-accent); stroke: var(--color-accent); }
+
+/* 缩放控件 */
+.map__zoom {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.map__zoom-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 27, 58, 0.9);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-s);
+  color: var(--color-heading);
+  font-size: 1.125rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+.map__zoom-btn:hover { border-color: var(--color-accent-line); color: var(--color-accent); background: rgba(10, 61, 115, 0.85); }
+
+/* 国家信息卡（地图区域内弹出） */
+.map__card {
+  position: absolute;
+  inset: 0.75rem;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, rgba(6, 43, 85, 0.98), rgba(4, 27, 58, 0.98));
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease), visibility var(--dur-slow);
+}
+.map__card.is-show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+.map__card-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.125rem 1.25rem;
+  border-bottom: 1px solid var(--color-line-soft);
+}
+.map__card-flag { width: 48px; height: 34px; flex: none; border-radius: var(--radius-s); overflow: hidden; box-shadow: 0 3px 10px -3px rgba(2, 19, 38, 0.9); }
+.map__card-flag img { width: 100%; height: 100%; object-fit: cover; }
+.map__card-titlebox { min-width: 0; }
+.map__card-title { font-size: 1.25rem; font-weight: 700; color: var(--color-heading); }
+.map__card-sub { margin-top: 0.2rem; font-size: 0.75rem; letter-spacing: 0.06em; color: var(--color-text-muted); }
+.map__card-close {
+  margin-left: auto;
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-s);
+  color: var(--color-text-muted);
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.map__card-close:hover { color: var(--color-heading); border-color: rgba(255, 255, 255, 0.35); }
+
+.map__card-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 1.25rem;
+}
+.map__card-sec + .map__card-sec { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--color-line-soft); }
+.map__card-sec-title {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-heading);
+}
+.map__card-sec-title span {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-s);
+  padding: 0.15rem 0.45rem;
+  line-height: 1.2;
+}
+.map__card-subhead {
+  margin: 0.875rem 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+}
+
+.map__card-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+.map__card-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.625rem;
+  background: rgba(10, 61, 115, 0.28);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-m);
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.map__card-item:hover { border-color: rgba(255, 255, 255, 0.28); transform: translateY(-2px); }
+.map__card-thumb { aspect-ratio: 16 / 10; border-radius: var(--radius-s); overflow: hidden; background: var(--color-ink-2); }
+.map__card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.map__card-item-name { font-size: 0.8125rem; font-weight: 700; color: var(--color-heading); }
+.map__card-item-desc {
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.map__card-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.875rem; }
+.map__card-fact { padding: 0.75rem 0.875rem; background: rgba(10, 61, 115, 0.28); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.map__card-fact span { display: block; font-size: 0.6875rem; letter-spacing: 0.12em; color: var(--color-text-faint); }
+.map__card-fact p { margin-top: 0.4rem; font-size: 0.8125rem; line-height: 1.6; color: var(--color-text); }
+
+.map__card-projs { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.875rem; }
+.map__card-proj {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.625rem 0.875rem;
+  background: rgba(10, 61, 115, 0.28);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-m);
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+.map__card-proj:hover { border-color: rgba(59, 130, 246, 0.55); background: rgba(10, 61, 115, 0.5); }
+.map__card-proj-name { font-size: 0.8125rem; font-weight: 600; color: var(--color-heading); }
+.map__card-proj-type { flex: none; font-size: 0.6875rem; color: var(--color-accent); border: 1px solid var(--color-accent-line); border-radius: 999px; padding: 0.15rem 0.55rem; }
+.map__card-empty { padding: 0.75rem; font-size: 0.8125rem; color: var(--color-text-faint); border: 1px dashed var(--color-line); border-radius: var(--radius-m); }
+
+.map__card-foot { padding: 1rem 1.25rem; border-top: 1px solid var(--color-line-soft); }
+.map__card-foot .btn { width: 100%; justify-content: center; }
+
+/* 信息卡移动端适配 */
+@media (max-width: 720px) {
+  .map__card { inset: 0.375rem; }
+  .map__card-list { grid-template-columns: 1fr; }
+  .map__card-facts { grid-template-columns: 1fr; }
+  .map__card-body { padding: 1rem; }
+  .map__zoom { top: 0.625rem; right: 0.625rem; }
+}

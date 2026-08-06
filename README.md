@@ -75,6 +75,19 @@ ode scripts/serve.js 或双击 启动网站.bat），file:// 直开不支持 API
 - 结构按 country_id 关联 countries 数据库，支持未来扩展到 195 国（为新增国家补充记录即可）
 - 图片：真实地点实拍（Wikimedia Commons 开放版权），独立存储于 `assets/images/travel/city/` 与 `assets/images/travel/scenery/`，按 ID 精准读取；全局 onerror 占位图 + loading="lazy"
 - 生成器：`node scripts/generate-country-places.js`；图片工具：`node scripts/download-country-places-images.js`；验证：`node scripts/verify-country-places.js`
+
+## 全球地图模块（v3 · 国旗区域填充 + 缩放平移 + 国家信息卡）
+
+- **国家区域级点亮**：已收录 53 国使用真实国家边界路径（Natural Earth），区域以**对应国旗元素填充**（SVG pattern），不再用固定国旗图标代替；未收录国家保持灰色
+- **完整缩放交互**：鼠标滚轮缩放 / 拖拽平移 / 触屏双指缩放（桌面 + 移动端），面板右上角提供 ＋ − ⌂ 缩放控件；缩放上限 12×，自动限制平移边界
+- **点击国家 → 国家信息卡**（地图区域内弹出，含关闭按钮 / Esc 关闭）：
+  1. 城市与风景：热门城市（名称/图片/介绍）+ 代表风景（名称/图片/简介），数据来自 `Istra.countryCities` / `Istra.countryScenery`
+  2. 气候环境：气候特点 + 最佳季节，数据来自新增 `src/data/map-country-info.js`（53 国，生成器 `scripts/generate-map-country-info.js`）
+  3. 工作与就业机会：该国「工作就业」类项目（名称 + 签证类型）
+  4. 签证与移民项目：该国永居/投资/人才/家庭/数字游民等项目
+  5. 进入国家详情页按钮
+- 无真实路径的小国（如新加坡/马耳他）保留中心点 + 国旗标记；AI 匹配高亮 `highlight()` 保留（改为描边 + 金色光晕，不覆盖国旗）
+- 仅修改全球地图模块：不动国家详情页、项目大全、AI 评估与其他页面结构
 ## 全球地图模块（v2 · 国旗 + 信息卡 + 区域展开）
 
 - 国家数据库 lag 字段驱动：53 面国旗在地图上动态加载（按 countries 数据库，不写死）
