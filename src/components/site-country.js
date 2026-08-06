@@ -1,6 +1,7 @@
-﻿/* ============================================================
+/* ============================================================
    组件：is-country · 国家页（?id=xx）
-   国家信息 + 按一级分类分组的项目列表
+   国家信息 + 按一级分类分组的项目列表 + 城市与风景子模块
+   城市与风景数据：Istra.countryCities / Istra.countryScenery
    ============================================================ */
 
 class SiteCountry extends HTMLElement {
@@ -48,6 +49,62 @@ class SiteCountry extends HTMLElement {
       })
       .join('');
 
+    /* 城市与风景子模块（数据驱动，无数据时自动隐藏） */
+    const cities = (Istra.countryCities || []).filter((x) => x.country_id === this.id);
+    const scenery = (Istra.countryScenery || []).filter((x) => x.country_id === this.id);
+    const places = (cities.length || scenery.length) ? `
+      <section class="country__places">
+        <div class="container">
+          <div class="country__places-head" data-reveal>
+            <p class="country__places-eyebrow">Cities &amp; Scenery</p>
+            <h2 class="country__places-title">城市与风景</h2>
+            <p class="country__places-sub">先了解这个国家的热门城市与代表风景，再规划你的国际发展路径。</p>
+          </div>
+
+          ${cities.length ? `
+          <div class="country__places-block" data-reveal>
+            <div class="country__places-block-head">
+              <span class="country__places-block-no">01</span>
+              <h3 class="country__places-block-title">热门城市</h3>
+              <span class="country__places-block-count">${cities.length} 城</span>
+            </div>
+            <div class="country__places-grid">
+              ${cities.map((city) => `
+                <article class="country__place">
+                  <div class="country__place-media">
+                    <img src="${city.image}" alt="${city.city_name} 城市实景" loading="lazy" />
+                  </div>
+                  <div class="country__place-body">
+                    <h4 class="country__place-name">${city.city_name}</h4>
+                    <p class="country__place-desc">${city.description}</p>
+                  </div>
+                </article>`).join('')}
+            </div>
+          </div>` : ''}
+
+          ${scenery.length ? `
+          <div class="country__places-block" data-reveal>
+            <div class="country__places-block-head">
+              <span class="country__places-block-no">02</span>
+              <h3 class="country__places-block-title">代表风景</h3>
+              <span class="country__places-block-count">${scenery.length} 处</span>
+            </div>
+            <div class="country__places-grid">
+              ${scenery.map((s) => `
+                <article class="country__place">
+                  <div class="country__place-media">
+                    <img src="${s.image}" alt="${s.name} 实景" loading="lazy" />
+                  </div>
+                  <div class="country__place-body">
+                    <h4 class="country__place-name">${s.name}</h4>
+                    <p class="country__place-desc">${s.description}</p>
+                  </div>
+                </article>`).join('')}
+            </div>
+          </div>` : ''}
+        </div>
+      </section>` : '';
+
     this.innerHTML = `
       <div class="country">
         <header class="country__head">
@@ -79,6 +136,8 @@ class SiteCountry extends HTMLElement {
             ${groups || '<div class="country__empty">该国家暂无收录项目</div>'}
           </div>
         </div>
+
+        ${places}
       </div>
     `;
   }

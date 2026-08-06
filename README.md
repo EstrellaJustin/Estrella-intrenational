@@ -1,4 +1,4 @@
-﻿# 伊斯特拉国际 · Istra International
+# 伊斯特拉国际 · Istra International
 
 > 高端国际身份规划平台 · 全球出国项目智能数据库
 
@@ -63,6 +63,18 @@ ode scripts/serve.js 或双击 启动网站.bat），file:// 直开不支持 API
 
 导航：首页 / 全球国家 / 全球项目 / AI评估 / 旅游探索 / 关于我们 —— 全部独立页面跳转。
 
+
+## 国家详情 · 城市与风景子模块（新增）
+
+- 国家详情页（country.html?id=xx，含全球地图进入）新增「城市与风景」子模块，不新增独立旅行模块
+- 每个国家展示：**热门城市**（城市名称 / 城市图片 / 城市介绍）× 3 + **代表风景**（景点名称 / 图片 / 简介）× 3
+- 独立数据表（生成自 `scripts/generate-country-places.js`）：
+  - `src/data/country-places.js` → `Istra.countryCities`（id / country_id / city_name / image / description）
+  - 同文件 → `Istra.countryScenery`（id / country_id / name / image / description）
+- 覆盖现有 **53 国全部**（30 国复用全球城市探索数据与实景图；23 国新增城市与风景数据 + 真实地点图片）
+- 结构按 country_id 关联 countries 数据库，支持未来扩展到 195 国（为新增国家补充记录即可）
+- 图片：真实地点实拍（Wikimedia Commons 开放版权），独立存储于 `assets/images/travel/city/` 与 `assets/images/travel/scenery/`，按 ID 精准读取；全局 onerror 占位图 + loading="lazy"
+- 生成器：`node scripts/generate-country-places.js`；图片工具：`node scripts/download-country-places-images.js`；验证：`node scripts/verify-country-places.js`
 ## 全球地图模块（v2 · 国旗 + 信息卡 + 区域展开）
 
 - 国家数据库 lag 字段驱动：53 面国旗在地图上动态加载（按 countries 数据库，不写死）
