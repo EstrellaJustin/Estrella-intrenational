@@ -1,7 +1,7 @@
 ﻿/* ============================================================
-   组件：is-ai-assessment · 全球人生路径规划评估中心（v8）
-   12 阶段智能对话式问卷 → 先理解用户 → 再匹配项目
-   生成《全球人生路径规划报告》
+   组件：is-ai-assessment · 全球人生路径规划评估中心（v9）
+   7 步信息采集（多层级职业/资金/健康/目标/偏好）→ 20 个匹配方案
+   定位：全球人生规划评估（适用于所有人）
    ============================================================ */
 
 class SiteAiAssessment extends HTMLElement {
@@ -9,19 +9,16 @@ class SiteAiAssessment extends HTMLElement {
     super();
     this.step = 0;
     this.phase = 'form';
-    this.totalSteps = 12;
+    this.totalSteps = 7;
     this.state = {
-      age: '', gender: '', curCountry: '', curCity: '', identity: '', situation: '',
-      motives: [], priority1: '', priority2: '', priority3: '',
-      occupation: '', industry: '', experience: '', skills: '',
-      degree: '', major: '', school: '', overseas: '',
-      languages: '', englishLevel: '', otherLangs: '', learnNewLang: '',
-      income: '', funds: '', futureFunds: '', loanWilling: '', workDevelop: '', lowCost: '',
-      marital: '', kids: '', planWith: [], familyNeeds: '',
-      climates: [], climateNo: '', cityPref: '', pace: '',
-      adapt: { lang: '', culture: '', integrate: '', lifestyle: '' }, adaptScore: '',
-      risk: '', prepareYears: '',
-      targetCountry: '', vision: ''
+      age: '', gender: '', curCountry: '', curCity: '', marital: '', hasKids: '', familyMembers: '',
+      cat1: '', cat2: '', skills: '', years: '', position: '', cert: '', learnSkill: '',
+      degree: '', major: '', gradYear: '', certDoc: '',
+      englishLevel: '', otherLangs: '', learnLocal: '', langTest: '',
+      funds: '', source: [], lowCost: '', workDevelop: '', studyFirst: '',
+      healthNeed: '', specialMed: '', chronic: '', regularMed: '', parentsPlan: '', eduNeed: '',
+      goals: [], priority1: '', priority2: '', priority3: '',
+      likes: [], climate: [], pace: '', risk: '', accepts: []
     };
     this.report = null;
   }
@@ -31,6 +28,35 @@ class SiteAiAssessment extends HTMLElement {
     this.bind();
     this.updateView();
     Istra.reveal.observe(this);
+  }
+
+  /* ================= 职业数据库（14 大类 × 二级） ================= */
+
+  careerDb() {
+    return {
+      tech: { name: '技术类', subs: ['机械维修', '电子技术', '自动化', '其他技术'] },
+      service: { name: '服务类', subs: ['厨师', '酒店员工', '美容美发', '护理人员', '家政服务', '其他服务'] },
+      manufacture: { name: '制造业', subs: ['机械操作', '焊工', '电工', '汽车维修', '生产管理', '其他制造'] },
+      construction: { name: '建筑工程', subs: ['木工', '瓦工', '水电工', '工程师', '其他建筑'] },
+      medical: { name: '医疗护理', subs: ['医生', '护士', '护理员', '药剂师', '其他医疗'] },
+      edu: { name: '教育', subs: ['教师', '培训师', '教育管理', '其他教育'] },
+      finance: { name: '金融商业', subs: ['会计', '销售', '行政', '管理', '其他商业'] },
+      internet: { name: '互联网', subs: ['程序员', '产品经理', '设计师', '运营', '其他互联网'] },
+      agriculture: { name: '农业', subs: ['种植', '养殖', '农业机械', '其他农业'] },
+      logistics: { name: '物流运输', subs: ['司机', '仓储', '配送', '其他物流'] },
+      catering: { name: '餐饮酒店', subs: ['厨师', '服务员', '前台', '客房', '其他餐饮酒店'] },
+      art: { name: '艺术设计', subs: ['平面设计', '插画', '摄影', '音乐', '其他艺术'] },
+      freelance: { name: '自由职业', subs: ['远程办公', '内容创作', '咨询', '其他自由职业'] },
+      none: { name: '无固定职业', subs: ['待业', '退休', '家庭主妇/主夫', '其他'] }
+    };
+  }
+
+  goalLabels() {
+    return {
+      travel: '旅游体验', short: '短期工作', work: '长期工作', study: '留学提升',
+      career: '职业发展', startup: '创业', invest: '投资', family: '家庭团聚',
+      pr: '长期居留', identity: '获得海外身份'
+    };
   }
 
   /* ================= 字段构建 ================= */
@@ -94,21 +120,21 @@ class SiteAiAssessment extends HTMLElement {
 
   question(no, title, desc) {
     return `
-      <p class="wizard__panel-q">Q${no}<span>/ 12</span></p>
+      <p class="wizard__panel-q">Q${no}<span>/ 07</span></p>
       <h2 class="wizard__panel-title">${title}</h2>
       <p class="wizard__panel-desc">${desc}</p>`;
   }
-
-  /* ================= 12 个阶段 ================= */
+  /* ================= 7 个阶段 ================= */
 
   stepPanel(i) {
     const countries = Istra.countries || [];
     const countryOptions = countries.map((c) => `<option value="${c.id}">${c.cn}</option>`).join('');
+    const db = this.careerDb();
 
     switch (i) {
-      case 0:
+      case 0: /* 1 基本信息 */
         return `
-          ${this.question('01', '先认识您——您目前处于人生的哪个阶段？', '选择为主，补充填写为辅。')}
+          ${this.question('01', '先认识您——基本信息', '选择为主，补充填写为辅。')}
           <div class="field-grid">
             ${this.chips('年龄', [
               { id: 'u18', label: '18 岁以下' }, { id: '18-22', label: '18–22 岁' },
@@ -116,173 +142,131 @@ class SiteAiAssessment extends HTMLElement {
               { id: '41-50', label: '41–50 岁' }, { id: '50+', label: '50 岁以上' }
             ], 'age', false)}
             ${this.chips('性别（可选）', [{ id: 'male', label: '男' }, { id: 'female', label: '女' }, { id: 'other', label: '其他' }], 'gender', false)}
-            ${this.selects('curCountry', '当前所在地 · 国家', [{ value: 'cn', label: '中国' }, { value: 'other', label: '其他国家' }])}
-            ${this.text('curCity', '当前所在地 · 城市')}
-            ${this.chips('当前身份', [
-              { id: 'student', label: '学生' }, { id: 'worker', label: '工作人士' },
-              { id: 'entrepreneur', label: '创业者' }, { id: 'business', label: '企业经营者' },
-              { id: 'freelancer', label: '自由职业' }, { id: 'none', label: '暂无职业' },
-              { id: 'retired', label: '退休' }
-            ], 'identity', false)}
-            ${this.textarea('situation', '你的目前情况（选填）', '例如：刚毕业 / 考虑换赛道 / 孩子准备升学…')}
+            ${this.selects('curCountry', '所在国家/地区', [{ value: 'cn', label: '中国' }, { value: 'other', label: '其他国家' }])}
+            ${this.text('curCity', '所在城市')}
+            ${this.chips('婚姻情况', [{ id: 'single', label: '单身' }, { id: 'married', label: '已婚' }, { id: 'other', label: '其他' }], 'marital', false)}
+            ${this.chips('是否有子女', [{ id: 'yes', label: '有' }, { id: 'no', label: '无' }], 'hasKids', false)}
+            ${this.textarea('familyMembers', '家庭情况（选填）', '如：夫妻 + 1 个子女，父母同城…')}
           </div>`;
 
-      case 1:
+      case 1: /* 2 职业能力（重点） */
         return `
-          ${this.question('02', '为什么考虑国际发展？', '可多选，并请排列前三个最重要目标。')}
-          ${this.chips('核心动机（多选）', [
-            { id: 'work', label: '寻找更好的工作机会' }, { id: 'income', label: '提升收入' },
-            { id: 'lifestyle', label: '改变生活环境' }, { id: 'child-edu', label: '子女教育' },
-            { id: 'permanent', label: '获得长期身份' }, { id: 'business', label: '商业发展' },
-            { id: 'startup', label: '创业' }, { id: 'invest', label: '投资' },
-            { id: 'culture', label: '体验不同文化' }, { id: 'family', label: '家庭规划' },
-            { id: 'explore', label: '暂时探索' }
-          ], 'motives')}
+          ${this.question('02', '您的职业与能力？', '请选择行业与具体职业，越精准匹配越准确。')}
+          ${this.chips('一级 · 职业大类', Object.entries(db).map(([id, v]) => ({ id, label: v.name })), 'cat1', false)}
+          ${Object.entries(db).map(([id, v]) => `
+            <div class="career-subs" data-catsub="${id}" style="display:none">
+              ${this.chips('二级 · 具体职业', v.subs.map((s, k) => ({ id: s, label: s })), 'cat2', false)}
+            </div>`).join('')}
           <div class="field-grid">
-            ${this.selects('priority1', '第一重要目标', this.priorityOptions())}
-            ${this.selects('priority2', '第二重要目标', this.priorityOptions())}
-            ${this.selects('priority3', '第三重要目标', this.priorityOptions())}
-          </div>`;
-
-      case 2:
-        return `
-          ${this.question('03', '您的职业与能力画像？', '帮助 AI 理解您能做什么、擅长什么。')}
-          <div class="field-grid">
-            ${this.text('occupation', '当前职业', '自由填写，如：软件工程师 / 教师 / 自由设计师')}
-            ${this.chips('所属行业', [
-              { id: 'tech', label: '科技' }, { id: 'finance', label: '金融' }, { id: 'edu', label: '教育' },
-              { id: 'medical', label: '医疗' }, { id: 'manufacture', label: '制造' }, { id: 'trade', label: '贸易' },
-              { id: 'service', label: '服务业' }, { id: 'art', label: '艺术' }, { id: 'internet', label: '互联网' },
-              { id: 'other', label: '其他' }
-            ], 'industry', false)}
-            ${this.chips('工作经验', [
+            ${this.text('position', '当前职位（选填）', '如：焊工 / 车间主管 / 个体户')}
+            ${this.chips('工作年限', [
               { id: 'none', label: '无' }, { id: '1y-', label: '1 年以内' },
               { id: '1-3', label: '1–3 年' }, { id: '3-5', label: '3–5 年' }, { id: '5y+', label: '5 年以上' }
-            ], 'experience', false)}
-            ${this.textarea('skills', '核心技能（选填）', '如：编程 / 销售 / 管理 / 设计 / 机械 / 语言…')}
+            ], 'years', false)}
+            ${this.textarea('skills', '职业技能描述（选填）', '如：机械维修经验 / 会焊接 / 会开车 / 面点制作…')}
+            ${this.chips('是否有职业资格证书', [{ id: 'yes', label: '有' }, { id: 'no', label: '没有' }], 'cert', false)}
+            ${this.chips('是否愿意学习新技能', [{ id: 'yes', label: '愿意' }, { id: 'no', label: '不太愿意' }], 'learnSkill', false)}
           </div>`;
 
-      case 3:
+      case 2: /* 3 教育语言 */
         return `
-          ${this.question('04', '您的教育背景？', '学历与专业影响留学、工作与长期身份的匹配。')}
+          ${this.question('03', '教育与语言', '教育背景与语言能力是匹配的重要维度。')}
           <div class="field-grid">
             ${this.chips('最高学历', [
               { id: 'below-high', label: '高中以下' }, { id: 'high', label: '高中' },
               { id: 'college', label: '大专' }, { id: 'bachelor', label: '本科' },
               { id: 'master', label: '硕士' }, { id: 'phd', label: '博士' }
             ], 'degree', false)}
-            ${this.text('major', '专业（选填）', '如：计算机 / 金融 / 医学')}
-            ${this.text('school', '学校背景（选填）', '自由填写')}
-            ${this.chips('是否有海外经历', [{ id: 'yes', label: '有' }, { id: 'no', label: '无' }], 'overseas', false)}
-          </div>`;
-
-      case 4:
-        return `
-          ${this.question('05', '您的语言能力？', '语言是通往世界的桥梁，也是匹配的关键维度。')}
-          <div class="field-grid">
-            ${this.text('languages', '掌握的语言（选填）', '如：中文 / 英语 / 日语…')}
+            ${this.text('major', '专业（选填）', '如：机电 / 护理 / 会计')}
+            ${this.selects('gradYear', '毕业年份', [
+              { value: '2020+', label: '2020 年以后' }, { value: '2015-2020', label: '2015–2020' },
+              { value: '2010-2015', label: '2010–2015' }, { value: '2000-2010', label: '2000–2010' },
+              { value: '2000-', label: '2000 年以前' }
+            ])}
+            ${this.chips('是否有学历证明', [{ id: 'yes', label: '有' }, { id: 'no', label: '没有' }], 'certDoc', false)}
             ${this.chips('英语水平', [
               { id: 'none', label: '不会' }, { id: 'basic', label: '基础' },
               { id: 'daily', label: '交流' }, { id: 'skilled', label: '熟练' }, { id: 'fluent', label: '流利' }
             ], 'englishLevel', false)}
-            ${this.text('otherLangs', '其他语言（选填）', '如：日语 / 德语 / 法语…')}
-            ${this.chips('是否愿意学习新语言', [{ id: 'yes', label: '是' }, { id: 'no', label: '否' }], 'learnNewLang', false)}
+            ${this.text('otherLangs', '其他语言（选填）', '如：日语 / 德语 / 粤语…')}
+            ${this.chips('是否愿意学习当地语言', [{ id: 'yes', label: '愿意' }, { id: 'no', label: '不太愿意' }], 'learnLocal', false)}
+            ${this.selects('langTest', '语言考试成绩（选填）', [
+              { value: 'none', label: '暂无' }, { value: 'cet4', label: '大学四级' },
+              { value: 'cet6', label: '大学六级' }, { value: 'ielts', label: '雅思 6.0+' },
+              { value: 'toefl', label: '托福 80+' }, { value: 'other', label: '其他' }
+            ])}
           </div>`;
 
-      case 5:
+      case 3: /* 4 财务情况 */
         return `
-          ${this.question('06', '您的经济与资源情况？', '用于判断哪类路径更适合您，不代表任何资格审核。')}
+          ${this.question('04', '财务情况', '我们只用于匹配适合您的路线，不代表任何资格审核。')}
           <div class="field-grid">
-            ${this.chips('月收入', [
-              { id: 'none', label: '无收入' }, { id: '1w-', label: '1 万元以下' },
-              { id: '1-3w', label: '1–3 万元' }, { id: '3-5w', label: '3–5 万元' },
-              { id: '5-10w', label: '5–10 万元' }, { id: '10w+', label: '10 万元以上' }
-            ], 'income', false)}
-            ${this.chips('当前资金准备', [
-              { id: '1w-', label: '1 万元以下' }, { id: '1-5w', label: '1–5 万元' },
-              { id: '5-10w', label: '5–10 万元' }, { id: '10-50w', label: '10–50 万元' },
-              { id: '50-100w', label: '50–100 万元' }, { id: '100w+', label: '100 万元以上' }
+            ${this.chips('当前可投入资金', [
+              { id: '<1w', label: '1 万以下' }, { id: '1-3w', label: '1–3 万' },
+              { id: '3-5w', label: '3–5 万' }, { id: '5-10w', label: '5–10 万' },
+              { id: '10-30w', label: '10–30 万' }, { id: '30-100w', label: '30–100 万' },
+              { id: '100w+', label: '100 万以上' }
             ], 'funds', false)}
-            ${this.selects('budget', '可接受投入', [
-              { value: '<1w', label: '1 万元以内' }, { value: '1-5w', label: '1–5 万元' },
-              { value: '5-10w', label: '5–10 万元' }, { value: '10-50w', label: '10–50 万元' },
-              { value: 'high', label: '50 万元以上' }
+            ${this.chips('资金来源（可多选）', [
+              { id: 'salary', label: '工资储蓄' }, { id: 'family', label: '家庭支持' },
+              { id: 'business', label: '创业收入' }, { id: 'invest', label: '投资收入' }
+            ], 'source')}
+            ${this.chips('是否接受低成本路线', [{ id: 'yes', label: '接受' }, { id: 'no', label: '不接受' }], 'lowCost', false)}
+            ${this.chips('是否接受边工作边发展', [{ id: 'yes', label: '接受' }, { id: 'no', label: '不接受' }], 'workDevelop', false)}
+            ${this.chips('是否接受先学习后就业', [{ id: 'yes', label: '接受' }, { id: 'no', label: '不接受' }], 'studyFirst', false)}
+          </div>`;
+
+      case 4: /* 5 家庭生活（健康自愿） */
+        return `
+          ${this.question('05', '家庭与健康', '健康信息自愿填写，仅用于匹配生活环境和医疗资源，绝不作为淘汰条件。')}
+          <div class="field-grid">
+            ${this.chips('是否考虑父母未来团聚', [{ id: 'yes', label: '考虑' }, { id: 'no', label: '暂不考虑' }], 'parentsPlan', false)}
+            ${this.selects('eduNeed', '子女教育需求', [
+              { value: 'none', label: '暂不涉及' }, { value: 'primary', label: '小学' },
+              { value: 'middle', label: '中学' }, { value: 'university', label: '大学' }
             ])}
-            ${this.radioRow('是否愿意贷款', 'loanWilling', [{ value: 'yes', label: '愿意' }, { value: 'no', label: '不愿意' }])}
-            ${this.radioRow('是否接受边工作边发展', 'workDevelop', [{ value: 'yes', label: '可以接受' }, { value: 'no', label: '不太接受' }])}
-            ${this.radioRow('是否优先低成本路线', 'lowCost', [{ value: 'yes', label: '是' }, { value: 'no', label: '否' }])}
-            ${this.text('futureFunds', '未来 3 年预计可投入（选填）', '如：30 万 / 100 万 / 暂不确定')}
+            ${this.chips('是否有长期健康需求（自愿）', [{ id: 'yes', label: '有' }, { id: 'no', label: '没有' }], 'healthNeed', false)}
+            ${this.chips('是否需要特殊医疗资源（自愿）', [{ id: 'yes', label: '需要' }, { id: 'no', label: '不需要' }], 'specialMed', false)}
+            ${this.chips('是否有慢性疾病（自愿）', [{ id: 'yes', label: '有' }, { id: 'no', label: '没有' }], 'chronic', false)}
+            ${this.chips('是否需要定期医疗服务（自愿）', [{ id: 'yes', label: '需要' }, { id: 'no', label: '不需要' }], 'regularMed', false)}
+          </div>
+          <p class="wizard__panel-hint">* 健康信息仅用于匹配生活环境、医疗资源和签证准备建议，不得作为单独淘汰条件。</p>`;
+
+      case 5: /* 6 出国目标 */
+        return `
+          ${this.question('06', '出国目标', '可多选，并请排列前三个最重要目标。')}
+          ${this.chips('目标（多选）', Object.entries(this.goalLabels()).map(([id, label]) => ({ id, label })), 'goals')}
+          <div class="field-grid">
+            ${this.selects('priority1', '第一重要目标', this.priorityOptions())}
+            ${this.selects('priority2', '第二重要目标', this.priorityOptions())}
+            ${this.selects('priority3', '第三重要目标', this.priorityOptions())}
           </div>`;
 
-      case 6:
+      case 6: /* 7 个性偏好 */
         return `
-          ${this.question('07', '家庭因素？', '家庭是人生规划的重要部分。')}
+          ${this.question('07', '个性偏好', '最后一步，让方案更贴合您的生活。')}
           <div class="field-grid">
-            ${this.chips('婚姻状态', [{ id: 'single', label: '单身' }, { id: 'married', label: '已婚' }, { id: 'other', label: '其他' }], 'marital', false)}
-            ${this.chips('子女情况', [{ id: 'yes', label: '有子女' }, { id: 'no', label: '无子女' }], 'kids', false)}
-            ${this.chips('考虑与谁共同规划（可多选）', [
-              { id: 'parents', label: '父母' }, { id: 'partner', label: '伴侣' },
-              { id: 'children', label: '子女' }, { id: 'whole', label: '共同规划' }
-            ], 'planWith')}
-            ${this.textarea('familyNeeds', '家庭需求（选填）', '如：希望子女接受国际教育 / 照顾父母…')}
-          </div>`;
-
-      case 7:
-        return `
-          ${this.question('08', '您喜欢怎样的生活方式？', '长期幸福感取决于生活方式的适配。')}
-          <div class="field-grid">
-            ${this.chips('气候偏好（多选）', [
-              { id: 'warm', label: '温暖' }, { id: 'cold', label: '寒冷' },
-              { id: 'four', label: '四季分明' }, { id: 'sunny', label: '阳光充足' },
-              { id: 'humid', label: '湿润' }, { id: 'dry', label: '干燥' },
-              { id: 'ocean', label: '海边' }, { id: 'any', label: '无要求' }
-            ], 'climates')}
-            ${this.text('climateNo', '不能接受的气候（选填）', '如：严寒 / 酷热 / 潮湿…')}
-            ${this.chips('城市偏好', [
-              { id: 'metro', label: '国际大都市' }, { id: 'city', label: '普通城市' },
-              { id: 'small', label: '小城市' }, { id: 'nature', label: '自然环境优先' }
-            ], 'cityPref', false)}
-            ${this.chips('生活节奏', [{ id: 'fast', label: '快节奏' }, { id: 'balance', label: '平衡' }, { id: 'slow', label: '慢生活' }], 'pace', false)}
-          </div>`;
-
-      case 8:
-        return `
-          ${this.question('09', '您的文化适应能力？', '融入意愿越高，长期发展的选择空间越大。')}
-          <div class="field-grid">
-            ${this.radioRow('是否愿意学习当地语言', 'adapt-lang', [{ value: 'yes', label: '愿意' }, { value: 'no', label: '不太愿意' }])}
-            ${this.radioRow('是否愿意接受不同文化', 'adapt-culture', [{ value: 'yes', label: '愿意' }, { value: 'no', label: '不太愿意' }])}
-            ${this.radioRow('是否愿意长期融入当地社会', 'adapt-integrate', [{ value: 'yes', label: '愿意' }, { value: 'no', label: '不太愿意' }])}
-            ${this.radioRow('是否愿意改变生活方式', 'adapt-lifestyle', [{ value: 'yes', label: '愿意' }, { value: 'no', label: '不太愿意' }])}
-            ${this.selects('adaptScore', '整体适应能力自评（1–10 分）', [
-              { value: '1', label: '1 分' }, { value: '2', label: '2 分' }, { value: '3', label: '3 分' },
-              { value: '4', label: '4 分' }, { value: '5', label: '5 分' }, { value: '6', label: '6 分' },
-              { value: '7', label: '7 分' }, { value: '8', label: '8 分' }, { value: '9', label: '9 分' },
-              { value: '10', label: '10 分' }
-            ])}
-          </div>`;
-
-      case 9:
-        return `
-          ${this.question('10', '您的风险偏好？', '不同的选择节奏，对应不同的国际发展路径。')}
-          <div class="field-grid">
+            ${this.chips('喜欢的居住环境（可多选）', [
+              { id: 'big', label: '大城市' }, { id: 'small', label: '小城市' },
+              { id: 'rural', label: '乡村' }, { id: 'coast', label: '海边' }, { id: 'nature', label: '自然环境' }
+            ], 'likes')}
+            ${this.chips('气候偏好（可多选）', [
+              { id: 'cold', label: '寒冷' }, { id: 'warm', label: '温暖' },
+              { id: 'four', label: '四季分明' }, { id: 'tropical', label: '热带' }, { id: 'any', label: '无所谓' }
+            ], 'climate')}
+            ${this.chips('生活节奏', [
+              { id: 'fast', label: '快节奏' }, { id: 'normal', label: '普通' }, { id: 'slow', label: '慢生活' }
+            ], 'pace', false)}
             ${this.chips('更倾向的路线', [
-              { id: 'stable', label: '稳定路线' }, { id: 'balance', label: '平衡发展' },
-              { id: 'high', label: '高机会路线' }
+              { id: 'stable', label: '稳定路线' }, { id: 'quick', label: '快速赚钱' },
+              { id: 'cheap', label: '低成本尝试' }, { id: 'long', label: '长期规划' },
+              { id: 'startup', label: '创业机会' }
             ], 'risk', false)}
-            ${this.text('prepareYears', '愿意投入几年准备？（选填）', '如：1 年 / 3 年 / 5 年')}
-          </div>`;
-
-      case 10:
-        return `
-          ${this.question('11', '是否有目标国家？', '如果有请填写；如果没有，AI 将根据您的答案自动推荐。')}
-          <div class="field-grid">
-            ${this.text('targetCountry', '目标国家（选填）', '如：加拿大 / 日本 / 欧洲 / 美国…')}
-          </div>`;
-
-      case 11:
-        return `
-          ${this.question('12', '最后一个问题——你希望未来 5-10 年的生活是什么样？', '请自由描述，AI 将据此完善您的长期路线。')}
-          ${this.textarea('vision', '未来 5–10 年的生活', '例如：希望孩子在国际学校上学，自己在稳定的环境中继续做技术工作，周末可以海边生活…')}
+            ${this.chips('可以接受（可多选）', [
+              { id: 'remote', label: '偏远地区' }, { id: 'lang', label: '语言学习' },
+              { id: 'switch', label: '职业转换' }
+            ], 'accepts')}
+          </div>
           <div class="wizard__panel-cta">
             <button type="button" class="btn btn--primary" data-action="generate">生成人生路径报告 <span class="btn-arrow">→</span></button>
           </div>`;
@@ -290,23 +274,12 @@ class SiteAiAssessment extends HTMLElement {
   }
 
   priorityOptions() {
-    return [
-      { value: 'work', label: '寻找更好的工作机会' }, { value: 'income', label: '提升收入' },
-      { value: 'lifestyle', label: '改变生活环境' }, { value: 'child-edu', label: '子女教育' },
-      { value: 'permanent', label: '获得长期身份' }, { value: 'business', label: '商业发展' },
-      { value: 'startup', label: '创业' }, { value: 'invest', label: '投资' },
-      { value: 'culture', label: '体验不同文化' }, { value: 'family', label: '家庭规划' },
-      { value: 'explore', label: '暂时探索' }
-    ];
+    return Object.entries(this.goalLabels()).map(([id, label]) => ({ value: id, label }));
   }
   /* ================= 渲染 ================= */
 
   render() {
-    const steps = [
-      '个人基本画像', '出国核心动机', '职业与能力画像', '教育背景', '语言能力',
-      '经济与资源情况', '家庭因素', '生活方式偏好', '文化适应能力', '风险偏好',
-      '国家偏好', '未来愿景'
-    ];
+    const steps = ['基本信息', '职业能力', '教育语言', '财务情况', '家庭生活', '出国目标', '个性偏好'];
 
     this.innerHTML = `
       <div class="assessment">
@@ -314,7 +287,7 @@ class SiteAiAssessment extends HTMLElement {
           <div class="container">
             <p class="assessment__eyebrow" data-reveal>AI Life Path Planning System</p>
             <h1 class="assessment__title" data-reveal>全球人生路径规划评估中心</h1>
-            <p class="assessment__sub" data-reveal>覆盖所有人群的 12 阶段智能对话式评估 · 先理解您，再匹配项目，生成《全球人生路径规划报告》</p>
+            <p class="assessment__sub" data-reveal>7 步智能对话式评估 · 覆盖学生、工人、白领、技术人才、创业者与退休人士 · 生成 20 个个性化匹配方案</p>
           </div>
         </header>
 
@@ -323,8 +296,9 @@ class SiteAiAssessment extends HTMLElement {
             <div class="wizard" data-reveal>
               <div class="wizard__progress">
                 <div class="wizard__progress-head">
-                  <span class="wizard__step-label" data-label>Step 01 / ${this.totalSteps}</span>
+                  <span class="wizard__step-label" data-label>Step 01 / ${String(this.totalSteps).padStart(2, '0')}</span>
                   <span class="wizard__step-name" data-step-name>${steps[0]}</span>
+                  <span class="wizard__pct" data-pct>0%</span>
                 </div>
                 <div class="wizard__track">
                   <span class="wizard__track-line" aria-hidden="true"></span>
@@ -383,6 +357,22 @@ class SiteAiAssessment extends HTMLElement {
             c.setAttribute('aria-pressed', String(c === chip));
           });
           this.clearInvalid(key);
+          /* 职业一级联动：显示对应二级分组 */
+          if (key === 'cat1') {
+            this.querySelectorAll('.career-subs').forEach((g) => {
+              g.style.display = g.dataset.catsub === val ? '' : 'none';
+            });
+            const group = this.querySelector(`[data-catsub="${val}"]`);
+            const validSubs = group ? [...group.querySelectorAll('[data-chip="cat2"]')].map((c) => c.dataset.value) : [];
+            if (!validSubs.includes(this.state.cat2)) {
+              this.state.cat2 = '';
+              this.querySelectorAll('[data-chip="cat2"]').forEach((c) => {
+                c.classList.remove('is-selected');
+                c.setAttribute('aria-pressed', 'false');
+              });
+              this.clearInvalid('cat2');
+            }
+          }
           return;
         }
         const arr = this.state[key] || [];
@@ -397,8 +387,7 @@ class SiteAiAssessment extends HTMLElement {
     this.querySelectorAll('[data-radio]').forEach((chip) => {
       chip.addEventListener('click', () => {
         const key = chip.dataset.radio;
-        const target = key.startsWith('adapt-') ? this.state.adapt : this.state;
-        target[key.replace('adapt-', '')] = chip.dataset.value;
+        this.state[key] = chip.dataset.value;
         this.querySelectorAll(`[data-radio="${key}"]`).forEach((c) => {
           c.classList.toggle('is-selected', c === chip);
           c.setAttribute('aria-pressed', String(c === chip));
@@ -415,7 +404,7 @@ class SiteAiAssessment extends HTMLElement {
     this.restartBtn.addEventListener('click', () => this.reset());
 
     this.querySelector('[data-action="generate"]').addEventListener('click', () => {
-      if (!this.validate(11)) return;
+      if (!this.validate(6)) return;
       this.startAnalysis();
     });
   }
@@ -433,50 +422,43 @@ class SiteAiAssessment extends HTMLElement {
         check('age', !!this.state.age);
         check('curCountry', !!this.state.curCountry);
         check('curCity', this.state.curCity.trim().length > 0);
-        check('identity', !!this.state.identity);
+        check('marital', !!this.state.marital);
+        check('hasKids', !!this.state.hasKids);
         break;
       case 1:
-        check('motives', this.state.motives.length > 0);
-        check('priority1', !!this.state.priority1);
+        check('cat1', !!this.state.cat1);
+        check('cat2', !!this.state.cat2);
+        check('years', !!this.state.years);
+        check('learnSkill', !!this.state.learnSkill);
         break;
       case 2:
-        check('industry', !!this.state.industry);
-        check('experience', !!this.state.experience);
+        check('degree', !!this.state.degree);
+        check('gradYear', !!this.state.gradYear);
+        check('certDoc', !!this.state.certDoc);
+        check('englishLevel', !!this.state.englishLevel);
+        check('learnLocal', !!this.state.learnLocal);
         break;
       case 3:
-        check('degree', !!this.state.degree);
-        check('overseas', !!this.state.overseas);
+        check('funds', !!this.state.funds);
+        check('source', this.state.source.length > 0);
+        check('lowCost', !!this.state.lowCost);
+        check('workDevelop', !!this.state.workDevelop);
+        check('studyFirst', !!this.state.studyFirst);
         break;
       case 4:
-        check('englishLevel', !!this.state.englishLevel);
-        check('learnNewLang', !!this.state.learnNewLang);
+        check('parentsPlan', !!this.state.parentsPlan);
+        check('eduNeed', !!this.state.eduNeed);
         break;
       case 5:
-        check('income', !!this.state.income);
-        check('funds', !!this.state.funds);
-        check('budget', !!this.state.budget);
-        check('loanWilling', !!this.state.loanWilling);
-        check('workDevelop', !!this.state.workDevelop);
-        check('lowCost', !!this.state.lowCost);
+        check('goals', this.state.goals.length > 0);
+        check('priority1', !!this.state.priority1);
         break;
       case 6:
-        check('marital', !!this.state.marital);
-        check('kids', !!this.state.kids);
-        break;
-      case 7:
-        check('climates', this.state.climates.length > 0);
-        check('cityPref', !!this.state.cityPref);
+        check('likes', this.state.likes.length > 0);
+        check('climate', this.state.climate.length > 0);
         check('pace', !!this.state.pace);
-        break;
-      case 8:
-        ['adapt-lang', 'adapt-culture', 'adapt-integrate', 'adapt-lifestyle'].forEach((k) => check(k, !!this.state.adapt[k.replace('adapt-', '')]));
-        check('adaptScore', !!this.state.adaptScore);
-        break;
-      case 9:
         check('risk', !!this.state.risk);
-        break;
-      case 11:
-        check('vision', this.state.vision.trim().length > 0);
+        check('accepts', this.state.accepts.length > 0);
         break;
     }
     return ok;
@@ -494,22 +476,20 @@ class SiteAiAssessment extends HTMLElement {
 
   goTo(index) {
     this.step = Math.max(0, Math.min(this.totalSteps - 1, index));
-    const steps = [
-      '个人基本画像', '出国核心动机', '职业与能力画像', '教育背景', '语言能力',
-      '经济与资源情况', '家庭因素', '生活方式偏好', '文化适应能力', '风险偏好',
-      '国家偏好', '未来愿景'
-    ];
+    const steps = ['基本信息', '职业能力', '教育语言', '财务情况', '家庭生活', '出国目标', '个性偏好'];
+    const pct = Math.round((this.step / (this.totalSteps - 1)) * 100);
 
     this.querySelectorAll('[data-panel]').forEach((panel, i) => {
       panel.classList.toggle('is-active', i === this.step);
     });
-    this.querySelector('[data-label]').textContent = `Step ${String(this.step + 1).padStart(2, '0')} / ${this.totalSteps}`;
+    this.querySelector('[data-label]').textContent = `Step ${String(this.step + 1).padStart(2, '0')} / ${String(this.totalSteps).padStart(2, '0')}`;
     this.querySelector('[data-step-name]').textContent = steps[this.step];
+    this.querySelector('[data-pct]').textContent = pct + '%';
     this.querySelectorAll('[data-dot]').forEach((d, i) => {
       d.classList.toggle('is-done', i < this.step);
       d.classList.toggle('is-active', i === this.step);
     });
-    this.querySelector('.wizard__track-fill').style.width = `${(this.step / (this.totalSteps - 1)) * 100}%`;
+    this.querySelector('.wizard__track-fill').style.width = pct + '%';
     this.prevBtn.style.visibility = this.step === 0 ? 'hidden' : 'visible';
     this.nextBtn.style.display = this.step === this.totalSteps - 1 ? 'none' : 'inline-flex';
     this.restartBtn.style.display = 'none';
@@ -517,17 +497,14 @@ class SiteAiAssessment extends HTMLElement {
 
   reset() {
     this.state = {
-      age: '', gender: '', curCountry: '', curCity: '', identity: '', situation: '',
-      motives: [], priority1: '', priority2: '', priority3: '',
-      occupation: '', industry: '', experience: '', skills: '',
-      degree: '', major: '', school: '', overseas: '',
-      languages: '', englishLevel: '', otherLangs: '', learnNewLang: '',
-      income: '', funds: '', futureFunds: '',
-      marital: '', kids: '', planWith: [], familyNeeds: '',
-      climates: [], climateNo: '', cityPref: '', pace: '',
-      adapt: { lang: '', culture: '', integrate: '', lifestyle: '' }, adaptScore: '',
-      risk: '', prepareYears: '',
-      targetCountry: '', vision: ''
+      age: '', gender: '', curCountry: '', curCity: '', marital: '', hasKids: '', familyMembers: '',
+      cat1: '', cat2: '', skills: '', years: '', position: '', cert: '', learnSkill: '',
+      degree: '', major: '', gradYear: '', certDoc: '',
+      englishLevel: '', otherLangs: '', learnLocal: '', langTest: '',
+      funds: '', source: [], lowCost: '', workDevelop: '', studyFirst: '',
+      healthNeed: '', specialMed: '', chronic: '', regularMed: '', parentsPlan: '', eduNeed: '',
+      goals: [], priority1: '', priority2: '', priority3: '',
+      likes: [], climate: [], pace: '', risk: '', accepts: []
     };
     this.phase = 'form';
     this.render();
@@ -539,7 +516,15 @@ class SiteAiAssessment extends HTMLElement {
   updateView() {
     this.goTo(0);
   }
-  /* ================= 智能匹配引擎（先理解用户，再匹配项目） ================= */
+  /* ================= 智能匹配引擎（v9 · 新维度） ================= */
+
+  budgetTier() {
+    const f = this.state.funds;
+    if (f === '<1w' || f === '1-3w' || f === '3-5w') return 'low';
+    if (f === '5-10w') return 'midlow';
+    if (f === '10-30w' || f === '30-100w') return 'mid';
+    return 'high';
+  }
 
   countryTags() {
     return {
@@ -599,14 +584,6 @@ class SiteAiAssessment extends HTMLElement {
     };
   }
 
-  budgetTier() {
-    const b = this.state.budget;
-    if (b === '<1w' || b === '1-5w') return 'low';
-    if (b === '5-10w') return 'midlow';
-    if (b === '10-50w') return 'mid';
-    return 'high';
-  }
-
   scoreCountries() {
     const s = this.state;
     const tags = this.countryTags();
@@ -622,113 +599,110 @@ class SiteAiAssessment extends HTMLElement {
     const addMany = (list, pts, reason) => list.forEach((id) => add(id, pts, reason));
     const byTag = (t) => Object.keys(tags).filter((id) => tags[id].includes(t));
 
-    /* 动机 */
-    s.motives.forEach((r) => {
-      if (r === 'work' || r === 'income') addMany([...byTag('tech'), ...byTag('trade'), ...byTag('finance')], 2, '职业机会');
-      if (r === 'lifestyle') addMany([...byTag('pr'), ...byTag('nomad')], 1, '生活品质');
-      if (r === 'child-edu' || r === 'family') addMany([...byTag('study'), ...byTag('family')], 2, '家庭与教育');
-      if (r === 'permanent') addMany(byTag('pr'), 3, '长期身份');
-      if (r === 'business' || r === 'startup') addMany([...byTag('invest'), ...byTag('trade')], 2, '商业环境');
-      if (r === 'invest') addMany(byTag('invest'), 3, '投资环境');
-      if (r === 'culture' || r === 'explore') addMany(byTag('nomad'), 2, '体验与探索');
+    /* 目标 */
+    const goalMap = {
+      travel: ['nomad', 'youth'], short: ['work', 'nomad'], work: ['tech', 'trade', 'finance'],
+      study: ['study'], career: ['tech', 'trade'], startup: ['invest'], invest: ['invest'],
+      family: ['family', 'study'], pr: ['pr'], identity: ['pr']
+    };
+    s.goals.forEach((g) => {
+      const list = (goalMap[g] || []).map((t) => byTag(t)).flat();
+      if (g === 'work' || g === 'career') addMany(list, 2, '职业机会');
+      else if (g === 'study') addMany(list, 3, '教育机会');
+      else if (g === 'pr' || g === 'identity') addMany(list, 3, '长期身份');
+      else if (g === 'family') addMany(list, 2, '家庭规划');
+      else if (g === 'invest') addMany(list, 3, '投资环境');
+      else if (g === 'startup') addMany(list, 2, '商业环境');
+      else addMany(list, 2, '目标匹配');
     });
 
-    /* 身份 */
-    const identityMap = {
-      student: ['study', 'youth'], worker: ['work', 'tech'], entrepreneur: ['invest'],
-      business: ['invest', 'trade'], freelancer: ['nomad', 'tech'], none: ['study', 'nomad'],
-      retired: ['pr', 'lifestyle']
+    /* 职业（一级大类） */
+    const catMap = {
+      tech: ['tech'], service: ['trade', 'mid'], manufacture: ['trade', 'mid'],
+      construction: ['trade', 'mid'], medical: ['medical'], edu: ['study'],
+      finance: ['finance', 'invest'], internet: ['tech'], agriculture: ['mid', 'trade'],
+      logistics: ['trade'], catering: ['trade', 'mid'], art: ['nomad'],
+      freelance: ['nomad', 'tech'], none: ['study', 'nomad']
     };
-    (identityMap[s.identity] || []).forEach((t) => {
-      if (t === 'work') addMany(byTag('tech'), 2, '职业发展');
-      else if (t === 'lifestyle') addMany([...byTag('pr'), ...byTag('nomad')], 1, '生活品质');
-      else addMany(byTag(t), 2, '身份匹配');
-    });
+    (catMap[s.cat1] || []).forEach((t) => addMany(byTag(t), 2, '职业匹配'));
+
+    /* 职业（二级：更精准） */
+    const subMap = {
+      '机械维修': 'work-bluecollar', '机械操作': 'work-bluecollar', '焊工': 'work-bluecollar',
+      '电工': 'work-bluecollar', '汽车维修': 'work-bluecollar', '木工': 'work-bluecollar',
+      '瓦工': 'work-bluecollar', '水电工': 'work-bluecollar', '生产管理': 'work-skilled',
+      '工程师': 'tech-engineer', '电子技术': 'tech-engineer', '自动化': 'tech-engineer',
+      '程序员': 'tech-it', '产品经理': 'tech-it', '设计师': 'tech-it', '运营': 'tech-it',
+      '医生': 'tech-medical', '护士': 'tech-medical', '护理员': 'tech-medical', '药剂师': 'tech-medical',
+      '教师': 'tech-degree', '培训师': 'tech-degree', '会计': 'finance', '销售': 'trade',
+      '厨师': 'work-regular', '服务员': 'work-regular', '酒店员工': 'work-regular',
+      '美容美发': 'work-regular', '家政服务': 'work-regular', '护理人员': 'work-regular',
+      '司机': 'work-regular', '配送': 'work-regular', '仓储': 'work-regular',
+      '种植': 'work-regular', '养殖': 'work-regular', '远程办公': 'nomad-visa', '内容创作': 'nomad-visa',
+      '摄影': 'nomad-visa', '音乐': 'nomad-visa', '平面设计': 'nomad-visa', '插画': 'nomad-visa'
+    };
+    const subProj = subMap[s.cat2];
+    if (subProj) addMany(byTag('work'), 2, '技能匹配');
 
     /* 年龄 */
     const ageMap = { u18: ['study'], '18-22': ['study', 'youth'], '23-30': ['tech', 'study', 'nomad'], '31-40': ['tech', 'pr'], '41-50': ['pr', 'invest'], '50+': ['pr', 'invest'] };
     (ageMap[s.age] || []).forEach((t) => addMany(byTag(t), 1, '年龄阶段'));
 
-    /* 行业 */
-    const industryMap = { tech: ['tech'], internet: ['tech'], finance: ['finance', 'invest'], medical: ['medical'], edu: ['study'], manufacture: ['trade'], trade: ['trade'], service: ['trade'], art: ['nomad'], other: [] };
-    (industryMap[s.industry] || []).forEach((t) => addMany(byTag(t), 2, '行业匹配'));
-
     /* 学历 */
     if (s.degree === 'master' || s.degree === 'phd') addMany([...byTag('tech'), ...byTag('pr')], 1, '高学历匹配');
     if (s.degree === 'bachelor') addMany(byTag('study'), 1, '教育背景');
+    if (s.degree === 'below-high' || s.degree === 'high') addMany([...byTag('trade'), ...byTag('mid')], 1, '技能就业友好');
 
     /* 英语 */
     if (s.englishLevel === 'fluent' || s.englishLevel === 'skilled') addMany(['us', 'ca', 'gb', 'au', 'nz', 'ie', 'sg'], 2, '语言优势');
     else if (s.englishLevel === 'daily') addMany(['us', 'ca', 'gb', 'au', 'nz', 'ie', 'sg'], 1, '语言基础');
     if (s.otherLangs) {
-      const langMatch = [
-        { k: '日', ids: ['jp'] }, { k: '德', ids: ['de', 'at', 'ch'] },
-        { k: '法', ids: ['fr', 'be', 'ch'] }, { k: '西', ids: ['es', 'mx', 'ar', 'cl'] },
-        { k: '韩', ids: ['kr'] }
+      const lm = [
+        { k: '日', ids: ['jp'] }, { k: '德', ids: ['de', 'at', 'ch'] }, { k: '法', ids: ['fr', 'be', 'ch'] },
+        { k: '西', ids: ['es', 'mx', 'ar', 'cl'] }, { k: '韩', ids: ['kr'] }, { k: '粤', ids: ['sg', 'my'] }
       ];
-      langMatch.forEach((m) => { if (s.otherLangs.includes(m.k)) m.ids.forEach((id) => add(id, 2, '语言优势')); });
+      lm.forEach((m) => { if (s.otherLangs.includes(m.k)) m.ids.forEach((id) => add(id, 2, '语言优势')); });
     }
+    if (s.learnLocal === 'yes') addMany(byTag('pr'), 1, '语言学习意愿');
 
-    /* 经济 */
+    /* 资金 */
     const tier = this.budgetTier();
     if (tier === 'high') addMany(byTag('invest'), 2, '资金实力');
     if (tier === 'low' || tier === 'midlow') addMany([...byTag('nomad'), ...byTag('mid')], 1, '预算友好');
     if (s.lowCost === 'yes') addMany([...byTag('nomad'), ...byTag('mid'), ...byTag('study')], 1, '低成本优先');
-    if (s.loanWilling === 'yes') addMany([...byTag('tech'), ...byTag('trade'), ...byTag('study')], 1, '可接受贷款');
-    if (s.workDevelop === 'yes') addMany([...byTag('tech'), ...byTag('nomad')], 1, '边工作边发展');
+    if (s.workDevelop === 'yes') addMany([...byTag('tech'), ...byTag('trade'), ...byTag('nomad')], 1, '边工作边发展');
+    if (s.studyFirst === 'yes') addMany([...byTag('study'), ...byTag('tech')], 1, '先学习后就业');
+    if (s.source.includes('family')) addMany(byTag('study'), 1, '家庭支持');
+    if (s.source.includes('invest') || s.source.includes('business')) addMany(byTag('invest'), 1, '收入来源');
 
     /* 家庭 */
-    if (s.marital === 'married' || s.planWith.length > 0) addMany([...byTag('family'), ...byTag('pr')], 2, '家庭规划');
-    if (s.kids === 'yes') addMany([...byTag('study'), ...byTag('family'), ...byTag('pr')], 2, '子女教育');
-    if (s.planWith.includes('parents')) addMany([...byTag('family'), ...byTag('pr')], 1, '父母团聚');
+    if (s.marital === 'married' || s.hasKids === 'yes') addMany([...byTag('family'), ...byTag('pr')], 2, '家庭规划');
+    if (s.eduNeed && s.eduNeed !== 'none') addMany([...byTag('study'), ...byTag('family')], 2, '子女教育');
+    if (s.parentsPlan === 'yes') addMany([...byTag('family'), ...byTag('pr')], 1, '父母团聚');
+
+    /* 健康（仅加权医疗资源，不作为淘汰） */
+    if (s.specialMed === 'yes' || s.regularMed === 'yes' || s.healthNeed === 'yes') {
+      addMany(byTag('medical'), 1, '医疗资源');
+    }
+
+    /* 居住环境 */
+    if (s.likes.includes('big')) addMany(byTag('big'), 2, '城市规模');
+    if (s.likes.includes('small') || s.likes.includes('rural') || s.likes.includes('nature')) addMany([...byTag('mid'), ...byTag('nomad')], 1, '生活节奏');
+    if (s.likes.includes('coast')) addMany(byTag('ocean'), 1, '海岸生活');
 
     /* 气候 */
-    const climateTag = { warm: 'warm', cold: 'cold', four: 'four', sunny: 'warm', humid: 'rain', dry: 'high', ocean: 'ocean', any: '' };
-    s.climates.forEach((c) => { const t = climateTag[c]; if (t) addMany(byTag(t), 2, '气候适配'); });
-    if (s.climateNo) {
-      const dislike = [
-        { k: '冷', t: 'cold' }, { k: '寒', t: 'cold' }, { k: '热', t: 'warm' },
-        { k: '暖', t: 'warm' }, { k: '湿', t: 'rain' }, { k: '干', t: 'high' }
-      ];
-      dislike.forEach((d) => { if (s.climateNo.includes(d.k)) addMany(byTag(d.t), -3, '气候不符'); });
-    }
+    const climateTag = { cold: 'cold', warm: 'warm', four: 'four', tropical: 'warm', any: '' };
+    s.climate.forEach((c) => { const t = climateTag[c]; if (t) addMany(byTag(t), 2, '气候适配'); });
 
-    /* 城市与节奏 */
-    if (s.cityPref === 'metro') addMany(byTag('big'), 2, '城市规模');
-    if (s.cityPref === 'small' || s.cityPref === 'nature') addMany(byTag('mid'), 1, '生活节奏');
+    /* 节奏与风险 */
     if (s.pace === 'slow') addMany([...byTag('mid'), ...byTag('nomad')], 1, '慢生活');
+    const riskMap = { stable: ['pr'], quick: ['tech', 'trade'], cheap: ['nomad', 'mid'], long: ['pr'], startup: ['invest'] };
+    (riskMap[s.risk] || []).forEach((t) => addMany(byTag(t), 1, '路线偏好'));
 
-    /* 文化适应 */
-    const adapt = s.adapt;
-    const adaptYes = [adapt.lang, adapt.culture, adapt.integrate, adapt.lifestyle].filter((v) => v === 'yes').length;
-    if (adapt.integrate === 'yes' || Number(s.adaptScore || 0) >= 7) addMany(byTag('pr'), 1, '融入意愿');
-    if (adapt.culture === 'yes') addMany([...byTag('nomad'), ...byTag('youth')], 1, '文化适应');
-    if (adaptYes <= 1 && Number(s.adaptScore || 0) <= 3) addMany(byTag('pr'), -1, '融入门槛');
-
-    /* 风险偏好 */
-    if (s.risk === 'stable') addMany([...byTag('pr'), ...byTag('work')], 1, '稳健路线');
-    if (s.risk === 'high') addMany([...byTag('invest'), ...byTag('startup')], 1, '机会导向');
-
-    /* 目标国家 */
-    if (s.targetCountry) {
-      (Istra.countries || []).forEach((c) => {
-        const hit = s.targetCountry.includes(c.cn) || s.targetCountry.includes(c.en) ||
-          (c.cn === '英国' && s.targetCountry.includes('英')) ||
-          (c.cn === '德国' && s.targetCountry.includes('德')) ||
-          (c.cn === '法国' && s.targetCountry.includes('法')) ||
-          (c.cn === '日本' && s.targetCountry.includes('日')) ||
-          (c.cn === '韩国' && s.targetCountry.includes('韩')) ||
-          (c.cn === '新加坡' && s.targetCountry.includes('新加坡')) ||
-          (c.cn === '澳大利亚' && s.targetCountry.includes('澳')) ||
-          (c.cn === '加拿大' && s.targetCountry.includes('加')) ||
-          (c.cn === '美国' && s.targetCountry.includes('美')) ||
-          (c.en && s.targetCountry.toLowerCase().includes(c.en.toLowerCase()));
-        if (hit) add(c.id, 10, '目标国家');
-      });
-      if (s.targetCountry.includes('欧洲')) {
-        (Istra.countries || []).filter((c) => c.region === 'EUROPE').forEach((c) => add(c.id, 4, '目标地区'));
-      }
-    }
+    /* 接受度 */
+    if (s.accepts.includes('remote')) addMany([...byTag('mid'), ...byTag('trade')], 1, '偏远地区接受');
+    if (s.accepts.includes('lang')) addMany(byTag('pr'), 1, '语言学习接受');
+    if (s.accepts.includes('switch')) addMany([...byTag('study'), ...byTag('work')], 1, '职业转换接受');
 
     const max = Math.max(...Object.values(score), 1);
     return Object.entries(score)
@@ -739,26 +713,34 @@ class SiteAiAssessment extends HTMLElement {
   portrait() {
     const s = this.state;
     const ageLabel = { u18: '青少年', '18-22': '青年', '23-30': '年轻', '31-40': '中坚', '41-50': '成熟', '50+': '资深' }[s.age] || '';
-    const identityLabel = {
-      student: '求学成长', worker: '职业发展', entrepreneur: '创业探索', business: '企业经营',
-      freelancer: '自由发展', none: '转型探索', retired: '人生新阶段'
-    }[s.identity] || '';
+    const db = this.careerDb();
+    const catName = (s.cat1 && db[s.cat1]) ? db[s.cat1].name : '';
     const labels = [];
-    let main = `${ageLabel}${identityLabel}型`;
+    let main = `${ageLabel}${catName}型`;
     if (!main || main === '型') main = '多元发展型';
     labels.push(main);
-    if (s.industry === 'tech' || s.industry === 'internet') labels.push('技术发展型');
-    if (s.motives.includes('child-edu') || s.kids === 'yes') labels.push('家庭教育规划型');
-    if (s.motives.includes('invest') || this.budgetTier() === 'high') labels.push('高净值投资布局型');
+    if (['tech', 'internet', 'medical', 'construction'].includes(s.cat1)) labels.push('技能型人才');
+    if (s.cat1 === 'manufacture' || s.cat1 === 'service' || s.cat1 === 'logistics' || s.cat1 === 'catering' || s.cat1 === 'agriculture') labels.push('实干就业型');
+    if (s.cat1 === 'finance' || s.cat1 === 'edu') labels.push('职业发展型');
+    if (s.cat1 === 'freelance' || s.cat1 === 'art') labels.push('灵活发展型');
+    if (s.cat1 === 'none') labels.push('转型探索型');
+    if (s.funds === '100w+' || s.goals.includes('invest')) labels.push('高净值规划');
+    if (s.goals.includes('study')) labels.push('国际教育需求');
+    if (s.hasKids === 'yes' || s.goals.includes('family')) labels.push('家庭规划型');
     if (s.lowCost === 'yes') labels.push('低成本偏好');
-    if (s.motives.includes('startup') || s.identity === 'entrepreneur') labels.push('创业探索型');
-    if (s.motives.includes('culture') || s.motives.includes('explore')) labels.push('体验探索型');
-    if (s.pace === 'slow' || s.cityPref === 'nature') labels.push('慢生活宜居型');
-    if (s.degree === 'master' || s.degree === 'phd') labels.push('高学历背景');
-    if (s.risk === 'stable') labels.push('稳健偏好');
-    if (s.risk === 'high') labels.push('机会导向');
+    if (s.risk === 'stable' || s.risk === 'long') labels.push('稳健偏好');
     const uniq = [...new Set(labels)];
     return uniq.slice(0, 5);
+  }
+
+  identityLabel() {
+    const db = this.careerDb();
+    const name = (this.state.cat1 && db[this.state.cat1]) ? db[this.state.cat1].name : '';
+    return { 技术类: '技术人才', 服务类: '服务工作者', 制造业: '产业工人', 建筑工程: '建筑从业者', 医疗护理: '医护人才', 教育: '教育工作者', 金融商业: '职场人士', 互联网: '互联网从业者', 农业: '农业从业者', 物流运输: '物流从业者', 餐饮酒店: '餐饮酒店从业者', 艺术设计: '艺术设计人才', 自由职业: '自由职业者', 无固定职业: '探索者' }[name] || (this.state.age === '50+' ? '人生新阶段探索者' : '评估用户');
+  }
+
+  goalLabel(id) {
+    return this.goalLabels()[id] || id;
   }
 
   projectMatch(countryRank) {
@@ -767,44 +749,46 @@ class SiteAiAssessment extends HTMLElement {
     const cScore = {};
     countryRank.forEach((c, i) => { cScore[c.id] = (countryRank.length - i); });
 
-    const motiveCat = { work: 'work', income: 'work', lifestyle: 'pr', 'child-edu': 'edu', permanent: 'pr', business: 'invest', startup: 'invest', invest: 'invest', culture: 'nomad', family: 'family', explore: 'nomad' };
+    const goalCat = { travel: 'nomad', short: 'work', work: 'work', study: 'edu', career: 'work', startup: 'invest', invest: 'invest', family: 'family', pr: 'pr', identity: 'pr' };
 
     const scored = projects.map((p) => {
       let v = (cScore[p.country.id] || 0) * 4;
-      s.motives.forEach((r) => { if (motiveCat[r] === p.category.id) v += 6; });
-      if (p.category.id === 'tech' && ['tech', 'internet'].includes(s.industry)) v += 4;
-      if (p.category.id === 'work' && ['tech', 'finance', 'medical', 'trade', 'service', 'manufacture'].includes(s.industry)) v += 3;
-      if (p.category.id === 'study' && ['student', 'none'].includes(s.identity)) v += 4;
+      s.goals.forEach((g) => { if (goalCat[g] === p.category.id) v += 6; });
+      if (p.category.id === 'tech' && ['tech', 'internet'].includes(s.cat1)) v += 4;
+      if (p.category.id === 'work' && ['manufacture', 'construction', 'service', 'logistics', 'catering', 'agriculture', 'finance'].includes(s.cat1)) v += 3;
+      if (p.category.id === 'study' && (s.studyFirst === 'yes' || s.cat1 === 'none')) v += 4;
       if (p.category.id === 'invest' && this.budgetTier() === 'high') v += 5;
-      if (p.category.id === 'pr' && ['stable', 'balance'].includes(s.risk)) v += 2;
+      if (p.category.id === 'pr' && ['stable', 'long'].includes(s.risk)) v += 2;
       if (p.category.id === 'youth' && ['u18', '18-22', '23-30'].includes(s.age)) v += 3;
-      if (p.category.id === 'family' && (s.kids === 'yes' || s.planWith.length > 0)) v += 4;
+      if (p.category.id === 'family' && (s.hasKids === 'yes' || s.parentsPlan === 'yes')) v += 4;
       const budgetRank = { low: 0, midlow: 1, mid: 2, high: 3 };
-      const diff = Math.abs(budgetRank[p.budget] - budgetRank[this.budgetTier()]);
+      const diff = Math.abs(budgetRank[p.budget.level] - budgetRank[this.budgetTier()]);
       v += diff === 0 ? 3 : (diff === 1 ? 1 : -4);
+      if (s.lowCost === 'yes' && p.budget.level === 'low') v += 2;
       return { project: p, score: v };
     }).sort((a, b) => b.score - a.score);
 
-    const dirLabel = { work: '工作类', tech: '技术人才类', edu: '留学类', invest: '投资创业类', talent: '人才移民类', family: '家庭类', pr: '永居类', nomad: '数字游民类', youth: '青年交流类', special: '特殊人才类' };
-    const top = scored.slice(0, 3).map((x) => ({
-      id: x.project.id,
-      name: x.project.name,
-      country: x.project.country,
-      visaType: x.project.visaType,
-      direction: dirLabel[x.project.category.id] || x.project.category.name,
-      reason: this.projectReason(x.project)
-    }));
-    return { top, dirLabel };
+    return { scored };
   }
 
   projectReason(p) {
     const s = this.state;
-    const motiveCat = { work: 'work', income: 'work', lifestyle: 'pr', 'child-edu': 'edu', permanent: 'pr', business: 'invest', startup: 'invest', invest: 'invest', culture: 'nomad', family: 'family', explore: 'nomad' };
-    const labels = { work: '寻找更好的工作机会', income: '提升收入', lifestyle: '改变生活环境', 'child-edu': '子女教育', permanent: '获得长期身份', business: '商业发展', startup: '创业', invest: '投资', culture: '体验不同文化', family: '家庭规划', explore: '暂时探索' };
-    const hits = s.motives.filter((r) => motiveCat[r] === p.category.id);
-    if (hits.length) return `匹配「${labels[hits[0]]}」目标`;
+    const goalCat = { travel: 'nomad', short: 'work', work: 'work', study: 'edu', career: 'work', startup: 'invest', invest: 'invest', family: 'family', pr: 'pr', identity: 'pr' };
+    const hits = s.goals.filter((g) => goalCat[g] === p.category.id);
+    if (hits.length) return `匹配「${this.goalLabel(hits[0])}」目标`;
     const catLabel = { work: '职业发展', tech: '技术人才', edu: '教育规划', invest: '投资创业', talent: '人才引进', family: '家庭规划', pr: '长期身份', nomad: '旅居体验', youth: '青年交流', special: '特殊人才' }[p.category.id];
     return `符合「${catLabel}」方向`;
+  }
+
+  notReason(p) {
+    const s = this.state;
+    if (p.budget.level === 'high' && this.budgetTier() !== 'high') return '投资门槛较高，与当前可投入资金不匹配';
+    if (p.category.id === 'invest' && this.budgetTier() !== 'high') return '需要较大资金投入，超出当前资金范围';
+    if (p.category.id === 'study' && s.studyFirst === 'no' && s.degree !== 'phd') return '您更倾向直接就业，留学类暂不优先';
+    if (p.category.id === 'youth' && s.age !== 'u18' && s.age !== '18-22' && s.age !== '23-30') return '青年类项目有年龄限制，与当前年龄不匹配';
+    if (p.category.id === 'family' && s.hasKids === 'no' && s.parentsPlan === 'no') return '当前为个人规划，家庭团聚类项目暂不匹配';
+    if (p.category.id === 'tech' && !['tech', 'internet', 'medical', 'construction'].includes(s.cat1)) return '技术类项目对专业背景要求较高';
+    return '与该目标方向的匹配度较低';
   }
 
   notRecommendedDirections() {
@@ -813,103 +797,43 @@ class SiteAiAssessment extends HTMLElement {
     const tier = this.budgetTier();
     const push = (title, reason) => out.push({ title, reason });
 
-    if (tier === 'low' || tier === 'midlow') {
-      push('投资创业类', '投资类项目通常需要较高资金门槛，与您当前资金准备差距较大，暂不建议优先考虑。');
-    }
-    if (s.age === 'u18' || s.age === '18-22') {
-      push('投资移民类', '投资移民项目对资金来源与经营管理要求较高，更适合职业与学业积累后的阶段。');
-    }
-    if (s.age === '50+') {
-      push('青年交流 / 工作假期类', '此类项目面向青年群体，有明确年龄限制，与您当前年龄阶段不匹配。');
-    }
-    if (s.englishLevel === 'none' || (s.englishLevel === 'basic' && s.learnNewLang === 'no')) {
-      push('高语言门槛的技术工作类', '部分技术工作与留学项目对语言有硬性要求，当前语言条件下建议先完成语言提升。');
-    }
-    if (s.risk === 'stable' && (s.motives.includes('startup') || s.identity === 'entrepreneur')) {
-      push('高风险创业路线', '创业类路径不确定性较高，与您偏好的稳定路线存在冲突，建议以稳健身份 + 副业方式过渡。');
-    }
-    if (s.risk === 'stable') {
-      push('高风险创业类', '您偏好稳定路线，创业类路径存在较高不确定性，建议以稳健身份规划为主，创业可作为长期副线。');
-    }
-    if (tier !== 'high') {
-      push('大额投资移民类', '部分投资移民项目需 50 万元以上资金门槛，与当前可接受投入存在差距，暂不建议优先考虑。');
-    }
-    if (s.kids === 'no' && s.marital === 'single' && s.planWith.length === 0) {
-      push('家庭团聚 / 父母随迁类', '当前为个人规划，家庭团聚类项目暂不匹配，未来家庭结构变化后可重新评估。');
-    }
-    if (s.identity === 'retired' && tier === 'low') {
-      push('高净值投资类', '投资类身份项目资金门槛高，退休阶段建议优先考虑成本可控的长期居留路径。');
-    }
-    if (s.adapt.integrate === 'no' && Number(s.adaptScore || 0) <= 3) {
-      push('强融入要求的永居类', '部分永居项目对居住与融入有较长时间要求，与当前融入意愿存在差距。');
-    }
+    if (tier === 'low' || tier === 'midlow') push('投资创业类', '投资类项目通常需要较高资金门槛，与您当前可投入资金差距较大，暂不建议优先考虑。');
+    if (tier !== 'high') push('大额投资移民类', '部分投资移民项目需 50 万元以上资金门槛，与当前可投入资金存在差距，暂不建议优先考虑。');
+    if (s.risk === 'stable' || s.risk === 'long') push('高风险创业路线', '您偏好稳健/长期路线，创业类路径不确定性较高，建议以稳健身份规划为主。');
+    if (s.age === '50+') push('青年交流 / 工作假期类', '此类项目面向青年群体，有明确年龄限制，与您当前年龄阶段不匹配。');
+    if (s.englishLevel === 'none' && s.learnLocal === 'no') push('高语言门槛的留学/技术工作类', '部分项目对语言有硬性要求，当前语言条件下建议先完成语言提升。');
+    if (s.hasKids === 'no' && s.parentsPlan === 'no' && s.marital === 'single') push('家庭团聚 / 父母随迁类', '当前为个人规划，家庭团聚类项目暂不匹配，未来家庭结构变化后可重新评估。');
+    if (s.cat1 === 'none' && tier === 'low') push('高投入长期项目', '当前职业阶段与资金情况更适合低成本尝试或先学习后就业的路线。');
     const uniq = {};
     out.forEach((x) => { uniq[x.title] = x; });
     const list = Object.values(uniq);
-    return list.length >= 2 ? list.slice(0, 3) : list.concat([{ title: '与目标方向偏离较大的项目', reason: '综合您的动机、预算与身份阶段，部分项目与该目标方向匹配度较低，建议聚焦上述推荐方向。' }]).slice(0, 3);
+    return list.length >= 2 ? list.slice(0, 3) : list.concat([{ title: '与目标方向偏离较大的项目', reason: '综合您的目标、资金与职业阶段，部分项目与该方向匹配度较低，建议聚焦上述推荐方案。' }]).slice(0, 3);
   }
 
   roadmap(topCountry, topProject) {
     const c = Istra.countries.find((x) => x.id === topCountry) || { cn: '目标国家' };
     const s = this.state;
-    const first = s.identity === 'student' ? '完成学业规划与语言考试' : (s.identity === 'retired' ? '梳理资产与生活安排' : '提升语言与职业/资质认证');
+    const first = s.learnLocal === 'yes' ? `学习当地语言与职业技能认证` : (s.studyFirst === 'yes' ? '完成语言与学业准备' : '准备职业资质与材料');
     return [
-      { phase: '半年内 · 准备期', items: [first, '完成学历与资金资料梳理', `深入了解${c.cn}政策与项目要求`] },
+      { phase: '半年内 · 准备期', items: [first, '梳理资金与家庭材料', `深入了解${c.cn}政策与项目要求`] },
       { phase: '1–2 年 · 申请期', items: [`准备并递交${topProject ? topProject.name : '目标项目'}申请`, '同步推进家庭与背景材料', '保持职业与资金状态稳定'] },
-      { phase: '3–5 年 · 达成期', items: [`抵达${c.cn}并完成居留登记`, '按路径要求完成语言/投资/就业条件', '实现身份转换与家庭团聚目标'] }
+      { phase: '3–5 年 · 达成期', items: [`抵达${c.cn}并完成居留登记`, '按路径要求完成语言/就业/投资条件', '实现身份转换与家庭团聚目标'] }
     ];
   }
-  startAnalysis() {
-    this.phase = 'analyzing';
-    const steps = ['正在理解您的个人画像…', '正在匹配目标国家…', '正在匹配项目方向…', '正在规划未来路线…'];
-    this.innerHTML = `
-      <div class="assessment">
-        <header class="assessment__head">
-          <div class="container">
-            <p class="assessment__eyebrow" data-reveal>AI Life Path Planning System</p>
-            <h1 class="assessment__title" data-reveal>全球人生路径规划评估中心</h1>
-          </div>
-        </header>
-        <div class="assessment__body">
-          <div class="container">
-            <div class="analyzing" data-reveal>
-              <div class="analyzing__ring" aria-hidden="true"><span></span></div>
-              <h2 class="analyzing__title">正在生成您的全球人生路径规划</h2>
-              <ul class="analyzing__steps">
-                ${steps.map((s, i) => `<li data-ast="${i}"><span class="analyzing__check">○</span>${s}</li>`).join('')}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-    let i = 0;
-    const timer = setInterval(() => {
-      const el = this.querySelector(`[data-ast="${i}"]`);
-      if (el) {
-        el.classList.add('is-done');
-        el.querySelector('.analyzing__check').textContent = '●';
-      }
-      i++;
-      if (i > steps.length) {
-        clearInterval(timer);
-        setTimeout(() => this.showReport(), 300);
-      }
-    }, 500);
-  }
-
-﻿  /* ================= 20 个个性化匹配方案 ================= */
+  /* ================= 结果页：20 个个性化匹配方案 ================= */
 
   ageLabel() {
     return { u18: '18 岁以下', '18-22': '18–22 岁', '23-30': '23–30 岁', '31-40': '31–40 岁', '41-50': '41–50 岁', '50+': '50 岁以上' }[this.state.age] || '—';
   }
 
-  industryLabel() {
-    return { tech: '科技', finance: '金融', edu: '教育', medical: '医疗', manufacture: '制造', trade: '贸易', service: '服务业', art: '艺术', internet: '互联网', other: '其他' }[this.state.industry] || this.state.occupation || '—';
+  careerLabel() {
+    const db = this.careerDb();
+    const c1 = (this.state.cat1 && db[this.state.cat1]) ? db[this.state.cat1].name : '';
+    return c1 + (this.state.cat2 ? ' · ' + this.state.cat2 : '');
   }
 
-  investLabel() {
-    return { '<1w': '1 万元以内', '1-5w': '1–5 万元', '5-10w': '5–10 万元', '10-50w': '10–50 万元', high: '50 万元以上' }[this.state.budget] || '—';
+  fundsLabel() {
+    return { '<1w': '1 万以下', '1-3w': '1–3 万', '3-5w': '3–5 万', '5-10w': '5–10 万', '10-30w': '10–30 万', '30-100w': '30–100 万', '100w+': '100 万以上' }[this.state.funds] || '—';
   }
 
   langLabel() {
@@ -920,9 +844,11 @@ class SiteAiAssessment extends HTMLElement {
     const s = this.state;
     const out = [];
     out.push(this.projectReason(p));
-    if (['it', 'eng', 'research', 'internet'].includes(s.industry)) out.push('职业/技能方向与项目匹配');
-    if (p.budget && p.budget.level === this.budgetTier()) out.push('资金档位与您的可接受投入匹配');
+    if (s.skills && s.skills.trim()) out.push('拥有「' + s.skills.trim().slice(0, 20) + '」技能');
+    if (['tech', 'internet', 'medical', 'construction'].includes(s.cat1)) out.push('职业/技能方向与项目匹配');
+    if (p.budget && p.budget.level === this.budgetTier()) out.push('资金档位与您的可投入资金匹配');
     else if (p.budget && p.budget.level !== 'high') out.push('成本可控，符合预算偏好');
+    if (s.learnLocal === 'yes') out.push('愿意学习当地语言');
     if (p.duration) out.push('发展周期约 ' + p.duration);
     return out.slice(0, 4);
   }
@@ -950,27 +876,8 @@ class SiteAiAssessment extends HTMLElement {
 
   buildPlans() {
     const s = this.state;
-    const projects = Istra.projects || [];
-    const countryRank = this.scoreCountries();
-    const cScore = {};
-    countryRank.forEach((c, i) => { cScore[c.id] = (countryRank.length - i); });
-    const motiveCat = { work: 'work', income: 'work', lifestyle: 'pr', 'child-edu': 'edu', permanent: 'pr', business: 'invest', startup: 'invest', invest: 'invest', culture: 'nomad', family: 'family', explore: 'nomad' };
-    const scored = projects.map((p) => {
-      let v = (cScore[p.country.id] || 0) * 4;
-      s.motives.forEach((r) => { if (motiveCat[r] === p.category.id) v += 6; });
-      if (p.category.id === 'tech' && ['tech', 'internet'].includes(s.industry)) v += 4;
-      if (p.category.id === 'work' && ['tech', 'finance', 'medical', 'trade', 'service', 'manufacture'].includes(s.industry)) v += 3;
-      if (p.category.id === 'study' && ['student', 'none'].includes(s.identity)) v += 4;
-      if (p.category.id === 'invest' && this.budgetTier() === 'high') v += 5;
-      if (p.category.id === 'pr' && ['stable', 'balance'].includes(s.risk)) v += 2;
-      if (p.category.id === 'youth' && ['u18', '18-22', '23-30'].includes(s.age)) v += 3;
-      if (p.category.id === 'family' && (s.kids === 'yes' || s.planWith.length > 0)) v += 4;
-      const budgetRank = { low: 0, midlow: 1, mid: 2, high: 3 };
-      const diff = Math.abs(budgetRank[p.budget.level] - budgetRank[this.budgetTier()]);
-      v += diff === 0 ? 3 : (diff === 1 ? 1 : -4);
-      if (s.lowCost === 'yes' && p.budget.level === 'low') v += 2;
-      return { project: p, score: v };
-    }).sort((a, b) => b.score - a.score);
+    const match = this.projectMatch(this.scoreCountries());
+    const scored = match.scored;
     const max = scored.length ? scored[0].score : 1;
     const min = scored.length ? scored[scored.length - 1].score : 0;
     return scored.slice(0, 20).map((x, i) => {
@@ -994,15 +901,15 @@ class SiteAiAssessment extends HTMLElement {
   whyRecommend() {
     const s = this.state;
     const plans = this.buildPlans();
-    return {
-      rows: [
-        { k: '年龄', v: this.ageLabel() },
-        { k: '职业', v: this.industryLabel() },
-        { k: '可接受投入', v: this.investLabel() },
-        { k: '语言', v: '英语 ' + this.langLabel() + (s.otherLangs ? ' / ' + s.otherLangs : '') }
-      ],
-      top3: plans.slice(0, 3)
-    };
+    const rows = [
+      { k: '年龄', v: this.ageLabel() },
+      { k: '职业', v: this.careerLabel() },
+      { k: '可投入资金', v: this.fundsLabel() },
+      { k: '语言', v: '英语 ' + this.langLabel() + (s.otherLangs ? ' / ' + s.otherLangs : '') }
+    ];
+    if (s.skills && s.skills.trim()) rows.push({ k: '技能', v: s.skills.trim().slice(0, 24) });
+    if (s.learnLocal === 'yes') rows.push({ k: '语言意愿', v: '愿意学习当地语言' });
+    return { rows, top3: plans.slice(0, 3) };
   }
 
   planCard(p, compact) {
@@ -1047,6 +954,45 @@ class SiteAiAssessment extends HTMLElement {
       </article>`;
   }
 
+  startAnalysis() {
+    this.phase = 'analyzing';
+    const steps = ['正在理解您的个人画像…', '正在匹配目标国家…', '正在匹配 20 个方案…', '正在规划未来路线…'];
+    this.innerHTML = `
+      <div class="assessment">
+        <header class="assessment__head">
+          <div class="container">
+            <p class="assessment__eyebrow" data-reveal>AI Life Path Planning System</p>
+            <h1 class="assessment__title" data-reveal>全球人生路径规划评估中心</h1>
+          </div>
+        </header>
+        <div class="assessment__body">
+          <div class="container">
+            <div class="analyzing" data-reveal>
+              <div class="analyzing__ring" aria-hidden="true"><span></span></div>
+              <h2 class="analyzing__title">正在生成您的全球人生路径规划</h2>
+              <ul class="analyzing__steps">
+                ${steps.map((s, i) => `<li data-ast="${i}"><span class="analyzing__check">○</span>${s}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    let i = 0;
+    const timer = setInterval(() => {
+      const el = this.querySelector(`[data-ast="${i}"]`);
+      if (el) {
+        el.classList.add('is-done');
+        el.querySelector('.analyzing__check').textContent = '●';
+      }
+      i++;
+      if (i > steps.length) {
+        clearInterval(timer);
+        setTimeout(() => this.showReport(), 300);
+      }
+    }, 500);
+  }
+
   showReport() {
     this.phase = 'report';
     const plans = this.buildPlans();
@@ -1076,7 +1022,7 @@ class SiteAiAssessment extends HTMLElement {
             <div class="report__cover" data-reveal>
               <p class="report__cover-eyebrow">Global Life Path Planning Report</p>
               <h2 class="report__cover-title">全球人生路径规划报告</h2>
-              <p class="report__cover-meta">${s.identity ? this.identityLabel(s.identity) : '评估用户'} · ${dateStr} · 20 个个性化匹配方案</p>
+              <p class="report__cover-meta">${this.identityLabel()} · ${dateStr} · 20 个个性化匹配方案</p>
             </div>
 
             <section class="report__section" data-reveal>
@@ -1089,7 +1035,7 @@ class SiteAiAssessment extends HTMLElement {
               <div class="why__top3">
                 ${why.top3.map((p) => `
                   <a class="why__item" href="project-detail.html?id=${p.project.id}">
-                    <img src="assets/flags/${p.project.country.flag}" alt="" width="26" height="19" />
+                    <img src="assets/flags/${p.project.country.flag}" alt="${p.project.country.cn}" width="26" height="19" />
                     <span>${p.project.name}</span><b>${p.pct}%</b>
                   </a>`).join('')}
               </div>
@@ -1144,7 +1090,7 @@ class SiteAiAssessment extends HTMLElement {
               <button type="button" class="btn btn--primary" data-action="restart">重新评估</button>
               <a class="btn btn--ghost-dark" href="projects.html">浏览全部项目</a>
             </div>
-            <p class="report__note">* 本报告由智能匹配引擎基于您的回答与全球项目数据库生成，作为人生路径规划参考；具体政策、费用与周期以各国官方最新公布为准。伊斯特拉国际不是签证测试工具，而是全球人生路径规划 AI 系统。</p>
+            <p class="report__note">* 本报告由智能匹配引擎基于您的回答与全球项目数据库生成，作为人生路径规划参考；具体政策、费用与周期以各国官方最新公布为准。健康信息仅用于匹配生活环境与医疗资源，不构成任何淘汰条件。</p>
           </div>
         </div>
       </div>
@@ -1153,11 +1099,6 @@ class SiteAiAssessment extends HTMLElement {
     Istra.reveal.observe(this);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  identityLabel(id) {
-    return { student: '学生', worker: '职场人士', entrepreneur: '创业者', business: '企业经营者', freelancer: '自由职业者', none: '探索者', retired: '人生新阶段探索者' }[id] || '评估用户';
-  }
 }
 
 customElements.define('is-ai-assessment', SiteAiAssessment);
-

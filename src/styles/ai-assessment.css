@@ -403,3 +403,9 @@ a.report__project:hover { border-color: rgba(59, 130, 246, 0.55); background: rg
   .plan__proscons { grid-template-columns: 1fr; }
   .plan__meta { grid-template-columns: 1fr; }
 }
+
+/* —— v9：进度百分比 / 职业二级联动 / 健康提示 —— */
+.wizard__pct { font-size: 0.9375rem; font-weight: 700; color: var(--color-accent); white-space: nowrap; }
+.career-subs { margin-top: 0.625rem; padding: 1rem 1.25rem; background: rgba(4, 27, 58, 0.35); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.career-subs .field-label { color: var(--color-accent); font-size: 0.75rem; }
+.wizard__panel-hint { margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(4, 27, 58, 0.45); border-left: 3px solid var(--color-accent); border-radius: var(--radius-s); font-size: 0.75rem; color: var(--color-text-muted); line-height: 1.9; }
