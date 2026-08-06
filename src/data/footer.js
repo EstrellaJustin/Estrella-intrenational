@@ -6,6 +6,7 @@ Istra.footer = {
       links: [
         { label: '首页', href: 'index.html' },
         { label: '全球国家', href: 'countries.html' },
+        { label: '全球地图', href: 'world-map.html' },
         { label: '全球项目', href: 'projects.html' },
         { label: 'AI 评估', href: 'ai-assessment.html' },
         { label: '旅游探索', href: 'travel.html' }
@@ -25,3 +26,4 @@ Istra.footer = {
     email: 'contact@istra-international.example'
   }
 };
+

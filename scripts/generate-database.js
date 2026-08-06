@@ -532,7 +532,7 @@ function build() {
 
   /* countries.js */
   const countriesJs = '/* 国家数据库（生成于 scripts/generate-database.js） */\nwindow.Istra = window.Istra || {};\nIstra.countries = ' +
-    JSON.stringify(COUNTRIES.map(c => ({ id: c.id, cn: c.cn, en: c.en, flag: `${c.id}.svg`, region: c.region, brief: c.brief })), null, 2) + ';\n';
+    JSON.stringify(COUNTRIES.map(c => ({ id: c.id, cn: c.cn, en: c.en, flag: `${c.id}.svg`, region: c.region, brief: c.brief, is_available: true })), null, 2) + ';\n';
   fs.writeFileSync(path.join(DATA, 'countries.js'), countriesJs);
 
   /* categories.js */
