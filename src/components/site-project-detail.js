@@ -9,6 +9,7 @@ class SiteProjectDetail extends HTMLElement {
     this.project = (Istra.projects || []).find((p) => p.id === this.id);
     this.render();
     this.bindUserFeatures();
+    this.bindAssessmentStatus();
     Istra.reveal.observe(this);
   }
 
@@ -56,7 +57,7 @@ class SiteProjectDetail extends HTMLElement {
                 </div>
               </div>
               <div class="detail__head-actions" data-reveal>
-                <a class="btn btn--primary" href="ai-assessment.html">立即评估 <span class="btn-arrow">→</span></a>
+                <a class="btn btn--primary" href="ai-assessment.html" data-eval>立即评估 <span class="btn-arrow">→</span></a>
                 <a class="btn btn--ghost-light" href="projects.html">返回项目大全</a>
               </div>
             </div>
@@ -176,7 +177,7 @@ class SiteProjectDetail extends HTMLElement {
               </div>
               <div class="side-panel" data-reveal>
                 <div class="side-panel__actions">
-                  <a class="btn btn--primary" href="ai-assessment.html">立即评估 <span class="btn-arrow">→</span></a>
+                  <a class="btn btn--primary" href="ai-assessment.html" data-eval>立即评估 <span class="btn-arrow">→</span></a>
                   <a class="btn btn--ghost-dark" href="projects.html">返回项目大全</a>
                   <button type="button" class="btn btn--ghost-dark side-panel__fav" data-fav>☆ 收藏项目</button>
                 </div>
@@ -214,6 +215,41 @@ class SiteProjectDetail extends HTMLElement {
       btn.textContent = '★ 已收藏';
       btn.disabled = true;
     });
+  }
+
+  /* 评估状态动态按钮：未登录=开始AI评估 / 已登录未评估=立即评估 / 已评估=查看我的匹配分析+获取申请方案 */
+  bindAssessmentStatus() {
+    const primary = this.querySelectorAll('[data-eval]');
+    let token = '';
+    try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
+    const setEval = (mode) => {
+      primary.forEach((el) => {
+        if (mode === 'assessed') {
+          el.href = 'profile.html#sec-assess';
+          el.textContent = '查看我的匹配分析';
+        } else {
+          el.href = 'ai-assessment.html';
+          el.textContent = token ? '立即评估' : '开始AI评估';
+        }
+      });
+      if (mode === 'assessed') {
+        const side = this.querySelector('.side-panel__actions');
+        if (side && !side.querySelector('[data-plan-link]')) {
+          const plan = document.createElement('a');
+          plan.className = 'btn btn--ghost-dark';
+          plan.href = 'profile.html#sec-recs';
+          plan.textContent = '获取申请方案';
+          plan.setAttribute('data-plan-link', '1');
+          const fav = side.querySelector('[data-fav]');
+          if (fav) side.insertBefore(plan, fav); else side.appendChild(plan);
+        }
+      }
+    };
+    if (!token) { setEval('guest'); return; }
+    if (!window.Istra || !Istra.api) { setEval('guest'); return; }
+    Istra.api.listAssessments().then((d) => {
+      setEval((d.assessments && d.assessments.length > 0) ? 'assessed' : 'user');
+    }).catch(() => setEval('user'));
   }
 
   renderMissing() {
