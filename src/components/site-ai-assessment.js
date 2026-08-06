@@ -1637,6 +1637,35 @@ class SiteAiAssessment extends HTMLElement {
         <a class="btn btn--ghost-dark plan__btn" href="project-detail.html?id=${p.project.id}">查看详细项目 <span class="btn-arrow">→</span></a>
       </article>`;
   }
+  getUnlock() {
+    let token = '';
+    try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
+    if (!token || !window.Istra || !Istra.api) return Promise.resolve(false);
+    return Istra.api.me().then((d) => !!d.user.assessmentUnlock).catch(() => false);
+  }
+
+  revealFull() {
+    const plans = this._plans || [];
+    if (!plans.length) return;
+    this._unlocked = true;
+    const topEl = this.querySelector('#plans-top');
+    if (topEl) topEl.innerHTML = plans.slice(0, 5).map((p) => this.planCard(p, false)).join('');
+    const title = this.querySelector('[data-top-title]');
+    if (title) title.textContent = '高匹配 · TOP 5';
+    const banner = this.querySelector('[data-unlock-sec]');
+    if (banner) banner.remove();
+    const midSec = this.querySelector('[data-mid-sec]');
+    const backupSec = this.querySelector('[data-backup-sec]');
+    if (midSec) midSec.style.display = '';
+    if (backupSec) backupSec.style.display = '';
+    const n1 = this.querySelector('[data-notrec-sec] .report__section-title span');
+    const n2 = this.querySelector('[data-roadmap-sec] .report__section-title span');
+    if (n1) n1.textContent = '05';
+    if (n2) n2.textContent = '06';
+    if (window.Istra && Istra.reveal) Istra.reveal.observe(this);
+    if (midSec) midSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   startAnalysis() {
     this.phase = 'analyzing';
     const steps = ['正在理解您的个人画像…', '正在匹配目标国家…', '正在匹配 20 个方案…', '正在规划未来路线…'];
@@ -1676,7 +1705,7 @@ class SiteAiAssessment extends HTMLElement {
     }, 500);
   }
 
-  showReport() {
+  async showReport() {
     this.phase = 'report';
     const plans = this.buildPlans();
     const top = plans.slice(0, 5);
@@ -1687,6 +1716,9 @@ class SiteAiAssessment extends HTMLElement {
     const topProject = plans[0] ? plans[0].project : null;
     const roadmap = this.roadmap(topCountry, topProject);
     const why = this.whyRecommend();
+    const unlocked = await this.getUnlock();
+    this._plans = plans;
+    this._unlocked = unlocked;
     const s = this.state;
     const now = new Date();
     const dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
@@ -1725,22 +1757,32 @@ class SiteAiAssessment extends HTMLElement {
             </section>
 
             <section class="report__section" data-reveal>
-              <h3 class="report__section-title"><span>02</span>高匹配 · TOP 5</h3>
-              <div class="plans">${top.map((p) => this.planCard(p, false)).join('')}</div>
+              <h3 class="report__section-title" data-top-title><span>02</span>高匹配 · ${unlocked ? 'TOP 5' : 'TOP 3'}</h3>
+              <div class="plans" id="plans-top">${(unlocked ? top : top.slice(0, 3)).map((p) => this.planCard(p, false)).join('')}</div>
             </section>
 
-            <section class="report__section" data-reveal>
+            ${unlocked ? '' : `
+            <section class="report__section" data-unlock-sec data-reveal>
+              <h3 class="report__section-title"><span>03</span>解锁完整方案</h3>
+              <div class="unlock">
+                <p class="unlock__text">还有 ${plans.length - 3} 个适合您的项目已隐藏</p>
+                <button class="btn btn--primary" type="button" data-unlock>¥9.9 解锁完整方案 <span class="btn-arrow">→</span></button>
+                <p class="unlock__note">解锁后可查看全部 ${plans.length} 个项目与推荐方案。支付仅解锁已有 AI 评估结果，不会重新生成评估。</p>
+              </div>
+            </section>`}
+
+            <section class="report__section" data-mid-sec data-reveal${unlocked ? '' : ' style="display:none"'}>
               <h3 class="report__section-title"><span>03</span>推荐考虑 · 6–15</h3>
               <div class="plans plans--grid">${mid.map((p) => this.planCard(p, true)).join('')}</div>
             </section>
 
-            <section class="report__section" data-reveal>
+            <section class="report__section" data-backup-sec data-reveal${unlocked ? '' : ' style="display:none"'}>
               <h3 class="report__section-title"><span>04</span>备用方案 · 16–20</h3>
               <div class="plans plans--grid">${backup.map((p) => this.planCard(p, true)).join('')}</div>
             </section>
 
-            <section class="report__section" data-reveal>
-              <h3 class="report__section-title"><span>05</span>不推荐方向</h3>
+            <section class="report__section" data-notrec-sec data-reveal>
+              <h3 class="report__section-title"><span>${unlocked ? '05' : '04'}</span>不推荐方向</h3>
               <div class="report__notrec">
                 ${notRec.map((x) => `
                   <div class="report__notrec-item">
@@ -1753,8 +1795,8 @@ class SiteAiAssessment extends HTMLElement {
               </div>
             </section>
 
-            <section class="report__section" data-reveal>
-              <h3 class="report__section-title"><span>06</span>未来路线规划</h3>
+            <section class="report__section" data-roadmap-sec data-reveal>
+              <h3 class="report__section-title"><span>${unlocked ? '06' : '05'}</span>未来路线规划</h3>
               <div class="report__roadmap">
                 ${roadmap.map((r) => `
                   <div class="report__roadmap-step">
@@ -1780,6 +1822,15 @@ class SiteAiAssessment extends HTMLElement {
       </div>
     `;
     this.querySelector('[data-action="restart"]').addEventListener('click', () => this.reset());
+    const unlockBtn = this.querySelector('[data-unlock]');
+    if (unlockBtn && !unlocked) {
+      unlockBtn.addEventListener('click', () => {
+        let token = '';
+        try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
+        if (!token || !window.Istra || !Istra.pay) { location.href = 'login.html?next=ai-assessment.html'; return; }
+        Istra.pay.openUnlockModal({ onDone: () => this.revealFull() });
+      });
+    }
 
     /* 保存评估与推荐到个人中心（登录用户） */
     const saveBox = this.querySelector('.report__saved');

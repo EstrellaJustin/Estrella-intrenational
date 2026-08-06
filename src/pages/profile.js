@@ -17,6 +17,7 @@ function esc(v) {
   const user = await Istra.auth.init();
   if (!user) { location.href = 'login.html?next=profile.html'; return; }
 
+  const unlocked = !!user.assessmentUnlock;
   let profile = {};
   let assessments = [];
   let recs = [];
@@ -113,18 +114,27 @@ function esc(v) {
     el.addEventListener('click', async () => {
       try {
         const d = await Istra.api.getAssessment(el.dataset.viewAssess);
-        const top10 = (d.recommendations || []).slice(0, 10);
-        alert('评估 #' + d.assessment.id + '\n' + top10.map((r, i) => `${i + 1}. ${r.country} ${r.project}（${r.score} 分）`).join('\n') || '无推荐');
+        const shown = (d.recommendations || []).slice(0, unlocked ? 20 : 3);
+        alert('评估 #' + d.assessment.id + '\n' + shown.map((r, i) => `${i + 1}. ${r.country} ${r.project}（${r.score} 分）`).join('\n') + (unlocked ? '' : '\n\n解锁后可查看全部 20 个方案') || '无推荐');
       } catch (e) { alert(e.message); }
     });
   });
 
-  /* 我的推荐方案（最新一次评估） */
-  $('#recs-list').innerHTML = recs.length
+  /* 我的推荐方案（免费 3 / 付费 20） */
+  const visibleRecs = unlocked ? recs : recs.slice(0, 3);
+  const recLockedBanner = (!unlocked && recs.length > 3)
+    ? `<div class="unlock" style="margin-top:1rem">
+        <p class="unlock__text">还有 ${recs.length - 3} 个方案已隐藏</p>
+        <button class="btn btn--primary" type="button" id="btn-unlock-profile">¥9.9 解锁完整方案 <span class="btn-arrow">→</span></button>
+      </div>`
+    : '';
+  $('#recs-list').innerHTML = (recs.length
     ? `<div class="profile__list"><div class="profile__item" style="flex-direction:column;align-items:stretch">
-        ${recs.map((r) => `<div class="profile__rec"><span class="profile__rec-rank">${r.rank}</span><span class="profile__rec-name">${esc(r.country)} · ${esc(r.project)}</span><span class="profile__rec-score">${r.score} 分</span></div>`).join('')}
-      </div></div>`
-    : '<div class="profile__empty">暂无推荐方案 · <a href="ai-assessment.html" style="color:var(--color-accent)">立即评估</a></div>';
+        ${visibleRecs.map((r) => `<div class="profile__rec"><span class="profile__rec-rank">${r.rank}</span><span class="profile__rec-name">${esc(r.country)} · ${esc(r.project)}</span><span class="profile__rec-score">${r.score} 分</span></div>`).join('')}
+      </div></div>${recLockedBanner}`
+    : '<div class="profile__empty">暂无推荐方案 · <a href="ai-assessment.html" style="color:var(--color-accent)">立即评估</a></div>');
+  const unlockBtn = document.getElementById('btn-unlock-profile');
+  if (unlockBtn) unlockBtn.addEventListener('click', () => { Istra.pay.openUnlockModal({ onDone: () => location.reload() }); });
 
   /* 我的收藏 */
   const favType = { favorite_project: '项目', favorite_city: '城市' };

@@ -32,6 +32,7 @@ Istra.api = {
   listAssessments() { return this.req('/api/assessments', 'GET'); },
   getAssessment(id) { return this.req('/api/assessments/' + id, 'GET'); },
   recordBehavior(payload) { return this.req('/api/behavior', 'POST', payload); },
+  unlock() { return this.req('/api/pay/unlock', 'POST', {}); },
   removeFavorite(payload) { return this.req('/api/behavior', 'DELETE', payload); },
   getBehavior() { return this.req('/api/me/behavior', 'GET'); }
 };
@@ -78,3 +79,4 @@ Istra.updateAccountEntry = function () {
     }
   });
 };
+

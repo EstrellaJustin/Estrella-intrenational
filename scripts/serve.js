@@ -40,7 +40,7 @@ function hashPwd(password, salt) {
 }
 function newToken() { return crypto.randomBytes(24).toString('hex'); }
 function publicUser(u) {
-  return { id: u.id, name: u.name, phone: u.phone || '', email: u.email || '', registeredAt: u.registeredAt, country: u.country || '', city: u.city || '', lastLoginAt: u.lastLoginAt || '' };
+  return { id: u.id, name: u.name, phone: u.phone || '', email: u.email || '', registeredAt: u.registeredAt, country: u.country || '', city: u.city || '', lastLoginAt: u.lastLoginAt || '', assessmentUnlock: !!u.assessmentUnlock };
 }
 
 /* ---------- 认证 ---------- */
@@ -94,7 +94,8 @@ async function handleApi(req, res, url) {
       salt, hash: hashPwd(password, salt),
       registeredAt: new Date().toISOString(),
       country: cleanStr(b.country, 60), city: cleanStr(b.city, 60),
-      lastLoginAt: new Date().toISOString()
+      lastLoginAt: new Date().toISOString(),
+      assessmentUnlock: false
     };
     users.push(user);
     saveTable('users', users);
@@ -199,6 +200,20 @@ async function handleApi(req, res, url) {
     if (!rec) return sendJson(res, 404, { error: '记录不存在' });
     const recs = recTable.filter((x) => x.assessmentId === rec.id).sort((a, b) => a.rank - b.rank);
     return sendJson(res, 200, { assessment: rec, recommendations: recs });
+  }
+
+  /* POST /api/pay/unlock（演示支付：将用户标记为已解锁，不重新生成评估） */
+  if (p === '/api/pay/unlock' && method === 'POST') {
+    const u = authUser(req);
+    if (!u) return sendJson(res, 401, { error: '未登录' });
+    const users = loadTable('users');
+    const idx = users.findIndex((x) => x.id === u.id);
+    if (idx >= 0) {
+      users[idx].assessmentUnlock = true;
+      saveTable('users', users);
+      return sendJson(res, 200, { ok: true, assessmentUnlock: true });
+    }
+    return sendJson(res, 404, { error: '用户不存在' });
   }
 
   /* POST /api/behavior */
