@@ -299,3 +299,6 @@ is-travel, is-travel-country { display: block; }
 /* —— 城市卡片缩略图（图片独立绑定） —— */
 .tdetail__city-thumb { width: 72px; height: 54px; flex: none; border-radius: var(--radius-s); overflow: hidden; box-shadow: 0 2px 8px -2px rgba(2, 19, 38, 0.8); }
 .tdetail__city-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.city__fav { margin-top: 1.25rem; min-height: 42px; padding: 0 1.25rem; font-size: 0.8125rem; }
+

@@ -8,6 +8,7 @@ class SiteProjectDetail extends HTMLElement {
     this.id = new URLSearchParams(location.search).get('id');
     this.project = (Istra.projects || []).find((p) => p.id === this.id);
     this.render();
+    this.bindUserFeatures();
     Istra.reveal.observe(this);
   }
 
@@ -177,6 +178,7 @@ class SiteProjectDetail extends HTMLElement {
                 <div class="side-panel__actions">
                   <a class="btn btn--primary" href="ai-assessment.html">立即评估 <span class="btn-arrow">→</span></a>
                   <a class="btn btn--ghost-dark" href="projects.html">返回项目大全</a>
+                  <button type="button" class="btn btn--ghost-dark side-panel__fav" data-fav>☆ 收藏项目</button>
                 </div>
                 <p class="side-panel__note">* 项目信息为数据库展示内容，具体政策、费用与周期以各国官方最新公布为准。</p>
               </div>
@@ -185,6 +187,33 @@ class SiteProjectDetail extends HTMLElement {
         </div>
       </article>
     `;
+  }
+
+
+  /* 用户系统：行为记录 + 收藏（登录用户） */
+  record(type, refType, refId, title) {
+    let token = '';
+    try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
+    if (!token || !window.Istra || !Istra.api) return;
+    Istra.api.recordBehavior({ type, refType, refId, title }).catch(() => {});
+  }
+  bindUserFeatures() {
+    const p = this.project;
+    if (!p) return;
+    this.record('view_project', 'project', p.id, p.name);
+    const btn = this.querySelector('[data-fav]');
+    if (!btn) return;
+    let token = '';
+    try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
+    if (!token) {
+      btn.addEventListener('click', () => { location.href = 'login.html?next=project-detail.html?id=' + p.id; });
+      return;
+    }
+    btn.addEventListener('click', () => {
+      this.record('favorite_project', 'project', p.id, p.name);
+      btn.textContent = '★ 已收藏';
+      btn.disabled = true;
+    });
   }
 
   renderMissing() {

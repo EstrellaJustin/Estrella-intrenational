@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "张三",
+    "phone": "13800138000",
+    "email": "zhangsan@example.com",
+    "salt": "5c2b0edf5cf7aed4fe982c8fae454ffc",
+    "hash": "9c9e8660510ecdcb98cac30399117ab2ff11708d0062e2b00df471d911730957fbe279bf38cd0d274061d67299289e90190548208b4ee2c6c100e350e8d22864",
+    "registeredAt": "2026-08-06T03:37:56.857Z",
+    "country": "",
+    "city": "",
+    "lastLoginAt": "2026-08-06T03:38:45.229Z"
+  },
+  {
+    "id": 2,
+    "name": "李四",
+    "phone": "13900139000",
+    "email": "",
+    "salt": "164e2c5b79ea3e8d88488ee771a9bea5",
+    "hash": "087de5d03d6732155a510605cfbe9209fca64e6bcc571e8278072eed0a895b81b6ded60fa873c5d041e1f87da253cbb8672cdcddffbfb60a7cd814fb71f61643",
+    "registeredAt": "2026-08-06T03:37:56.958Z",
+    "country": "",
+    "city": "",
+    "lastLoginAt": "2026-08-06T03:37:56.958Z"
+  }
+]

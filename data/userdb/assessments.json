@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "userId": 1,
+    "savedAt": "2026-08-06T03:37:56.875Z",
+    "inputs": {
+      "age": "23-30",
+      "cat1": "manufacture",
+      "cat2": "焊工",
+      "degree": "college",
+      "funds": "5-10w",
+      "goals": [
+        "work",
+        "pr"
+      ]
+    },
+    "health": {
+      "healthNeed": "yes",
+      "chronic": "no"
+    },
+    "top": {
+      "country": "德国",
+      "project": "德国欧盟蓝卡",
+      "score": 95
+    },
+    "recCount": 2
+  },
+  {
+    "id": 2,
+    "userId": 1,
+    "savedAt": "2026-08-06T03:39:05.843Z",
+    "inputs": {
+      "age": "23-30",
+      "gender": "",
+      "marital": "married",
+      "hasKids": "yes",
+      "cat1": "manufacture",
+      "cat2": "焊工",
+      "skills": "",
+      "years": "5y+",
+      "degree": "college",
+      "major": "",
+      "englishLevel": "basic",
+      "otherLangs": "",
+      "funds": "5-10w",
+      "source": [
+        "salary"
+      ],
+      "lowCost": "yes",
+      "workDevelop": "yes",
+      "studyFirst": "yes",
+      "parentsPlan": "yes",
+      "eduNeed": "middle",
+      "goals": [
+        "work",
+        "pr"
+      ],
+      "likes": [
+        "big"
+      ],
+      "climate": [
+        "four"
+      ],
+      "pace": "normal",
+      "risk": "stable",
+      "accepts": [
+        "lang"
+      ]
+    },
+    "health": {
+      "healthNeed": "yes",
+      "specialMed": "no",
+      "chronic": "no",
+      "regularMed": "no"
+    },
+    "top": {
+      "country": "加拿大",
+      "project": "加拿大 · 高技能工作签证",
+      "score": 97
+    },
+    "recCount": 20
+  }
+]

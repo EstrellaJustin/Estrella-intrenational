@@ -49,6 +49,8 @@ class SiteNavbar extends HTMLElement {
           <ul class="nav__links">${links}</ul>
         </nav>
 
+        <a class="nav__account" href="login.html" data-account-entry>登录</a>
+
 
         <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="打开菜单">
           ${Istra.icon('menu')}
@@ -57,9 +59,18 @@ class SiteNavbar extends HTMLElement {
 
       <div class="menu" id="site-menu" aria-hidden="true">
         <ul class="menu__list">${menuLinks}</ul>
+        <a class="menu__account" href="login.html" data-account-entry>登录</a>
         <p class="menu__foot">ISTRA INTERNATIONAL · GLOBAL DEVELOPMENT</p>
       </div>
     `;
+
+    const acc = this.querySelector('[data-account-entry]');
+    if (acc) {
+      let token = '';
+      try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
+      acc.href = token ? 'profile.html' : 'login.html';
+      acc.textContent = token ? '个人中心' : '登录';
+    }
 
     this.toggle = this.querySelector('.nav__toggle');
     this.menu = this.querySelector('.menu');
@@ -100,5 +111,6 @@ class SiteNavbar extends HTMLElement {
 }
 
 customElements.define('is-navbar', SiteNavbar);
+
 
 

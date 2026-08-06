@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登录 · 伊斯特拉国际</title>
+  <meta name="theme-color" content="#041B3A" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="src/styles/tokens.css" />
+  <link rel="stylesheet" href="src/styles/base.css" />
+  <link rel="stylesheet" href="src/styles/navbar.css" />
+  <link rel="stylesheet" href="src/styles/account.css" />
+  <link rel="stylesheet" href="src/styles/footer.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要内容</a>
+  <is-navbar></is-navbar>
+  <main id="main">
+    <div class="account">
+      <header class="account__head">
+        <div class="container">
+          <p class="account__eyebrow" data-reveal>Member Login</p>
+          <h1 class="account__title" data-reveal>登录</h1>
+          <p class="account__sub" data-reveal>登录后保存评估记录、推荐方案与收藏。</p>
+        </div>
+      </header>
+      <div class="account__body">
+        <div class="container">
+          <div class="auth-card" data-reveal>
+            <h2 class="auth-card__title">账号登录</h2>
+            <p class="auth-card__desc">使用手机号或邮箱登录</p>
+            <form id="login-form">
+              <div class="field">
+                <label for="lg-account">手机号 / 邮箱</label>
+                <input id="lg-account" type="text" placeholder="手机号或邮箱" autocomplete="username" required />
+              </div>
+              <div class="field">
+                <label for="lg-password">密码</label>
+                <input id="lg-password" type="password" placeholder="请输入密码" autocomplete="current-password" required />
+              </div>
+              <button class="btn btn--primary" type="submit">登录 <span class="btn-arrow">→</span></button>
+              <p class="auth-card__error" id="login-error"></p>
+            </form>
+            <p class="auth-card__switch">还没有账号？<a href="register.html">立即注册</a></p>
+          </div>
+          <p class="account__note">* 敏感信息仅您本人可见，用于保存评估记录与个性化服务。</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <is-footer></is-footer>
+  <script src="src/data/brand.js"></script>
+  <script src="src/data/nav.js"></script>
+  <script src="src/data/footer.js"></script>
+  <script src="src/utils/icons.js"></script>
+  <script src="src/utils/reveal.js"></script>
+  <script src="src/utils/api.js"></script>
+  <script src="src/components/site-navbar.js"></script>
+  <script src="src/components/site-footer.js"></script>
+  <script src="src/pages/login.js"></script>
+</body>
+</html>

@@ -115,3 +115,33 @@ is-navbar.is-scrolled {
   .nav__links, .nav__cta { display: none; }
   .nav__toggle { display: inline-flex; }
 }
+
+/* —— 账号入口 —— */
+.nav__account {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 1.125rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-btn);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-on-dark);
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+.nav__account:hover { border-color: var(--color-accent); color: var(--color-accent); background: rgba(201, 162, 39, 0.06); }
+is-navbar.is-scrolled .nav__account { border-color: rgba(10, 22, 40, 0.25); color: var(--color-heading); }
+is-navbar.is-scrolled .nav__account:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.menu__account {
+  display: block;
+  margin-top: 1.5rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-m);
+  text-align: center;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-on-dark);
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.menu__account:hover { border-color: var(--color-accent); color: var(--color-accent); }

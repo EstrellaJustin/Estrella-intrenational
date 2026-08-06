@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>注册 · 伊斯特拉国际</title>
+  <meta name="theme-color" content="#041B3A" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="src/styles/tokens.css" />
+  <link rel="stylesheet" href="src/styles/base.css" />
+  <link rel="stylesheet" href="src/styles/navbar.css" />
+  <link rel="stylesheet" href="src/styles/account.css" />
+  <link rel="stylesheet" href="src/styles/footer.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要内容</a>
+  <is-navbar></is-navbar>
+  <main id="main">
+    <div class="account">
+      <header class="account__head">
+        <div class="container">
+          <p class="account__eyebrow" data-reveal>Member Register</p>
+          <h1 class="account__title" data-reveal>注册</h1>
+          <p class="account__sub" data-reveal>手机号或邮箱注册，开启您的全球人生规划。</p>
+        </div>
+      </header>
+      <div class="account__body">
+        <div class="container">
+          <div class="auth-card" data-reveal>
+            <h2 class="auth-card__title">创建账号</h2>
+            <p class="auth-card__desc">手机号与邮箱至少填写一项</p>
+            <form id="register-form">
+              <div class="field">
+                <label for="rg-name">姓名</label>
+                <input id="rg-name" type="text" placeholder="您的称呼" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="rg-phone">手机号（选填）</label>
+                <input id="rg-phone" type="tel" placeholder="手机号" autocomplete="tel" />
+              </div>
+              <div class="field">
+                <label for="rg-email">邮箱（选填）</label>
+                <input id="rg-email" type="email" placeholder="邮箱" autocomplete="email" />
+              </div>
+              <div class="field">
+                <label for="rg-password">密码</label>
+                <input id="rg-password" type="password" placeholder="至少 4 位" autocomplete="new-password" required />
+              </div>
+              <button class="btn btn--primary" type="submit">注册 <span class="btn-arrow">→</span></button>
+              <p class="auth-card__error" id="register-error"></p>
+            </form>
+            <p class="auth-card__switch">已有账号？<a href="login.html">直接登录</a></p>
+          </div>
+          <p class="account__note">* 注册即代表同意将您的评估记录仅用于本人查看与个性化推荐。</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <is-footer></is-footer>
+  <script src="src/data/brand.js"></script>
+  <script src="src/data/nav.js"></script>
+  <script src="src/data/footer.js"></script>
+  <script src="src/utils/icons.js"></script>
+  <script src="src/utils/reveal.js"></script>
+  <script src="src/utils/api.js"></script>
+  <script src="src/components/site-navbar.js"></script>
+  <script src="src/components/site-footer.js"></script>
+  <script src="src/pages/register.js"></script>
+</body>
+</html>

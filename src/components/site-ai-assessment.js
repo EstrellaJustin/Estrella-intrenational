@@ -1086,6 +1086,7 @@ class SiteAiAssessment extends HTMLElement {
               </div>
             </section>
 
+            <div class="report__saved" data-reveal></div>
             <div class="report__actions" data-reveal>
               <button type="button" class="btn btn--primary" data-action="restart">重新评估</button>
               <a class="btn btn--ghost-dark" href="projects.html">浏览全部项目</a>
@@ -1096,6 +1097,31 @@ class SiteAiAssessment extends HTMLElement {
       </div>
     `;
     this.querySelector('[data-action="restart"]').addEventListener('click', () => this.reset());
+
+    /* 保存评估与推荐到个人中心（登录用户） */
+    const saveBox = this.querySelector('.report__saved');
+    let token = '';
+    try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
+    if (token && window.Istra && Istra.api) {
+      const payload = {
+        inputs: {
+          age: s.age, gender: s.gender, marital: s.marital, hasKids: s.hasKids,
+          cat1: s.cat1, cat2: s.cat2, skills: s.skills, years: s.years,
+          degree: s.degree, major: s.major, englishLevel: s.englishLevel, otherLangs: s.otherLangs,
+          funds: s.funds, source: s.source, lowCost: s.lowCost, workDevelop: s.workDevelop, studyFirst: s.studyFirst,
+          parentsPlan: s.parentsPlan, eduNeed: s.eduNeed, goals: s.goals,
+          likes: s.likes, climate: s.climate, pace: s.pace, risk: s.risk, accepts: s.accepts
+        },
+        health: { healthNeed: s.healthNeed, specialMed: s.specialMed, chronic: s.chronic, regularMed: s.regularMed },
+        recommendations: plans.slice(0, 20).map((pp) => ({ country: pp.project.country.cn, project: pp.project.name, score: pp.pct, reason: pp.reasons[0] || '' }))
+      };
+      Istra.api.saveAssessment(payload).then((r) => {
+        if (saveBox) saveBox.innerHTML = '✅ 已保存到个人中心（评估 #' + r.id + '）· <a href="profile.html">查看我的评估</a>';
+      }).catch(() => { if (saveBox) saveBox.innerHTML = '保存失败，请稍后在个人中心查看。'; });
+    } else if (saveBox) {
+      saveBox.innerHTML = '💡 <a href="login.html?next=ai-assessment.html">登录 / 注册</a>后，可保存本次评估记录与 20 个推荐方案到个人中心。';
+    }
+
     Istra.reveal.observe(this);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }

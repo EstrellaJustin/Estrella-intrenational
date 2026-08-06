@@ -8,6 +8,7 @@ class SiteTravelCity extends HTMLElement {
     this.id = new URLSearchParams(location.search).get('id');
     this.city = (Istra.cities || []).find((x) => x.id === this.id);
     this.render();
+    this.bindUserFeatures();
     Istra.reveal.observe(this);
   }
 
@@ -43,6 +44,7 @@ class SiteTravelCity extends HTMLElement {
             </div>
             <h1 class="city__title">${city.city}</h1>
             <p class="city__tagline">${city.note}</p>
+            <button type="button" class="btn btn--ghost-light city__fav" data-fav>☆ 收藏城市</button>
           </div>
         </header>
 
@@ -156,6 +158,32 @@ class SiteTravelCity extends HTMLElement {
         </div>
       </div>
     `;
+  }
+
+
+  record(type, refType, refId, title) {
+    let token = '';
+    try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
+    if (!token || !window.Istra || !Istra.api) return;
+    Istra.api.recordBehavior({ type, refType, refId, title }).catch(() => {});
+  }
+  bindUserFeatures() {
+    const city = this.city;
+    if (!city) return;
+    this.record('view_city', 'city', city.id, city.country.cn + '·' + city.city);
+    const btn = this.querySelector('[data-fav]');
+    if (!btn) return;
+    let token = '';
+    try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
+    if (!token) {
+      btn.addEventListener('click', () => { location.href = 'login.html?next=travel-city.html?id=' + city.id; });
+      return;
+    }
+    btn.addEventListener('click', () => {
+      this.record('favorite_city', 'city', city.id, city.country.cn + '·' + city.city);
+      btn.textContent = '★ 已收藏';
+      btn.disabled = true;
+    });
   }
 
   renderMissing() {

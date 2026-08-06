@@ -1,0 +1,80 @@
+﻿/* ============================================================
+   用户系统前端工具：API 封装 + 登录态管理
+   ============================================================ */
+window.Istra = window.Istra || {};
+
+Istra.api = {
+  token: (function () { try { return localStorage.getItem('istra_token') || ''; } catch (e) { return ''; } })(),
+
+  async req(path, method, body) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (this.token) headers['Authorization'] = 'Bearer ' + this.token;
+    const res = await fetch(path, {
+      method,
+      headers,
+      body: body !== undefined ? JSON.stringify(body) : undefined
+    });
+    let data = {};
+    try { data = await res.json(); } catch (e) {}
+    if (!res.ok) {
+      const err = new Error(data.error || '请求失败');
+      err.status = res.status;
+      throw err;
+    }
+    return data;
+  },
+
+  register(payload) { return this.req('/api/auth/register', 'POST', payload); },
+  login(payload) { return this.req('/api/auth/login', 'POST', payload); },
+  me() { return this.req('/api/auth/me', 'GET'); },
+  updateProfile(payload) { return this.req('/api/profile', 'PUT', payload); },
+  saveAssessment(payload) { return this.req('/api/assessments', 'POST', payload); },
+  listAssessments() { return this.req('/api/assessments', 'GET'); },
+  getAssessment(id) { return this.req('/api/assessments/' + id, 'GET'); },
+  recordBehavior(payload) { return this.req('/api/behavior', 'POST', payload); },
+  removeFavorite(payload) { return this.req('/api/behavior', 'DELETE', payload); },
+  getBehavior() { return this.req('/api/me/behavior', 'GET'); }
+};
+
+Istra.auth = {
+  user: null,
+  loggedIn() { return !!Istra.api.token; },
+  async init() {
+    if (!this.loggedIn()) { this.user = null; return null; }
+    try {
+      const data = await Istra.api.me();
+      this.user = data.user;
+      return this.user;
+    } catch (e) {
+      this.user = null;
+      Istra.api.token = '';
+      try { localStorage.removeItem('istra_token'); } catch (err) {}
+      return null;
+    }
+  },
+  setToken(token) {
+    Istra.api.token = token || '';
+    try { if (token) localStorage.setItem('istra_token', token); else localStorage.removeItem('istra_token'); } catch (e) {}
+  },
+  logout() {
+    this.user = null;
+    this.setToken('');
+  }
+};
+
+/* 全局账号入口更新（导航等） */
+Istra.updateAccountEntry = function () {
+  const links = document.querySelectorAll('[data-account-entry]');
+  const logged = Istra.auth.loggedIn();
+  links.forEach((el) => {
+    if (logged) {
+      el.setAttribute('href', 'profile.html');
+      el.textContent = '个人中心';
+      el.classList.add('is-logged');
+    } else {
+      el.setAttribute('href', 'login.html');
+      el.textContent = '登录';
+      el.classList.remove('is-logged');
+    }
+  });
+};

@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "userId": 1,
+    "type": "view_project",
+    "refType": "project",
+    "refId": "de-work-highskill",
+    "title": "德国欧盟蓝卡",
+    "createdAt": "2026-08-06T03:37:56.883Z"
+  }
+]

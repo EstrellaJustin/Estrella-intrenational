@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>个人中心 · 伊斯特拉国际</title>
+  <meta name="theme-color" content="#041B3A" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="src/styles/tokens.css" />
+  <link rel="stylesheet" href="src/styles/base.css" />
+  <link rel="stylesheet" href="src/styles/navbar.css" />
+  <link rel="stylesheet" href="src/styles/account.css" />
+  <link rel="stylesheet" href="src/styles/footer.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要内容</a>
+  <is-navbar></is-navbar>
+  <main id="main">
+    <div class="account">
+      <header class="account__head">
+        <div class="container">
+          <p class="account__eyebrow" data-reveal>Member Center</p>
+          <h1 class="account__title" data-reveal>个人中心</h1>
+          <p class="account__sub" data-reveal>我的资料 · AI评估 · 推荐方案 · 收藏 · 浏览记录 · 咨询记录</p>
+        </div>
+      </header>
+      <div class="account__body">
+        <div class="container">
+          <div class="profile__grid">
+            <aside class="profile__side">
+              <div class="profile__card" id="profile-card"></div>
+              <div class="profile__card">
+                <nav class="profile__nav">
+                  <a class="profile__nav-item" href="#sec-profile">我的资料 <small>→</small></a>
+                  <a class="profile__nav-item" href="#sec-assess">我的AI评估 <small>→</small></a>
+                  <a class="profile__nav-item" href="#sec-recs">我的推荐方案 <small>→</small></a>
+                  <a class="profile__nav-item" href="#sec-fav">我的收藏 <small>→</small></a>
+                  <a class="profile__nav-item" href="#sec-history">浏览记录 <small>→</small></a>
+                  <a class="profile__nav-item" href="#sec-consult">咨询记录 <small>→</small></a>
+                </nav>
+              </div>
+            </aside>
+            <div class="profile__main">
+              <section class="profile__section" id="sec-profile">
+                <h2 class="profile__section-title"><span>01</span>我的资料</h2>
+                <div id="profile-view"></div>
+                <div id="profile-edit" style="display:none"></div>
+                <div class="profile__actions">
+                  <button class="btn btn--ghost-dark" type="button" id="btn-edit-profile">编辑资料</button>
+                  <button class="btn btn--primary" type="button" id="btn-save-profile" style="display:none">保存资料</button>
+                </div>
+              </section>
+              <section class="profile__section" id="sec-assess">
+                <h2 class="profile__section-title"><span>02</span>我的AI评估</h2>
+                <div id="assess-list"></div>
+              </section>
+              <section class="profile__section" id="sec-recs">
+                <h2 class="profile__section-title"><span>03</span>我的推荐方案</h2>
+                <div id="recs-list"></div>
+              </section>
+              <section class="profile__section" id="sec-fav">
+                <h2 class="profile__section-title"><span>04</span>我的收藏</h2>
+                <div id="fav-list"></div>
+              </section>
+              <section class="profile__section" id="sec-history">
+                <h2 class="profile__section-title"><span>05</span>浏览记录</h2>
+                <div id="history-list"></div>
+              </section>
+              <section class="profile__section" id="sec-consult">
+                <h2 class="profile__section-title"><span>06</span>咨询记录</h2>
+                <div id="consult-list"></div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <is-footer></is-footer>
+  <script src="src/data/brand.js"></script>
+  <script src="src/data/nav.js"></script>
+  <script src="src/data/footer.js"></script>
+  <script src="src/utils/icons.js"></script>
+  <script src="src/utils/reveal.js"></script>
+  <script src="src/utils/api.js"></script>
+  <script src="src/components/site-navbar.js"></script>
+  <script src="src/components/site-footer.js"></script>
+  <script src="src/pages/profile.js"></script>
+</body>
+</html>

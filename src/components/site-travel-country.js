@@ -8,6 +8,7 @@ class SiteTravelCountry extends HTMLElement {
     this.id = new URLSearchParams(location.search).get('id');
     this.t = (Istra.travel || []).find((x) => x.id === this.id);
     this.render();
+    this.recordView();
     Istra.reveal.observe(this);
   }
 
@@ -135,6 +136,13 @@ class SiteTravelCountry extends HTMLElement {
         </div>
       </div>
     `;
+  }
+
+  recordView() {
+    let token = "";
+    try { token = localStorage.getItem("istra_token") || ""; } catch (e) {}
+    if (!token || !window.Istra || !Istra.api || !this.t) return;
+    Istra.api.recordBehavior({ type: "view_country", refType: "country", refId: this.t.id, title: this.t.country.cn }).catch(() => {});
   }
 
   renderMissing() {

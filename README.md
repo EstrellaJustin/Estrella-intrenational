@@ -9,6 +9,17 @@
 
 ---
 
+## 用户数据库与用户体系（第一阶段）
+
+- 数据库（JSON 文件表，位于 data/userdb/）：users / user_profiles / ssessments / ecommendations / user_behavior / sessions
+- 后端：scripts/serve.js 内置 REST API（注册/登录/资料/评估/推荐/行为），密码 scrypt 加盐哈希，Bearer Token 会话
+- 页面：login.html / egister.html / profile.html（个人中心：我的资料 / 我的AI评估 / 我的推荐方案 / 我的收藏 / 浏览记录 / 咨询记录）
+- AI 评估关联：登录用户生成报告时自动保存评估记录与 20 个推荐方案；游客提示登录后可保存
+- 行为数据：浏览项目/国家/城市、收藏项目/城市、咨询记录（登录用户自动采集，供未来精准推荐）
+- 安全：手机号/姓名/健康信息仅本人可见（未登录访问返回 401；用户数据相互隔离）；健康信息不作为淘汰条件
+- 运行：用户体系需通过服务器模式访问（
+ode scripts/serve.js 或双击 启动网站.bat），file:// 直开不支持 API
+
 ## 一、如何运行
 
 | 方式 | 操作 |
@@ -150,6 +161,7 @@ istra-international/
 - 430 项目 / 53 国 / 10 类 / 35 子类全部完整且有项目
 - 筛选（分类/子分类/国家/预算/关键词）+ URL 参数联动 + 重置正常
 - 详情页 9 大模块 + FAQ；深蓝主题 #041B3A
+
 
 
 

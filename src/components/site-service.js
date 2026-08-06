@@ -98,6 +98,13 @@ class SiteService extends HTMLElement {
     this.querySelector('#service-form').addEventListener('submit', (e) => {
       e.preventDefault();
       e.target.classList.add('is-sent');
+      let token = '';
+      try { token = localStorage.getItem('istra_token') || ''; } catch (err) {}
+      if (token && window.Istra && Istra.api) {
+        const dir = e.target.querySelector('#sv-direction')?.value || '';
+        const msg = e.target.querySelector('#sv-msg')?.value || '';
+        Istra.api.recordBehavior({ type: 'consult', refType: 'consult', refId: 'consult', title: (dir || '咨询') + (msg ? '：' + msg.slice(0, 60) : '') }).catch(() => {});
+      }
     });
   }
 }
