@@ -250,6 +250,79 @@ function fill(s, ctx) {
   return s.replace(/\{(\w+)\}/g, (m, k) => (k in ctx ? ctx[k] : m));
 }
 
+
+/* ===== 预算系统 v2：四档等级 + 多维费用拆分 ===== */
+const BUDGET_META = {
+  low:    { label: '低成本',     range: '1万–5万元',    desc: '预算友好，适合学生、年轻人与初次尝试' },
+  midlow: { label: '中低成本',   range: '5万–15万元',   desc: '主流工薪与家庭可规划' },
+  mid:    { label: '中等成本',   range: '15万–50万元',  desc: '适合有一定资金储备的申请人' },
+  high:   { label: '高资产项目', range: '50万元以上',   desc: '适合高净值投资者' }
+};
+const BUDGET_MAP = {
+  'work-regular': 'midlow', 'work-highskill': 'midlow', 'work-employer': 'midlow', 'work-skilled': 'midlow', 'work-bluecollar': 'low',
+  'tech-it': 'midlow', 'tech-engineer': 'midlow', 'tech-research': 'midlow', 'tech-medical': 'midlow', 'tech-degree': 'midlow',
+  'edu-bachelor': 'mid', 'edu-master': 'mid', 'edu-phd': 'mid', 'edu-vocational': 'low', 'edu-language': 'low',
+  'invest-immigration': 'high', 'invest-startup': 'mid', 'invest-entrepreneur': 'mid', 'invest-business': 'high',
+  'talent-exceptional': 'mid', 'talent-national': 'mid', 'talent-invitation': 'mid',
+  'family-spouse': 'midlow', 'family-child': 'midlow', 'family-parent': 'midlow',
+  'pr-apply': 'mid', 'pr-longterm': 'midlow', 'pr-convert': 'mid',
+  'nomad-visa': 'low', 'nomad-remote': 'low',
+  'youth-working-holiday': 'low', 'youth-exchange': 'low',
+  'special-art': 'midlow', 'special-athlete': 'midlow', 'special-religious': 'midlow'
+};
+Object.keys(SUB_MAP).forEach((id) => { if (BUDGET_MAP[id]) SUB_MAP[id].budget = BUDGET_MAP[id]; });
+
+const COST_HIGH = ['us','ca','gb','ch','no','dk','se','fi','ie','au','nz','sg','ae','qa','sa','lu','nl'];
+const COST_LOW = ['mx','th','vn','ph','id','my','in','br','ar','cl','za','pl','cz','hu','ro','bg','hr','si','sk','lt','lv','ee','tr'];
+const costFactor = (cid) => (COST_HIGH.includes(cid) ? 1.5 : (COST_LOW.includes(cid) ? 0.7 : 1.0));
+function yuan(n) { const r = Math.round(n); if (r >= 10000) { const w = r / 10000; return (w % 1 === 0 ? w : w.toFixed(1)) + ' 万'; } return '' + r; }
+function range(lo, hi, f) { const a = Math.round(lo * f / 500) * 500; const b = Math.round(hi * f / 500) * 500; return '约 ' + yuan(a) + '–' + yuan(b) + ' 元'; }
+function rows(list, f) { return list.map((x) => ({ label: x[0], value: range(x[1], x[2], f) })); }
+function sumRange(list, f) { let lo = 0, hi = 0; list.forEach((x) => { lo += x[1] * f; hi += x[2] * f; }); return [Math.round(lo), Math.round(hi)]; }
+
+function buildBudget(c, sub, cat) {
+  const f = costFactor(c.id);
+  const meta = BUDGET_META[sub.budget] || BUDGET_META.midlow;
+  const tpl = {
+    work: { official: [['签证申请费', 800, 2500], ['政府/受理费用', 1000, 4000], ['材料认证', 800, 2500]], preparation: [['语言考试', 1500, 3500], ['学历认证', 1000, 3000], ['翻译与公证', 1500, 4000], ['体检', 500, 1500]], settlement: [['机票', 3000, 9000], ['住宿押金', 5000, 15000], ['生活备用金', 10000, 25000], ['交通', 1000, 3000]], proof: '需要约 5–10 万元存款证明' },
+    tech: { official: [['签证申请费', 1000, 3000], ['政府/受理费用', 1000, 4000], ['资质认证', 1500, 5000]], preparation: [['语言考试', 1500, 3500], ['学历/资质认证', 2000, 5000], ['翻译与公证', 1500, 4000], ['体检', 500, 1500]], settlement: [['机票', 3000, 9000], ['住宿押金', 5000, 15000], ['生活备用金', 10000, 25000], ['交通', 1000, 3000]], proof: '需要约 10–20 万元存款证明' },
+    edu: { official: [['签证申请费', 1000, 3000], ['院校申请费', 500, 2000], ['体检', 500, 1500]], preparation: [['语言考试', 1500, 3500], ['成绩单与材料', 1000, 3000], ['翻译与公证', 1500, 4000]], settlement: [['机票', 3000, 9000], ['住宿押金', 8000, 20000], ['首月生活备用金', 5000, 10000], ['保险', 2000, 5000]], proof: '需要约 20–50 万元资金证明（覆盖一年学费与生活费）', eduCost: { 'edu-bachelor': [12, 30, 8, 15], 'edu-master': [10, 25, 8, 14], 'edu-phd': [3, 10, 8, 13], 'edu-vocational': [5, 12, 6, 10], 'edu-language': [2, 6, 4, 8] } },
+    invest: { official: [['投资评估与法律文件', 10000, 50000], ['翻译与公证', 3000, 8000], ['体检', 1000, 2000]], preparation: [['资金来源梳理与审计', 10000, 50000], ['商业/项目尽调', 10000, 40000], ['翻译与公证', 3000, 8000]], settlement: [['登陆与安家', 20000, 60000], ['生活备用金', 20000, 50000]], proof: '需提供完整资金来源与合法证明', investment: '约 50–100 万元以上（因项目与地区而异）', fees: '服务与杂费约 5–20 万元' },
+    talent: { official: [['人才申请费', 1000, 3000], ['材料认证', 1500, 4000]], preparation: [['成就材料整理', 2000, 8000], ['翻译与公证', 1500, 4000], ['体检', 500, 1500]], settlement: [['机票', 3000, 9000], ['安家与备用金', 10000, 30000]], proof: '通常无需大额资金证明（以成就与推荐评估为主）' },
+    family: { official: [['团聚申请费', 1000, 4000], ['材料认证', 1000, 3000]], preparation: [['亲属关系公证', 1000, 3000], ['翻译与公证', 1000, 3000], ['体检', 500, 1500]], settlement: [['机票', 3000, 9000], ['安家与备用金', 8000, 20000]], proof: '担保人需满足收入要求（通常约 5–10 万元/年）' },
+    pr: { official: [['永居申请费', 2000, 8000], ['材料认证', 2000, 5000]], preparation: [['语言考试', 1500, 3500], ['居住/纳税材料', 1000, 3000], ['翻译与公证', 1500, 4000]], settlement: [['登陆与安家', 10000, 30000], ['生活备用金', 10000, 25000]], proof: '需要约 10–30 万元资产证明（视项目）' },
+    nomad: { official: [['签证申请费', 500, 2000], ['保险', 1500, 4000]], preparation: [['收入与雇佣证明翻译', 500, 1500]], settlement: [['机票', 3000, 9000], ['首月住宿', 5000, 12000], ['生活备用金', 10000, 20000]], proof: '需要约 5–10 万元收入/存款证明' },
+    youth: { official: [['签证申请费', 500, 2000], ['保险', 1000, 2500]], preparation: [['材料翻译', 500, 1500]], settlement: [['机票', 4000, 10000], ['安家与备用金', 8000, 20000]], proof: '需要约 3–5 万元资金证明' },
+    special: { official: [['特殊签证申请费', 1000, 4000], ['认证', 1000, 3000]], preparation: [['资质材料', 1000, 5000], ['翻译与公证', 1000, 3000]], settlement: [['机票', 3000, 9000], ['安家与备用金', 8000, 20000]], proof: '视项目要求提供资质或资金证明' }
+  };
+  const t = tpl[cat.id] || tpl.work;
+  const official = rows(t.official, f);
+  const preparation = rows(t.preparation, f);
+  const settlement = rows(t.settlement, f);
+  const [oLo, oHi] = sumRange(t.official, f);
+  const [pLo, pHi] = sumRange(t.preparation, f);
+  const [sLo, sHi] = sumRange(t.settlement, f);
+  const budget = {
+    level: sub.budget, label: meta.label, range: meta.range, desc: meta.desc,
+    official, preparation, settlement, fundsProof: t.proof,
+    applyCost: '申请成本约 ' + yuan(oLo + pLo + sLo) + '–' + yuan(oHi + pHi + sHi) + ' 元',
+    suggested: '建议准备约 ' + yuan(oLo + pLo + sLo) + '–' + yuan(oHi + pHi + sHi) + ' 元'
+  };
+  if (cat.id === 'invest') {
+    budget.investment = t.investment;
+    budget.fees = t.fees;
+    budget.suggested = '建议准备约 ' + yuan(oHi + pHi + sHi) + '–' + yuan((oHi + pHi + sHi) * 1.5) + ' 元（不含投资金额）';
+  }
+  if (cat.id === 'edu') {
+    const ec = t.eduCost[sub.id] || t.eduCost['edu-master'];
+    budget.tuition = '一年学费 ' + range(ec[0] * 10000, ec[1] * 10000, f);
+    budget.living = '一年生活费 ' + range(ec[2] * 10000, ec[3] * 10000, f);
+    budget.total = '一年总成本约 ' + yuan(ec[0] * 10000 * f + ec[2] * 10000 * f) + '–' + yuan(ec[1] * 10000 * f + ec[3] * 10000 * f) + ' 元';
+    budget.annual = budget.total;
+  }
+  return budget;
+}
+
 function buildProject(c, sub) {
   const cat = CATEGORIES.find(x => x.id === sub.catId);
   const sp = SPECIAL[`${c.id}|${sub.id}`] || {};
@@ -418,7 +491,8 @@ function buildProject(c, sub) {
     subcategory: { id: sub.id, name: sub.name },
     name,
     visaType,
-    budget: sub.budget,
+    budget: buildBudget(c, sub, cat),
+    budgetLevel: sub.budget,
     duration: sub.duration,
     introduction: fill(t.intro, ctx),
     targetUsers: t.audience.map(s => fill(s, ctx)),

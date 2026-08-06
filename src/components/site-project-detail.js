@@ -26,7 +26,7 @@ class SiteProjectDetail extends HTMLElement {
       { label: '一级分类', value: p.category.name },
       { label: '子分类', value: p.subcategory.name },
       { label: '办理周期', value: p.duration },
-      { label: '预算参考', value: this.budgetLabel(p.budget) }
+      { label: '预算参考', value: p.budget.label + '（' + p.budget.range + '）' }
     ];
 
     this.innerHTML = `
@@ -96,11 +96,51 @@ class SiteProjectDetail extends HTMLElement {
                 </div>
               </section>
 
-              <section class="report__module">
+              ﻿              <section class="report__module">
                 <div class="report__module-head"><span class="report__module-num">06</span><h2 class="report__module-title">费用与周期</h2></div>
-                <div class="report__cost report__body">
-                  ${(p.cost || []).map((x) => `<div class="report__cost-row"><span class="report__cost-label">${x.label}</span><span class="report__cost-value">${x.value}</span></div>`).join('')}
-                  <div class="report__cost-row"><span class="report__cost-label">办理周期</span><span class="report__cost-value">${p.duration}</span></div>
+                <div class="budget report__body">
+                  <div class="budget__head">
+                    <span class="budget__badge">${p.budget.label}</span>
+                    <span class="budget__range">${p.budget.range}</span>
+                    <span class="budget__desc">${p.budget.desc}</span>
+                  </div>
+                  ${p.budget.investment ? `
+                  <div class="budget__special">
+                    <div class="budget__special-row"><span>投资金额</span><b>${p.budget.investment}</b></div>
+                    <div class="budget__special-row"><span>服务费用</span><b>${p.budget.fees}</b></div>
+                  </div>` : ''}
+                  ${p.budget.tuition ? `
+                  <div class="budget__special">
+                    <div class="budget__special-row"><span>学费</span><b>${p.budget.tuition}</b></div>
+                    <div class="budget__special-row"><span>生活费</span><b>${p.budget.living}</b></div>
+                    <div class="budget__special-row"><span>一年总成本</span><b>${p.budget.total}</b></div>
+                  </div>` : ''}
+                  <div class="budget__cols">
+                    <div class="budget__col">
+                      <h4 class="budget__col-title">官方申请费用</h4>
+                      <ul class="budget__list">
+                        ${(p.budget.official || []).map((x) => `<li><span>${x.label}</span><b>${x.value}</b></li>`).join('')}
+                      </ul>
+                    </div>
+                    <div class="budget__col">
+                      <h4 class="budget__col-title">前期准备成本</h4>
+                      <ul class="budget__list">
+                        ${(p.budget.preparation || []).map((x) => `<li><span>${x.label}</span><b>${x.value}</b></li>`).join('')}
+                      </ul>
+                    </div>
+                    <div class="budget__col">
+                      <h4 class="budget__col-title">初期落地成本</h4>
+                      <ul class="budget__list">
+                        ${(p.budget.settlement || []).map((x) => `<li><span>${x.label}</span><b>${x.value}</b></li>`).join('')}
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="report__cost">
+                    <div class="report__cost-row"><span class="report__cost-label">资金证明</span><span class="report__cost-value">${p.budget.fundsProof}</span></div>
+                    <div class="report__cost-row"><span class="report__cost-label">建议准备</span><span class="report__cost-value">${p.budget.suggested}</span></div>
+                    <div class="report__cost-row"><span class="report__cost-label">办理周期</span><span class="report__cost-value">${p.duration}</span></div>
+                  </div>
+                  <p class="budget__note">* 以上预算为综合参考，不代表官方收费标准。具体费用以官方与机构实际收取为准。</p>
                 </div>
               </section>
 

@@ -16,7 +16,7 @@ class SiteAiAssessment extends HTMLElement {
       occupation: '', industry: '', experience: '', skills: '',
       degree: '', major: '', school: '', overseas: '',
       languages: '', englishLevel: '', otherLangs: '', learnNewLang: '',
-      income: '', funds: '', futureFunds: '',
+      income: '', funds: '', futureFunds: '', loanWilling: '', workDevelop: '', lowCost: '',
       marital: '', kids: '', planWith: [], familyNeeds: '',
       climates: [], climateNo: '', cityPref: '', pace: '',
       adapt: { lang: '', culture: '', integrate: '', lifestyle: '' }, adaptScore: '',
@@ -203,6 +203,14 @@ class SiteAiAssessment extends HTMLElement {
               { id: '5-10w', label: '5–10 万元' }, { id: '10-50w', label: '10–50 万元' },
               { id: '50-100w', label: '50–100 万元' }, { id: '100w+', label: '100 万元以上' }
             ], 'funds', false)}
+            ${this.selects('budget', '可接受投入', [
+              { value: '<1w', label: '1 万元以内' }, { value: '1-5w', label: '1–5 万元' },
+              { value: '5-10w', label: '5–10 万元' }, { value: '10-50w', label: '10–50 万元' },
+              { value: 'high', label: '50 万元以上' }
+            ])}
+            ${this.radioRow('是否愿意贷款', 'loanWilling', [{ value: 'yes', label: '愿意' }, { value: 'no', label: '不愿意' }])}
+            ${this.radioRow('是否接受边工作边发展', 'workDevelop', [{ value: 'yes', label: '可以接受' }, { value: 'no', label: '不太接受' }])}
+            ${this.radioRow('是否优先低成本路线', 'lowCost', [{ value: 'yes', label: '是' }, { value: 'no', label: '否' }])}
             ${this.text('futureFunds', '未来 3 年预计可投入（选填）', '如：30 万 / 100 万 / 暂不确定')}
           </div>`;
 
@@ -446,6 +454,10 @@ class SiteAiAssessment extends HTMLElement {
       case 5:
         check('income', !!this.state.income);
         check('funds', !!this.state.funds);
+        check('budget', !!this.state.budget);
+        check('loanWilling', !!this.state.loanWilling);
+        check('workDevelop', !!this.state.workDevelop);
+        check('lowCost', !!this.state.lowCost);
         break;
       case 6:
         check('marital', !!this.state.marital);
@@ -588,12 +600,11 @@ class SiteAiAssessment extends HTMLElement {
   }
 
   budgetTier() {
-    const s = this.state;
-    if (s.funds === '100w+') return 'vip';
-    if (s.funds === '50-100w') return 'high';
-    if (s.funds === '10-50w') return 'mid';
-    if (s.funds === '5-10w') return 'low';
-    return 'low';
+    const b = this.state.budget;
+    if (b === '<1w' || b === '1-5w') return 'low';
+    if (b === '5-10w') return 'midlow';
+    if (b === '10-50w') return 'mid';
+    return 'high';
   }
 
   scoreCountries() {
@@ -660,8 +671,11 @@ class SiteAiAssessment extends HTMLElement {
 
     /* 经济 */
     const tier = this.budgetTier();
-    if (tier === 'vip') addMany(byTag('invest'), 2, '资金实力');
-    if (tier === 'low') addMany([...byTag('nomad'), ...byTag('mid')], 1, '预算友好');
+    if (tier === 'high') addMany(byTag('invest'), 2, '资金实力');
+    if (tier === 'low' || tier === 'midlow') addMany([...byTag('nomad'), ...byTag('mid')], 1, '预算友好');
+    if (s.lowCost === 'yes') addMany([...byTag('nomad'), ...byTag('mid'), ...byTag('study')], 1, '低成本优先');
+    if (s.loanWilling === 'yes') addMany([...byTag('tech'), ...byTag('trade'), ...byTag('study')], 1, '可接受贷款');
+    if (s.workDevelop === 'yes') addMany([...byTag('tech'), ...byTag('nomad')], 1, '边工作边发展');
 
     /* 家庭 */
     if (s.marital === 'married' || s.planWith.length > 0) addMany([...byTag('family'), ...byTag('pr')], 2, '家庭规划');
@@ -735,7 +749,8 @@ class SiteAiAssessment extends HTMLElement {
     labels.push(main);
     if (s.industry === 'tech' || s.industry === 'internet') labels.push('技术发展型');
     if (s.motives.includes('child-edu') || s.kids === 'yes') labels.push('家庭教育规划型');
-    if (s.motives.includes('invest') || this.budgetTier() === 'vip') labels.push('高净值投资布局型');
+    if (s.motives.includes('invest') || this.budgetTier() === 'high') labels.push('高净值投资布局型');
+    if (s.lowCost === 'yes') labels.push('低成本偏好');
     if (s.motives.includes('startup') || s.identity === 'entrepreneur') labels.push('创业探索型');
     if (s.motives.includes('culture') || s.motives.includes('explore')) labels.push('体验探索型');
     if (s.pace === 'slow' || s.cityPref === 'nature') labels.push('慢生活宜居型');
@@ -760,11 +775,11 @@ class SiteAiAssessment extends HTMLElement {
       if (p.category.id === 'tech' && ['tech', 'internet'].includes(s.industry)) v += 4;
       if (p.category.id === 'work' && ['tech', 'finance', 'medical', 'trade', 'service', 'manufacture'].includes(s.industry)) v += 3;
       if (p.category.id === 'study' && ['student', 'none'].includes(s.identity)) v += 4;
-      if (p.category.id === 'invest' && this.budgetTier() === 'vip') v += 5;
+      if (p.category.id === 'invest' && this.budgetTier() === 'high') v += 5;
       if (p.category.id === 'pr' && ['stable', 'balance'].includes(s.risk)) v += 2;
       if (p.category.id === 'youth' && ['u18', '18-22', '23-30'].includes(s.age)) v += 3;
       if (p.category.id === 'family' && (s.kids === 'yes' || s.planWith.length > 0)) v += 4;
-      const budgetRank = { low: 0, mid: 1, high: 2, vip: 3 };
+      const budgetRank = { low: 0, midlow: 1, mid: 2, high: 3 };
       const diff = Math.abs(budgetRank[p.budget] - budgetRank[this.budgetTier()]);
       v += diff === 0 ? 3 : (diff === 1 ? 1 : -4);
       return { project: p, score: v };
@@ -798,7 +813,7 @@ class SiteAiAssessment extends HTMLElement {
     const tier = this.budgetTier();
     const push = (title, reason) => out.push({ title, reason });
 
-    if (tier === 'low' || tier === 'mid') {
+    if (tier === 'low' || tier === 'midlow') {
       push('投资创业类', '投资类项目通常需要较高资金门槛，与您当前资金准备差距较大，暂不建议优先考虑。');
     }
     if (s.age === 'u18' || s.age === '18-22') {
@@ -816,8 +831,8 @@ class SiteAiAssessment extends HTMLElement {
     if (s.risk === 'stable') {
       push('高风险创业类', '您偏好稳定路线，创业类路径存在较高不确定性，建议以稳健身份规划为主，创业可作为长期副线。');
     }
-    if (tier !== 'vip') {
-      push('大额投资移民类', '部分投资移民项目需 300 万元以上资金门槛，与当前资金准备存在差距，暂不建议优先考虑。');
+    if (tier !== 'high') {
+      push('大额投资移民类', '部分投资移民项目需 50 万元以上资金门槛，与当前可接受投入存在差距，暂不建议优先考虑。');
     }
     if (s.kids === 'no' && s.marital === 'single' && s.planWith.length === 0) {
       push('家庭团聚 / 父母随迁类', '当前为个人规划，家庭团聚类项目暂不匹配，未来家庭结构变化后可重新评估。');

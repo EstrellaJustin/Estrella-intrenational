@@ -27,7 +27,7 @@ class SiteProjects extends HTMLElement {
     if (s.cat && project.category.id !== s.cat) return false;
     if (s.sub && project.subcategory.id !== s.sub) return false;
     if (s.country && project.country.id !== s.country) return false;
-    if (s.budget && project.budget !== s.budget) return false;
+    if (s.budget && project.budgetLevel !== s.budget) return false;
     if (s.q) {
       const q = s.q.toLowerCase();
       const hay = (project.name + project.country.cn + project.country.en +
@@ -58,8 +58,11 @@ class SiteProjects extends HTMLElement {
       .join('');
 
     const budgetOptions = [
-      { v: '', l: '预算不限' }, { v: 'low', l: '50 万以内' },
-      { v: 'mid', l: '50–150 万' }, { v: 'high', l: '150–300 万' }, { v: 'vip', l: '300 万以上' }
+      { v: '', l: '预算不限' },
+      { v: 'low', l: '低成本 · 1万-5万' },
+      { v: 'midlow', l: '中低成本 · 5万-15万' },
+      { v: 'mid', l: '中等成本 · 15万-50万' },
+      { v: 'high', l: '高资产 · 50万+' }
     ].map((b) => `<option value="${b.v}"${s.budget === b.v ? ' selected' : ''}>${b.l}</option>`).join('');
 
     const results = all.filter((p) => this.matches(p));
