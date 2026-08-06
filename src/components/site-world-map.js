@@ -341,7 +341,7 @@ class SiteWorldMap extends HTMLElement {
     const scenery = (Istra.countryScenery || []).filter((x) => x.country_id === c.id);
     const info = (Istra.mapCountryInfo || []).find((x) => x.id === c.id);
     const projects = Istra.projects || [];
-    const work = projects.filter((p) => p.country.id === c.id && p.category.id === 'work').slice(0, 3);
+    const employment = (Istra.mapEmployment || []).find((x) => x.id === c.id);
     const visaCats = ['pr', 'invest', 'talent', 'family', 'nomad', 'youth', 'special'];
     const visa = projects.filter((p) => p.country.id === c.id && visaCats.includes(p.category.id)).slice(0, 3);
 
@@ -353,10 +353,14 @@ class SiteWorldMap extends HTMLElement {
           <p class="map__card-item-desc">${x[descKey]}</p>
         </div>
       </div>`;
-    const projRow = (p) => `
+        const projRow = (p) => `
       <a class="map__card-proj" href="project-detail.html?id=${p.id}">
-        <span class="map__card-proj-name">${p.name}</span>
-        <span class="map__card-proj-type">${p.visaType}</span>
+        <span class="map__card-proj-top">
+          <span class="map__card-proj-name">${p.name}</span>
+          <span class="map__card-proj-type">${p.visaType}</span>
+        </span>
+        ${p.targetUsers && p.targetUsers.length ? '<span class="map__card-proj-meta">适合：' + p.targetUsers[0] + '</span>' : ''}
+        <span class="map__card-proj-desc">${p.introduction || ''}</span>
       </a>`;
 
     return `
@@ -381,9 +385,14 @@ class SiteWorldMap extends HTMLElement {
             <div class="map__card-fact"><span>最佳季节</span><p>${info ? info.bestSeason : '—'}</p></div>
           </div>
         </section>
-        <section class="map__card-sec">
-          <h3 class="map__card-sec-title"><span>03</span>工作与就业机会</h3>
-          <div class="map__card-projs">${work.length ? work.map(projRow).join('') : '<p class="map__card-empty">暂无收录</p>'}</div>
+                <section class="map__card-sec">
+          <h3 class="map__card-sec-title"><span>03</span>工作就业机会</h3>
+          <div class="map__card-facts">
+            <div class="map__card-fact"><span>热门行业</span><p>${employment ? employment.hotIndustries.join('、') : '—'}</p></div>
+            <div class="map__card-fact"><span>紧缺职业</span><p>${employment ? employment.inDemandJobs.join('、') : '—'}</p></div>
+            <div class="map__card-fact"><span>平均薪资</span><p>${employment ? employment.salary : '—'}</p></div>
+            <div class="map__card-fact"><span>就业特点</span><p>${employment ? employment.features.join('；') : '—'}</p></div>
+          </div>
         </section>
         <section class="map__card-sec">
           <h3 class="map__card-sec-title"><span>04</span>签证与移民项目</h3>
