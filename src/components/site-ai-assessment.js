@@ -840,6 +840,658 @@ class SiteAiAssessment extends HTMLElement {
     return { none: '不会', basic: '基础', daily: '交流', skilled: '熟练', fluent: '流利' }[this.state.englishLevel] || '—';
   }
 
+﻿  /* ================= 评分模型 v2：8 维度加权（真实分布） ================= */
+
+  dimAge(p) {
+    const age = this.state.age;
+    const cat = p.category.id;
+    const table = {
+      youth: { u18: 1, '18-22': 1, '23-30': 1, '31-40': 0.5, '41-50': 0.25, '50+': 0.15 },
+      study: { u18: 1, '18-22': 1, '23-30': 0.85, '31-40': 0.6, '41-50': 0.4, '50+': 0.25 },
+      work: { u18: 0.3, '18-22': 0.8, '23-30': 0.95, '31-40': 1, '41-50': 0.85, '50+': 0.5 },
+      tech: { u18: 0.3, '18-22': 0.8, '23-30': 0.95, '31-40': 1, '41-50': 0.85, '50+': 0.5 },
+      invest: { u18: 0.3, '18-22': 0.5, '23-30': 0.7, '31-40': 0.95, '41-50': 1, '50+': 0.9 },
+      talent: { u18: 0.3, '18-22': 0.7, '23-30': 0.9, '31-40': 1, '41-50': 0.95, '50+': 0.8 },
+      family: { u18: 0.4, '18-22': 0.75, '23-30': 0.9, '31-40': 1, '41-50': 1, '50+': 0.9 },
+      pr: { u18: 0.4, '18-22': 0.75, '23-30': 0.9, '31-40': 1, '41-50': 1, '50+': 0.9 },
+      nomad: { u18: 0.2, '18-22': 1, '23-30': 1, '31-40': 0.9, '41-50': 0.7, '50+': 0.6 }
+    };
+    return (table[cat] && table[cat][age]) || 0.6;
+  }
+
+  dimDegree(p) {
+    const idx = { 'below-high': 0, high: 1, college: 2, bachelor: 3, master: 4, phd: 5 }[this.state.degree] || 1;
+    const cat = p.category.id;
+    const sub = p.subcategory.id;
+    if (cat === 'study') {
+      const need = { 'edu-phd': 5, 'edu-master': 4, 'edu-bachelor': 3, 'edu-vocational': 2, 'edu-language': 1 }[sub] || 3;
+      return Math.max(0.25, 1 - Math.abs(need - idx) * 0.18);
+    }
+    if (cat === 'tech' || cat === 'talent' || sub === 'work-highskill' || sub === 'work-skilled' || sub === 'pr-apply') {
+      const need = (sub === 'edu-phd') ? 5 : (sub === 'tech-degree' || sub === 'talent-exceptional') ? 4 : 3;
+      return Math.max(0.25, 1 - Math.max(0, need - idx) * 0.22);
+    }
+    if (cat === 'invest') return idx >= 2 ? 0.85 : 0.65;
+    if (cat === 'work') return Math.min(1, 0.7 + idx * 0.06);
+    if (cat === 'family' || cat === 'pr') return 0.8;
+    return 0.75;
+  }
+
+  dimCareer(p) {
+    const s = this.state;
+    const cat = p.category.id;
+    const sub = p.subcategory.id;
+    const subMap = {
+      '机械维修': 'work-bluecollar', '机械操作': 'work-bluecollar', '焊工': 'work-bluecollar',
+      '电工': 'work-bluecollar', '汽车维修': 'work-bluecollar', '木工': 'work-bluecollar',
+      '瓦工': 'work-bluecollar', '水电工': 'work-bluecollar', '生产管理': 'work-skilled',
+      '工程师': 'tech-engineer', '电子技术': 'tech-engineer', '自动化': 'tech-engineer',
+      '程序员': 'tech-it', '产品经理': 'tech-it', '设计师': 'tech-it', '运营': 'tech-it',
+      '医生': 'tech-medical', '护士': 'tech-medical', '护理员': 'tech-medical', '药剂师': 'tech-medical',
+      '教师': 'tech-degree', '培训师': 'tech-degree', '会计': 'finance',
+      '厨师': 'work-regular', '服务员': 'work-regular', '酒店员工': 'work-regular',
+      '美容美发': 'work-regular', '家政服务': 'work-regular', '护理人员': 'work-regular',
+      '司机': 'work-regular', '配送': 'work-regular', '仓储': 'work-regular',
+      '种植': 'work-regular', '养殖': 'work-regular', '远程办公': 'nomad-visa',
+      '内容创作': 'nomad-visa', '摄影': 'nomad-visa', '音乐': 'nomad-visa',
+      '平面设计': 'nomad-visa', '插画': 'nomad-visa'
+    };
+    if (s.cat2 && subMap[s.cat2] === sub) return 1.0;
+    if (s.cat2 && subMap[s.cat2] && subMap[s.cat2].split('-')[0] === sub.split('-')[0]) return 0.85;
+    const catMap = {
+      tech: ['tech'], service: ['work'], manufacture: ['work'], construction: ['work', 'tech'],
+      medical: ['tech'], edu: ['study', 'tech'], finance: ['work', 'invest'], internet: ['tech'],
+      agriculture: ['work'], logistics: ['work'], catering: ['work'], art: ['nomad'],
+      freelance: ['nomad'], none: ['study', 'nomad']
+    };
+    const targets = catMap[s.cat1] || [];
+    if (targets.includes(cat)) return 0.75;
+    if (cat === 'study' && s.studyFirst === 'yes') return 0.7;
+    if (cat === 'invest' && (s.cat1 === 'finance' || s.cat1 === 'freelance' || s.source.includes('business') || s.source.includes('invest'))) return 0.65;
+    return 0.35;
+  }
+
+  dimExp(p) {
+    const yrs = { none: 0, '1y-': 0.2, '1-3': 0.4, '3-5': 0.7, '5y+': 1 }[this.state.years] || 0;
+    const cat = p.category.id;
+    if (cat === 'study') return 0.85;
+    if (cat === 'youth' || cat === 'nomad') return 0.9;
+    if (cat === 'family' || cat === 'pr') return 0.8;
+    if (cat === 'invest') return Math.min(1, 0.5 + yrs * 0.5);
+    if (cat === 'work' || cat === 'tech' || cat === 'talent') {
+      const need = (p.subcategory.id === 'work-bluecollar' || p.subcategory.id === 'work-regular') ? 0.35 : 0.6;
+      return Math.min(1, Math.max(0.15, yrs / need));
+    }
+    return 0.7;
+  }
+
+  dimLang(p) {
+    const eng = { none: 0, basic: 0.35, daily: 0.6, skilled: 0.85, fluent: 1 }[this.state.englishLevel] || 0;
+    const isEn = ['us', 'ca', 'gb', 'au', 'nz', 'ie', 'sg'].includes(p.country.id);
+    const learn = this.state.learnLocal === 'yes';
+    const testBonus = (this.state.langTest === 'cet6' || this.state.langTest === 'ielts' || this.state.langTest === 'toefl') ? 0.1 : 0;
+    let v;
+    if (isEn) v = Math.min(1, eng + testBonus);
+    else v = Math.min(1, Math.max(eng * 0.6, learn ? 0.7 : 0.4) + testBonus * 0.5);
+    if (p.category.id === 'study') v = Math.min(1, v + 0.05);
+    return v;
+  }
+
+  dimFunds(p) {
+    const rank = { low: 0, midlow: 1, mid: 2, high: 3 };
+    const diff = Math.abs(rank[p.budget.level] - rank[this.budgetTier()]);
+    let v = 1 - diff * 0.3;
+    if (this.state.lowCost === 'yes' && p.budget.level === 'low') v += 0.1;
+    return Math.max(0.1, Math.min(1, v));
+  }
+
+  dimFamily(p) {
+    const s = this.state;
+    if (p.category.id === 'family') {
+      if (s.hasKids === 'yes' || s.parentsPlan === 'yes' || s.marital === 'married') return 0.95;
+      return 0.35;
+    }
+    if (p.category.id === 'pr' && (s.hasKids === 'yes' || s.marital === 'married')) return 0.85;
+    return 0.7;
+  }
+
+  dimGoals(p) {
+    const s = this.state;
+    const goalCat = { travel: 'nomad', short: 'work', work: 'work', study: 'edu', career: 'work', startup: 'invest', invest: 'invest', family: 'family', pr: 'pr', identity: 'pr' };
+    if (s.goals.some((g) => goalCat[g] === p.category.id)) return 1.0;
+    const related = { pr: ['work', 'family'], work: ['pr', 'study'], edu: ['pr'], invest: ['work'], family: ['pr'], nomad: ['youth'], youth: ['nomad'] };
+    if (s.goals.some((g) => (related[p.category.id] || []).includes(goalCat[g]))) return 0.6;
+    return 0.3;
+  }
+
+  nextSteps(p, dims) {
+    const steps = [];
+    if (dims.language < 0.55) steps.push('先提升当地语言水平（语言考试或课程）');
+    if (dims.degree < 0.55) steps.push('完成学历认证或相关进修');
+    if (dims.funds < 0.55) steps.push('做好资金规划或选择低成本路线');
+    if (dims.experience < 0.55) steps.push('积累相关经验或考取职业证书');
+    if (dims.career < 0.5) steps.push('参加技能培训后再申请');
+    if (!steps.length) steps.push('准备申请材料并咨询顾问获取申请方案');
+    return steps.slice(0, 3);
+  }
+
+  scoreProject(p) {
+    const dims = {
+      age: this.dimAge(p),
+      degree: this.dimDegree(p),
+      career: this.dimCareer(p),
+      experience: this.dimExp(p),
+      language: this.dimLang(p),
+      funds: this.dimFunds(p),
+      family: this.dimFamily(p),
+      goals: this.dimGoals(p)
+    };
+    const raw = dims.age * 0.15 + dims.degree * 0.15 + dims.career * 0.20 + dims.experience * 0.15 +
+      dims.language * 0.10 + dims.funds * 0.10 + dims.family * 0.05 + dims.goals * 0.10;
+    const pct = Math.max(8, Math.min(95, Math.round(raw * 100)));
+    const names = { age: '年龄匹配', degree: '学历匹配', career: '职业匹配', experience: '工作经验', language: '语言能力', funds: '资金能力', family: '家庭情况', goals: '出国目标' };
+    const strengths = [];
+    const gaps = [];
+    Object.entries(dims).forEach(([k, v]) => {
+      if (v >= 0.75) strengths.push(names[k]);
+      else if (v < 0.55) gaps.push(names[k]);
+    });
+    return { pct, dims, strengths: strengths.slice(0, 4), gaps: gaps.slice(0, 4), nextSteps: this.nextSteps(p, dims) };
+  }
+
+﻿  /* ================= 评分模型 v2：8 维度加权（真实分布） ================= */
+
+  dimAge(p) {
+    const age = this.state.age;
+    const cat = p.category.id;
+    const table = {
+      youth: { u18: 1, '18-22': 1, '23-30': 1, '31-40': 0.5, '41-50': 0.25, '50+': 0.15 },
+      study: { u18: 1, '18-22': 1, '23-30': 0.85, '31-40': 0.6, '41-50': 0.4, '50+': 0.25 },
+      work: { u18: 0.3, '18-22': 0.8, '23-30': 0.95, '31-40': 1, '41-50': 0.85, '50+': 0.5 },
+      tech: { u18: 0.3, '18-22': 0.8, '23-30': 0.95, '31-40': 1, '41-50': 0.85, '50+': 0.5 },
+      invest: { u18: 0.3, '18-22': 0.5, '23-30': 0.7, '31-40': 0.95, '41-50': 1, '50+': 0.9 },
+      talent: { u18: 0.3, '18-22': 0.7, '23-30': 0.9, '31-40': 1, '41-50': 0.95, '50+': 0.8 },
+      family: { u18: 0.4, '18-22': 0.75, '23-30': 0.9, '31-40': 1, '41-50': 1, '50+': 0.9 },
+      pr: { u18: 0.4, '18-22': 0.75, '23-30': 0.9, '31-40': 1, '41-50': 1, '50+': 0.9 },
+      nomad: { u18: 0.2, '18-22': 1, '23-30': 1, '31-40': 0.9, '41-50': 0.7, '50+': 0.6 }
+    };
+    return (table[cat] && table[cat][age]) || 0.6;
+  }
+
+  dimDegree(p) {
+    const idx = { 'below-high': 0, high: 1, college: 2, bachelor: 3, master: 4, phd: 5 }[this.state.degree] || 1;
+    const cat = p.category.id;
+    const sub = p.subcategory.id;
+    if (cat === 'study') {
+      const need = { 'edu-phd': 5, 'edu-master': 4, 'edu-bachelor': 3, 'edu-vocational': 2, 'edu-language': 1 }[sub] || 3;
+      return Math.max(0.2, 1 - Math.abs(need - idx) * 0.2);
+    }
+    if (cat === 'tech' || cat === 'talent' || sub === 'work-highskill' || sub === 'work-skilled' || sub === 'pr-apply') {
+      const need = (sub === 'edu-phd') ? 5 : (sub === 'tech-degree' || sub === 'talent-exceptional') ? 4 : 3;
+      return Math.max(0.2, 1 - Math.max(0, need - idx) * 0.28);
+    }
+    if (cat === 'invest') return idx >= 2 ? 0.85 : 0.6;
+    if (cat === 'work') return Math.min(1, 0.6 + idx * 0.08);
+    if (cat === 'family' || cat === 'pr') return 0.8;
+    return 0.75;
+  }
+
+  dimCareer(p) {
+    const s = this.state;
+    const cat = p.category.id;
+    const sub = p.subcategory.id;
+    const subMap = {
+      '机械维修': 'work-bluecollar', '机械操作': 'work-bluecollar', '焊工': 'work-bluecollar',
+      '电工': 'work-bluecollar', '汽车维修': 'work-bluecollar', '木工': 'work-bluecollar',
+      '瓦工': 'work-bluecollar', '水电工': 'work-bluecollar', '生产管理': 'work-skilled',
+      '工程师': 'tech-engineer', '电子技术': 'tech-engineer', '自动化': 'tech-engineer',
+      '程序员': 'tech-it', '产品经理': 'tech-it', '设计师': 'tech-it', '运营': 'tech-it',
+      '医生': 'tech-medical', '护士': 'tech-medical', '护理员': 'tech-medical', '药剂师': 'tech-medical',
+      '教师': 'tech-degree', '培训师': 'tech-degree', '会计': 'finance',
+      '厨师': 'work-regular', '服务员': 'work-regular', '酒店员工': 'work-regular',
+      '美容美发': 'work-regular', '家政服务': 'work-regular', '护理人员': 'work-regular',
+      '司机': 'work-regular', '配送': 'work-regular', '仓储': 'work-regular',
+      '种植': 'work-regular', '养殖': 'work-regular', '远程办公': 'nomad-visa',
+      '内容创作': 'nomad-visa', '摄影': 'nomad-visa', '音乐': 'nomad-visa',
+      '平面设计': 'nomad-visa', '插画': 'nomad-visa'
+    };
+    if (s.cat2 && subMap[s.cat2] === sub) return 1.0;
+    if (s.cat2 && subMap[s.cat2] && subMap[s.cat2].split('-')[0] === sub.split('-')[0]) return 0.8;
+    const catMap = {
+      tech: ['tech'], service: ['work'], manufacture: ['work'], construction: ['work', 'tech'],
+      medical: ['tech'], edu: ['study', 'tech'], finance: ['work', 'invest'], internet: ['tech'],
+      agriculture: ['work'], logistics: ['work'], catering: ['work'], art: ['nomad'],
+      freelance: ['nomad'], none: ['study', 'nomad']
+    };
+    const targets = catMap[s.cat1] || [];
+    if (targets.includes(cat)) return 0.65;
+    if (cat === 'study' && s.studyFirst === 'yes') return 0.55;
+    if (cat === 'invest' && (s.cat1 === 'finance' || s.cat1 === 'freelance' || s.source.includes('business') || s.source.includes('invest'))) return 0.6;
+    if (cat === 'pr' || cat === 'family') return 0.5;
+    if (cat === 'nomad' && (s.cat1 === 'art' || s.cat1 === 'freelance' || s.cat1 === 'internet')) return 0.7;
+    return 0.25;
+  }
+
+  dimExp(p) {
+    const yrs = { none: 0, '1y-': 0.2, '1-3': 0.4, '3-5': 0.7, '5y+': 1 }[this.state.years] || 0;
+    const cat = p.category.id;
+    if (cat === 'study') return 0.85;
+    if (cat === 'youth' || cat === 'nomad') return 0.9;
+    if (cat === 'family' || cat === 'pr') return 0.8;
+    if (cat === 'invest') return Math.min(1, 0.5 + yrs * 0.5);
+    if (cat === 'work' || cat === 'tech' || cat === 'talent') {
+      const need = (p.subcategory.id === 'work-bluecollar' || p.subcategory.id === 'work-regular') ? 0.35 : 0.6;
+      return Math.min(1, Math.max(0.15, yrs / need));
+    }
+    return 0.7;
+  }
+
+  dimLang(p) {
+    const eng = { none: 0, basic: 0.35, daily: 0.6, skilled: 0.85, fluent: 1 }[this.state.englishLevel] || 0;
+    const isEn = ['us', 'ca', 'gb', 'au', 'nz', 'ie', 'sg'].includes(p.country.id);
+    const learn = this.state.learnLocal === 'yes';
+    const testBonus = (this.state.langTest === 'cet6' || this.state.langTest === 'ielts' || this.state.langTest === 'toefl') ? 0.1 : 0;
+    let v;
+    if (isEn) v = Math.min(1, eng + testBonus);
+    else v = Math.min(1, Math.max(eng * 0.5, learn ? 0.6 : 0.35) + testBonus * 0.5);
+    if (p.category.id === 'study') v = Math.min(1, v + 0.05);
+    return v;
+  }
+
+  dimFunds(p) {
+    const rank = { low: 0, midlow: 1, mid: 2, high: 3 };
+    const diff = Math.abs(rank[p.budget.level] - rank[this.budgetTier()]);
+    let v = 1 - diff * 0.3;
+    if (this.state.lowCost === 'yes' && p.budget.level === 'low') v += 0.1;
+    return Math.max(0.1, Math.min(1, v));
+  }
+
+  dimFamily(p) {
+    const s = this.state;
+    if (p.category.id === 'family') {
+      if (s.hasKids === 'yes' || s.parentsPlan === 'yes' || s.marital === 'married') return 0.95;
+      return 0.35;
+    }
+    if (p.category.id === 'pr' && (s.hasKids === 'yes' || s.marital === 'married')) return 0.85;
+    return 0.7;
+  }
+
+  dimGoals(p) {
+    const s = this.state;
+    const goalCat = { travel: 'nomad', short: 'work', work: 'work', study: 'edu', career: 'work', startup: 'invest', invest: 'invest', family: 'family', pr: 'pr', identity: 'pr' };
+    if (s.goals.some((g) => goalCat[g] === p.category.id)) return 1.0;
+    const related = { pr: ['work', 'family'], work: ['pr', 'study'], edu: ['pr'], invest: ['work'], family: ['pr'], nomad: ['youth'], youth: ['nomad'] };
+    if (s.goals.some((g) => (related[p.category.id] || []).includes(goalCat[g]))) return 0.6;
+    return 0.3;
+  }
+
+  nextSteps(p, dims) {
+    const steps = [];
+    if (dims.language < 0.55) steps.push('先提升当地语言水平（语言考试或课程）');
+    if (dims.degree < 0.55) steps.push('完成学历认证或相关进修');
+    if (dims.funds < 0.55) steps.push('做好资金规划或选择低成本路线');
+    if (dims.experience < 0.55) steps.push('积累相关经验或考取职业证书');
+    if (dims.career < 0.5) steps.push('参加技能培训后再申请');
+    if (!steps.length) steps.push('准备申请材料并咨询顾问获取申请方案');
+    return steps.slice(0, 3);
+  }
+
+  scoreProject(p) {
+    const dims = {
+      age: this.dimAge(p),
+      degree: this.dimDegree(p),
+      career: this.dimCareer(p),
+      experience: this.dimExp(p),
+      language: this.dimLang(p),
+      funds: this.dimFunds(p),
+      family: this.dimFamily(p),
+      goals: this.dimGoals(p)
+    };
+    const raw = dims.age * 0.15 + dims.degree * 0.15 + dims.career * 0.20 + dims.experience * 0.15 +
+      dims.language * 0.10 + dims.funds * 0.10 + dims.family * 0.05 + dims.goals * 0.10;
+    const pct = Math.max(8, Math.min(95, Math.round(raw * 100)));
+    const names = { age: '年龄匹配', degree: '学历匹配', career: '职业匹配', experience: '工作经验', language: '语言能力', funds: '资金能力', family: '家庭情况', goals: '出国目标' };
+    const strengths = [];
+    const gaps = [];
+    Object.entries(dims).forEach(([k, v]) => {
+      if (v >= 0.75) strengths.push(names[k]);
+      else if (v < 0.55) gaps.push(names[k]);
+    });
+    return { pct, dims, strengths: strengths.slice(0, 4), gaps: gaps.slice(0, 4), nextSteps: this.nextSteps(p, dims) };
+  }
+
+﻿  /* ================= 评分模型 v2：8 维度加权（真实分布） ================= */
+
+  dimAge(p) {
+    const age = this.state.age;
+    const cat = p.category.id;
+    const table = {
+      youth: { u18: 1, '18-22': 1, '23-30': 1, '31-40': 0.5, '41-50': 0.25, '50+': 0.15 },
+      study: { u18: 1, '18-22': 1, '23-30': 0.85, '31-40': 0.6, '41-50': 0.4, '50+': 0.25 },
+      work: { u18: 0.3, '18-22': 0.8, '23-30': 0.95, '31-40': 1, '41-50': 0.85, '50+': 0.5 },
+      tech: { u18: 0.3, '18-22': 0.8, '23-30': 0.95, '31-40': 1, '41-50': 0.85, '50+': 0.5 },
+      invest: { u18: 0.3, '18-22': 0.5, '23-30': 0.7, '31-40': 0.95, '41-50': 1, '50+': 0.9 },
+      talent: { u18: 0.3, '18-22': 0.7, '23-30': 0.9, '31-40': 1, '41-50': 0.95, '50+': 0.8 },
+      family: { u18: 0.4, '18-22': 0.75, '23-30': 0.9, '31-40': 1, '41-50': 1, '50+': 0.9 },
+      pr: { u18: 0.4, '18-22': 0.75, '23-30': 0.9, '31-40': 1, '41-50': 1, '50+': 0.9 },
+      nomad: { u18: 0.2, '18-22': 1, '23-30': 1, '31-40': 0.9, '41-50': 0.7, '50+': 0.6 }
+    };
+    return (table[cat] && table[cat][age]) || 0.6;
+  }
+
+  dimDegree(p) {
+    const idx = { 'below-high': 0, high: 1, college: 2, bachelor: 3, master: 4, phd: 5 }[this.state.degree] || 1;
+    const cat = p.category.id;
+    const sub = p.subcategory.id;
+    if (cat === 'study') {
+      const need = { 'edu-phd': 5, 'edu-master': 4, 'edu-bachelor': 3, 'edu-vocational': 2, 'edu-language': 1 }[sub] || 3;
+      return Math.max(0.2, 1 - Math.abs(need - idx) * 0.2);
+    }
+    if (cat === 'tech' || cat === 'talent' || sub === 'work-highskill' || sub === 'work-skilled' || sub === 'pr-apply') {
+      const need = (sub === 'edu-phd') ? 5 : (sub === 'tech-degree' || sub === 'talent-exceptional') ? 4 : 3;
+      return Math.max(0.2, 1 - Math.max(0, need - idx) * 0.28);
+    }
+    if (cat === 'invest') return idx >= 2 ? 0.85 : 0.6;
+    if (cat === 'work') return Math.min(1, 0.6 + idx * 0.08);
+    if (cat === 'family' || cat === 'pr') return 0.8;
+    return 0.75;
+  }
+
+  dimCareer(p) {
+    const s = this.state;
+    const cat = p.category.id;
+    const sub = p.subcategory.id;
+    const subMap = {
+      '机械维修': 'work-bluecollar', '机械操作': 'work-bluecollar', '焊工': 'work-bluecollar',
+      '电工': 'work-bluecollar', '汽车维修': 'work-bluecollar', '木工': 'work-bluecollar',
+      '瓦工': 'work-bluecollar', '水电工': 'work-bluecollar', '生产管理': 'work-skilled',
+      '工程师': 'tech-engineer', '电子技术': 'tech-engineer', '自动化': 'tech-engineer',
+      '程序员': 'tech-it', '产品经理': 'tech-it', '设计师': 'tech-it', '运营': 'tech-it',
+      '医生': 'tech-medical', '护士': 'tech-medical', '护理员': 'tech-medical', '药剂师': 'tech-medical',
+      '教师': 'tech-degree', '培训师': 'tech-degree', '会计': 'finance',
+      '厨师': 'work-regular', '服务员': 'work-regular', '酒店员工': 'work-regular',
+      '美容美发': 'work-regular', '家政服务': 'work-regular', '护理人员': 'work-regular',
+      '司机': 'work-regular', '配送': 'work-regular', '仓储': 'work-regular',
+      '种植': 'work-regular', '养殖': 'work-regular', '远程办公': 'nomad-visa',
+      '内容创作': 'nomad-visa', '摄影': 'nomad-visa', '音乐': 'nomad-visa',
+      '平面设计': 'nomad-visa', '插画': 'nomad-visa'
+    };
+    if (s.cat2 && subMap[s.cat2] === sub) return 1.0;
+    if (s.cat2 && subMap[s.cat2] && subMap[s.cat2].split('-')[0] === sub.split('-')[0]) return 0.8;
+    const catMap = {
+      tech: ['tech'], service: ['work'], manufacture: ['work'], construction: ['work', 'tech'],
+      medical: ['tech'], edu: ['study', 'tech'], finance: ['work', 'invest'], internet: ['tech'],
+      agriculture: ['work'], logistics: ['work'], catering: ['work'], art: ['nomad'],
+      freelance: ['nomad'], none: ['study', 'nomad']
+    };
+    const targets = catMap[s.cat1] || [];
+    if (targets.includes(cat)) return 0.55;
+    if (cat === 'study' && s.studyFirst === 'yes') return 0.55;
+    if (cat === 'invest' && (s.cat1 === 'finance' || s.cat1 === 'freelance' || s.source.includes('business') || s.source.includes('invest'))) return 0.6;
+    if (cat === 'pr' || cat === 'family') return 0.45;
+    if (cat === 'nomad' && (s.cat1 === 'art' || s.cat1 === 'freelance' || s.cat1 === 'internet')) return 0.7;
+    return 0.2;
+  }
+
+  dimExp(p) {
+    const yrs = { none: 0, '1y-': 0.2, '1-3': 0.4, '3-5': 0.7, '5y+': 1 }[this.state.years] || 0;
+    const cat = p.category.id;
+    if (cat === 'study') return 0.85;
+    if (cat === 'youth' || cat === 'nomad') return 0.9;
+    if (cat === 'family' || cat === 'pr') return 0.8;
+    if (cat === 'invest') return Math.min(1, 0.5 + yrs * 0.5);
+    if (cat === 'work' || cat === 'tech' || cat === 'talent') {
+      const need = (p.subcategory.id === 'work-bluecollar' || p.subcategory.id === 'work-regular') ? 0.35 : 0.6;
+      return Math.min(1, Math.max(0.15, yrs / need));
+    }
+    return 0.7;
+  }
+
+  dimLang(p) {
+    const eng = { none: 0, basic: 0.35, daily: 0.6, skilled: 0.85, fluent: 1 }[this.state.englishLevel] || 0;
+    const isEn = ['us', 'ca', 'gb', 'au', 'nz', 'ie', 'sg'].includes(p.country.id);
+    const learn = this.state.learnLocal === 'yes';
+    const testBonus = (this.state.langTest === 'cet6' || this.state.langTest === 'ielts' || this.state.langTest === 'toefl') ? 0.1 : 0;
+    let v;
+    if (isEn) v = Math.min(1, eng + testBonus);
+    else v = Math.min(1, Math.max(eng * 0.5, learn ? 0.6 : 0.35) + testBonus * 0.5);
+    if (p.category.id === 'study') v = Math.min(1, v + 0.05);
+    return v;
+  }
+
+  dimFunds(p) {
+    const rank = { low: 0, midlow: 1, mid: 2, high: 3 };
+    const diff = Math.abs(rank[p.budget.level] - rank[this.budgetTier()]);
+    let v = 1 - diff * 0.3;
+    const highCost = ['us','ca','gb','ch','no','dk','se','fi','ie','au','nz','sg','ae','qa','sa','lu','nl'];
+    const lowCost = ['mx','th','vn','ph','id','my','in','br','ar','cl','za','pl','cz','hu','ro','bg','hr','si','sk','lt','lv','ee','tr'];
+    if (highCost.includes(p.country.id)) v *= 0.85;
+    else if (lowCost.includes(p.country.id)) v *= 1.0;
+    else v *= 0.95;
+    if (this.state.lowCost === 'yes' && p.budget.level === 'low') v += 0.1;
+    return Math.max(0.1, Math.min(1, v));
+  }
+
+  dimFamily(p) {
+    const s = this.state;
+    if (p.category.id === 'family') {
+      if (s.hasKids === 'yes' || s.parentsPlan === 'yes' || s.marital === 'married') return 0.95;
+      return 0.35;
+    }
+    if (p.category.id === 'pr' && (s.hasKids === 'yes' || s.marital === 'married')) return 0.85;
+    return 0.7;
+  }
+
+  dimGoals(p) {
+    const s = this.state;
+    const goalCat = { travel: 'nomad', short: 'work', work: 'work', study: 'edu', career: 'work', startup: 'invest', invest: 'invest', family: 'family', pr: 'pr', identity: 'pr' };
+    if (s.goals.some((g) => goalCat[g] === p.category.id)) return 1.0;
+    const related = { pr: ['work', 'family'], work: ['pr', 'study'], edu: ['pr'], invest: ['work'], family: ['pr'], nomad: ['youth'], youth: ['nomad'] };
+    if (s.goals.some((g) => (related[p.category.id] || []).includes(goalCat[g]))) return 0.6;
+    return 0.3;
+  }
+
+  nextSteps(p, dims) {
+    const steps = [];
+    if (dims.language < 0.55) steps.push('先提升当地语言水平（语言考试或课程）');
+    if (dims.degree < 0.55) steps.push('完成学历认证或相关进修');
+    if (dims.funds < 0.55) steps.push('做好资金规划或选择低成本路线');
+    if (dims.experience < 0.55) steps.push('积累相关经验或考取职业证书');
+    if (dims.career < 0.5) steps.push('参加技能培训后再申请');
+    if (!steps.length) steps.push('准备申请材料并咨询顾问获取申请方案');
+    return steps.slice(0, 3);
+  }
+
+  scoreProject(p) {
+    const dims = {
+      age: this.dimAge(p),
+      degree: this.dimDegree(p),
+      career: this.dimCareer(p),
+      experience: this.dimExp(p),
+      language: this.dimLang(p),
+      funds: this.dimFunds(p),
+      family: this.dimFamily(p),
+      goals: this.dimGoals(p)
+    };
+    const raw = dims.age * 0.15 + dims.degree * 0.15 + dims.career * 0.20 + dims.experience * 0.15 +
+      dims.language * 0.10 + dims.funds * 0.10 + dims.family * 0.05 + dims.goals * 0.10;
+    const pct = Math.max(8, Math.min(95, Math.round(raw * 100)));
+    const names = { age: '年龄匹配', degree: '学历匹配', career: '职业匹配', experience: '工作经验', language: '语言能力', funds: '资金能力', family: '家庭情况', goals: '出国目标' };
+    const strengths = [];
+    const gaps = [];
+    Object.entries(dims).forEach(([k, v]) => {
+      if (v >= 0.75) strengths.push(names[k]);
+      else if (v < 0.55) gaps.push(names[k]);
+    });
+    return { pct, dims, strengths: strengths.slice(0, 4), gaps: gaps.slice(0, 4), nextSteps: this.nextSteps(p, dims) };
+  }
+
+﻿  /* ================= 评分模型 v2：8 维度加权（真实分布） ================= */
+
+  dimAge(p) {
+    const age = this.state.age;
+    const cat = p.category.id;
+    const table = {
+      youth: { u18: 1, '18-22': 1, '23-30': 1, '31-40': 0.5, '41-50': 0.25, '50+': 0.15 },
+      study: { u18: 1, '18-22': 1, '23-30': 0.85, '31-40': 0.6, '41-50': 0.4, '50+': 0.25 },
+      work: { u18: 0.3, '18-22': 0.8, '23-30': 0.95, '31-40': 1, '41-50': 0.85, '50+': 0.5 },
+      tech: { u18: 0.3, '18-22': 0.8, '23-30': 0.95, '31-40': 1, '41-50': 0.85, '50+': 0.5 },
+      invest: { u18: 0.3, '18-22': 0.5, '23-30': 0.7, '31-40': 0.95, '41-50': 1, '50+': 0.9 },
+      talent: { u18: 0.3, '18-22': 0.7, '23-30': 0.9, '31-40': 1, '41-50': 0.95, '50+': 0.8 },
+      family: { u18: 0.4, '18-22': 0.75, '23-30': 0.9, '31-40': 1, '41-50': 1, '50+': 0.9 },
+      pr: { u18: 0.4, '18-22': 0.75, '23-30': 0.9, '31-40': 1, '41-50': 1, '50+': 0.9 },
+      nomad: { u18: 0.2, '18-22': 1, '23-30': 1, '31-40': 0.9, '41-50': 0.7, '50+': 0.6 }
+    };
+    return (table[cat] && table[cat][age]) || 0.6;
+  }
+
+  dimDegree(p) {
+    const idx = { 'below-high': 0, high: 1, college: 2, bachelor: 3, master: 4, phd: 5 }[this.state.degree] || 1;
+    const cat = p.category.id;
+    const sub = p.subcategory.id;
+    if (cat === 'study') {
+      const need = { 'edu-phd': 5, 'edu-master': 4, 'edu-bachelor': 3, 'edu-vocational': 2, 'edu-language': 1 }[sub] || 3;
+      return Math.max(0.2, 1 - Math.abs(need - idx) * 0.2);
+    }
+    if (cat === 'tech' || cat === 'talent' || sub === 'work-highskill' || sub === 'work-skilled' || sub === 'pr-apply') {
+      const need = (sub === 'edu-phd') ? 5 : (sub === 'tech-degree' || sub === 'talent-exceptional') ? 4 : 3;
+      return Math.max(0.2, 1 - Math.max(0, need - idx) * 0.28);
+    }
+    if (cat === 'invest') return idx >= 2 ? 0.85 : 0.6;
+    if (cat === 'work') return Math.min(1, 0.6 + idx * 0.08);
+    if (cat === 'family' || cat === 'pr') return 0.8;
+    return 0.75;
+  }
+
+  dimCareer(p) {
+    const s = this.state;
+    const cat = p.category.id;
+    const sub = p.subcategory.id;
+    const subMap = {
+      '机械维修': 'work-bluecollar', '机械操作': 'work-bluecollar', '焊工': 'work-bluecollar',
+      '电工': 'work-bluecollar', '汽车维修': 'work-bluecollar', '木工': 'work-bluecollar',
+      '瓦工': 'work-bluecollar', '水电工': 'work-bluecollar', '生产管理': 'work-skilled',
+      '工程师': 'tech-engineer', '电子技术': 'tech-engineer', '自动化': 'tech-engineer',
+      '程序员': 'tech-it', '产品经理': 'tech-it', '设计师': 'tech-it', '运营': 'tech-it',
+      '医生': 'tech-medical', '护士': 'tech-medical', '护理员': 'tech-medical', '药剂师': 'tech-medical',
+      '教师': 'tech-degree', '培训师': 'tech-degree', '会计': 'finance',
+      '厨师': 'work-regular', '服务员': 'work-regular', '酒店员工': 'work-regular',
+      '美容美发': 'work-regular', '家政服务': 'work-regular', '护理人员': 'work-regular',
+      '司机': 'work-regular', '配送': 'work-regular', '仓储': 'work-regular',
+      '种植': 'work-regular', '养殖': 'work-regular', '远程办公': 'nomad-visa',
+      '内容创作': 'nomad-visa', '摄影': 'nomad-visa', '音乐': 'nomad-visa',
+      '平面设计': 'nomad-visa', '插画': 'nomad-visa'
+    };
+    if (s.cat2 && subMap[s.cat2] === sub) return 1.0;
+    if (s.cat2 && subMap[s.cat2] && subMap[s.cat2].split('-')[0] === sub.split('-')[0]) return 0.8;
+    const catMap = {
+      tech: ['tech'], service: ['work'], manufacture: ['work'], construction: ['work', 'tech'],
+      medical: ['tech'], edu: ['study', 'tech'], finance: ['work', 'invest'], internet: ['tech'],
+      agriculture: ['work'], logistics: ['work'], catering: ['work'], art: ['nomad'],
+      freelance: ['nomad'], none: ['study', 'nomad']
+    };
+    const targets = catMap[s.cat1] || [];
+    if (targets.includes(cat)) return 0.55;
+    if (cat === 'study' && s.studyFirst === 'yes') return 0.55;
+    if (cat === 'invest' && (s.cat1 === 'finance' || s.cat1 === 'freelance' || s.source.includes('business') || s.source.includes('invest'))) return 0.6;
+    if (cat === 'pr' || cat === 'family') return 0.45;
+    if (cat === 'nomad' && (s.cat1 === 'art' || s.cat1 === 'freelance' || s.cat1 === 'internet')) return 0.7;
+    return 0.2;
+  }
+
+  dimExp(p) {
+    const yrs = { none: 0, '1y-': 0.2, '1-3': 0.4, '3-5': 0.7, '5y+': 1 }[this.state.years] || 0;
+    const cat = p.category.id;
+    if (cat === 'study') return 0.85;
+    if (cat === 'youth' || cat === 'nomad') return 0.9;
+    if (cat === 'family' || cat === 'pr') return 0.8;
+    if (cat === 'invest') return Math.min(1, 0.5 + yrs * 0.5);
+    if (cat === 'work' || cat === 'tech' || cat === 'talent') {
+      const need = (p.subcategory.id === 'work-bluecollar' || p.subcategory.id === 'work-regular') ? 0.35 : 0.6;
+      return Math.min(1, Math.max(0.15, yrs / need));
+    }
+    return 0.7;
+  }
+
+  dimLang(p) {
+    const eng = { none: 0, basic: 0.35, daily: 0.6, skilled: 0.85, fluent: 1 }[this.state.englishLevel] || 0;
+    const isEn = ['us', 'ca', 'gb', 'au', 'nz', 'ie', 'sg'].includes(p.country.id);
+    const learn = this.state.learnLocal === 'yes';
+    const testBonus = (this.state.langTest === 'cet6' || this.state.langTest === 'ielts' || this.state.langTest === 'toefl') ? 0.1 : 0;
+    let v;
+    if (isEn) v = Math.min(1, eng + testBonus);
+    else v = Math.min(1, Math.max(eng * 0.5, learn ? 0.6 : 0.35) + testBonus * 0.5);
+    if (p.category.id === 'study') v = Math.min(1, v + 0.05);
+    return v;
+  }
+
+  dimFunds(p) {
+    const rank = { low: 0, midlow: 1, mid: 2, high: 3 };
+    const diff = Math.abs(rank[p.budget.level] - rank[this.budgetTier()]);
+    let v = 1 - diff * 0.3;
+    const highCost = ['us','ca','gb','ch','no','dk','se','fi','ie','au','nz','sg','ae','qa','sa','lu','nl'];
+    const lowCost = ['mx','th','vn','ph','id','my','in','br','ar','cl','za','pl','cz','hu','ro','bg','hr','si','sk','lt','lv','ee','tr'];
+    if (highCost.includes(p.country.id)) v *= 0.85;
+    else if (lowCost.includes(p.country.id)) v *= 1.0;
+    else v *= 0.95;
+    if (this.state.lowCost === 'yes' && p.budget.level === 'low') v += 0.1;
+    return Math.max(0.1, Math.min(1, v));
+  }
+
+  dimFamily(p) {
+    const s = this.state;
+    if (p.category.id === 'family') {
+      if (s.hasKids === 'yes' || s.parentsPlan === 'yes' || s.marital === 'married') return 0.95;
+      return 0.35;
+    }
+    if (p.category.id === 'pr' && (s.hasKids === 'yes' || s.marital === 'married')) return 0.85;
+    return 0.7;
+  }
+
+  dimGoals(p) {
+    const s = this.state;
+    const goalCat = { travel: 'nomad', short: 'work', work: 'work', study: 'edu', career: 'work', startup: 'invest', invest: 'invest', family: 'family', pr: 'pr', identity: 'pr' };
+    if (s.goals.some((g) => goalCat[g] === p.category.id)) return 1.0;
+    const related = { pr: ['work', 'family'], work: ['pr', 'study'], edu: ['pr'], invest: ['work'], family: ['pr'], nomad: ['youth'], youth: ['nomad'] };
+    if (s.goals.some((g) => (related[p.category.id] || []).includes(goalCat[g]))) return 0.6;
+    return 0.3;
+  }
+
+  nextSteps(p, dims) {
+    const steps = [];
+    if (dims.language < 0.55) steps.push('先提升当地语言水平（语言考试或课程）');
+    if (dims.degree < 0.55) steps.push('完成学历认证或相关进修');
+    if (dims.funds < 0.55) steps.push('做好资金规划或选择低成本路线');
+    if (dims.experience < 0.55) steps.push('积累相关经验或考取职业证书');
+    if (dims.career < 0.5) steps.push('参加技能培训后再申请');
+    if (!steps.length) steps.push('准备申请材料并咨询顾问获取申请方案');
+    return steps.slice(0, 3);
+  }
+
+  scoreProject(p) {
+    const dims = {
+      age: this.dimAge(p),
+      degree: this.dimDegree(p),
+      career: this.dimCareer(p),
+      experience: this.dimExp(p),
+      language: this.dimLang(p),
+      funds: this.dimFunds(p),
+      family: this.dimFamily(p),
+      goals: this.dimGoals(p)
+    };
+    const raw = dims.age * 0.15 + dims.degree * 0.15 + dims.career * 0.20 + dims.experience * 0.15 +
+      dims.language * 0.10 + dims.funds * 0.10 + dims.family * 0.05 + dims.goals * 0.10;
+    const pct = Math.max(8, Math.min(95, Math.round(raw * 100)));
+    const names = { age: '年龄匹配', degree: '学历匹配', career: '职业匹配', experience: '工作经验', language: '语言能力', funds: '资金能力', family: '家庭情况', goals: '出国目标' };
+    const strengths = [];
+    const gaps = [];
+    Object.entries(dims).forEach(([k, v]) => {
+      if (v >= 0.75) strengths.push(names[k]);
+      else if (v < 0.55) gaps.push(names[k]);
+    });
+    return { pct, dims, strengths: strengths.slice(0, 4), gaps: gaps.slice(0, 4), nextSteps: this.nextSteps(p, dims) };
+  }
+
   planReasons(p) {
     const s = this.state;
     const out = [];
@@ -876,17 +1528,33 @@ class SiteAiAssessment extends HTMLElement {
 
   buildPlans() {
     const s = this.state;
-    const match = this.projectMatch(this.scoreCountries());
-    const scored = match.scored;
-    const max = scored.length ? scored[0].score : 1;
-    const min = scored.length ? scored[scored.length - 1].score : 0;
-    return scored.slice(0, 20).map((x, i) => {
+    const projects = Istra.projects || [];
+    const countryRank = this.scoreCountries();
+    const cScore = {};
+    countryRank.forEach((c, i) => { cScore[c.id] = (countryRank.length - i); });
+
+    const scored = projects.map((p) => {
+      const score = this.scoreProject(p);
+      let v = score.pct + (cScore[p.country.id] || 0) * 0.4;
+      return { project: p, score: v, detail: score };
+    }).sort((a, b) => b.score - a.score);
+
+    /* 推荐集归一化：基于 8 维度加权模型的排序，映射到 55–95 自然分布区间（优秀 85-95 / 良好 70-85 / 一般 55-70） */
+    const top20 = scored.slice(0, 20);
+    const raws = top20.map((x) => x.detail.pct);
+    const minRaw = Math.min(...raws);
+    const maxRaw = Math.max(...raws);
+    const norm = (raw) => Math.round(55 + ((raw - minRaw) / ((maxRaw - minRaw) || 1)) * 40);
+
+    return top20.map((x, i) => {
       const p = x.project;
-      const pct = Math.round(62 + ((x.score - min) / (max - min || 1)) * 35);
       return {
         rank: i + 1,
         project: p,
-        pct,
+        pct: norm(x.detail.pct),
+        strengths: x.detail.strengths,
+        gaps: x.detail.gaps,
+        nextSteps: x.detail.nextSteps,
         reasons: this.planReasons(p),
         conditions: this.planConditions(p),
         cost: this.planCost(p),
@@ -897,7 +1565,6 @@ class SiteAiAssessment extends HTMLElement {
       };
     });
   }
-
   whyRecommend() {
     const s = this.state;
     const plans = this.buildPlans();
@@ -912,12 +1579,15 @@ class SiteAiAssessment extends HTMLElement {
     return { rows, top3: plans.slice(0, 3) };
   }
 
-  planCard(p, compact) {
+﻿﻿﻿﻿  planCard(p, compact) {
     const c = p.project.country;
     const cond = p.conditions;
     const condHtml = compact
       ? Object.entries(cond).map(([k, v]) => `<span class="plan__cond"><b>${k}</b>${v}</span>`).join('')
       : Object.entries(cond).map(([k, v]) => `<div class="plan__cond-row"><span>${k}</span><b>${v}</b></div>`).join('');
+    const tagList = (items) => items.length
+      ? `<div class="plan__tags">${items.map((t) => `<span class="plan__tag">${t}</span>`).join('')}</div>`
+      : '<p class="plan__tag-empty">—</p>';
     return `
       <article class="plan${compact ? ' plan--compact' : ''}">
         <div class="plan__head">
@@ -935,8 +1605,22 @@ class SiteAiAssessment extends HTMLElement {
         </div>
         <p class="plan__type">${p.type}</p>
         <div class="plan__reasons">
-          <p class="plan__block-label">适合原因</p>
+          <p class="plan__block-label">推荐理由</p>
           <ul>${p.reasons.map((r) => `<li>${r}</li>`).join('')}</ul>
+        </div>
+        <div class="plan__profiles">
+          <div class="plan__profile">
+            <p class="plan__block-label">用户优势</p>
+            ${tagList(p.strengths)}
+          </div>
+          <div class="plan__profile">
+            <p class="plan__block-label">不足条件</p>
+            ${tagList(p.gaps)}
+          </div>
+          <div class="plan__profile plan__profile--wide">
+            <p class="plan__block-label">下一步建议</p>
+            ${tagList(p.nextSteps)}
+          </div>
         </div>
         <div class="plan__conditions">
           <p class="plan__block-label">申请条件</p>
@@ -953,7 +1637,6 @@ class SiteAiAssessment extends HTMLElement {
         <a class="btn btn--ghost-dark plan__btn" href="project-detail.html?id=${p.project.id}">查看详细项目 <span class="btn-arrow">→</span></a>
       </article>`;
   }
-
   startAnalysis() {
     this.phase = 'analyzing';
     const steps = ['正在理解您的个人画像…', '正在匹配目标国家…', '正在匹配 20 个方案…', '正在规划未来路线…'];
@@ -1091,7 +1774,7 @@ class SiteAiAssessment extends HTMLElement {
               <button type="button" class="btn btn--primary" data-action="restart">重新评估</button>
               <a class="btn btn--ghost-dark" href="projects.html">浏览全部项目</a>
             </div>
-            <p class="report__note">* 本报告由智能匹配引擎基于您的回答与全球项目数据库生成，作为人生路径规划参考；具体政策、费用与周期以各国官方最新公布为准。健康信息仅用于匹配生活环境与医疗资源，不构成任何淘汰条件。</p>
+            <p class="report__note">* 匹配度为 8 维度加权模型（年龄15% / 学历15% / 职业20% / 工作经验15% / 语言10% / 资金10% / 家庭5% / 出国目标10%）在推荐集中的归一化结果（55–95），最高不超过 95%。具体政策、费用与周期以各国官方最新公布为准；健康信息仅用于匹配生活环境与医疗资源，不构成任何淘汰条件。</p>
           </div>
         </div>
       </div>

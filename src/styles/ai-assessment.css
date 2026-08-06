@@ -412,3 +412,13 @@ a.report__project:hover { border-color: rgba(59, 130, 246, 0.55); background: rg
 
 .report__saved { margin-top: 1.25rem; padding: 0.875rem 1.25rem; background: var(--color-accent-soft); border: 1px solid var(--color-accent-line); border-radius: var(--radius-s); font-size: 0.8125rem; color: #E5D9B0; }
 .report__saved a { color: var(--color-accent); font-weight: 600; }
+
+/* —— 评分模型 v2：用户优势 / 不足条件 / 下一步建议 —— */
+.plan__profiles { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem 1rem; }
+.plan__profile--wide { grid-column: 1 / -1; }
+.plan__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.plan__tag { padding: 0.28rem 0.625rem; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.35); border-radius: 999px; font-size: 0.75rem; color: #BFDBFE; }
+.plan__profile:nth-child(2) .plan__tag { background: rgba(148, 163, 184, 0.1); border-color: rgba(148, 163, 184, 0.4); color: var(--color-text-muted); }
+.plan__profile--wide .plan__tag { background: var(--color-accent-soft); border-color: var(--color-accent-line); color: var(--color-accent); }
+.plan__tag-empty { font-size: 0.75rem; color: var(--color-text-faint); }
+@media (max-width: 720px) { .plan__profiles { grid-template-columns: 1fr; } .plan__profile--wide { grid-column: auto; } }
