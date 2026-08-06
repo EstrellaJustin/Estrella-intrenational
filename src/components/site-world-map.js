@@ -192,7 +192,7 @@ class SiteWorldMap extends HTMLElement {
     const ptrs = new Map();
     let pinchStart = null;
     svg.addEventListener('pointerdown', (e) => {
-      svg.setPointerCapture(e.pointerId);
+      try { svg.setPointerCapture(e.pointerId); } catch (err) { /* pointer may be released */ }
       ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
       svg.classList.add('is-dragging');
       if (ptrs.size === 2) {
@@ -251,16 +251,26 @@ class SiteWorldMap extends HTMLElement {
       });
     });
 
-    /* 国家点击：可用 → 信息卡；未开放 → 建设中 */
+        /* 国家点击：可用 → 信息卡；未开放 → 建设中
+       （指针捕获会把 click 重定向到 svg，因此统一在 svg 上处理，
+         并在 pointerdown 记录原始国家目标，确保拿到正确标识） */
+    this._downIso = null;
     this.querySelectorAll('[data-iso]').forEach((el) => {
-      el.addEventListener('click', () => {
-        if (this._dragged) { this._dragged = false; return; }
-        const iso = el.getAttribute('data-iso');
-        const link = el.getAttribute('data-link');
-        if (link) { this.openCard(iso); return; }
-        const name = el.querySelector('title')?.textContent || '该国家';
-        this.toast(`「${name}」数据建设中，敬请期待`);
+      el.addEventListener('pointerdown', () => {
+        this._downIso = el.getAttribute('data-iso');
       });
+    });
+    svg.addEventListener('click', (e) => {
+      if (this._dragged) { this._dragged = false; this._downIso = null; return; }
+      const fallback = e.target && e.target.closest ? e.target.closest('[data-iso]') : null;
+      const iso = this._downIso || (fallback ? fallback.getAttribute('data-iso') : null);
+      this._downIso = null;
+      if (!iso) return;
+      const el = this.querySelector('[data-iso="' + iso + '"]');
+      const link = el ? el.getAttribute('data-link') : '';
+      if (link) { this.openCard(iso); return; }
+      const name = (el && el.querySelector('title')) ? el.querySelector('title').textContent : '该国家';
+      this.toast('「' + name + '」数据建设中，敬请期待');
     });
 
     /* 桌面：悬停信息卡 */
