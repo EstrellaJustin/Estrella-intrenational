@@ -898,19 +898,169 @@ class SiteAiAssessment extends HTMLElement {
     }, 500);
   }
 
+﻿  /* ================= 20 个个性化匹配方案 ================= */
+
+  ageLabel() {
+    return { u18: '18 岁以下', '18-22': '18–22 岁', '23-30': '23–30 岁', '31-40': '31–40 岁', '41-50': '41–50 岁', '50+': '50 岁以上' }[this.state.age] || '—';
+  }
+
+  industryLabel() {
+    return { tech: '科技', finance: '金融', edu: '教育', medical: '医疗', manufacture: '制造', trade: '贸易', service: '服务业', art: '艺术', internet: '互联网', other: '其他' }[this.state.industry] || this.state.occupation || '—';
+  }
+
+  investLabel() {
+    return { '<1w': '1 万元以内', '1-5w': '1–5 万元', '5-10w': '5–10 万元', '10-50w': '10–50 万元', high: '50 万元以上' }[this.state.budget] || '—';
+  }
+
+  langLabel() {
+    return { none: '不会', basic: '基础', daily: '交流', skilled: '熟练', fluent: '流利' }[this.state.englishLevel] || '—';
+  }
+
+  planReasons(p) {
+    const s = this.state;
+    const out = [];
+    out.push(this.projectReason(p));
+    if (['it', 'eng', 'research', 'internet'].includes(s.industry)) out.push('职业/技能方向与项目匹配');
+    if (p.budget && p.budget.level === this.budgetTier()) out.push('资金档位与您的可接受投入匹配');
+    else if (p.budget && p.budget.level !== 'high') out.push('成本可控，符合预算偏好');
+    if (p.duration) out.push('发展周期约 ' + p.duration);
+    return out.slice(0, 4);
+  }
+
+  planConditions(p) {
+    const grab = (keys, fb) => {
+      const hit = (p.requirements || []).find((r) => keys.some((k) => r.includes(k)));
+      return hit || fb;
+    };
+    return {
+      学历: grab(['学历', '学位', '教育'], '以官方要求为准'),
+      语言: grab(['语言'], '以官方要求为准'),
+      职业: grab(['职业', '雇主', '技能'], '以官方要求为准'),
+      资金: (p.budget && p.budget.fundsProof) || grab(['资金', '资产', '收入'], '以官方要求为准'),
+      工作经验: grab(['经验', '年限'], '以官方要求为准')
+    };
+  }
+
+  planCost(p) {
+    if (!p.budget) return '以官方为准';
+    if (p.category.id === 'invest') return p.budget.investment + '（投资金额）';
+    if (p.category.id === 'edu') return p.budget.total;
+    return p.budget.suggested;
+  }
+
+  buildPlans() {
+    const s = this.state;
+    const projects = Istra.projects || [];
+    const countryRank = this.scoreCountries();
+    const cScore = {};
+    countryRank.forEach((c, i) => { cScore[c.id] = (countryRank.length - i); });
+    const motiveCat = { work: 'work', income: 'work', lifestyle: 'pr', 'child-edu': 'edu', permanent: 'pr', business: 'invest', startup: 'invest', invest: 'invest', culture: 'nomad', family: 'family', explore: 'nomad' };
+    const scored = projects.map((p) => {
+      let v = (cScore[p.country.id] || 0) * 4;
+      s.motives.forEach((r) => { if (motiveCat[r] === p.category.id) v += 6; });
+      if (p.category.id === 'tech' && ['tech', 'internet'].includes(s.industry)) v += 4;
+      if (p.category.id === 'work' && ['tech', 'finance', 'medical', 'trade', 'service', 'manufacture'].includes(s.industry)) v += 3;
+      if (p.category.id === 'study' && ['student', 'none'].includes(s.identity)) v += 4;
+      if (p.category.id === 'invest' && this.budgetTier() === 'high') v += 5;
+      if (p.category.id === 'pr' && ['stable', 'balance'].includes(s.risk)) v += 2;
+      if (p.category.id === 'youth' && ['u18', '18-22', '23-30'].includes(s.age)) v += 3;
+      if (p.category.id === 'family' && (s.kids === 'yes' || s.planWith.length > 0)) v += 4;
+      const budgetRank = { low: 0, midlow: 1, mid: 2, high: 3 };
+      const diff = Math.abs(budgetRank[p.budget.level] - budgetRank[this.budgetTier()]);
+      v += diff === 0 ? 3 : (diff === 1 ? 1 : -4);
+      if (s.lowCost === 'yes' && p.budget.level === 'low') v += 2;
+      return { project: p, score: v };
+    }).sort((a, b) => b.score - a.score);
+    const max = scored.length ? scored[0].score : 1;
+    const min = scored.length ? scored[scored.length - 1].score : 0;
+    return scored.slice(0, 20).map((x, i) => {
+      const p = x.project;
+      const pct = Math.round(62 + ((x.score - min) / (max - min || 1)) * 35);
+      return {
+        rank: i + 1,
+        project: p,
+        pct,
+        reasons: this.planReasons(p),
+        conditions: this.planConditions(p),
+        cost: this.planCost(p),
+        duration: p.duration,
+        type: p.visaType + ' · ' + p.category.name,
+        advantages: (p.advantages || []).slice(0, 3),
+        limitations: (p.limitations || []).slice(0, 3)
+      };
+    });
+  }
+
+  whyRecommend() {
+    const s = this.state;
+    const plans = this.buildPlans();
+    return {
+      rows: [
+        { k: '年龄', v: this.ageLabel() },
+        { k: '职业', v: this.industryLabel() },
+        { k: '可接受投入', v: this.investLabel() },
+        { k: '语言', v: '英语 ' + this.langLabel() + (s.otherLangs ? ' / ' + s.otherLangs : '') }
+      ],
+      top3: plans.slice(0, 3)
+    };
+  }
+
+  planCard(p, compact) {
+    const c = p.project.country;
+    const cond = p.conditions;
+    const condHtml = compact
+      ? Object.entries(cond).map(([k, v]) => `<span class="plan__cond"><b>${k}</b>${v}</span>`).join('')
+      : Object.entries(cond).map(([k, v]) => `<div class="plan__cond-row"><span>${k}</span><b>${v}</b></div>`).join('');
+    return `
+      <article class="plan${compact ? ' plan--compact' : ''}">
+        <div class="plan__head">
+          <span class="plan__rank">TOP ${String(p.rank).padStart(2, '0')}</span>
+          <span class="plan__flag"><img src="assets/flags/${c.flag}" alt="${c.cn} 国旗" width="34" height="25" /></span>
+          <div class="plan__title">
+            <h3 class="plan__country">${c.cn}</h3>
+            <p class="plan__name">${p.project.name}</p>
+          </div>
+          <div class="plan__pct">
+            <span class="plan__pct-num">${p.pct}%</span>
+            <span class="plan__pct-bar"><i style="width:${p.pct}%"></i></span>
+            <span class="plan__pct-label">匹配指数</span>
+          </div>
+        </div>
+        <p class="plan__type">${p.type}</p>
+        <div class="plan__reasons">
+          <p class="plan__block-label">适合原因</p>
+          <ul>${p.reasons.map((r) => `<li>${r}</li>`).join('')}</ul>
+        </div>
+        <div class="plan__conditions">
+          <p class="plan__block-label">申请条件</p>
+          ${compact ? `<div class="plan__conds-inline">${condHtml}</div>` : `<div class="plan__cond-rows">${condHtml}</div>`}
+        </div>
+        <div class="plan__meta">
+          <div class="plan__meta-item"><span>预计成本</span><b>${p.cost}</b></div>
+          <div class="plan__meta-item"><span>预计周期</span><b>${p.duration}</b></div>
+        </div>
+        <div class="plan__proscons">
+          <div class="plan__pros"><p class="plan__block-label">优势</p><ul>${p.advantages.map((a) => `<li>${a}</li>`).join('')}</ul></div>
+          <div class="plan__cons"><p class="plan__block-label">限制</p><ul>${p.limitations.map((l) => `<li>${l}</li>`).join('')}</ul></div>
+        </div>
+        <a class="btn btn--ghost-dark plan__btn" href="project-detail.html?id=${p.project.id}">查看详细项目 <span class="btn-arrow">→</span></a>
+      </article>`;
+  }
+
   showReport() {
     this.phase = 'report';
-    const countryRank = this.scoreCountries();
-    const topCountries = countryRank.slice(0, 5);
-    const match = this.projectMatch(countryRank);
-    const topCountry = topCountries[0] ? topCountries[0].id : 'ca';
-    const topProject = match.top[0];
-    const roadmap = this.roadmap(topCountry, topProject);
-    const portrait = this.portrait();
+    const plans = this.buildPlans();
+    const top = plans.slice(0, 5);
+    const mid = plans.slice(5, 15);
+    const backup = plans.slice(15, 20);
     const notRec = this.notRecommendedDirections();
+    const topCountry = plans[0] ? plans[0].project.country.id : 'ca';
+    const topProject = plans[0] ? plans[0].project : null;
+    const roadmap = this.roadmap(topCountry, topProject);
+    const why = this.whyRecommend();
     const s = this.state;
     const now = new Date();
-    const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    const dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
 
     this.innerHTML = `
       <div class="assessment">
@@ -926,54 +1076,42 @@ class SiteAiAssessment extends HTMLElement {
             <div class="report__cover" data-reveal>
               <p class="report__cover-eyebrow">Global Life Path Planning Report</p>
               <h2 class="report__cover-title">全球人生路径规划报告</h2>
-              <p class="report__cover-meta">${s.identity ? this.identityLabel(s.identity) : '评估用户'} · ${dateStr} · 先理解您，再匹配项目</p>
+              <p class="report__cover-meta">${s.identity ? this.identityLabel(s.identity) : '评估用户'} · ${dateStr} · 20 个个性化匹配方案</p>
             </div>
 
             <section class="report__section" data-reveal>
-              <h3 class="report__section-title"><span>01</span>用户全球画像</h3>
-              <div class="report__portrait">
-                ${portrait.map((l) => `<span class="report__tag">${l}</span>`).join('')}
+              <h3 class="report__section-title"><span>01</span>为什么推荐这些方案</h3>
+              <p class="why__lead">因为你：</p>
+              <div class="why__rows">
+                ${why.rows.map((r) => `<div class="why__row"><span>${r.k}</span><b>${r.v}</b></div>`).join('')}
               </div>
-              <p class="report__summary">综合您的年龄、身份、职业、学历、资金、家庭与偏好，AI 将您定位为「${portrait[0]}」，并以此为基础匹配最适合的国际发展路径。</p>
-            </section>
-
-            <section class="report__section" data-reveal>
-              <h3 class="report__section-title"><span>02</span>国家匹配度</h3>
-              <div class="report__rank">
-                ${topCountries.map((c, i) => {
-                  const country = Istra.countries.find((x) => x.id === c.id) || {};
-                  return `
-                    <div class="report__rank-row">
-                      <span class="report__rank-no">${i + 1}</span>
-                      <img class="report__rank-flag" src="assets/flags/${country.flag || ''}" alt="" width="34" height="25" />
-                      <div class="report__rank-info">
-                        <p class="report__rank-name">${country.cn || c.id}</p>
-                        <p class="report__rank-reason">${(c.reasons || []).join(' · ') || '综合匹配'}</p>
-                      </div>
-                      <div class="report__rank-bar"><span style="width:${Math.max(c.pct, 8)}%"></span></div>
-                      <span class="report__rank-pct">${c.pct}%</span>
-                    </div>`;
-                }).join('')}
-              </div>
-            </section>
-
-            <section class="report__section" data-reveal>
-              <h3 class="report__section-title"><span>03</span>项目匹配</h3>
-              <div class="report__list">
-                ${match.top.map((p) => `
-                  <a class="report__project" href="project-detail.html?id=${p.id}">
-                    <img src="assets/flags/${p.country.flag}" alt="" width="34" height="25" />
-                    <div class="report__project-info">
-                      <p class="report__project-name">${p.name} <span class="report__dir">${p.direction}</span></p>
-                      <p class="report__project-reason">${p.reason}</p>
-                    </div>
-                    <span class="report__project-cta">查看详情 →</span>
+              <p class="why__lead" style="margin-top:1rem">所以为你推荐：</p>
+              <div class="why__top3">
+                ${why.top3.map((p) => `
+                  <a class="why__item" href="project-detail.html?id=${p.project.id}">
+                    <img src="assets/flags/${p.project.country.flag}" alt="" width="26" height="19" />
+                    <span>${p.project.name}</span><b>${p.pct}%</b>
                   </a>`).join('')}
               </div>
             </section>
 
             <section class="report__section" data-reveal>
-              <h3 class="report__section-title"><span>04</span>不推荐方向</h3>
+              <h3 class="report__section-title"><span>02</span>高匹配 · TOP 5</h3>
+              <div class="plans">${top.map((p) => this.planCard(p, false)).join('')}</div>
+            </section>
+
+            <section class="report__section" data-reveal>
+              <h3 class="report__section-title"><span>03</span>推荐考虑 · 6–15</h3>
+              <div class="plans plans--grid">${mid.map((p) => this.planCard(p, true)).join('')}</div>
+            </section>
+
+            <section class="report__section" data-reveal>
+              <h3 class="report__section-title"><span>04</span>备用方案 · 16–20</h3>
+              <div class="plans plans--grid">${backup.map((p) => this.planCard(p, true)).join('')}</div>
+            </section>
+
+            <section class="report__section" data-reveal>
+              <h3 class="report__section-title"><span>05</span>不推荐方向</h3>
               <div class="report__notrec">
                 ${notRec.map((x) => `
                   <div class="report__notrec-item">
@@ -987,7 +1125,7 @@ class SiteAiAssessment extends HTMLElement {
             </section>
 
             <section class="report__section" data-reveal>
-              <h3 class="report__section-title"><span>05</span>未来路线规划</h3>
+              <h3 class="report__section-title"><span>06</span>未来路线规划</h3>
               <div class="report__roadmap">
                 ${roadmap.map((r) => `
                   <div class="report__roadmap-step">
