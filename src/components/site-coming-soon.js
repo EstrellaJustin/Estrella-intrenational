@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    组件：is-coming-soon · 模块建设中占位页（v2）
    ============================================================ */
 
@@ -16,7 +16,7 @@ class SiteComingSoon extends HTMLElement {
       <section class="soon">
         <span class="soon__watermark" aria-hidden="true">${this.code}</span>
         <div class="soon__inner">
-          <p class="soon__code" data-reveal>ISTRA INTERNATIONAL · ${this.code}</p>
+          <p class="soon__code" data-reveal>ESTRELLA INTERNATIONAL · ${this.code}</p>
           <h1 class="soon__title" data-reveal>${this.name} · 即将上线</h1>
           <p class="soon__desc" data-reveal>该模块将在后续阶段逐步开放，敬请期待。</p>
           <div class="soon__actions" data-reveal>

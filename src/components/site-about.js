@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    组件：is-about · 关于我们页
    ============================================================ */
 
@@ -24,7 +24,7 @@ class SiteAbout extends HTMLElement {
       <div class="about">
         <header class="about__head">
           <div class="container">
-            <p class="about__eyebrow" data-reveal>About Istra International</p>
+            <p class="about__eyebrow" data-reveal>About Estrella International</p>
             <h1 class="about__title" data-reveal>关于我们</h1>
             <p class="about__sub" data-reveal>高端国际身份规划平台 · 全球机会探索的智能起点</p>
           </div>

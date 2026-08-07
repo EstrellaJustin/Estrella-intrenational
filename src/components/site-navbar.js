@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    组件：is-navbar · 顶部导航
    固定导航 / 首屏透明 / 滚动后深色毛玻璃 / 移动端抽屉
    ============================================================ */
@@ -41,7 +41,7 @@ class SiteNavbar extends HTMLElement {
           <img class="brand__mark" src="assets/brand-mark.svg" alt="" width="40" height="40" />
           <span class="brand__name">
             <span class="brand__cn">伊斯特拉国际</span>
-            <span class="brand__en">Istra International</span>
+            <span class="brand__en">Estrella International</span>
           </span>
         </a>
 
@@ -60,7 +60,7 @@ class SiteNavbar extends HTMLElement {
       <div class="menu" id="site-menu" aria-hidden="true">
         <ul class="menu__list">${menuLinks}</ul>
         <a class="menu__account" href="login.html" data-account-entry>登录</a>
-        <p class="menu__foot">ISTRA INTERNATIONAL · GLOBAL DEVELOPMENT</p>
+        <p class="menu__foot">ESTRELLA INTERNATIONAL · GLOBAL DEVELOPMENT</p>
       </div>
     `;
 

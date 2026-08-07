@@ -1,4 +1,4 @@
-# 伊斯特拉国际 · Istra International
+# 伊斯特拉国际 · Estrella International
 
 > 高端国际身份规划平台 · 全球出国项目智能数据库
 
