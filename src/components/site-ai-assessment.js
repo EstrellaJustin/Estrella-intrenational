@@ -1634,9 +1634,96 @@ class SiteAiAssessment extends HTMLElement {
           <div class="plan__pros"><p class="plan__block-label">优势</p><ul>${p.advantages.map((a) => `<li>${a}</li>`).join('')}</ul></div>
           <div class="plan__cons"><p class="plan__block-label">限制</p><ul>${p.limitations.map((l) => `<li>${l}</li>`).join('')}</ul></div>
         </div>
-        <a class="btn btn--ghost-dark plan__btn" href="project-detail.html?id=${p.project.id}">查看详细项目 <span class="btn-arrow">→</span></a>
+        <a class="btn btn--ghost-dark plan__btn" data-project-detail="${p.project.id}" href="project-detail.html?id=${p.project.id}">查看详细项目 <span class="btn-arrow">→</span></a>
       </article>`;
   }
+  /* 推荐项目详情弹层：在评估结果页内打开，不离开评估流程 */
+  openProjectDetail(projectId) {
+    const p = (Istra.projects || []).find((x) => x.id === projectId);
+    if (!p || this._detailOverlay) return;
+    const c = p.country;
+    const list = (arr) => (arr && arr.length
+      ? '<ul class="ai-detail__list">' + arr.map((t) => '<li>' + t + '</li>').join('') + '</ul>'
+      : '<p class="ai-detail__empty">暂无资料</p>');
+    const overlay = document.createElement('div');
+    overlay.className = 'ai-detail-overlay';
+    overlay.innerHTML = `
+      <div class="ai-detail-modal" role="dialog" aria-modal="true" aria-label="${p.name}">
+        <div class="ai-detail__head">
+          <span class="ai-detail__flag"><img src="assets/flags/${c.flag}" alt="${c.cn} 国旗" /></span>
+          <div class="ai-detail__titlebox">
+            <p class="ai-detail__country">${c.cn} <small>${c.en}</small></p>
+            <h3 class="ai-detail__title">${p.name}</h3>
+            <p class="ai-detail__type">${p.visaType} · ${p.category.name} · ${p.subcategory.name}</p>
+          </div>
+          <button class="ai-detail__close" type="button" aria-label="关闭">×</button>
+        </div>
+        <div class="ai-detail__body">
+          <section class="ai-detail__module">
+            <h4 class="ai-detail__module-title"><span>01</span>项目介绍</h4>
+            <p class="ai-detail__text">${p.introduction}</p>
+          </section>
+          <section class="ai-detail__module">
+            <h4 class="ai-detail__module-title"><span>02</span>适合人群</h4>
+            ${list(p.targetUsers)}
+          </section>
+          <section class="ai-detail__module">
+            <h4 class="ai-detail__module-title"><span>03</span>申请条件</h4>
+            ${list(p.requirements)}
+          </section>
+          <section class="ai-detail__module">
+            <h4 class="ai-detail__module-title"><span>04</span>所需材料</h4>
+            ${list(p.documents)}
+          </section>
+          <section class="ai-detail__module">
+            <h4 class="ai-detail__module-title"><span>05</span>申请流程</h4>
+            <ol class="ai-detail__steps">${(p.process || []).map((t, i) => '<li><b>' + String(i + 1).padStart(2, '0') + '</b><span>' + t + '</span></li>').join('')}</ol>
+          </section>
+          <section class="ai-detail__module">
+            <h4 class="ai-detail__module-title"><span>06</span>费用与周期</h4>
+            <div class="ai-detail__facts">
+              <div class="ai-detail__fact"><span>预算等级</span><b>${p.budget.label}（${p.budget.range}）</b></div>
+              <div class="ai-detail__fact"><span>办理周期</span><b>${p.duration}</b></div>
+              <div class="ai-detail__fact"><span>资金证明</span><b>${p.budget.fundsProof}</b></div>
+              <div class="ai-detail__fact"><span>建议准备</span><b>${p.budget.suggested}</b></div>
+            </div>
+            ${p.budget.investment ? '<div class="ai-detail__fact"><span>投资金额</span><b>' + p.budget.investment + '</b></div>' : ''}
+            <p class="ai-detail__note">* 以上预算为综合参考，不代表官方收费标准。</p>
+          </section>
+          <section class="ai-detail__module">
+            <h4 class="ai-detail__module-title"><span>07</span>优势</h4>
+            <ul class="ai-detail__list ai-detail__list--plus">${(p.advantages || []).map((t) => '<li>' + t + '</li>').join('')}</ul>
+          </section>
+          <section class="ai-detail__module">
+            <h4 class="ai-detail__module-title"><span>08</span>限制</h4>
+            <ul class="ai-detail__list ai-detail__list--minus">${(p.limitations || []).map((t) => '<li>' + t + '</li>').join('')}</ul>
+          </section>
+          ${p.faq && p.faq.length ? '<section class="ai-detail__module"><h4 class="ai-detail__module-title"><span>09</span>常见问题</h4><div class="ai-detail__faq">' + p.faq.map((f) => '<details class="ai-detail__faq-item"><summary>' + f.q + '</summary><p>' + f.a + '</p></details>').join('') + '</div></section>' : ''}
+        </div>
+        <div class="ai-detail__foot">
+          <a class="btn btn--ghost-dark" href="project-detail.html?id=${p.id}" target="_blank" rel="noopener">在新页面查看完整详情</a>
+          <button class="btn btn--primary" type="button" data-ai-detail-close>返回评估结果 <span class="btn-arrow">→</span></button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    this._detailOverlay = overlay;
+    const close = () => this.closeProjectDetail();
+    overlay.querySelector('.ai-detail__close').addEventListener('click', close);
+    overlay.querySelector('[data-ai-detail-close]').addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    this._detailEsc = (e) => { if (e.key === 'Escape') close(); };
+    document.addEventListener('keydown', this._detailEsc);
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeProjectDetail() {
+    if (!this._detailOverlay) return;
+    this._detailOverlay.remove();
+    this._detailOverlay = null;
+    document.body.style.overflow = '';
+    if (this._detailEsc) { document.removeEventListener('keydown', this._detailEsc); this._detailEsc = null; }
+  }
+
   getUnlock() {
     let token = '';
     try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
@@ -1749,7 +1836,7 @@ class SiteAiAssessment extends HTMLElement {
               <p class="why__lead" style="margin-top:1rem">所以为你推荐：</p>
               <div class="why__top3">
                 ${why.top3.map((p) => `
-                  <a class="why__item" href="project-detail.html?id=${p.project.id}">
+                  <a class="why__item" data-project-detail="${p.project.id}" href="project-detail.html?id=${p.project.id}">
                     <img src="assets/flags/${p.project.country.flag}" alt="${p.project.country.cn}" width="26" height="19" />
                     <span>${p.project.name}</span><b>${p.pct}%</b>
                   </a>`).join('')}
@@ -1831,6 +1918,14 @@ class SiteAiAssessment extends HTMLElement {
         Istra.pay.openUnlockModal({ onDone: () => this.revealFull() });
       });
     }
+
+    /* 推荐项目 → 评估结果页内打开项目详情（不离开评估流程） */
+    this.querySelectorAll('[data-project-detail]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.openProjectDetail(a.getAttribute('data-project-detail'));
+      });
+    });
 
     /* 保存评估与推荐到个人中心（登录用户） */
     const saveBox = this.querySelector('.report__saved');
