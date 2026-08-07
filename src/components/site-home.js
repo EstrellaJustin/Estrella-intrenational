@@ -44,6 +44,11 @@ class SiteHome extends HTMLElement {
       <div class="home">
         <header class="home__head">
           <div class="container">
+            <p class="home__brand" data-reveal>
+              <span class="home__brand-cn">伊斯特拉国际</span>
+              <span class="home__brand-en">Estrella International</span>
+            </p>
+            <p class="home__motto" data-reveal>打破信息壁垒，让每个人都有机会重新选择人生的方向。</p>
             <p class="home__eyebrow" data-reveal>Global Programs Database</p>
             <h1 class="home__title" data-reveal>全球出国项目大全</h1>
             <p class="home__sub" data-reveal>探索全球 200+ 国际发展项目</p>

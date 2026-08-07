@@ -35,7 +35,7 @@ class SiteAbout extends HTMLElement {
             <p class="about__intro" data-reveal>
               伊斯特拉国际以「飞向全球，探索新的可能」为理念，通过全球国家数据库、
               全球项目数据库与 AI 智能分析，帮助个人与家庭发现适合自己的国际发展路径。
-              我们不是传统中介，而是一个面向全球机会探索与身份规划的数据智能平台。
+              我们不是传统中介，而是一个面向全球机会探索与身份规划的数据智能平台。打破信息壁垒，让每个人都有机会重新选择人生的方向。
             </p>
 
             <div class="about__caps" id="philosophy">

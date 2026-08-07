@@ -130,3 +130,31 @@ is-home { display: block; }
 @media (max-width: 680px) {
   .home__grid { grid-template-columns: 1fr; }
 }
+
+/* —— 品牌理念标语（首屏 · 品牌名称 → 英文品牌 → 理念） —— */
+.home__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.home__brand-cn {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--color-heading);
+}
+.home__brand-en {
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.home__motto {
+  margin-top: 1.125rem;
+  font-size: var(--fs-small);
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+.home__motto::before, .home__motto::after { content: "—"; margin: 0 0.625rem; color: var(--color-accent); opacity: 0.7; }
