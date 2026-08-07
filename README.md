@@ -76,6 +76,13 @@ ode scripts/serve.js 或双击 启动网站.bat），file:// 直开不支持 API
 - 图片：真实地点实拍（Wikimedia Commons 开放版权），独立存储于 `assets/images/travel/city/` 与 `assets/images/travel/scenery/`，按 ID 精准读取；全局 onerror 占位图 + loading="lazy"
 - 生成器：`node scripts/generate-country-places.js`；图片工具：`node scripts/download-country-places-images.js`；验证：`node scripts/verify-country-places.js`
 
+
+## 免责声明体系
+
+- 完整法律页面：`disclaimer.html`（免责声明）/ `privacy.html`（隐私政策）/ `terms.html`（用户协议），内容由 `src/data/legal.js` 单一数据源渲染（组件 `src/components/site-disclaimer.js`）
+- 全站 Footer：新增「法律」栏目（免责声明 / 隐私政策 / 用户协议）+ 简短免责声明与完整版入口
+- AI 评估提交页与结果页、付费解锁弹窗、关于我们页均展示相应简短免责声明并链接完整页面
+- 定位：全球信息探索与 AI 辅助分析平台；不构成移民、法律、财务或职业建议，不承诺签证/移民/就业/收入结果
 ## 全球地图模块（v3 · 国旗区域填充 + 缩放平移 + 国家信息卡）
 
 - **国家区域级点亮**：已收录 53 国使用真实国家边界路径（Natural Earth），区域以**对应国旗元素填充**（SVG pattern），不再用固定国旗图标代替；未收录国家保持灰色

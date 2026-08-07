@@ -318,6 +318,10 @@ class SiteAiAssessment extends HTMLElement {
                   <button type="button" class="btn btn--primary" data-action="next">下一步 <span class="btn-arrow">→</span></button>
                 </div>
               </div>
+              <div class="legal-note wizard__legal">
+                <p>本评估基于您填写的信息与公开规则进行智能匹配，结果仅供参考，不代表签证批准概率，不构成移民、法律、财务或职业建议；最终申请结果以相关国家政府、官方机构审核为准。请确保提交的信息真实、准确、完整。</p>
+                <a href="disclaimer.html">查看完整免责声明 →</a>
+              </div>
             </div>
           </div>
         </div>
@@ -1904,6 +1908,10 @@ class SiteAiAssessment extends HTMLElement {
               <a class="btn btn--ghost-dark" href="projects.html">浏览全部项目</a>
             </div>
             <p class="report__note">* 匹配度为 8 维度加权模型（年龄15% / 学历15% / 职业20% / 工作经验15% / 语言10% / 资金10% / 家庭5% / 出国目标10%）在推荐集中的归一化结果（55–95），最高不超过 95%。具体政策、费用与周期以各国官方最新公布为准；健康信息仅用于匹配生活环境与医疗资源，不构成任何淘汰条件。</p>
+              <div class="legal-note report__legal">
+                <p>伊斯特拉国际为全球信息探索与 AI 辅助分析平台。AI 评估结果基于您填写的信息与公开规则进行智能匹配，不代表签证批准概率，不构成移民、法律、财务或职业建议；最终申请结果以相关国家政府、官方机构审核为准。不同用户因年龄、学历、职业、语言、资金等因素可能存在不同结果，平台不承诺签证一定获批、移民一定成功、就业一定获得或收入达到预期。</p>
+                <a href="disclaimer.html">查看完整免责声明 →</a>
+              </div>
           </div>
         </div>
       </div>

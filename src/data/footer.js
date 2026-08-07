@@ -19,6 +19,14 @@ Istra.footer = {
         { label: '关于我们', href: 'about.html' },
         { label: '品牌理念', href: 'about.html#philosophy' }
       ]
+    },
+    {
+      title: '法律',
+      links: [
+        { label: '免责声明', href: 'disclaimer.html' },
+        { label: '隐私政策', href: 'privacy.html' },
+        { label: '用户协议', href: 'terms.html' }
+      ]
     }
   ],
   contact: {

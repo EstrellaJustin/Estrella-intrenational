@@ -158,3 +158,32 @@ h1, h2, h3, h4 { color: var(--color-heading); font-weight: 700; line-height: 1.4
   *, *::before, *::after { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
   [data-reveal] { opacity: 1; transform: none; }
 }
+
+/* —— 通用简短免责声明（Footer / 评估 / 关于我们 等位置复用） —— */
+.legal-note {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
+  background: rgba(6, 43, 85, 0.22);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-m);
+  font-size: 0.75rem;
+  line-height: 1.9;
+  color: var(--color-text-faint);
+}
+.legal-note p { flex: 1 1 320px; max-width: 760px; }
+.legal-note a {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease);
+}
+.legal-note a:hover { color: var(--color-accent-dark); }

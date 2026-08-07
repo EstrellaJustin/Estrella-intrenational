@@ -64,3 +64,6 @@ is-about { display: block; }
 .about__principle-desc { margin-top: 0.4rem; font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.9; }
 
 @media (max-width: 1024px) { .about__caps, .about__principles-grid { grid-template-columns: 1fr; } }
+
+/* —— 关于我们 · 免责声明 —— */
+.about__legal { margin-top: 2.5rem; text-align: left; }

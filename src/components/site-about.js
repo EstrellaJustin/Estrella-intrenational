@@ -38,6 +38,11 @@ class SiteAbout extends HTMLElement {
               我们不是传统中介，而是一个面向全球机会探索与身份规划的数据智能平台。打破信息壁垒，让每个人都有机会重新选择人生的方向。
             </p>
 
+            <div class="legal-note about__legal" data-reveal>
+              <p>伊斯特拉国际（Estrella International）是一个全球信息探索与 AI 辅助分析平台。本站信息来源于公开资料整理、官方公开信息以及人工智能辅助分析，仅供信息展示与比较参考，不构成移民、法律、财务或职业建议；最终申请结果以相关国家政府、官方机构审核为准。</p>
+              <a href="disclaimer.html">查看完整免责声明 →</a>
+            </div>
+
             <div class="about__caps" id="philosophy">
               ${caps.map((x) => `
                 <div class="about__cap" data-reveal>

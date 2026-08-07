@@ -44,6 +44,10 @@ class SiteFooter extends HTMLElement {
             ${cols}
             ${contactCol}
           </div>
+          <div class="legal-note footer__legal-note">
+            <p>伊斯特拉国际（Estrella International）为全球信息探索与 AI 辅助分析平台。网站内容来源于公开资料与人工智能辅助整理，仅供信息参考，不构成移民、法律、财务或职业建议；最终申请结果以相关国家政府、官方机构审核为准。</p>
+            <a href="disclaimer.html">查看完整免责声明 →</a>
+          </div>
           <div class="footer__bottom">
             <span>© 2026 伊斯特拉国际</span>
             <span>高端国际身份规划平台 · 数据与内容仅供展示</span>

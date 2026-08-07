@@ -23,6 +23,7 @@ Istra.pay = {
         </div>
         <button class="btn btn--primary pay-modal__pay" type="button">确认支付 ¥9.9 <span class="btn-arrow">→</span></button>
         <p class="pay-modal__note">* 演示环境：点击确认即视为支付成功，不产生真实扣款。支付仅解锁已有 AI 评估结果，不会重新生成评估。</p>
+        <p class="pay-modal__disclaimer">* 本平台为全球信息探索与 AI 辅助分析平台，付费仅用于解锁已有评估结果，不代表签证批准概率，不构成移民、法律、财务或职业建议。</p>
       </div>`;
     document.body.appendChild(overlay);
     overlay.querySelector('.pay-modal__close').addEventListener('click', () => overlay.remove());

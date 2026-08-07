@@ -541,3 +541,9 @@ a.report__project:hover { border-color: rgba(59, 130, 246, 0.55); background: rg
   .ai-detail__foot { flex-direction: column-reverse; }
   .ai-detail__foot .btn { width: 100%; justify-content: center; }
 }
+
+/* —— 免责声明位置微调 —— */
+.wizard__legal { margin-top: 1.25rem; }
+.report__legal { margin-top: 1.5rem; }
+.pay-modal__disclaimer { margin-top: 0.75rem; font-size: 0.6875rem; line-height: 1.8; color: var(--color-text-faint); }
+.footer__legal-note { margin-top: 2rem; }
