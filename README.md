@@ -9,6 +9,12 @@
 
 ---
 
+## 项目详情页 · 官方申请入口
+
+- 每个项目新增官方申请字段：official_authority（官方机构）/ official_website（官网）/ application_url（申请入口）/ application_method（申请方式）/ application_notes（注意事项）/ last_verified_date（最后验证时间）/ source_type（数据来源，均为「政府官方网站」）
+- 详情页「申请流程」之后新增「🏛 官方申请入口」模块（原费用与周期等模块编号顺延）：官方认证徽标 + 机构/官网/入口/方式/注意事项/验证时间 + 「访问官方网站 →」「进入官方申请页面 →」按钮（新窗口打开）+ 官方渠道导航声明
+- 数据：53 国官方移民/签证机构主页映射（USCIS / IRCC / BAMF / ISA / 移民局等），无独立申请页项目使用该国官方移民部门主页；全部 430 个项目已覆盖，无缺失、无「暂无信息」
+- 生成器：`node scripts/generate-official-entry.js`（不删除已有数据、不改变项目 ID）
 ## 项目详情页评估状态按钮（动态）
 
 - 项目详情页读取用户评估状态动态显示按钮：

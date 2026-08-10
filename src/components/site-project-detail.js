@@ -99,7 +99,27 @@ class SiteProjectDetail extends HTMLElement {
               </section>
 
               ﻿              <section class="report__module">
-                <div class="report__module-head"><span class="report__module-num">06</span><h2 class="report__module-title">费用与周期</h2></div>
+                <div class="report__module-head"><span class="report__module-num">06</span><h2 class="report__module-title">🏛 官方申请入口</h2></div>
+                <div class="official-entry report__body">
+                  <div class="official-entry__badge">官方认证 · 政府机构</div>
+                  <div class="official-entry__grid">
+                    <div class="official-entry__row"><span>官方申请机构</span><b>${p.official_authority}</b></div>
+                    <div class="official-entry__row"><span>官方网站</span><a href="${p.official_website}" target="_blank" rel="noopener noreferrer">${p.official_website} <span class="arr">→</span></a></div>
+                    <div class="official-entry__row"><span>在线申请入口</span><a href="${p.application_url}" target="_blank" rel="noopener noreferrer">${p.application_url} <span class="arr">→</span></a></div>
+                    <div class="official-entry__row"><span>申请方式</span><b>${p.application_method}</b></div>
+                    <div class="official-entry__row"><span>注意事项</span><b>${p.application_notes}</b></div>
+                    <div class="official-entry__row"><span>最后验证</span><b>${p.last_verified_date} · ${p.source_type}</b></div>
+                  </div>
+                  <div class="official-entry__actions">
+                    <a class="btn btn--ghost-dark" href="${p.official_website}" target="_blank" rel="noopener noreferrer">访问官方网站 <span class="btn-arrow">→</span></a>
+                    <a class="btn btn--primary" href="${p.application_url}" target="_blank" rel="noopener noreferrer">进入官方申请页面 <span class="btn-arrow">→</span></a>
+                  </div>
+                  <p class="official-entry__note">本站提供官方申请渠道导航，不代表政府机构，不提供签证审批服务。政策请以官方最新信息为准。</p>
+                </div>
+              </section>
+
+              <section class="report__module">
+                <div class="report__module-head"><span class="report__module-num">07</span><h2 class="report__module-title">费用与周期</h2></div>
                 <div class="budget report__body">
                   <div class="budget__head">
                     <span class="budget__badge">${p.budget.label}</span>
@@ -147,17 +167,17 @@ class SiteProjectDetail extends HTMLElement {
               </section>
 
               <section class="report__module">
-                <div class="report__module-head"><span class="report__module-num">07</span><h2 class="report__module-title">优势</h2></div>
+                <div class="report__module-head"><span class="report__module-num">08</span><h2 class="report__module-title">优势</h2></div>
                 <ul class="report__list report__list--check report__body">${(p.advantages || []).map((t) => `<li>${t}</li>`).join('')}</ul>
               </section>
 
               <section class="report__module">
-                <div class="report__module-head"><span class="report__module-num">08</span><h2 class="report__module-title">限制</h2></div>
+                <div class="report__module-head"><span class="report__module-num">09</span><h2 class="report__module-title">限制</h2></div>
                 <ul class="report__list report__list--minus report__body">${(p.limitations || []).map((t) => `<li>${t}</li>`).join('')}</ul>
               </section>
 
               <section class="report__module">
-                <div class="report__module-head"><span class="report__module-num">09</span><h2 class="report__module-title">常见问题</h2></div>
+                <div class="report__module-head"><span class="report__module-num">10</span><h2 class="report__module-title">常见问题</h2></div>
                 <div class="report__faq report__body">
                   ${(p.faq || []).map((f) => `
                     <details class="faq-item">
