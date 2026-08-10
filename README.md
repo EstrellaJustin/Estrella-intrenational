@@ -13,6 +13,7 @@
 
 - 入口：顶部导航「DIY签证模拟」→ `diy-visa.html`
 - 流程：选择签证项目 → 填写个人情况 → 官方申请材料清单（三态勾选：未准备/准备中/已完成）→ AI 模拟审核 → DIY 准备报告
+- 展示方式（单页全量展开）：进入页面即直接看到完整 DIY 指南——签证项目介绍 / 适合人群 / 申请条件 / DIY 申请流程 / 完整申请材料清单（每项含官方要求、准备建议、来源）/ AI 模拟评估 / 风险分析 / 提升建议 / 免责声明；禁止折叠面板、手风琴与点击展开，支持 `diy-visa.html?id=xx` 直达指定项目
 - 数据库：`src/data/visa-diy.json` / `visa-diy.js`（生成器 `scripts/generate-visa-diy.js`）：
   - `Istra.visaDiyProjects`：430 个 DIY 项目（id / project_id / country / visa_name / visa_type，关联全球项目大全）
   - `Istra.visaDocuments`：4146 条官方申请材料（材料名称/分类/是否必须/官方要求/准备建议/source_reference 官方来源/last_updated）

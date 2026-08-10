@@ -175,3 +175,97 @@ is-diy-visa { display: block; }
   .diy__actions { flex-direction: column-reverse; align-items: stretch; }
   .diy__actions .btn { width: 100%; justify-content: center; }
 }
+/* ============================================================
+   DIY 签证模拟 · 单页全量展开版（官方申请指南式）
+   ============================================================ */
+
+/* 项目选择器 */
+.diy__picker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem 1.125rem;
+  background: rgba(6, 43, 85, 0.35);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-m);
+}
+.diy__picker-label { font-size: 0.8125rem; font-weight: 600; color: var(--color-heading); }
+.diy__picker-select {
+  min-width: 180px;
+  padding: 0.5rem 0.75rem;
+  background: rgba(4, 27, 58, 0.55);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-m);
+  color: var(--color-heading);
+  font-size: 0.8125rem;
+  outline: none;
+}
+.diy__picker-select:focus { border-color: rgba(59, 130, 246, 0.65); }
+
+/* 指南主体 */
+.diy__guide { margin-top: 1.25rem; }
+.diy__guide-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, rgba(10, 61, 115, 0.4), rgba(6, 43, 85, 0.25));
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-panel);
+}
+.diy__guide-flag { width: 56px; height: 40px; flex: none; border-radius: var(--radius-s); overflow: hidden; box-shadow: 0 4px 14px -4px rgba(2, 19, 38, 0.9); }
+.diy__guide-flag img { width: 100%; height: 100%; object-fit: cover; }
+.diy__guide-country { font-size: 0.8125rem; font-weight: 600; color: var(--color-accent); }
+.diy__guide-country small { color: var(--color-text-muted); font-weight: 500; margin-left: 0.25rem; }
+.diy__guide-title { margin-top: 0.25rem; font-size: 1.5rem; font-weight: 700; color: var(--color-heading); }
+.diy__guide-meta { margin-top: 0.25rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+
+/* 区块（全部默认展开，无折叠） */
+.diy__sec {
+  margin-top: 1.25rem;
+  padding: 1.5rem;
+  background: rgba(6, 43, 85, 0.28);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-panel);
+}
+.diy__sec-title { display: flex; align-items: center; gap: 0.625rem; font-size: 1.0625rem; font-weight: 700; color: var(--color-heading); }
+.diy__sec-title span {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-s);
+  padding: 0.15rem 0.45rem;
+  line-height: 1.2;
+}
+.diy__sec-text { margin-top: 0.875rem; font-size: 0.9375rem; line-height: 2; color: var(--color-text); }
+.diy__sec-desc { margin-top: 0.625rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+.diy__sec-list { margin-top: 0.875rem; display: flex; flex-direction: column; gap: 0.5rem; list-style: none; }
+.diy__sec-list li { position: relative; padding-left: 1.125rem; font-size: 0.875rem; line-height: 1.8; color: var(--color-text); }
+.diy__sec-list li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; border-radius: 50%; background: rgba(59, 130, 246, 0.7); }
+.diy__sec-empty { margin-top: 0.75rem; font-size: 0.8125rem; color: var(--color-text-faint); }
+
+/* 项目事实 */
+.diy__facts { margin-top: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+.diy__fact { padding: 0.75rem 0.875rem; background: rgba(10, 61, 115, 0.3); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.diy__fact span { display: block; font-size: 0.6875rem; letter-spacing: 0.1em; color: var(--color-text-faint); }
+.diy__fact b { display: block; margin-top: 0.35rem; font-size: 0.8125rem; font-weight: 600; color: var(--color-heading); line-height: 1.6; }
+
+/* 申请流程步骤 */
+.diy__steps { margin-top: 0.875rem; display: flex; flex-direction: column; gap: 0.625rem; list-style: none; counter-reset: s; }
+.diy__steps li { display: flex; align-items: baseline; gap: 0.75rem; font-size: 0.875rem; line-height: 1.8; color: var(--color-text); }
+.diy__steps b { flex: none; font-size: 0.75rem; font-weight: 700; color: var(--color-accent); letter-spacing: 0.08em; }
+.diy__official { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+/* 评估区：表单 + 结果并排 */
+.diy__eval-grid { margin-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
+.diy__eval-form { padding: 1.125rem; background: rgba(4, 27, 58, 0.4); border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); }
+.diy__eval-result { padding: 1.125rem; background: rgba(4, 27, 58, 0.4); border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); }
+.diy__eval-hint { margin-top: 1rem; font-size: 0.75rem; color: var(--color-text-faint); }
+
+@media (max-width: 900px) {
+  .diy__eval-grid { grid-template-columns: 1fr; }
+  .diy__facts { grid-template-columns: 1fr; }
+}

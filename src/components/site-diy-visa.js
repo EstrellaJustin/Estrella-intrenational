@@ -1,30 +1,29 @@
 /* ============================================================
-   组件：is-diy-visa · DIY 签证模拟系统
-   选择签证项目 → 填写个人情况 → 材料准备清单 → AI模拟审核 → DIY报告
+   组件：is-diy-visa · DIY 签证模拟系统（单页全量展开版）
+   用户进入页面即看到完整 DIY 指南：
+   项目介绍 / 适合人群 / 申请条件 / DIY申请流程 / 完整材料清单（含每项说明）/
+   AI模拟评估 / 风险分析 / 提升建议 / 免责声明
+   禁止折叠面板、手风琴、点击展开、隐藏内容。
    数据源：Istra.visaDiyProjects / Istra.visaDocuments / Istra.projects
-   免责声明：DIY首页 / 提交审核按钮附近 / AI报告底部
-   禁止展示：保证通过 / 成功率100% / 官方批准概率
    ============================================================ */
 
 class SiteDiyVisa extends HTMLElement {
   constructor() {
     super();
-    this.step = 0;
-    this.totalSteps = 5;
     this.state = {
       projectId: '',
-      country: '',
-      category: '',
       profile: { age: '', degree: '', occupation: '', income: '', language: '', funds: '', travelHistory: '', family: '' },
       materials: {}
     };
-    this.report = null;
+    this._evaluating = false;
   }
 
   connectedCallback() {
+    const urlId = new URLSearchParams(location.search).get('id');
+    const first = (Istra.visaDiyProjects && Istra.visaDiyProjects[0]) ? Istra.visaDiyProjects[0].id : '';
+    this.state.projectId = (urlId && (Istra.visaDiyProjects || []).some((p) => p.id === urlId)) ? urlId : (first || '');
     this.render();
     this.bind();
-    this.goTo(0);
     Istra.reveal.observe(this);
   }
 
@@ -36,6 +35,51 @@ class SiteDiyVisa extends HTMLElement {
   fullProject(id) { return (Istra.projects || []).find((p) => p.id === id) || null; }
   countryCn(id) { const c = (Istra.countries || []).find((x) => x.id === id); return c ? c.cn : id; }
   docsOf(id) { return (Istra.visaDocuments || []).filter((d) => d.visa_project_id === id); }
+  categoryLabel(cid) {
+    const map = { work: '工作就业', tech: '技术人才', edu: '留学教育', invest: '投资创业', talent: '人才移民', family: '家庭团聚', pr: '永久居留', nomad: '数字游民', youth: '青年交流', special: '特殊人才' };
+    return map[cid] || cid;
+  }
+
+  /* ================= 渲染（单页全量） ================= */
+
+  render() {
+    this.innerHTML = `
+      <div class="diy">
+        <header class="diy__head">
+          <div class="container">
+            <p class="diy__eyebrow" data-reveal>DIY Visa Simulation</p>
+            <h1 class="diy__title" data-reveal>DIY 签证模拟系统</h1>
+            <p class="diy__sub" data-reveal>像阅读官方申请指南一样，一次查看完整 DIY 流程：项目介绍、申请条件、材料清单、AI 模拟评估与风险分析。</p>
+          </div>
+        </header>
+
+        <div class="diy__body">
+          <div class="container">
+            <div class="diy__picker" data-reveal>
+              <span class="diy__picker-label">选择签证项目：</span>
+              <select class="diy__picker-select" data-picker="country"></select>
+              <select class="diy__picker-select" data-picker="category"></select>
+              <select class="diy__picker-select" data-picker="project"></select>
+            </div>
+            <div class="diy__guide" data-guide></div>
+            <div class="diy__disclaimer" data-reveal>${this.DISCLAIMER}</div>
+          </div>
+        </div>
+      </div>
+    `;
+    this.fillPickers();
+    this.renderGuide();
+  }
+
+  fillPickers() {
+    const countrySel = this.querySelector('[data-picker="country"]');
+    const catSel = this.querySelector('[data-picker="category"]');
+    const projSel = this.querySelector('[data-picker="project"]');
+    const countries = (Istra.countries || []).filter((c) => c.is_available !== false);
+    countrySel.innerHTML = '<option value="">全部国家</option>' + countries.map((c) => '<option value="' + c.id + '">' + c.cn + '</option>').join('');
+    catSel.innerHTML = '<option value="">全部类别</option>' + this.categoryOptions().map((c) => '<option value="' + c.id + '">' + c.label + '</option>').join('');
+    this.fillProjectPicker();
+  }
 
   categoryOptions() {
     return [
@@ -46,301 +90,167 @@ class SiteDiyVisa extends HTMLElement {
     ];
   }
 
-  /* ================= 渲染 ================= */
-
-  render() {
-    this.innerHTML = `
-      <div class="diy">
-        <header class="diy__head">
-          <div class="container">
-            <p class="diy__eyebrow" data-reveal>DIY Visa Simulation</p>
-            <h1 class="diy__title" data-reveal>DIY 签证模拟系统</h1>
-            <p class="diy__sub" data-reveal>选择目标签证项目 → 填写个人情况 → 对照官方材料清单 → AI 模拟审核 → 获得 DIY 准备路线</p>
-          </div>
-        </header>
-
-        <div class="diy__body">
-          <div class="container">
-            <div class="diy__wizard" data-reveal>
-              <div class="diy__progress">
-                <div class="diy__progress-head">
-                  <span class="diy__step-label" data-label>第 1 步 / 5 步</span>
-                  <span class="diy__step-name" data-step-name>选择签证项目</span>
-                  <span class="diy__pct" data-pct>0%</span>
-                </div>
-                <div class="diy__track"><span class="diy__track-fill" data-fill></span></div>
-              </div>
-              <div class="diy__content" data-content></div>
-              <div class="diy__actions">
-                <button type="button" class="btn btn--ghost-dark" data-action="prev">上一步</button>
-                <div class="diy__actions-right">
-                  <button type="button" class="btn btn--ghost-dark" data-action="restart" style="display:none">重新开始</button>
-                  <button type="button" class="btn btn--primary" data-action="next">下一步 <span class="btn-arrow">→</span></button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  field(name, label, placeholder, full) {
-    return `
-      <div class="field ${full ? 'field--full' : ''}" data-field="${name}">
-        <label for="f-${name}">${label}</label>
-        <input id="f-${name}" type="text" data-input="${name}" value="${this.state.profile[name] || ''}" placeholder="${placeholder}" autocomplete="off" />
-        <span class="field-error">请填写此项</span>
-      </div>`;
-  }
-
-  chips(name, list, key, single) {
-    const cur = this.state.profile[key];
-    return `
-      <div class="field field--full" data-field="${key}">
-        <span class="field-label">${name}</span>
-        <div class="chip-grid">
-          ${list.map((o) => `<button type="button" class="chip${cur === o.id ? ' is-selected' : ''}" data-chip="${key}" data-value="${o.id}"${single ? ' data-single="1"' : ''} aria-pressed="${cur === o.id}">${o.label}</button>`).join('')}
-        </div>
-        <span class="field-error">请选择一项</span>
-      </div>`;
-  }
-
-  question(no, title, desc) {
-    return `<p class="diy__q">STEP ${no}<span>/ 05</span></p>
-      <h2 class="diy__panel-title">${title}</h2>
-      <p class="diy__panel-desc">${desc}</p>`;
-  }
-
-  /* 步骤 1：选择签证项目 */
-  stepProject() {
-    const countries = (Istra.countries || []).filter((c) => c.is_available !== false);
-    const countryOpts = countries.map((c) => `<option value="${c.id}">${c.cn}</option>`).join('');
-    const catOpts = this.categoryOptions().map((c) => `<option value="${c.id}">${c.label}</option>`).join('');
-    const list = this.filteredProjects();
-    return `
-      ${this.question('01', '选择你的目标签证项目', '从全球项目中挑选一个你想 DIY 模拟的签证项目。')}
-      <div class="diy__filters">
-        <div class="field"><label for="f-diy-country">国家</label>
-          <select id="f-diy-country" data-filter="country"><option value="">全部国家</option>${countryOpts}</select>
-        </div>
-        <div class="field"><label for="f-diy-cat">类别</label>
-          <select id="f-diy-cat" data-filter="category"><option value="">全部类别</option>${catOpts}</select>
-        </div>
-      </div>
-      <div class="diy__projects" data-project-list>
-        ${list.map((p) => {
-          const full = this.fullProject(p.id);
-          return `
-            <button type="button" class="diy__project${this.state.projectId === p.id ? ' is-selected' : ''}" data-project="${p.id}">
-              <span class="diy__project-flag"><img src="assets/flags/${full ? full.country.flag : ''}" alt="" width="34" height="25" /></span>
-              <span class="diy__project-body">
-                <span class="diy__project-name">${p.visa_name}</span>
-                <span class="diy__project-meta">${this.countryCn(p.country)} · ${p.visa_type}</span>
-              </span>
-              <span class="diy__project-check">${this.state.projectId === p.id ? '✓' : ''}</span>
-            </button>`;
-        }).join('')}
-      </div>
-      ${this.state.projectId ? this.projectSummary(this.state.projectId) : ''}
-      <div class="diy__disclaimer">${this.DISCLAIMER}</div>
-    `;
-  }
-
-  projectSummary(id) {
-    const p = this.allProjects().find((x) => x.id === id);
-    const full = this.fullProject(id);
-    if (!p) return '';
-    return `
-      <div class="diy__selected">
-        <span class="diy__selected-flag"><img src="assets/flags/${full ? full.country.flag : ''}" alt="" width="40" height="30" /></span>
-        <div>
-          <p class="diy__selected-name">${p.visa_name}</p>
-          <p class="diy__selected-meta">${this.countryCn(p.country)} · ${p.visa_type} · ${full ? full.official_authority : ''}</p>
-        </div>
-      </div>`;
-  }
-
   filteredProjects() {
+    const countrySel = this.querySelector('[data-picker="country"]');
+    const catSel = this.querySelector('[data-picker="category"]');
+    const c = countrySel ? countrySel.value : '';
+    const cat = catSel ? catSel.value : '';
     let list = this.allProjects();
-    if (this.state.country) list = list.filter((p) => p.country === this.state.country);
-    if (this.state.category) list = list.filter((p) => {
-      const full = this.fullProject(p.id);
-      return full && full.category.id === this.state.category;
-    });
+    if (c) list = list.filter((p) => p.country === c);
+    if (cat) list = list.filter((p) => { const f = this.fullProject(p.id); return f && f.category.id === cat; });
     return list;
   }
 
-  /* 步骤 2：个人信息 */
-  stepProfile() {
-    return `
-      ${this.question('02', '填写你的个人情况', '用于 AI 模拟审核分析，信息仅用于本次模拟。')}
-      <div class="field-grid">
-        ${this.field('age', '年龄', '如：30')}
-        ${this.chips('学历', [
-          { id: '高中以下', label: '高中以下' }, { id: '高中', label: '高中' }, { id: '大专', label: '大专' },
-          { id: '本科', label: '本科' }, { id: '硕士', label: '硕士' }, { id: '博士', label: '博士' }
-        ], 'degree', true)}
-        ${this.field('occupation', '职业', '如：软件工程师 / 教师')}
-        ${this.chips('月收入', [
-          { id: '无', label: '无收入' }, { id: '1万以下', label: '1 万以下' }, { id: '1-3万', label: '1–3 万' },
-          { id: '3-5万', label: '3–5 万' }, { id: '5-10万', label: '5–10 万' }, { id: '10万以上', label: '10 万以上' }
-        ], 'income', true)}
-        ${this.chips('语言水平', [
-          { id: '不会', label: '不会' }, { id: '基础', label: '基础' }, { id: '日常交流', label: '日常交流' },
-          { id: '熟练', label: '熟练' }, { id: '专业', label: '专业' }
-        ], 'language', true)}
-        ${this.chips('可投入资金', [
-          { id: '1万以下', label: '1 万以下' }, { id: '1-5万', label: '1–5 万' }, { id: '5-10万', label: '5–10 万' },
-          { id: '10-30万', label: '10–30 万' }, { id: '30万以上', label: '30 万以上' }
-        ], 'funds', true)}
-        ${this.chips('出境记录', [
-          { id: '无', label: '暂无出境' }, { id: '短期出境', label: '有短期出境' }, { id: '长期海外', label: '有长期海外经历' }
-        ], 'travelHistory', true)}
-        ${this.chips('家庭情况', [
-          { id: '单身', label: '单身' }, { id: '已婚无子女', label: '已婚无子女' },
-          { id: '已婚有子女', label: '已婚有子女' }, { id: '其他', label: '其他' }
-        ], 'family', true)}
-      </div>`;
+  fillProjectPicker() {
+    const projSel = this.querySelector('[data-picker="project"]');
+    const list = this.filteredProjects();
+    const valid = list.some((p) => p.id === this.state.projectId);
+    if (!valid && list.length) this.state.projectId = list[0].id;
+    projSel.innerHTML = list.map((p) => `<option value="${p.id}"${p.id === this.state.projectId ? ' selected' : ''}>${this.countryCn(p.country)} · ${p.visa_name}</option>`).join('');
   }
 
-  /* 步骤 3：材料准备清单 */
-  stepMaterials() {
+  renderGuide() {
     const id = this.state.projectId;
     const p = this.allProjects().find((x) => x.id === id);
-    const docs = this.docsOf(id);
-    const done = docs.filter((d) => this.state.materials[d.id] === 'done').length;
-    const total = docs.length;
+    const full = this.fullProject(id);
+    const guide = this.querySelector('[data-guide]');
+    if (!p || !full) { guide.innerHTML = '<p class="diy__empty">暂无可模拟项目，请选择其他签证项目。</p>'; return; }
+    this.state.materials = {};
+    guide.innerHTML = this.guideHtml(p, full);
+    this.renderEval();
+  }
+
+  guideHtml(p, full) {
+    const c = full.country;
+    const docs = this.docsOf(p.id);
+    const li = (arr) => (arr && arr.length ? `<ul class="diy__sec-list">${arr.map((t) => `<li>${t}</li>`).join('')}</ul>` : '<p class="diy__sec-empty">—</p>');
     return `
-      ${this.question('03', '官方申请材料清单', '基于官方公开要求整理，逐项标记你的准备状态。')}
-      ${this.projectSummary(id)}
-      <div class="diy__materials-progress">材料完成度：<b>${done} / ${total}</b></div>
-      <div class="diy__materials">
-        ${docs.map((d) => `
-          <article class="diy__doc">
-            <div class="diy__doc-head">
-              <h3 class="diy__doc-name">${d.document_name}</h3>
-              <span class="diy__doc-tag${d.is_required ? ' is-req' : ''}">${d.is_required ? '必须' : '视情况'}</span>
-              <span class="diy__doc-cat">${d.document_category}</span>
-            </div>
-            <div class="diy__doc-body">
-              <p class="diy__doc-req"><span>官方要求：</span>${d.official_requirement}</p>
-              <p class="diy__doc-tip"><span>准备建议：</span>${d.preparation_tips}</p>
-              <p class="diy__doc-src"><span>来源：</span>${d.source_reference} · 更新于 ${d.last_updated}</p>
-            </div>
-            <div class="diy__doc-status">
-              <span class="diy__doc-status-label">我的状态：</span>
-              <button type="button" class="chip${this.state.materials[d.id] === '' || !this.state.materials[d.id] ? ' is-selected' : ''}" data-mstatus="${d.id}" data-value="todo">未准备</button>
-              <button type="button" class="chip${this.state.materials[d.id] === 'preparing' ? ' is-selected' : ''}" data-mstatus="${d.id}" data-value="preparing">准备中</button>
-              <button type="button" class="chip${this.state.materials[d.id] === 'done' ? ' is-selected' : ''}" data-mstatus="${d.id}" data-value="done">已完成</button>
-            </div>
-          </article>`).join('')}
+      <div class="diy__guide-head">
+        <span class="diy__guide-flag"><img src="assets/flags/${c.flag}" alt="${c.cn} 国旗" /></span>
+        <div>
+          <p class="diy__guide-country">${c.cn} <small>${c.en}</small></p>
+          <h2 class="diy__guide-title">${p.visa_name}</h2>
+          <p class="diy__guide-meta">${p.visa_type} · ${this.categoryLabel(full.category.id)} · ${full.subcategory.name}</p>
+        </div>
       </div>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>01</span>签证项目介绍</h3>
+        <p class="diy__sec-text">${full.introduction}</p>
+        <div class="diy__facts">
+          <div class="diy__fact"><span>国家</span><b>${c.cn}</b></div>
+          <div class="diy__fact"><span>签证类型</span><b>${p.visa_type}</b></div>
+          <div class="diy__fact"><span>办理周期</span><b>${full.duration}</b></div>
+          <div class="diy__fact"><span>官方申请机构</span><b>${full.official_authority}</b></div>
+        </div>
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>02</span>适合人群</h3>
+        ${li(full.targetUsers)}
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>03</span>申请条件</h3>
+        ${li(full.requirements)}
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>04</span>DIY 申请流程</h3>
+        <ol class="diy__steps">
+          ${(full.process || []).map((t, i) => `<li><b>${String(i + 1).padStart(2, '0')}</b><span>${t}</span></li>`).join('')}
+        </ol>
+        <div class="diy__official">
+          <a class="btn btn--primary" href="${full.application_url}" target="_blank" rel="noopener noreferrer">进入官方申请页面 <span class="btn-arrow">→</span></a>
+          <a class="btn btn--ghost-dark" href="${full.official_website}" target="_blank" rel="noopener noreferrer">访问官方网站 <span class="btn-arrow">→</span></a>
+        </div>
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>05</span>完整申请材料清单</h3>
+        <p class="diy__sec-desc">以下材料基于官方公开要求整理，每项均附官方要求、准备建议与来源，请逐项核对并标记你的准备状态。</p>
+        <div class="diy__materials">
+          ${docs.map((d) => `
+            <article class="diy__doc">
+              <div class="diy__doc-head">
+                <h4 class="diy__doc-name">${d.document_name}</h4>
+                <span class="diy__doc-tag${d.is_required ? ' is-req' : ''}">${d.is_required ? '必须' : '视情况'}</span>
+                <span class="diy__doc-cat">${d.document_category}</span>
+              </div>
+              <div class="diy__doc-body">
+                <p><span>官方要求：</span>${d.official_requirement}</p>
+                <p><span>准备建议：</span>${d.preparation_tips}</p>
+                <p class="diy__doc-src"><span>来源：</span>${d.source_reference} · 更新于 ${d.last_updated}</p>
+              </div>
+              <div class="diy__doc-status">
+                <span class="diy__doc-status-label">我的状态：</span>
+                <button type="button" class="chip is-selected" data-mstatus="${d.id}" data-value="todo">未准备</button>
+                <button type="button" class="chip" data-mstatus="${d.id}" data-value="preparing">准备中</button>
+                <button type="button" class="chip" data-mstatus="${d.id}" data-value="done">已完成</button>
+              </div>
+            </article>`).join('')}
+        </div>
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>06</span>AI 模拟评估</h3>
+        <p class="diy__sec-desc">填写你的个人情况，系统将结合你的条件与材料准备状态，实时生成模拟评估。信息仅用于本次模拟，不会公开。</p>
+        <div class="diy__eval-grid">
+          <div class="diy__eval-form" data-eval-form>
+            <div class="field-grid">
+              <div class="field" data-field="age"><label for="e-age">年龄</label><input id="e-age" type="text" data-input="age" value="${this.state.profile.age}" placeholder="如：30" autocomplete="off" /></div>
+              <div class="field field--full" data-field="degree"><span class="field-label">学历</span><div class="chip-grid">${this.profileChips('degree', ['高中以下', '高中', '大专', '本科', '硕士', '博士'])}</div></div>
+              <div class="field field--full" data-field="income"><span class="field-label">月收入</span><div class="chip-grid">${this.profileChips('income', ['无', '1万以下', '1-3万', '3-5万', '5-10万', '10万以上'])}</div></div>
+              <div class="field field--full" data-field="language"><span class="field-label">语言水平</span><div class="chip-grid">${this.profileChips('language', ['不会', '基础', '日常交流', '熟练', '专业'])}</div></div>
+              <div class="field field--full" data-field="funds"><span class="field-label">可投入资金</span><div class="chip-grid">${this.profileChips('funds', ['1万以下', '1-5万', '5-10万', '10-30万', '30万以上'])}</div></div>
+              <div class="field field--full" data-field="travelHistory"><span class="field-label">出境记录</span><div class="chip-grid">${this.profileChips('travelHistory', ['无', '短期出境', '长期海外'])}</div></div>
+              <div class="field field--full" data-field="family"><span class="field-label">家庭情况</span><div class="chip-grid">${this.profileChips('family', ['单身', '已婚无子女', '已婚有子女', '其他'])}</div></div>
+            </div>
+            <p class="diy__eval-hint">* 填写后评估结果实时更新，可随时修改重新评估。</p>
+          </div>
+          <div class="diy__eval-result" data-eval-result></div>
+        </div>
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>07</span>风险分析</h3>
+        <div data-eval-risks></div>
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>08</span>提升建议</h3>
+        <div data-eval-tips></div>
+      </section>
+
       <div class="diy__disclaimer">${this.DISCLAIMER}</div>
     `;
   }
 
-  /* 步骤 4：AI 模拟审核 */
-  stepAnalyze() {
+  profileChips(key, options) {
+    const cur = this.state.profile[key];
+    return options.map((o) => `<button type="button" class="chip${cur === o ? ' is-selected' : ''}" data-chip="${key}" data-value="${o}" aria-pressed="${cur === o}">${o}</button>`).join('');
+  }
+
+  /* ================= AI 模拟评估 ================= */
+
+  renderEval() {
+    const result = this.querySelector('[data-eval-result]');
+    if (!result) return;
     const a = this.analyze();
-    return `
-      ${this.question('04', 'AI 模拟审核结果', '基于你填写的条件与材料准备情况生成，用于自我评估与准备参考。')}
+    result.innerHTML = `
       <div class="diy__scores">
-        <div class="diy__score">
-          <p class="diy__score-label">申请条件匹配度</p>
-          <p class="diy__score-num">${a.cond}</p>
-          <div class="diy__score-track"><span style="width:${a.cond}%"></span></div>
-        </div>
-        <div class="diy__score">
-          <p class="diy__score-label">材料完整度</p>
-          <p class="diy__score-num">${a.mat}</p>
-          <div class="diy__score-track"><span style="width:${a.mat}%"></span></div>
-        </div>
-        <div class="diy__score">
-          <p class="diy__score-label">风险等级</p>
-          <p class="diy__score-num diy__score-num--risk is-${a.risk}">${a.risk}</p>
-        </div>
-      </div>
-      <div class="diy__blocks">
-        <div class="diy__block">
-          <h3 class="diy__block-title">优势</h3>
-          <ul>${a.strengths.map((t) => `<li>${t}</li>`).join('')}</ul>
-        </div>
-        <div class="diy__block">
-          <h3 class="diy__block-title">风险</h3>
-          <ul>${a.risks.map((t) => `<li>${t}</li>`).join('')}</ul>
-        </div>
-        <div class="diy__block">
-          <h3 class="diy__block-title">建议</h3>
-          <ul>${a.tips.map((t) => `<li>${t}</li>`).join('')}</ul>
-        </div>
+        <div class="diy__score"><p class="diy__score-label">申请条件匹配度</p><p class="diy__score-num">${a.cond}</p><div class="diy__score-track"><span style="width:${a.cond}%"></span></div></div>
+        <div class="diy__score"><p class="diy__score-label">材料完整度</p><p class="diy__score-num">${a.mat}</p><div class="diy__score-track"><span style="width:${a.mat}%"></span></div></div>
+        <div class="diy__score"><p class="diy__score-label">风险等级</p><p class="diy__score-num diy__score-num--risk is-${a.risk}">${a.risk}</p></div>
       </div>`;
+    const risks = this.querySelector('[data-eval-risks]');
+    if (risks) risks.innerHTML = `<div class="diy__block"><ul>${a.risks.map((t) => `<li>${t}</li>`).join('')}</ul></div>`;
+    const tips = this.querySelector('[data-eval-tips]');
+    if (tips) tips.innerHTML = `<div class="diy__block"><ul>${a.tips.map((t) => `<li>${t}</li>`).join('')}</ul></div>`;
   }
-
-  /* 步骤 5：DIY 报告 */
-  stepReport() {
-    const a = this.analyze();
-    const p = this.allProjects().find((x) => x.id === this.state.projectId);
-    const full = this.fullProject(this.state.projectId);
-    const docs = this.docsOf(this.state.projectId);
-    const undone = docs.filter((d) => this.state.materials[d.id] !== 'done');
-    const now = new Date();
-    const dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
-    const steps = [
-      { phase: '第一阶段（1–2 周）', items: ['确认护照有效期并准备证件照', '在线填写官方签证申请表'] },
-      { phase: '第二阶段（2–6 周）', items: undone.length ? undone.slice(0, 4).map((d) => '准备材料：' + d.document_name) : ['核对全部官方材料是否齐备'] },
-      { phase: '第三阶段（提交与跟进）', items: ['核对目标国家官方最新政策要求', '通过官方渠道提交申请并保留回执', '关注审核进度与补件通知'] }
-    ];
-    return `
-      <div class="diy__report">
-        <div class="diy__report-head">
-          <p class="diy__report-eyebrow">DIY Visa Preparation Report</p>
-          <h2 class="diy__report-title">我的 DIY 签证准备报告</h2>
-          <p class="diy__report-meta">${p ? p.visa_name : ''} · ${p ? this.countryCn(p.country) : ''} · ${dateStr}</p>
-        </div>
-        <div class="diy__scores">
-          <div class="diy__score">
-            <p class="diy__score-label">申请条件匹配度</p>
-            <p class="diy__score-num">${a.cond}</p>
-            <div class="diy__score-track"><span style="width:${a.cond}%"></span></div>
-          </div>
-          <div class="diy__score">
-            <p class="diy__score-label">材料完整度</p>
-            <p class="diy__score-num">${a.mat}</p>
-            <div class="diy__score-track"><span style="width:${a.mat}%"></span></div>
-          </div>
-          <div class="diy__score">
-            <p class="diy__score-label">风险等级</p>
-            <p class="diy__score-num diy__score-num--risk is-${a.risk}">${a.risk}</p>
-          </div>
-        </div>
-        <div class="diy__blocks">
-          <div class="diy__block"><h3 class="diy__block-title">优势</h3><ul>${a.strengths.map((t) => `<li>${t}</li>`).join('')}</ul></div>
-          <div class="diy__block"><h3 class="diy__block-title">风险</h3><ul>${a.risks.map((t) => `<li>${t}</li>`).join('')}</ul></div>
-          <div class="diy__block"><h3 class="diy__block-title">建议</h3><ul>${a.tips.map((t) => `<li>${t}</li>`).join('')}</ul></div>
-        </div>
-        <div class="diy__roadmap">
-          <h3 class="diy__block-title">DIY 准备路线</h3>
-          ${steps.map((r) => `
-            <div class="diy__roadmap-step">
-              <span class="diy__roadmap-dot"></span>
-              <div>
-                <p class="diy__roadmap-phase">${r.phase}</p>
-                <ul>${r.items.map((it) => `<li>${it}</li>`).join('')}</ul>
-              </div>
-            </div>`).join('')}
-        </div>
-        ${full ? `<div class="diy__report-more"><a class="btn btn--ghost-dark" href="project-detail.html?id=${full.id}">查看项目详情 <span class="btn-arrow">→</span></a></div>` : ''}
-        <div class="diy__disclaimer">${this.DISCLAIMER}</div>
-      </div>
-    `;
-  }
-
-  /* ================= AI 模拟审核 ================= */
 
   analyze() {
     const id = this.state.projectId;
-    const p = this.allProjects().find((x) => x.id === id);
     const full = this.fullProject(id);
     const prof = this.state.profile;
     const docs = this.docsOf(id);
@@ -393,7 +303,7 @@ class SiteDiyVisa extends HTMLElement {
     if (iv >= 3) strengths.push('收入水平稳定，具备一定的资金持续性');
     if (prof.travelHistory === '长期海外') strengths.push('具备海外经历，材料可信度与适应力更受认可');
     if (prof.family === '已婚有子女' && cat === 'family') strengths.push('家庭结构与该类项目需求契合');
-    if (!strengths.length) strengths.push('基础信息完整，可按官方清单逐项补齐条件');
+    if (!strengths.length) strengths.push('填写完整个人信息后，可更准确地分析你的申请条件优势');
 
     if (!isNaN(age) && (age < 18 || age > 50)) risks.push('年龄可能与部分项目要求存在差距，请核对项目年龄限制');
     if (lv < 2 && (cat === 'edu' || cat === 'work' || cat === 'tech')) risks.push('语言水平可能与项目要求存在差距，建议先提升语言');
@@ -403,7 +313,7 @@ class SiteDiyVisa extends HTMLElement {
 
     if (mat < 80) {
       const undone = docs.filter((d) => this.state.materials[d.id] !== 'done').slice(0, 2);
-      if (undone.length) tips.push('优先完成 ' + undone.map((d) => d.document_name).join('、') + ' 等必需材料');
+      if (undone.length) tips.push('优先准备 ' + undone.map((d) => d.document_name).join('、') + ' 等必需材料');
     }
     if (lv < 2 && (cat === 'edu' || cat === 'work')) tips.push('制定语言提升计划（课程或考试），目标达到项目要求分数');
     if (fv < 3 && (cat === 'invest' || cat === 'edu')) tips.push('补充资金证明，或选择资金要求更匹配的路线');
@@ -416,132 +326,50 @@ class SiteDiyVisa extends HTMLElement {
   /* ================= 交互 ================= */
 
   bind() {
-    this.nextBtn = this.querySelector('[data-action="next"]');
-    this.prevBtn = this.querySelector('[data-action="prev"]');
-    this.restartBtn = this.querySelector('[data-action="restart"]');
-    this.content = this.querySelector('[data-content]');
-
-    this.nextBtn.addEventListener('click', () => {
-      if (!this.validate()) return;
-      this.goTo(this.step + 1);
+    this.querySelectorAll('[data-picker]').forEach((sel) => {
+      sel.addEventListener('change', () => {
+        if (sel.getAttribute('data-picker') === 'project') {
+          this.state.projectId = sel.value;
+          this.renderGuide();
+        } else {
+          this.fillProjectPicker();
+        }
+      });
     });
-    this.prevBtn.addEventListener('click', () => this.goTo(this.step - 1));
-    this.restartBtn.addEventListener('click', () => this.reset());
 
-    this.content.addEventListener('click', (e) => {
-      const proj = e.target.closest('[data-project]');
-      if (proj) {
-        this.state.projectId = proj.getAttribute('data-project');
-        this.state.materials = {};
-        this.renderStep();
-        this.clearInvalid('projectId');
-        return;
-      }
-      const mstatus = e.target.closest('[data-mstatus]');
-      if (mstatus) {
-        const id = mstatus.getAttribute('data-mstatus');
-        const val = mstatus.getAttribute('data-value');
-        this.state.materials[id] = val;
-        mstatus.parentNode.querySelectorAll('[data-mstatus]').forEach((b) => {
-          b.classList.toggle('is-selected', b === mstatus);
-          b.setAttribute('aria-pressed', String(b === mstatus));
-        });
-        const dlist = this.docsOf(this.state.projectId);
-        const doneCount = dlist.filter((d) => this.state.materials[d.id] === 'done').length;
-        const prog = this.content.querySelector('.diy__materials-progress b');
-        if (prog) prog.textContent = doneCount + ' / ' + dlist.length;
-        return;
-      }
+    const guide = this.querySelector('[data-guide]');
+    guide.addEventListener('click', (e) => {
       const chip = e.target.closest('[data-chip]');
       if (chip) {
         const key = chip.dataset.chip;
         this.state.profile[key] = chip.dataset.value;
-        this.content.querySelectorAll('[data-chip="' + key + '"]').forEach((c) => {
+        guide.querySelectorAll('[data-chip="' + key + '"]').forEach((c) => {
           c.classList.toggle('is-selected', c === chip);
           c.setAttribute('aria-pressed', String(c === chip));
         });
-        this.clearInvalid(key);
+        this.renderEval();
+        return;
+      }
+      const ms = e.target.closest('[data-mstatus]');
+      if (ms) {
+        const id = ms.getAttribute('data-mstatus');
+        const val = ms.getAttribute('data-value');
+        this.state.materials[id] = val;
+        ms.parentNode.querySelectorAll('[data-mstatus]').forEach((b) => {
+          b.classList.toggle('is-selected', b === ms);
+          b.setAttribute('aria-pressed', String(b === ms));
+        });
+        this.renderEval();
       }
     });
 
-    this.content.addEventListener('input', (e) => {
+    guide.addEventListener('input', (e) => {
       const inp = e.target.closest('[data-input]');
       if (inp) {
         this.state.profile[inp.dataset.input] = inp.value;
-        this.clearInvalid(inp.dataset.input);
+        this.renderEval();
       }
     });
-    this.content.addEventListener('change', (e) => {
-      const sel = e.target.closest('[data-filter]');
-      if (sel) {
-        this.state[sel.dataset.filter] = sel.value;
-        this.renderStep();
-      }
-    });
-  }
-
-  validate() {
-    let ok = true;
-    const check = (key, cond) => {
-      const field = this.content.querySelector('[data-field="' + key + '"]');
-      const invalid = !cond;
-      if (field) field.classList.toggle('is-invalid', invalid);
-      if (invalid) ok = false;
-    };
-    if (this.step === 0) check('projectId', !!this.state.projectId);
-    if (this.step === 1) {
-      check('age', /^\d{1,3}$/.test((this.state.profile.age || '').trim()) && parseInt(this.state.profile.age, 10) >= 5 && parseInt(this.state.profile.age, 10) <= 100);
-      check('degree', !!this.state.profile.degree);
-      check('income', !!this.state.profile.income);
-      check('language', !!this.state.profile.language);
-      check('funds', !!this.state.profile.funds);
-      check('travelHistory', !!this.state.profile.travelHistory);
-      check('family', !!this.state.profile.family);
-    }
-    return ok;
-  }
-
-  goTo(index) {
-    this.step = Math.max(0, Math.min(this.totalSteps - 1, index));
-    const names = ['选择签证项目', '填写个人情况', '材料准备清单', 'AI模拟审核', '生成DIY报告'];
-    const pct = Math.round((this.step / (this.totalSteps - 1)) * 100);
-    this.renderStep();
-    const label = this.querySelector('[data-label]');
-    if (label) label.textContent = '第 ' + (this.step + 1) + ' 步 / ' + this.totalSteps + ' 步';
-    const name = this.querySelector('[data-step-name]');
-    if (name) name.textContent = names[this.step];
-    const pctEl = this.querySelector('[data-pct]');
-    if (pctEl) pctEl.textContent = pct + '%';
-    const fill = this.querySelector('[data-fill]');
-    if (fill) fill.style.width = pct + '%';
-    this.prevBtn.style.visibility = this.step === 0 ? 'hidden' : 'visible';
-    this.nextBtn.style.display = this.step === this.totalSteps - 1 ? 'none' : 'inline-flex';
-    this.restartBtn.style.display = this.step === this.totalSteps - 1 ? 'inline-flex' : 'none';
-    if (this.step === 4) this.restartBtn.style.display = 'inline-flex';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  renderStep() {
-    const html = [this.stepProject, this.stepProfile, this.stepMaterials, this.stepAnalyze, this.stepReport][this.step].call(this);
-    this.content.innerHTML = html;
-    if (Istra.reveal) Istra.reveal.observe(this.content);
-  }
-
-  clearInvalid(key) {
-    const field = this.content.querySelector('[data-field="' + key + '"]');
-    if (field) field.classList.remove('is-invalid');
-  }
-
-  reset() {
-    this.state = {
-      projectId: '', country: '', category: '',
-      profile: { age: '', degree: '', occupation: '', income: '', language: '', funds: '', travelHistory: '', family: '' },
-      materials: {}
-    };
-    this.report = null;
-    this.step = 0;
-    this.goTo(0);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
