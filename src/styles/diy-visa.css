@@ -1,0 +1,177 @@
+/* ============================================================
+   DIY 签证模拟系统 · is-diy-visa（深蓝高级商务风）
+   ============================================================ */
+
+is-diy-visa { display: block; }
+
+.diy__head {
+  padding: calc(var(--nav-h) + clamp(3rem, 7vw, 5rem)) 0 clamp(2rem, 4vw, 3rem);
+  background:
+    radial-gradient(52% 44% at 84% 0%, rgba(10, 61, 115, 0.5), transparent 70%),
+    var(--color-ink);
+  border-bottom: 1px solid var(--color-line-soft);
+  color: var(--color-heading);
+  text-align: center;
+}
+.diy__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.diy__eyebrow::before, .diy__eyebrow::after { content: ""; width: 1.75rem; height: 1px; background: currentColor; }
+.diy__title { margin-top: 1.125rem; font-size: var(--fs-h1); font-weight: 700; color: var(--color-heading); }
+.diy__sub { margin: 0.875rem auto 0; max-width: 680px; font-size: var(--fs-lead); color: var(--color-text-muted); }
+
+.diy__body { padding-block: clamp(2rem, 4vw, 3rem) var(--section-pad); }
+
+.diy__wizard {
+  padding: 1.5rem;
+  background: linear-gradient(180deg, rgba(10, 61, 115, 0.2), rgba(6, 43, 85, 0.16));
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-panel);
+}
+
+/* 进度 */
+.diy__progress-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.diy__step-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; color: var(--color-accent); }
+.diy__step-name { font-size: 1rem; font-weight: 700; color: var(--color-heading); }
+.diy__pct { font-size: 0.75rem; color: var(--color-text-muted); }
+.diy__track { margin-top: 0.875rem; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 999px; overflow: hidden; }
+.diy__track-fill { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--color-blue), var(--color-accent)); transition: width 0.4s ease; }
+
+.diy__content { margin-top: 1.75rem; min-height: 240px; }
+
+.diy__q { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; color: var(--color-accent); }
+.diy__panel-title { margin-top: 0.5rem; font-size: var(--fs-h3); font-weight: 700; color: var(--color-heading); }
+.diy__panel-desc { margin-top: 0.375rem; font-size: 0.875rem; color: var(--color-text-muted); }
+
+/* 免责声明 */
+.diy__disclaimer {
+  margin-top: 1.5rem;
+  padding: 0.875rem 1rem;
+  border-left: 3px solid var(--color-accent);
+  background: rgba(4, 27, 58, 0.45);
+  border-radius: var(--radius-s);
+  font-size: 0.75rem;
+  line-height: 1.95;
+  color: var(--color-text-muted);
+}
+
+/* 步骤1：项目选择 */
+.diy__filters { margin-top: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.diy__projects { margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; max-height: 460px; overflow-y: auto; padding-right: 0.25rem; }
+.diy__project {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  text-align: left;
+  background: rgba(6, 43, 85, 0.35);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-m);
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.diy__project:hover { border-color: rgba(59, 130, 246, 0.5); background: rgba(10, 61, 115, 0.5); transform: translateY(-2px); }
+.diy__project.is-selected { border-color: var(--color-accent-line); background: rgba(10, 61, 115, 0.65); }
+.diy__project-flag { width: 40px; height: 30px; flex: none; border-radius: var(--radius-s); overflow: hidden; }
+.diy__project-flag img { width: 100%; height: 100%; object-fit: cover; }
+.diy__project-body { min-width: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+.diy__project-name { font-size: 0.875rem; font-weight: 600; color: var(--color-heading); line-height: 1.4; }
+.diy__project-meta { font-size: 0.75rem; color: var(--color-text-muted); }
+.diy__project-check { margin-left: auto; color: var(--color-accent); font-weight: 700; }
+
+.diy__selected {
+  margin-top: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.125rem;
+  background: rgba(10, 61, 115, 0.35);
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-m);
+}
+.diy__selected-flag { width: 44px; height: 32px; flex: none; border-radius: var(--radius-s); overflow: hidden; }
+.diy__selected-flag img { width: 100%; height: 100%; object-fit: cover; }
+.diy__selected-name { font-size: 1rem; font-weight: 700; color: var(--color-heading); }
+.diy__selected-meta { margin-top: 0.2rem; font-size: 0.75rem; color: var(--color-text-muted); }
+
+/* 步骤3：材料卡片 */
+.diy__materials-progress { margin-top: 1.25rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+.diy__materials-progress b { color: var(--color-accent); font-size: 1rem; }
+.diy__materials { margin-top: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.875rem; }
+.diy__doc {
+  display: flex;
+  flex-direction: column;
+  padding: 1.125rem;
+  background: rgba(6, 43, 85, 0.32);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.diy__doc:hover { border-color: rgba(59, 130, 246, 0.4); transform: translateY(-2px); }
+.diy__doc-head { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.diy__doc-name { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.diy__doc-tag { font-size: 0.6875rem; font-weight: 600; padding: 0.15rem 0.55rem; border-radius: 999px; }
+.diy__doc-tag.is-req { color: var(--color-accent); border: 1px solid var(--color-accent-line); }
+.diy__doc-tag:not(.is-req) { color: var(--color-text-muted); border: 1px solid var(--color-line); }
+.diy__doc-cat { margin-left: auto; font-size: 0.6875rem; color: var(--color-text-faint); }
+.diy__doc-body { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.diy__doc-body p { font-size: 0.8125rem; line-height: 1.75; color: var(--color-text); }
+.diy__doc-body p span { color: var(--color-text-faint); }
+.diy__doc-src { font-size: 0.6875rem !important; color: var(--color-text-faint) !important; }
+.diy__doc-status { margin-top: 0.875rem; padding-top: 0.75rem; border-top: 1px solid var(--color-line-soft); display: flex; align-items: center; gap: 0.375rem; flex-wrap: wrap; }
+.diy__doc-status-label { font-size: 0.75rem; color: var(--color-text-muted); margin-right: 0.25rem; }
+.diy__doc-status .chip { padding: 0.3rem 0.7rem; font-size: 0.75rem; }
+
+/* 步骤4/5：评分与报告 */
+.diy__scores { margin-top: 1.25rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.875rem; }
+.diy__score { padding: 1.25rem; background: rgba(10, 61, 115, 0.3); border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); text-align: center; }
+.diy__score-label { font-size: 0.75rem; letter-spacing: 0.1em; color: var(--color-text-muted); }
+.diy__score-num { margin-top: 0.5rem; font-size: 2.25rem; font-weight: 700; color: var(--color-accent); line-height: 1; }
+.diy__score-num--risk.is-低 { color: #4ADE80; }
+.diy__score-num--risk.is-中 { color: var(--color-accent); }
+.diy__score-num--risk.is-高 { color: #F87171; }
+.diy__score-track { margin-top: 0.875rem; height: 5px; background: rgba(255, 255, 255, 0.1); border-radius: 999px; overflow: hidden; }
+.diy__score-track span { display: block; height: 100%; background: linear-gradient(90deg, var(--color-blue), var(--color-accent)); }
+
+.diy__blocks { margin-top: 1.25rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.875rem; }
+.diy__block { padding: 1.125rem; border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); }
+.diy__block-title { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.diy__block ul { margin-top: 0.625rem; display: flex; flex-direction: column; gap: 0.5rem; list-style: none; }
+.diy__block li { position: relative; padding-left: 1rem; font-size: 0.8125rem; line-height: 1.7; color: var(--color-text); }
+.diy__block li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 6px; height: 6px; border-radius: 50%; background: rgba(59, 130, 246, 0.7); }
+
+.diy__report-head { text-align: center; padding: 1.5rem; background: linear-gradient(180deg, rgba(10, 61, 115, 0.4), rgba(6, 43, 85, 0.25)); border: 1px solid var(--color-accent-line); border-radius: var(--radius-panel); }
+.diy__report-eyebrow { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-accent); }
+.diy__report-title { margin-top: 0.5rem; font-size: 1.375rem; font-weight: 700; color: var(--color-heading); }
+.diy__report-meta { margin-top: 0.375rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+
+.diy__roadmap { margin-top: 1.25rem; padding: 1.125rem; border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); }
+.diy__roadmap-step { display: flex; gap: 0.875rem; margin-top: 0.875rem; }
+.diy__roadmap-dot { flex: none; width: 10px; height: 10px; margin-top: 0.4rem; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.15); }
+.diy__roadmap-phase { font-size: 0.875rem; font-weight: 700; color: var(--color-heading); }
+.diy__roadmap-step ul { margin-top: 0.375rem; display: flex; flex-direction: column; gap: 0.35rem; list-style: none; }
+.diy__roadmap-step li { position: relative; padding-left: 1rem; font-size: 0.8125rem; line-height: 1.7; color: var(--color-text); }
+.diy__roadmap-step li::before { content: "→"; position: absolute; left: 0; color: var(--color-accent); }
+.diy__report-more { margin-top: 1.25rem; text-align: center; }
+
+/* 操作区 */
+.diy__actions { margin-top: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.diy__actions-right { display: flex; gap: 0.75rem; }
+
+/* 响应式 */
+@media (max-width: 900px) {
+  .diy__projects, .diy__materials { grid-template-columns: 1fr; }
+  .diy__scores, .diy__blocks { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .diy__filters { grid-template-columns: 1fr; }
+  .diy__actions { flex-direction: column-reverse; align-items: stretch; }
+  .diy__actions .btn { width: 100%; justify-content: center; }
+}
