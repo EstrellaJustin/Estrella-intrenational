@@ -410,3 +410,28 @@ is-diy-visa { display: block; }
   .diy__flow-head { align-items: flex-start; }
   .diy__flow-toggle { margin-left: 0; }
 }
+
+/* ============================================================
+   DIY 签证助手 · 项目数据驱动版（专属表单 / 流程动作 / 材料细节）
+   ============================================================ */
+
+.diy__subhead { margin-top: 1.25rem; font-size: 0.8125rem; font-weight: 700; color: var(--color-accent); letter-spacing: 0.1em; }
+
+/* 模块2：用户填写信息（项目专属字段） */
+.diy__profile { margin-top: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.875rem; }
+.diy__profile .field { margin: 0; }
+
+/* 流程步骤：动作与来源 */
+.diy__flow-action { margin-top: 0.375rem; font-size: 0.75rem; line-height: 1.7; color: var(--color-blue); }
+.diy__flow-action::before { content: "要做："; color: var(--color-text-faint); }
+.diy__flow-src { margin-top: 0.375rem; font-size: 0.6875rem; color: var(--color-text-faint); }
+
+/* 材料卡片：头部/说明/来源 */
+.diy__task-head { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.diy__task-name { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.diy__task-desc { margin-top: 0.625rem; font-size: 0.8125rem; line-height: 1.75; color: var(--color-text); }
+.diy__task-src { margin-top: 0.5rem; font-size: 0.6875rem; line-height: 1.7; color: var(--color-text-faint); }
+
+@media (max-width: 900px) {
+  .diy__profile { grid-template-columns: 1fr; }
+}

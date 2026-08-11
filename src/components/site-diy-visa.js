@@ -1,10 +1,10 @@
 /* ============================================================
-   组件：is-diy-visa · DIY 签证助手
-   独立功能：按步骤自主准备签证申请
-   模块1 签证基础信息 / 模块2 DIY申请流程(5步) / 模块3 申请材料任务清单 /
-   模块4 材料详细说明(弹窗) / 模块5 我的DIY进度 / 模块6 常见问题 / 模块7 免责声明
-   数据源：Istra.diyGuides / Istra.diyDocuments / Istra.diyTasks
-   无官网入口、无 AI 评分；材料/任务状态本地持久化。
+   组件：is-diy-visa · DIY 签证助手（项目数据驱动架构）
+   用户选择签证项目 → 加载该项目专属：
+   项目要求 / 用户填写信息（项目专属字段）/ DIY申请流程（独立配置）/
+   材料清单（按项目展示）/ 当前完成状态
+   数据源：Istra.diyGuides / Istra.diySteps / Istra.diyRequiredDocs
+   无官网入口、无 AI 评分；状态本地持久化。
    ============================================================ */
 
 class SiteDiyVisa extends HTMLElement {
@@ -12,8 +12,9 @@ class SiteDiyVisa extends HTMLElement {
     super();
     this.state = {
       projectId: '',
-      docs: {},   // docId -> 未开始/准备中/已完成
-      tasks: {}   // taskId -> true/false
+      docs: {},    // docId -> 未开始/准备中/已完成
+      steps: {},   // stepId -> true/false
+      profile: {}  // form field key -> value
     };
   }
 
@@ -33,25 +34,30 @@ class SiteDiyVisa extends HTMLElement {
 
   guides() { return Istra.diyGuides || []; }
   guide(id) { return this.guides().find((g) => g.id === id) || null; }
-  docsOf(id) { return (Istra.diyDocuments || []).filter((d) => d.visa_id === id); }
-  tasksOf(id) { return (Istra.diyTasks || []).filter((t) => t.visa_id === id).sort((a, b) => a.task_order - b.task_order); }
+  stepsOf(id) { return (Istra.diySteps || []).filter((s) => s.visa_project_id === id).sort((a, b) => a.step_order - b.step_order); }
+  docsOf(id) { return (Istra.diyRequiredDocs || []).filter((d) => d.visa_project_id === id); }
   countryCn(id) { const c = (Istra.countries || []).find((x) => x.id === id); return c ? c.cn : id; }
   countryFlag(id) { const c = (Istra.countries || []).find((x) => x.id === id); return c ? c.flag : ''; }
 
-  /* 进度持久化 */
   progressKey() { return 'diy_progress_' + this.state.projectId; }
+  profileKey() { return 'diy_profile_' + this.state.projectId; }
   loadProgress() {
     try {
       const raw = localStorage.getItem(this.progressKey());
       if (raw) {
         const data = JSON.parse(raw);
         if (data && data.docs) this.state.docs = data.docs;
-        if (data && data.tasks) this.state.tasks = data.tasks;
+        if (data && data.steps) this.state.steps = data.steps;
       }
+      const pRaw = localStorage.getItem(this.profileKey());
+      if (pRaw) { const p = JSON.parse(pRaw); if (p) this.state.profile = p; }
     } catch (e) { /* ignore */ }
   }
   saveProgress() {
-    try { localStorage.setItem(this.progressKey(), JSON.stringify({ docs: this.state.docs, tasks: this.state.tasks })); } catch (e) { /* ignore */ }
+    try {
+      localStorage.setItem(this.progressKey(), JSON.stringify({ docs: this.state.docs, steps: this.state.steps }));
+      localStorage.setItem(this.profileKey(), JSON.stringify(this.state.profile));
+    } catch (e) { /* ignore */ }
   }
 
   statusText(v) { return v === '已完成' ? '已完成' : v === '准备中' ? '准备中' : '未开始'; }
@@ -65,7 +71,7 @@ class SiteDiyVisa extends HTMLElement {
           <div class="container">
             <p class="diy__eyebrow" data-reveal>DIY Visa Assistant</p>
             <h1 class="diy__title" data-reveal>DIY 签证助手</h1>
-            <p class="diy__sub" data-reveal>选择一个签证项目，按完整流程自主准备：了解签证 → 判断资格 → 准备材料 → 完成任务 → 检查进度</p>
+            <p class="diy__sub" data-reveal>项目数据驱动：每个签证项目拥有专属流程、专属材料清单与专属信息填写，按步骤自主准备签证申请。</p>
           </div>
         </header>
         <div class="diy__body">
@@ -134,9 +140,10 @@ class SiteDiyVisa extends HTMLElement {
   }
 
   guideHtml(g) {
+    const steps = this.stepsOf(g.id);
     const docs = this.docsOf(g.id);
-    const tasks = this.tasksOf(g.id);
     const flag = this.countryFlag(g.country);
+    const fields = g.form_fields || [];
     const li = (arr) => (arr && arr.length ? '<ul class="diy__sec-list">' + arr.map((t) => '<li>' + t + '</li>').join('') + '</ul>' : '');
     return `
       <div class="diy__guide-head">
@@ -147,7 +154,7 @@ class SiteDiyVisa extends HTMLElement {
         </div>
       </div>
 
-      <!-- 模块1：签证基础信息 -->
+      <!-- 模块1：签证基础信息 + 项目要求 -->
       <section class="diy__sec">
         <h3 class="diy__sec-title"><span>01</span>签证基础信息</h3>
         <div class="diy__facts">
@@ -158,44 +165,75 @@ class SiteDiyVisa extends HTMLElement {
           <div class="diy__fact"><span>申请难度</span><b>${g.difficulty}</b></div>
           <div class="diy__fact"><span>预计准备周期</span><b>${g.preparation_period}</b></div>
         </div>
-        <p class="diy__sec-desc diy__apply-note">申请方式简介：${(g.process_steps && g.process_steps[4]) ? g.process_steps[4].desc : '按官方流程线上提交申请并跟进审核。'}</p>
+        <h4 class="diy__subhead">项目要求（官方公开信息）</h4>
+        ${li(g.requirements)}
       </section>
 
-      <!-- 模块2：DIY申请流程 -->
+      <!-- 模块2：用户填写信息（项目专属字段） -->
       <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>02</span>DIY 申请流程</h3>
+        <h3 class="diy__sec-title"><span>02</span>用户填写信息</h3>
+        <p class="diy__sec-desc">本项目的专属信息字段，填写后用于你的 DIY 准备核对，不会公开。</p>
+        <div class="diy__profile">
+          ${fields.map((f) => {
+            const val = this.state.profile[f.key] || '';
+            if (f.type === 'select') {
+              return `
+                <div class="field" data-field="${f.key}">
+                  <label for="p-${f.key}">${f.label}</label>
+                  <select id="p-${f.key}" data-profile="${f.key}">
+                    <option value="">请选择</option>
+                    ${(f.options || []).map((o) => `<option value="${o}"${val === o ? ' selected' : ''}>${o}</option>`).join('')}
+                  </select>
+                </div>`;
+            }
+            return `
+              <div class="field" data-field="${f.key}">
+                <label for="p-${f.key}">${f.label}</label>
+                <input id="p-${f.key}" type="text" data-profile="${f.key}" value="${val}" placeholder="${f.placeholder || ''}" autocomplete="off" />
+              </div>`;
+          }).join('')}
+        </div>
+      </section>
+
+      <!-- 模块3：DIY申请流程（项目独立配置） -->
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>03</span>DIY 申请流程</h3>
         <div class="diy__flow">
-          ${tasks.map((t) => {
-            const done = !!this.state.tasks[t.id];
+          ${steps.map((s) => {
+            const done = !!this.state.steps[s.id];
             return `
               <article class="diy__flow-step${done ? ' is-done' : ''}">
                 <div class="diy__flow-head">
-                  <span class="diy__flow-no">${String(t.task_order).padStart(2, '0')}</span>
-                  <h4 class="diy__flow-name">${t.task_name}</h4>
-                  <button type="button" class="diy__flow-toggle${done ? ' is-checked' : ''}" data-task="${t.id}" aria-pressed="${done}">${done ? '✓ 已完成' : '标记完成'}</button>
+                  <span class="diy__flow-no">${String(s.step_order).padStart(2, '0')}</span>
+                  <h4 class="diy__flow-name">${s.step_name}</h4>
+                  <button type="button" class="diy__flow-toggle${done ? ' is-checked' : ''}" data-step="${s.id}" aria-pressed="${done}">${done ? '✓ 已完成' : '标记完成'}</button>
                 </div>
-                <p class="diy__flow-desc">说明：${t.task_description}</p>
-                <p class="diy__flow-tip">注意：${t.task_tips}</p>
+                <p class="diy__flow-desc">${s.step_description}</p>
+                <p class="diy__flow-action">要做：${s.required_action}</p>
+                <p class="diy__flow-src">来源：${s.source_reference} · 更新于 ${s.last_updated}</p>
               </article>`;
           }).join('')}
         </div>
       </section>
 
-      <!-- 模块3：申请材料清单（任务列表） -->
+      <!-- 模块4：申请材料清单（按项目展示） -->
       <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>03</span>申请材料清单</h3>
-        <p class="diy__sec-desc">点击材料卡片查看详细说明，点击下方状态按钮更新准备状态。</p>
+        <h3 class="diy__sec-title"><span>04</span>申请材料清单</h3>
+        <p class="diy__sec-desc">材料按本项目官方要求展示，点击状态按钮更新准备状态。</p>
         <div class="diy__tasks">
           ${docs.map((d) => {
             const st = this.statusText(this.state.docs[d.id]);
             const cls = st === '已完成' ? ' is-done' : st === '准备中' ? ' is-progress' : '';
+            const lv = d.requirement_level === '必须' ? ' is-req' : '';
             return `
               <article class="diy__task${cls}">
-                <button type="button" class="diy__task-main" data-doc-detail="${d.id}">
+                <div class="diy__task-head">
                   <span class="diy__task-name">${d.document_name}</span>
-                  <span class="diy__task-tag${d.is_required ? ' is-req' : ''}">${d.is_required ? '必须' : '视情况'}</span>
+                  <span class="diy__task-tag${lv}">${d.requirement_level}</span>
                   <span class="diy__task-status">${st}</span>
-                </button>
+                </div>
+                <p class="diy__task-desc">${d.document_description}</p>
+                <p class="diy__task-src">官方要求：${d.official_requirement}<br>来源：${d.source_reference} · 更新于 ${d.last_updated}</p>
                 <div class="diy__task-statusbar">
                   <button type="button" class="chip${st === '未开始' ? ' is-selected' : ''}" data-doc-status="${d.id}" data-value="未开始">未开始</button>
                   <button type="button" class="chip${st === '准备中' ? ' is-selected' : ''}" data-doc-status="${d.id}" data-value="准备中">准备中</button>
@@ -208,13 +246,13 @@ class SiteDiyVisa extends HTMLElement {
 
       <!-- 模块5：我的DIY进度 -->
       <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>04</span>我的 DIY 进度</h3>
+        <h3 class="diy__sec-title"><span>05</span>我的 DIY 进度</h3>
         <div data-progress></div>
       </section>
 
       <!-- 模块6：常见问题 -->
       <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>05</span>常见问题</h3>
+        <h3 class="diy__sec-title"><span>06</span>常见问题</h3>
         <div class="diy__faq">
           ${(g.faq || []).map((f) => `
             <div class="diy__faq-item">
@@ -232,17 +270,24 @@ class SiteDiyVisa extends HTMLElement {
     const g = this.guide(this.state.projectId);
     if (!g) return;
     const docs = this.docsOf(g.id);
-    const tasks = this.tasksOf(g.id);
+    const steps = this.stepsOf(g.id);
+    const fields = g.form_fields || [];
     const docDone = docs.filter((d) => this.statusText(this.state.docs[d.id]) === '已完成').length;
-    const taskDone = tasks.filter((t) => !!this.state.tasks[t.id]).length;
-    const total = docs.length + tasks.length;
-    const done = docDone + taskDone;
+    const stepDone = steps.filter((s) => !!this.state.steps[s.id]).length;
+    const fieldDone = fields.filter((f) => {
+      const v = this.state.profile[f.key];
+      return typeof v === 'string' && v.trim() !== '';
+    }).length;
+    const total = docs.length + steps.length + fields.length;
+    const done = docDone + stepDone + fieldDone;
     const pct = total ? Math.round((done / total) * 100) : 0;
-    const undoneDoc = docs.find((d) => this.statusText(this.state.docs[d.id]) !== '已完成');
-    const undoneTask = tasks.find((t) => !this.state.tasks[t.id]);
     let next = '核对官方最新要求并准备提交';
-    if (undoneTask) next = undoneTask.task_name;
+    const undoneStep = steps.find((s) => !this.state.steps[s.id]);
+    const undoneDoc = docs.find((d) => this.statusText(this.state.docs[d.id]) !== '已完成');
+    const undoneField = fields.find((f) => !((this.state.profile[f.key] || '').trim()));
+    if (undoneStep) next = undoneStep.step_name;
     else if (undoneDoc) next = '准备材料：' + undoneDoc.document_name;
+    else if (undoneField) next = '填写信息：' + undoneField.label;
     box.innerHTML = `
       <div class="diy__progress-bar"><span style="width:${pct}%"></span><b>${pct}%</b></div>
       <div class="diy__progress-stats">
@@ -251,33 +296,6 @@ class SiteDiyVisa extends HTMLElement {
         <div class="diy__stat"><span>未完成任务</span><b>${total - done}</b></div>
         <div class="diy__stat"><span>下一步行动</span><b>${next}</b></div>
       </div>`;
-  }
-
-  /* 模块4：材料详细说明（弹窗） */
-  openDocDetail(docId) {
-    const d = (Istra.diyDocuments || []).find((x) => x.id === docId);
-    if (!d) return;
-    if (document.getElementById('diy-doc-modal')) return;
-    const overlay = document.createElement('div');
-    overlay.className = 'diy-modal-overlay';
-    overlay.id = 'diy-doc-modal';
-    overlay.innerHTML = `
-      <div class="diy-modal" role="dialog" aria-modal="true" aria-label="${d.document_name}">
-        <div class="diy-modal__head">
-          <h3 class="diy-modal__title">${d.document_name}</h3>
-          <button type="button" class="diy-modal__close" aria-label="关闭">×</button>
-        </div>
-        <div class="diy-modal__body">
-          <div class="diy-modal__row"><span>用途</span><p>${d.description}</p></div>
-          <div class="diy-modal__row"><span>准备要求</span><p>${d.requirement}</p></div>
-          <div class="diy-modal__row"><span>注意事项</span><p>${d.tips}</p></div>
-          <div class="diy-modal__row"><span>常见错误</span><p>${d.common_errors}</p></div>
-        </div>
-      </div>`;
-    document.body.appendChild(overlay);
-    overlay.querySelector('.diy-modal__close').addEventListener('click', () => overlay.remove());
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
-    document.addEventListener('keydown', this._modalEsc = (e) => { if (e.key === 'Escape') overlay.remove(); });
   }
 
   /* ================= 交互 ================= */
@@ -297,8 +315,6 @@ class SiteDiyVisa extends HTMLElement {
 
     const guide = this.querySelector('[data-guide]');
     guide.addEventListener('click', (e) => {
-      const docDetail = e.target.closest('[data-doc-detail]');
-      if (docDetail) { this.openDocDetail(docDetail.getAttribute('data-doc-detail')); return; }
       const docStatus = e.target.closest('[data-doc-status]');
       if (docStatus) {
         const id = docStatus.getAttribute('data-doc-status');
@@ -320,15 +336,32 @@ class SiteDiyVisa extends HTMLElement {
         this.renderProgress();
         return;
       }
-      const task = e.target.closest('[data-task]');
-      if (task) {
-        const id = task.getAttribute('data-task');
-        this.state.tasks[id] = !this.state.tasks[id];
-        task.classList.toggle('is-checked', this.state.tasks[id]);
-        task.setAttribute('aria-pressed', String(this.state.tasks[id]));
-        task.textContent = this.state.tasks[id] ? '✓ 已完成' : '标记完成';
-        const step = task.closest('.diy__flow-step');
-        if (step) step.classList.toggle('is-done', this.state.tasks[id]);
+      const step = e.target.closest('[data-step]');
+      if (step) {
+        const id = step.getAttribute('data-step');
+        this.state.steps[id] = !this.state.steps[id];
+        step.classList.toggle('is-checked', this.state.steps[id]);
+        step.setAttribute('aria-pressed', String(this.state.steps[id]));
+        step.textContent = this.state.steps[id] ? '✓ 已完成' : '标记完成';
+        const article = step.closest('.diy__flow-step');
+        if (article) article.classList.toggle('is-done', this.state.steps[id]);
+        this.saveProgress();
+        this.renderProgress();
+      }
+    });
+
+    guide.addEventListener('input', (e) => {
+      const inp = e.target.closest('[data-profile]');
+      if (inp) {
+        this.state.profile[inp.dataset.profile] = inp.value;
+        this.saveProgress();
+        this.renderProgress();
+      }
+    });
+    guide.addEventListener('change', (e) => {
+      const sel = e.target.closest('[data-profile]');
+      if (sel) {
+        this.state.profile[sel.dataset.profile] = sel.value;
         this.saveProgress();
         this.renderProgress();
       }
