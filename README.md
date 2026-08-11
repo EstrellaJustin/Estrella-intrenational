@@ -14,12 +14,15 @@
 - 入口：顶部导航「DIY签证助手」→ `diy-visa.html`（支持 `?id=xx` 直达具体签证 DIY 指南）
 - 定位：按步骤自主准备签证申请（了解签证 → 判断资格 → 准备材料 → 完成任务 → 检查进度），无官网入口、无 AI 评分
 - 页面 7 大模块：① 签证基础信息（名称/国家/类型/适合人群/难度/准备周期/申请方式简介）② DIY 申请流程（固定 5 步，可标记完成）③ 申请材料任务清单（三态：未开始/准备中/已完成）④ 材料详细说明弹窗（用途/准备要求/注意事项/常见错误）⑤ 我的 DIY 进度（完成度/已完成/未完成/下一步行动）⑥ 常见问题 ⑦ 免责声明（底部固定）
-- 数据库（项目数据驱动 · 生成器 `scripts/generate-diy-assistant.js`，源 `src/data/diy-assistant.json` / `diy-assistant.js`）：
-  - `Istra.diyGuides`（diy_visa_guides）：430 条指南（id / visa_project_id / country / visa_name / visa_type / target_people / difficulty / preparation_period / **form_fields 项目专属填写字段** / requirements / faq / created_time）
-  - `Istra.diySteps`（visa_diy_steps）：2150 条**项目独立配置流程**（id / visa_project_id / step_order / step_name / step_description / required_action / source_reference / last_updated），步骤名称与动作嵌入项目专属材料与要求，禁止所有项目共用一套流程
-  - `Istra.diyRequiredDocs`（visa_required_documents）：4146 条**按项目展示的官方材料**（id / visa_project_id / document_name / document_description / requirement_level（必须/建议）/ official_requirement / source_reference / last_updated）
-- 用户填写模块：每个项目按类别定义专属字段（工作：学历/职业/工作经验/雇主状态；学生：学历/学校录取状态/资金情况/语言成绩；投资：资金规模/投资计划/资金来源…），禁止完全相同表单
-- 完成度自动计算：材料（未开始/准备中/已完成）+ 流程步骤（完成/未完成）+ 用户填写字段（已填/未填），全部本地持久化
+- 数据库（独立配置数据驱动 · 生成器 `scripts/generate-diy-assistant.js`，源 `src/data/diy-assistant.json` / `diy-assistant.js`）：
+  - `Istra.diyConfigs`（visa_diy_config）：430 条项目配置（id / visa_project_id / visa_name / country）
+  - `Istra.diyConditions`（visa_eligibility_conditions）：1827 条申请资格条件（condition_name / condition_description / condition_type 年龄·学历·职业·收入·语言·工作经验·资金·其他 / required / source_reference / last_updated）
+  - `Istra.diyQuestions`（visa_user_questions）：1367 条用户填写问题（question / answer_type / options / validation_rule / condition_type），按签证动态生成表单并自动判定 符合/不符合/需要补充
+  - `Istra.diyRequiredDocs`（visa_required_documents）：4145 条专属材料（document_name / document_category / description / official_requirement / is_required / alternative_document 可替代材料 / source_reference / last_updated）
+  - `Istra.diyPrepTasks`（visa_preparation_tasks）：863 条前置准备任务（task_name / task_description / task_order / required / estimated_time）
+  - `Istra.diySteps`（visa_diy_steps）：2150 条 DIY 流程（step_order / step_title / step_description / user_action / completion_status / source_reference / last_updated）
+- 每个签证项目独立配置，禁止共用一套流程/材料/条件；西班牙数字游民签证（es-nomad-visa）为手工精修示例数据
+- 完成度自动计算：材料（未开始/准备中/已完成）+ 前置任务 + 流程步骤 + 问题已答，全部本地持久化；新增签证只需增加数据库配置，无需修改代码
 - 进度与材料/任务状态本地持久化（localStorage），刷新不丢失
 
 - 流程：选择签证项目 → 填写个人情况 → 官方申请材料清单（三态勾选：未准备/准备中/已完成）→ AI 模拟审核 → DIY 准备报告

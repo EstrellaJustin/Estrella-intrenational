@@ -435,3 +435,84 @@ is-diy-visa { display: block; }
 @media (max-width: 900px) {
   .diy__profile { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   DIY 签证助手 · 独立配置版（条件判定 / 前置任务 / 问题表单）
+   ============================================================ */
+
+.diy__questions { margin-top: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.875rem; }
+.diy__questions .field { margin: 0; }
+
+/* 条件判定 */
+.diy__conditions { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.625rem; }
+.diy__cond {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  background: rgba(10, 61, 115, 0.24);
+  border: 1px solid var(--color-line-soft);
+  border-left-width: 3px;
+  border-radius: var(--radius-m);
+}
+.diy__cond.is-yes { border-left-color: #4ADE80; }
+.diy__cond.is-no { border-left-color: #F87171; }
+.diy__cond.is-need { border-left-color: var(--color-accent); }
+.diy__cond-badge {
+  flex: none;
+  min-width: 64px;
+  text-align: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.diy__cond.is-yes .diy__cond-badge { color: #4ADE80; border: 1px solid rgba(74, 222, 128, 0.5); }
+.diy__cond.is-no .diy__cond-badge { color: #F87171; border: 1px solid rgba(248, 113, 113, 0.5); }
+.diy__cond.is-need .diy__cond-badge { color: var(--color-accent); border: 1px solid var(--color-accent-line); }
+.diy__cond-name { font-size: 0.875rem; font-weight: 700; color: var(--color-heading); }
+.diy__cond-tag { margin-left: 0.5rem; font-size: 0.6875rem; font-weight: 600; padding: 0.1rem 0.5rem; border-radius: 999px; }
+.diy__cond-tag.is-req { color: var(--color-accent); border: 1px solid var(--color-accent-line); }
+.diy__cond-tag:not(.is-req) { color: var(--color-text-muted); border: 1px solid var(--color-line); }
+.diy__cond-desc { margin-top: 0.375rem; font-size: 0.8125rem; line-height: 1.75; color: var(--color-text); }
+.diy__cond-src { margin-top: 0.375rem; font-size: 0.6875rem; color: var(--color-text-faint); }
+
+/* 前置任务 */
+.diy__prep { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.diy__prep-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  background: rgba(6, 43, 85, 0.32);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-m);
+  transition: border-color var(--dur) var(--ease);
+}
+.diy__prep-item.is-done { border-color: rgba(74, 222, 128, 0.4); }
+.diy__prep-check {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 27, 58, 0.6);
+  border: 1px solid var(--color-line);
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.diy__prep-check.is-checked { border-color: rgba(74, 222, 128, 0.6); color: #4ADE80; }
+.diy__prep-name { font-size: 0.875rem; font-weight: 700; color: var(--color-heading); }
+.diy__prep-tag { margin-left: 0.5rem; font-size: 0.6875rem; font-weight: 600; padding: 0.1rem 0.5rem; border-radius: 999px; }
+.diy__prep-tag.is-req { color: var(--color-accent); border: 1px solid var(--color-accent-line); }
+.diy__prep-tag:not(.is-req) { color: var(--color-text-muted); border: 1px solid var(--color-line); }
+.diy__prep-desc { margin-top: 0.375rem; font-size: 0.8125rem; line-height: 1.75; color: var(--color-text); }
+.diy__prep-meta { margin-top: 0.25rem; font-size: 0.6875rem; color: var(--color-text-faint); }
+
+@media (max-width: 900px) {
+  .diy__questions { grid-template-columns: 1fr; }
+}
