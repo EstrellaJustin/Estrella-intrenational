@@ -1,10 +1,10 @@
 /* ============================================================
-   组件：is-diy-visa · DIY 签证模拟系统（单页全量展开版）
-   用户进入页面即看到完整 DIY 指南：
-   项目介绍 / 适合人群 / 申请条件 / DIY申请流程 / 完整材料清单（含每项说明）/
-   AI模拟评估 / 风险分析 / 提升建议 / 免责声明
-   禁止折叠面板、手风琴、点击展开、隐藏内容。
-   数据源：Istra.visaDiyProjects / Istra.visaDocuments / Istra.projects
+   组件：is-diy-visa · DIY 签证助手
+   独立功能：按步骤自主准备签证申请
+   模块1 签证基础信息 / 模块2 DIY申请流程(5步) / 模块3 申请材料任务清单 /
+   模块4 材料详细说明(弹窗) / 模块5 我的DIY进度 / 模块6 常见问题 / 模块7 免责声明
+   数据源：Istra.diyGuides / Istra.diyDocuments / Istra.diyTasks
+   无官网入口、无 AI 评分；材料/任务状态本地持久化。
    ============================================================ */
 
 class SiteDiyVisa extends HTMLElement {
@@ -12,47 +12,62 @@ class SiteDiyVisa extends HTMLElement {
     super();
     this.state = {
       projectId: '',
-      profile: { age: '', degree: '', occupation: '', income: '', language: '', funds: '', travelHistory: '', family: '' },
-      materials: {}
+      docs: {},   // docId -> 未开始/准备中/已完成
+      tasks: {}   // taskId -> true/false
     };
-    this._evaluating = false;
   }
 
   connectedCallback() {
     const urlId = new URLSearchParams(location.search).get('id');
-    const first = (Istra.visaDiyProjects && Istra.visaDiyProjects[0]) ? Istra.visaDiyProjects[0].id : '';
-    this.state.projectId = (urlId && (Istra.visaDiyProjects || []).some((p) => p.id === urlId)) ? urlId : (first || '');
+    const first = (Istra.diyGuides && Istra.diyGuides[0]) ? Istra.diyGuides[0].id : '';
+    this.state.projectId = (urlId && (Istra.diyGuides || []).some((g) => g.id === urlId)) ? urlId : (first || '');
+    this.loadProgress();
     this.render();
     this.bind();
     Istra.reveal.observe(this);
   }
 
-  DISCLAIMER = '本DIY签证模拟系统仅用于帮助用户了解签证申请流程、准备材料以及分析自身条件。AI分析结果不代表任何政府机构、使领馆或签证审核部门的决定。签证批准与否由相关国家政府机构依法独立审核。本站不保证签证成功，不提供签证审批服务。用户应以目标国家官方最新政策要求为准。';
+  DISCLAIMER = '本DIY签证助手用于帮助用户了解签证申请流程、准备材料和规划申请步骤。本工具不代表任何政府机构、使领馆或签证审批部门。签证是否批准由相关国家官方机构独立审核。本站不保证签证成功。';
 
   /* ================= 数据辅助 ================= */
 
-  allProjects() { return Istra.visaDiyProjects || []; }
-  fullProject(id) { return (Istra.projects || []).find((p) => p.id === id) || null; }
+  guides() { return Istra.diyGuides || []; }
+  guide(id) { return this.guides().find((g) => g.id === id) || null; }
+  docsOf(id) { return (Istra.diyDocuments || []).filter((d) => d.visa_id === id); }
+  tasksOf(id) { return (Istra.diyTasks || []).filter((t) => t.visa_id === id).sort((a, b) => a.task_order - b.task_order); }
   countryCn(id) { const c = (Istra.countries || []).find((x) => x.id === id); return c ? c.cn : id; }
-  docsOf(id) { return (Istra.visaDocuments || []).filter((d) => d.visa_project_id === id); }
-  categoryLabel(cid) {
-    const map = { work: '工作就业', tech: '技术人才', edu: '留学教育', invest: '投资创业', talent: '人才移民', family: '家庭团聚', pr: '永久居留', nomad: '数字游民', youth: '青年交流', special: '特殊人才' };
-    return map[cid] || cid;
+  countryFlag(id) { const c = (Istra.countries || []).find((x) => x.id === id); return c ? c.flag : ''; }
+
+  /* 进度持久化 */
+  progressKey() { return 'diy_progress_' + this.state.projectId; }
+  loadProgress() {
+    try {
+      const raw = localStorage.getItem(this.progressKey());
+      if (raw) {
+        const data = JSON.parse(raw);
+        if (data && data.docs) this.state.docs = data.docs;
+        if (data && data.tasks) this.state.tasks = data.tasks;
+      }
+    } catch (e) { /* ignore */ }
+  }
+  saveProgress() {
+    try { localStorage.setItem(this.progressKey(), JSON.stringify({ docs: this.state.docs, tasks: this.state.tasks })); } catch (e) { /* ignore */ }
   }
 
-  /* ================= 渲染（单页全量） ================= */
+  statusText(v) { return v === '已完成' ? '已完成' : v === '准备中' ? '准备中' : '未开始'; }
+
+  /* ================= 渲染 ================= */
 
   render() {
     this.innerHTML = `
       <div class="diy">
         <header class="diy__head">
           <div class="container">
-            <p class="diy__eyebrow" data-reveal>DIY Visa Simulation</p>
-            <h1 class="diy__title" data-reveal>DIY 签证模拟系统</h1>
-            <p class="diy__sub" data-reveal>像阅读官方申请指南一样，一次查看完整 DIY 流程：项目介绍、申请条件、材料清单、AI 模拟评估与风险分析。</p>
+            <p class="diy__eyebrow" data-reveal>DIY Visa Assistant</p>
+            <h1 class="diy__title" data-reveal>DIY 签证助手</h1>
+            <p class="diy__sub" data-reveal>选择一个签证项目，按完整流程自主准备：了解签证 → 判断资格 → 准备材料 → 完成任务 → 检查进度</p>
           </div>
         </header>
-
         <div class="diy__body">
           <div class="container">
             <div class="diy__picker" data-reveal>
@@ -74,7 +89,6 @@ class SiteDiyVisa extends HTMLElement {
   fillPickers() {
     const countrySel = this.querySelector('[data-picker="country"]');
     const catSel = this.querySelector('[data-picker="category"]');
-    const projSel = this.querySelector('[data-picker="project"]');
     const countries = (Istra.countries || []).filter((c) => c.is_available !== false);
     countrySel.innerHTML = '<option value="">全部国家</option>' + countries.map((c) => '<option value="' + c.id + '">' + c.cn + '</option>').join('');
     catSel.innerHTML = '<option value="">全部类别</option>' + this.categoryOptions().map((c) => '<option value="' + c.id + '">' + c.label + '</option>').join('');
@@ -90,237 +104,180 @@ class SiteDiyVisa extends HTMLElement {
     ];
   }
 
-  filteredProjects() {
+  filteredGuides() {
     const countrySel = this.querySelector('[data-picker="country"]');
     const catSel = this.querySelector('[data-picker="category"]');
     const c = countrySel ? countrySel.value : '';
     const cat = catSel ? catSel.value : '';
-    let list = this.allProjects();
-    if (c) list = list.filter((p) => p.country === c);
-    if (cat) list = list.filter((p) => { const f = this.fullProject(p.id); return f && f.category.id === cat; });
+    let list = this.guides();
+    if (c) list = list.filter((g) => g.country === c);
+    if (cat) list = list.filter((g) => {
+      const full = (Istra.projects || []).find((p) => p.id === g.id);
+      return full && full.category.id === cat;
+    });
     return list;
   }
 
   fillProjectPicker() {
     const projSel = this.querySelector('[data-picker="project"]');
-    const list = this.filteredProjects();
-    const valid = list.some((p) => p.id === this.state.projectId);
-    if (!valid && list.length) this.state.projectId = list[0].id;
-    projSel.innerHTML = list.map((p) => `<option value="${p.id}"${p.id === this.state.projectId ? ' selected' : ''}>${this.countryCn(p.country)} · ${p.visa_name}</option>`).join('');
+    const list = this.filteredGuides();
+    if (!list.some((g) => g.id === this.state.projectId) && list.length) this.state.projectId = list[0].id;
+    projSel.innerHTML = list.map((g) => '<option value="' + g.id + '"' + (g.id === this.state.projectId ? ' selected' : '') + '>' + this.countryCn(g.country) + ' · ' + g.visa_name + '</option>').join('');
   }
 
   renderGuide() {
-    const id = this.state.projectId;
-    const p = this.allProjects().find((x) => x.id === id);
-    const full = this.fullProject(id);
+    const g = this.guide(this.state.projectId);
     const guide = this.querySelector('[data-guide]');
-    if (!p || !full) { guide.innerHTML = '<p class="diy__empty">暂无可模拟项目，请选择其他签证项目。</p>'; return; }
-    this.state.materials = {};
-    guide.innerHTML = this.guideHtml(p, full);
-    this.renderEval();
+    if (!g) { guide.innerHTML = '<p class="diy__empty">暂无可选签证项目，请选择其他项目。</p>'; return; }
+    guide.innerHTML = this.guideHtml(g);
+    this.renderProgress();
   }
 
-  guideHtml(p, full) {
-    const c = full.country;
-    const docs = this.docsOf(p.id);
-    const li = (arr) => (arr && arr.length ? `<ul class="diy__sec-list">${arr.map((t) => `<li>${t}</li>`).join('')}</ul>` : '<p class="diy__sec-empty">—</p>');
+  guideHtml(g) {
+    const docs = this.docsOf(g.id);
+    const tasks = this.tasksOf(g.id);
+    const flag = this.countryFlag(g.country);
+    const li = (arr) => (arr && arr.length ? '<ul class="diy__sec-list">' + arr.map((t) => '<li>' + t + '</li>').join('') + '</ul>' : '');
     return `
       <div class="diy__guide-head">
-        <span class="diy__guide-flag"><img src="assets/flags/${c.flag}" alt="${c.cn} 国旗" /></span>
+        <span class="diy__guide-flag"><img src="assets/flags/${flag}" alt="${this.countryCn(g.country)} 国旗" /></span>
         <div>
-          <p class="diy__guide-country">${c.cn} <small>${c.en}</small></p>
-          <h2 class="diy__guide-title">${p.visa_name}</h2>
-          <p class="diy__guide-meta">${p.visa_type} · ${this.categoryLabel(full.category.id)} · ${full.subcategory.name}</p>
+          <p class="diy__guide-country">${this.countryCn(g.country)} <small>${g.visa_type}</small></p>
+          <h2 class="diy__guide-title">${g.visa_name} DIY指南</h2>
         </div>
       </div>
 
+      <!-- 模块1：签证基础信息 -->
       <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>01</span>签证项目介绍</h3>
-        <p class="diy__sec-text">${full.introduction}</p>
+        <h3 class="diy__sec-title"><span>01</span>签证基础信息</h3>
         <div class="diy__facts">
-          <div class="diy__fact"><span>国家</span><b>${c.cn}</b></div>
-          <div class="diy__fact"><span>签证类型</span><b>${p.visa_type}</b></div>
-          <div class="diy__fact"><span>办理周期</span><b>${full.duration}</b></div>
-          <div class="diy__fact"><span>官方申请机构</span><b>${full.official_authority}</b></div>
+          <div class="diy__fact"><span>签证名称</span><b>${g.visa_name}</b></div>
+          <div class="diy__fact"><span>目标国家</span><b>${this.countryCn(g.country)}</b></div>
+          <div class="diy__fact"><span>签证类型</span><b>${g.visa_type}</b></div>
+          <div class="diy__fact"><span>适合人群</span><b>${g.target_people}</b></div>
+          <div class="diy__fact"><span>申请难度</span><b>${g.difficulty}</b></div>
+          <div class="diy__fact"><span>预计准备周期</span><b>${g.preparation_period}</b></div>
+        </div>
+        <p class="diy__sec-desc diy__apply-note">申请方式简介：${(g.process_steps && g.process_steps[4]) ? g.process_steps[4].desc : '按官方流程线上提交申请并跟进审核。'}</p>
+      </section>
+
+      <!-- 模块2：DIY申请流程 -->
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>02</span>DIY 申请流程</h3>
+        <div class="diy__flow">
+          ${tasks.map((t) => {
+            const done = !!this.state.tasks[t.id];
+            return `
+              <article class="diy__flow-step${done ? ' is-done' : ''}">
+                <div class="diy__flow-head">
+                  <span class="diy__flow-no">${String(t.task_order).padStart(2, '0')}</span>
+                  <h4 class="diy__flow-name">${t.task_name}</h4>
+                  <button type="button" class="diy__flow-toggle${done ? ' is-checked' : ''}" data-task="${t.id}" aria-pressed="${done}">${done ? '✓ 已完成' : '标记完成'}</button>
+                </div>
+                <p class="diy__flow-desc">说明：${t.task_description}</p>
+                <p class="diy__flow-tip">注意：${t.task_tips}</p>
+              </article>`;
+          }).join('')}
         </div>
       </section>
 
+      <!-- 模块3：申请材料清单（任务列表） -->
       <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>02</span>适合人群</h3>
-        ${li(full.targetUsers)}
-      </section>
-
-      <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>03</span>申请条件</h3>
-        ${li(full.requirements)}
-      </section>
-
-      <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>04</span>DIY 申请流程</h3>
-        <ol class="diy__steps">
-          ${(full.process || []).map((t, i) => `<li><b>${String(i + 1).padStart(2, '0')}</b><span>${t}</span></li>`).join('')}
-        </ol>
-        <div class="diy__official">
-          <a class="btn btn--primary" href="${full.application_url}" target="_blank" rel="noopener noreferrer">进入官方申请页面 <span class="btn-arrow">→</span></a>
-          <a class="btn btn--ghost-dark" href="${full.official_website}" target="_blank" rel="noopener noreferrer">访问官方网站 <span class="btn-arrow">→</span></a>
+        <h3 class="diy__sec-title"><span>03</span>申请材料清单</h3>
+        <p class="diy__sec-desc">点击材料卡片查看详细说明，点击下方状态按钮更新准备状态。</p>
+        <div class="diy__tasks">
+          ${docs.map((d) => {
+            const st = this.statusText(this.state.docs[d.id]);
+            const cls = st === '已完成' ? ' is-done' : st === '准备中' ? ' is-progress' : '';
+            return `
+              <article class="diy__task${cls}">
+                <button type="button" class="diy__task-main" data-doc-detail="${d.id}">
+                  <span class="diy__task-name">${d.document_name}</span>
+                  <span class="diy__task-tag${d.is_required ? ' is-req' : ''}">${d.is_required ? '必须' : '视情况'}</span>
+                  <span class="diy__task-status">${st}</span>
+                </button>
+                <div class="diy__task-statusbar">
+                  <button type="button" class="chip${st === '未开始' ? ' is-selected' : ''}" data-doc-status="${d.id}" data-value="未开始">未开始</button>
+                  <button type="button" class="chip${st === '准备中' ? ' is-selected' : ''}" data-doc-status="${d.id}" data-value="准备中">准备中</button>
+                  <button type="button" class="chip${st === '已完成' ? ' is-selected' : ''}" data-doc-status="${d.id}" data-value="已完成">已完成</button>
+                </div>
+              </article>`;
+          }).join('')}
         </div>
       </section>
 
+      <!-- 模块5：我的DIY进度 -->
       <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>05</span>完整申请材料清单</h3>
-        <p class="diy__sec-desc">以下材料基于官方公开要求整理，每项均附官方要求、准备建议与来源，请逐项核对并标记你的准备状态。</p>
-        <div class="diy__materials">
-          ${docs.map((d) => `
-            <article class="diy__doc">
-              <div class="diy__doc-head">
-                <h4 class="diy__doc-name">${d.document_name}</h4>
-                <span class="diy__doc-tag${d.is_required ? ' is-req' : ''}">${d.is_required ? '必须' : '视情况'}</span>
-                <span class="diy__doc-cat">${d.document_category}</span>
-              </div>
-              <div class="diy__doc-body">
-                <p><span>官方要求：</span>${d.official_requirement}</p>
-                <p><span>准备建议：</span>${d.preparation_tips}</p>
-                <p class="diy__doc-src"><span>来源：</span>${d.source_reference} · 更新于 ${d.last_updated}</p>
-              </div>
-              <div class="diy__doc-status">
-                <span class="diy__doc-status-label">我的状态：</span>
-                <button type="button" class="chip is-selected" data-mstatus="${d.id}" data-value="todo">未准备</button>
-                <button type="button" class="chip" data-mstatus="${d.id}" data-value="preparing">准备中</button>
-                <button type="button" class="chip" data-mstatus="${d.id}" data-value="done">已完成</button>
-              </div>
-            </article>`).join('')}
+        <h3 class="diy__sec-title"><span>04</span>我的 DIY 进度</h3>
+        <div data-progress></div>
+      </section>
+
+      <!-- 模块6：常见问题 -->
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>05</span>常见问题</h3>
+        <div class="diy__faq">
+          ${(g.faq || []).map((f) => `
+            <div class="diy__faq-item">
+              <p class="diy__faq-q">${f.q}</p>
+              <p class="diy__faq-a">${f.a}</p>
+            </div>`).join('')}
         </div>
       </section>
-
-      <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>06</span>AI 模拟评估</h3>
-        <p class="diy__sec-desc">填写你的个人情况，系统将结合你的条件与材料准备状态，实时生成模拟评估。信息仅用于本次模拟，不会公开。</p>
-        <div class="diy__eval-grid">
-          <div class="diy__eval-form" data-eval-form>
-            <div class="field-grid">
-              <div class="field" data-field="age"><label for="e-age">年龄</label><input id="e-age" type="text" data-input="age" value="${this.state.profile.age}" placeholder="如：30" autocomplete="off" /></div>
-              <div class="field field--full" data-field="degree"><span class="field-label">学历</span><div class="chip-grid">${this.profileChips('degree', ['高中以下', '高中', '大专', '本科', '硕士', '博士'])}</div></div>
-              <div class="field field--full" data-field="income"><span class="field-label">月收入</span><div class="chip-grid">${this.profileChips('income', ['无', '1万以下', '1-3万', '3-5万', '5-10万', '10万以上'])}</div></div>
-              <div class="field field--full" data-field="language"><span class="field-label">语言水平</span><div class="chip-grid">${this.profileChips('language', ['不会', '基础', '日常交流', '熟练', '专业'])}</div></div>
-              <div class="field field--full" data-field="funds"><span class="field-label">可投入资金</span><div class="chip-grid">${this.profileChips('funds', ['1万以下', '1-5万', '5-10万', '10-30万', '30万以上'])}</div></div>
-              <div class="field field--full" data-field="travelHistory"><span class="field-label">出境记录</span><div class="chip-grid">${this.profileChips('travelHistory', ['无', '短期出境', '长期海外'])}</div></div>
-              <div class="field field--full" data-field="family"><span class="field-label">家庭情况</span><div class="chip-grid">${this.profileChips('family', ['单身', '已婚无子女', '已婚有子女', '其他'])}</div></div>
-            </div>
-            <p class="diy__eval-hint">* 填写后评估结果实时更新，可随时修改重新评估。</p>
-          </div>
-          <div class="diy__eval-result" data-eval-result></div>
-        </div>
-      </section>
-
-      <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>07</span>风险分析</h3>
-        <div data-eval-risks></div>
-      </section>
-
-      <section class="diy__sec">
-        <h3 class="diy__sec-title"><span>08</span>提升建议</h3>
-        <div data-eval-tips></div>
-      </section>
-
-      <div class="diy__disclaimer">${this.DISCLAIMER}</div>
     `;
   }
 
-  profileChips(key, options) {
-    const cur = this.state.profile[key];
-    return options.map((o) => `<button type="button" class="chip${cur === o ? ' is-selected' : ''}" data-chip="${key}" data-value="${o}" aria-pressed="${cur === o}">${o}</button>`).join('');
-  }
-
-  /* ================= AI 模拟评估 ================= */
-
-  renderEval() {
-    const result = this.querySelector('[data-eval-result]');
-    if (!result) return;
-    const a = this.analyze();
-    result.innerHTML = `
-      <div class="diy__scores">
-        <div class="diy__score"><p class="diy__score-label">申请条件匹配度</p><p class="diy__score-num">${a.cond}</p><div class="diy__score-track"><span style="width:${a.cond}%"></span></div></div>
-        <div class="diy__score"><p class="diy__score-label">材料完整度</p><p class="diy__score-num">${a.mat}</p><div class="diy__score-track"><span style="width:${a.mat}%"></span></div></div>
-        <div class="diy__score"><p class="diy__score-label">风险等级</p><p class="diy__score-num diy__score-num--risk is-${a.risk}">${a.risk}</p></div>
+  renderProgress() {
+    const box = this.querySelector('[data-progress]');
+    if (!box) return;
+    const g = this.guide(this.state.projectId);
+    if (!g) return;
+    const docs = this.docsOf(g.id);
+    const tasks = this.tasksOf(g.id);
+    const docDone = docs.filter((d) => this.statusText(this.state.docs[d.id]) === '已完成').length;
+    const taskDone = tasks.filter((t) => !!this.state.tasks[t.id]).length;
+    const total = docs.length + tasks.length;
+    const done = docDone + taskDone;
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    const undoneDoc = docs.find((d) => this.statusText(this.state.docs[d.id]) !== '已完成');
+    const undoneTask = tasks.find((t) => !this.state.tasks[t.id]);
+    let next = '核对官方最新要求并准备提交';
+    if (undoneTask) next = undoneTask.task_name;
+    else if (undoneDoc) next = '准备材料：' + undoneDoc.document_name;
+    box.innerHTML = `
+      <div class="diy__progress-bar"><span style="width:${pct}%"></span><b>${pct}%</b></div>
+      <div class="diy__progress-stats">
+        <div class="diy__stat"><span>总体完成度</span><b>${pct}%</b></div>
+        <div class="diy__stat"><span>已完成任务</span><b>${done} / ${total}</b></div>
+        <div class="diy__stat"><span>未完成任务</span><b>${total - done}</b></div>
+        <div class="diy__stat"><span>下一步行动</span><b>${next}</b></div>
       </div>`;
-    const risks = this.querySelector('[data-eval-risks]');
-    if (risks) risks.innerHTML = `<div class="diy__block"><ul>${a.risks.map((t) => `<li>${t}</li>`).join('')}</ul></div>`;
-    const tips = this.querySelector('[data-eval-tips]');
-    if (tips) tips.innerHTML = `<div class="diy__block"><ul>${a.tips.map((t) => `<li>${t}</li>`).join('')}</ul></div>`;
   }
 
-  analyze() {
-    const id = this.state.projectId;
-    const full = this.fullProject(id);
-    const prof = this.state.profile;
-    const docs = this.docsOf(id);
-    const cat = full ? full.category.id : '';
-    const age = parseInt(prof.age, 10);
-    const lv = { '不会': 0, '基础': 1, '日常交流': 2, '熟练': 3, '专业': 4 }[prof.language] || 0;
-    const fv = { '1万以下': 1, '1-5万': 2, '5-10万': 3, '10-30万': 4, '30万以上': 5 }[prof.funds] || 0;
-    const iv = { '无': 0, '1万以下': 1, '1-3万': 2, '3-5万': 3, '5-10万': 4, '10万以上': 5 }[prof.income] || 0;
-
-    let score = 60;
-    if (!isNaN(age)) {
-      if (cat === 'youth') { if (age >= 18 && age <= 30) score += 10; else score -= 15; }
-      if (cat === 'work' || cat === 'tech') { if (age >= 22 && age <= 45) score += 8; else if (age > 50) score -= 10; }
-      if (cat === 'edu') { if (age >= 18 && age <= 35) score += 8; }
-      if (cat === 'pr' || cat === 'invest') score += 5;
-    }
-    if (cat === 'edu' || cat === 'tech') {
-      if (['本科', '硕士', '博士'].includes(prof.degree)) score += 10;
-      else if (prof.degree === '大专') score += 4;
-      else if (prof.degree) score -= 8;
-    }
-    if (cat === 'edu' || cat === 'work' || cat === 'tech') {
-      if (lv >= 2) score += 8; else if (prof.language) score -= 8;
-    }
-    if (cat === 'invest') { if (fv >= 4) score += 12; else if (fv) score -= 15; }
-    else if (cat === 'edu') { if (fv >= 3) score += 8; else if (fv) score -= 6; }
-    else if (cat === 'work' || cat === 'nomad') { if (fv >= 2) score += 5; }
-    if (cat === 'invest' || cat === 'pr') { if (iv >= 3) score += 6; }
-    if (cat === 'family') score += 5;
-    if (prof.travelHistory === '长期海外') score += 4;
-    const cond = Math.max(20, Math.min(95, Math.round(score)));
-
-    let done = 0, partial = 0;
-    docs.forEach((d) => {
-      const st = this.state.materials[d.id] || '';
-      if (st === 'done') done++;
-      else if (st === 'preparing') partial++;
-    });
-    const mat = docs.length ? Math.round(((done + partial * 0.5) / docs.length) * 100) : 0;
-
-    let risk = '低';
-    if (mat < 50) risk = '高';
-    else if (mat < 80 || cond < 60) risk = '中';
-
-    const strengths = [], risks = [], tips = [];
-    if (!isNaN(age) && age >= 22 && age <= 45) strengths.push('年龄处于多数签证项目的适龄区间');
-    if (['本科', '硕士', '博士'].includes(prof.degree)) strengths.push('学历背景良好，可满足多数项目的学历要求');
-    if (lv >= 3) strengths.push('语言能力较强，是申请中的重要加分项');
-    if (fv >= 3) strengths.push('资金准备相对充足');
-    if (iv >= 3) strengths.push('收入水平稳定，具备一定的资金持续性');
-    if (prof.travelHistory === '长期海外') strengths.push('具备海外经历，材料可信度与适应力更受认可');
-    if (prof.family === '已婚有子女' && cat === 'family') strengths.push('家庭结构与该类项目需求契合');
-    if (!strengths.length) strengths.push('填写完整个人信息后，可更准确地分析你的申请条件优势');
-
-    if (!isNaN(age) && (age < 18 || age > 50)) risks.push('年龄可能与部分项目要求存在差距，请核对项目年龄限制');
-    if (lv < 2 && (cat === 'edu' || cat === 'work' || cat === 'tech')) risks.push('语言水平可能与项目要求存在差距，建议先提升语言');
-    if (fv < 3 && (cat === 'invest' || cat === 'edu')) risks.push('资金规模可能未达项目门槛，建议核对官方资金要求');
-    if (mat < 80) risks.push('材料完整度不足，未完成材料可能影响审核进度');
-    if (!risks.length) risks.push('暂无明显短板，继续保持材料与条件的一致性');
-
-    if (mat < 80) {
-      const undone = docs.filter((d) => this.state.materials[d.id] !== 'done').slice(0, 2);
-      if (undone.length) tips.push('优先准备 ' + undone.map((d) => d.document_name).join('、') + ' 等必需材料');
-    }
-    if (lv < 2 && (cat === 'edu' || cat === 'work')) tips.push('制定语言提升计划（课程或考试），目标达到项目要求分数');
-    if (fv < 3 && (cat === 'invest' || cat === 'edu')) tips.push('补充资金证明，或选择资金要求更匹配的路线');
-    if (prof.travelHistory === '无' && (cat === 'pr' || cat === 'invest')) tips.push('提前规划一次合规出境记录，增强背景连续性');
-    if (!tips.length) tips.push('材料齐备后按官方流程提交，保持信息一致并关注补件通知');
-
-    return { cond, mat, risk, strengths: strengths.slice(0, 4), risks: risks.slice(0, 4), tips: tips.slice(0, 4) };
+  /* 模块4：材料详细说明（弹窗） */
+  openDocDetail(docId) {
+    const d = (Istra.diyDocuments || []).find((x) => x.id === docId);
+    if (!d) return;
+    if (document.getElementById('diy-doc-modal')) return;
+    const overlay = document.createElement('div');
+    overlay.className = 'diy-modal-overlay';
+    overlay.id = 'diy-doc-modal';
+    overlay.innerHTML = `
+      <div class="diy-modal" role="dialog" aria-modal="true" aria-label="${d.document_name}">
+        <div class="diy-modal__head">
+          <h3 class="diy-modal__title">${d.document_name}</h3>
+          <button type="button" class="diy-modal__close" aria-label="关闭">×</button>
+        </div>
+        <div class="diy-modal__body">
+          <div class="diy-modal__row"><span>用途</span><p>${d.description}</p></div>
+          <div class="diy-modal__row"><span>准备要求</span><p>${d.requirement}</p></div>
+          <div class="diy-modal__row"><span>注意事项</span><p>${d.tips}</p></div>
+          <div class="diy-modal__row"><span>常见错误</span><p>${d.common_errors}</p></div>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector('.diy-modal__close').addEventListener('click', () => overlay.remove());
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+    document.addEventListener('keydown', this._modalEsc = (e) => { if (e.key === 'Escape') overlay.remove(); });
   }
 
   /* ================= 交互 ================= */
@@ -330,6 +287,7 @@ class SiteDiyVisa extends HTMLElement {
       sel.addEventListener('change', () => {
         if (sel.getAttribute('data-picker') === 'project') {
           this.state.projectId = sel.value;
+          this.loadProgress();
           this.renderGuide();
         } else {
           this.fillProjectPicker();
@@ -339,35 +297,40 @@ class SiteDiyVisa extends HTMLElement {
 
     const guide = this.querySelector('[data-guide]');
     guide.addEventListener('click', (e) => {
-      const chip = e.target.closest('[data-chip]');
-      if (chip) {
-        const key = chip.dataset.chip;
-        this.state.profile[key] = chip.dataset.value;
-        guide.querySelectorAll('[data-chip="' + key + '"]').forEach((c) => {
-          c.classList.toggle('is-selected', c === chip);
-          c.setAttribute('aria-pressed', String(c === chip));
+      const docDetail = e.target.closest('[data-doc-detail]');
+      if (docDetail) { this.openDocDetail(docDetail.getAttribute('data-doc-detail')); return; }
+      const docStatus = e.target.closest('[data-doc-status]');
+      if (docStatus) {
+        const id = docStatus.getAttribute('data-doc-status');
+        const val = docStatus.getAttribute('data-value');
+        this.state.docs[id] = val;
+        docStatus.parentNode.querySelectorAll('[data-doc-status]').forEach((b) => {
+          b.classList.toggle('is-selected', b === docStatus);
+          b.setAttribute('aria-pressed', String(b === docStatus));
         });
-        this.renderEval();
+        const card = docStatus.closest('.diy__task');
+        const st = this.statusText(this.state.docs[id]);
+        if (card) {
+          card.classList.toggle('is-done', st === '已完成');
+          card.classList.toggle('is-progress', st === '准备中');
+          const tag = card.querySelector('.diy__task-status');
+          if (tag) tag.textContent = st;
+        }
+        this.saveProgress();
+        this.renderProgress();
         return;
       }
-      const ms = e.target.closest('[data-mstatus]');
-      if (ms) {
-        const id = ms.getAttribute('data-mstatus');
-        const val = ms.getAttribute('data-value');
-        this.state.materials[id] = val;
-        ms.parentNode.querySelectorAll('[data-mstatus]').forEach((b) => {
-          b.classList.toggle('is-selected', b === ms);
-          b.setAttribute('aria-pressed', String(b === ms));
-        });
-        this.renderEval();
-      }
-    });
-
-    guide.addEventListener('input', (e) => {
-      const inp = e.target.closest('[data-input]');
-      if (inp) {
-        this.state.profile[inp.dataset.input] = inp.value;
-        this.renderEval();
+      const task = e.target.closest('[data-task]');
+      if (task) {
+        const id = task.getAttribute('data-task');
+        this.state.tasks[id] = !this.state.tasks[id];
+        task.classList.toggle('is-checked', this.state.tasks[id]);
+        task.setAttribute('aria-pressed', String(this.state.tasks[id]));
+        task.textContent = this.state.tasks[id] ? '✓ 已完成' : '标记完成';
+        const step = task.closest('.diy__flow-step');
+        if (step) step.classList.toggle('is-done', this.state.tasks[id]);
+        this.saveProgress();
+        this.renderProgress();
       }
     });
   }

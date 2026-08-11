@@ -9,9 +9,17 @@
 
 ---
 
-## DIY 签证模拟系统（新增模块）
+## DIY 签证助手（独立功能）
 
-- 入口：顶部导航「DIY签证模拟」→ `diy-visa.html`
+- 入口：顶部导航「DIY签证助手」→ `diy-visa.html`（支持 `?id=xx` 直达具体签证 DIY 指南）
+- 定位：按步骤自主准备签证申请（了解签证 → 判断资格 → 准备材料 → 完成任务 → 检查进度），无官网入口、无 AI 评分
+- 页面 7 大模块：① 签证基础信息（名称/国家/类型/适合人群/难度/准备周期/申请方式简介）② DIY 申请流程（固定 5 步，可标记完成）③ 申请材料任务清单（三态：未开始/准备中/已完成）④ 材料详细说明弹窗（用途/准备要求/注意事项/常见错误）⑤ 我的 DIY 进度（完成度/已完成/未完成/下一步行动）⑥ 常见问题 ⑦ 免责声明（底部固定）
+- 数据库（生成器 `scripts/generate-diy-assistant.js`，源 `src/data/diy-assistant.json` / `diy-assistant.js`）：
+  - `Istra.diyGuides`（diy_visa_guides）：430 条指南（id / visa_project_id / country / visa_name / visa_type / target_people / difficulty / preparation_period / process_steps / faq / created_time）
+  - `Istra.diyDocuments`（diy_documents）：4146 条材料任务（id / visa_id / document_name / description / requirement / tips / common_errors / status）
+  - `Istra.diyTasks`（diy_tasks）：2150 条固定流程任务（id / visa_id / task_name / task_description / task_tips / task_order）
+- 进度与材料/任务状态本地持久化（localStorage），刷新不丢失
+
 - 流程：选择签证项目 → 填写个人情况 → 官方申请材料清单（三态勾选：未准备/准备中/已完成）→ AI 模拟审核 → DIY 准备报告
 - 展示方式（单页全量展开）：进入页面即直接看到完整 DIY 指南——签证项目介绍 / 适合人群 / 申请条件 / DIY 申请流程 / 完整申请材料清单（每项含官方要求、准备建议、来源）/ AI 模拟评估 / 风险分析 / 提升建议 / 免责声明；禁止折叠面板、手风琴与点击展开，支持 `diy-visa.html?id=xx` 直达指定项目
 - 数据库：`src/data/visa-diy.json` / `visa-diy.js`（生成器 `scripts/generate-visa-diy.js`）：

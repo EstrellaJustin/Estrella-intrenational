@@ -269,3 +269,144 @@ is-diy-visa { display: block; }
   .diy__eval-grid { grid-template-columns: 1fr; }
   .diy__facts { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   DIY 签证助手 · 专业工具风格（流程步骤 / 任务列表 / 进度 / 弹窗）
+   ============================================================ */
+
+/* 模块2：DIY 申请流程 */
+.diy__flow { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.875rem; }
+.diy__flow-step {
+  padding: 1.125rem;
+  background: rgba(10, 61, 115, 0.24);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-m);
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+.diy__flow-step.is-done { border-color: rgba(74, 222, 128, 0.4); background: rgba(6, 43, 85, 0.45); }
+.diy__flow-head { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.diy__flow-no {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-s);
+  padding: 0.2rem 0.5rem;
+}
+.diy__flow-name { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.diy__flow-toggle {
+  margin-left: auto;
+  padding: 0.3rem 0.75rem;
+  background: rgba(4, 27, 58, 0.55);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.diy__flow-toggle:hover { border-color: rgba(59, 130, 246, 0.55); color: var(--color-heading); }
+.diy__flow-toggle.is-checked { border-color: rgba(74, 222, 128, 0.5); color: #4ADE80; }
+.diy__flow-desc { margin-top: 0.625rem; font-size: 0.8125rem; line-height: 1.75; color: var(--color-text); }
+.diy__flow-desc::before { content: "说明："; color: var(--color-text-faint); }
+.diy__flow-tip { margin-top: 0.375rem; font-size: 0.75rem; line-height: 1.7; color: var(--color-accent); }
+.diy__flow-tip::before { content: "注意："; }
+
+/* 模块3：申请材料任务列表 */
+.diy__tasks { margin-top: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.875rem; }
+.diy__task {
+  display: flex;
+  flex-direction: column;
+  padding: 0.875rem;
+  background: rgba(6, 43, 85, 0.32);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-m);
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.diy__task:hover { border-color: rgba(59, 130, 246, 0.4); transform: translateY(-2px); }
+.diy__task.is-done { border-color: rgba(74, 222, 128, 0.35); }
+.diy__task.is-progress { border-color: rgba(201, 162, 39, 0.4); }
+.diy__task-main {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+.diy__task-name { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); }
+.diy__task-name::after { content: " 详情 ›"; font-size: 0.75rem; font-weight: 500; color: var(--color-text-faint); }
+.diy__task-tag { font-size: 0.6875rem; font-weight: 600; padding: 0.12rem 0.5rem; border-radius: 999px; }
+.diy__task-tag.is-req { color: var(--color-accent); border: 1px solid var(--color-accent-line); }
+.diy__task-tag:not(.is-req) { color: var(--color-text-muted); border: 1px solid var(--color-line); }
+.diy__task-status { margin-left: auto; font-size: 0.75rem; font-weight: 600; }
+.diy__task.is-done .diy__task-status { color: #4ADE80; }
+.diy__task.is-progress .diy__task-status { color: var(--color-accent); }
+.diy__task:not(.is-done):not(.is-progress) .diy__task-status { color: var(--color-text-muted); }
+.diy__task-statusbar { margin-top: 0.75rem; padding-top: 0.625rem; border-top: 1px solid var(--color-line-soft); display: flex; gap: 0.375rem; flex-wrap: wrap; }
+.diy__task-statusbar .chip { padding: 0.28rem 0.65rem; font-size: 0.75rem; }
+
+/* 模块5：进度 */
+.diy__progress-bar { margin-top: 1rem; height: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 999px; overflow: hidden; position: relative; }
+.diy__progress-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--color-blue), var(--color-accent)); transition: width 0.4s ease; }
+.diy__progress-bar b { position: absolute; right: 0.5rem; top: -1.6rem; font-size: 0.8125rem; color: var(--color-accent); }
+.diy__progress-stats { margin-top: 1.5rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+.diy__stat { padding: 0.875rem 1rem; background: rgba(10, 61, 115, 0.28); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.diy__stat span { display: block; font-size: 0.6875rem; letter-spacing: 0.1em; color: var(--color-text-faint); }
+.diy__stat b { display: block; margin-top: 0.4rem; font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); line-height: 1.5; }
+
+/* 模块6：常见问题 */
+.diy__faq { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.diy__faq-item { padding: 0.875rem 1rem; background: rgba(10, 61, 115, 0.24); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.diy__faq-q { font-size: 0.875rem; font-weight: 700; color: var(--color-heading); }
+.diy__faq-a { margin-top: 0.375rem; font-size: 0.8125rem; line-height: 1.8; color: var(--color-text-muted); }
+
+/* 模块4：材料详情弹窗 */
+.diy-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(4, 15, 25, 0.78);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.diy-modal {
+  position: relative;
+  width: min(100%, 520px);
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, var(--color-ink-2), var(--color-ink));
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+.diy-modal__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--color-line-soft); }
+.diy-modal__title { font-size: 1.125rem; font-weight: 700; color: var(--color-heading); }
+.diy-modal__close { width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; background: none; border: 1px solid var(--color-line); border-radius: var(--radius-s); color: var(--color-text-muted); font-size: 1.125rem; cursor: pointer; }
+.diy-modal__close:hover { color: var(--color-heading); border-color: rgba(255, 255, 255, 0.35); }
+.diy-modal__body { padding: 1.25rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.875rem; }
+.diy-modal__row { padding: 0.75rem 0.875rem; background: rgba(10, 61, 115, 0.26); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.diy-modal__row span { display: block; font-size: 0.6875rem; letter-spacing: 0.1em; color: var(--color-accent); }
+.diy-modal__row p { margin-top: 0.375rem; font-size: 0.8125rem; line-height: 1.8; color: var(--color-text); }
+
+.diy__apply-note { margin-top: 1rem; padding: 0.75rem 0.875rem; background: rgba(4, 27, 58, 0.45); border-left: 3px solid var(--color-blue); border-radius: var(--radius-s); }
+
+/* 响应式 */
+@media (max-width: 900px) {
+  .diy__tasks { grid-template-columns: 1fr; }
+  .diy__progress-stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .diy__flow-head { align-items: flex-start; }
+  .diy__flow-toggle { margin-left: 0; }
+}
