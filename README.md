@@ -15,7 +15,10 @@
 - 完整用户路径：了解项目 → 填写个人情况 → 判断申请条件 → 准备专属材料 → 完成前置要求 → 按专属流程准备 → 检查完成度 → **前往官方申请入口**
 - 页面 10 大模块（工作台 2.0）：① 项目概览（国家/名称/类型/适合人群/难度/周期/申请方式 + 指南更新日期 + 官方验证日期）② 我的申请情况（**动态问答**：根据回答出现后续问题，如自由职业者→长期客户/客户国家/合同，公司远程员工→雇主国家/合同期限/是否允许远程）③ 资格条件检查（逐项：你的情况 / 🟢符合·🔴不符合·🟡需补充 / 为什么 / 需要做什么）④ 专属申请材料（名称/必须/适用对象/用途/准备说明/注意事项/替代材料/来源/验证时间 + 三态 + **用户备注**）⑤ 必要前置要求（为什么需要/官方要求/完成标准/预计时间/来源 + 三态 未开始·进行中·已完成）⑥ DIY 申请流程（名称/说明/用户操作/完成标准/官方依据 + 完成状态）⑦ 我的准备进度（准备度 + 资格/材料/前置/流程分项 + 下一步建议；**明确非通过率**）⑧ **最终申请检查**（一键检查资格/材料/前置/流程/填写/官方更新时间 → 「暂不建议正式提交」或「已基本完成 DIY 准备」，明确不代表政府审批）⑨ 🏛 官方申请入口（机构/官网/申请按钮/方式/更新时间 + **官方信息来源列表** + 非政府机构声明）⑩ 免责声明（6 段）
 - 页面 7 大模块：① 签证基础信息（名称/国家/类型/适合人群/难度/准备周期/申请方式简介）② DIY 申请流程（固定 5 步，可标记完成）③ 申请材料任务清单（三态：未开始/准备中/已完成）④ 材料详细说明弹窗（用途/准备要求/注意事项/常见错误）⑤ 我的 DIY 进度（完成度/已完成/未完成/下一步行动）⑥ 常见问题 ⑦ 免责声明（底部固定）
-- 数据库（最终独立配置 · 生成器 `scripts/generate-diy-assistant.js`，源 `src/data/diy-assistant.json` / `diy-assistant.js`）：
+- 数据库（项目级独立配置 v6 · 生成器 `scripts/generate-diy-assistant.js` + 精修数据 `scripts/diy-refined-data.js`，源 `src/data/diy-assistant.json` / `diy-assistant.js`）：
+  - **10 个精修项目（data_status=complete）**：西班牙数字游民 / 美国 H-1B / 德国欧盟蓝卡 / 日本高度人才 / 澳洲技术移民 / 加拿大永居(EE) / 英国硕士 / 美国 EB-5 / 美国配偶 / 葡萄牙数字游民——每项目独立条件/问题/规则/材料/前置/流程/官方入口
+  - **420 个未精修项目（data_status=pending）**：不生成任何模板条件/材料/流程，DIY 页面显示「DIY 资料正在完善」占位（保留项目概览与官方申请入口），禁止默认模板冒充完整数据
+  - 完整度检查：`node scripts/check-diy-completeness.js` 输出 项目|国家|条件|问题|材料|前置|流程|官方入口|完整度|状态 报告
   - `Istra.diyConfigs`（visa_diy_config）：430 条（含 official_authority / official_website / application_url / application_method / source_reference / last_verified_date 官方入口字段）
   - `Istra.diyConditions`（visa_eligibility_conditions）：1830 条申请资格条件（condition_type 年龄·学历·职业·收入·语言·工作经验·资金·其他 / required / source_reference / last_verified_date）
   - `Istra.diyQuestions`（visa_user_questions）：1378 条用户填写问题（question / answer_type / options / validation_rule / condition_type）

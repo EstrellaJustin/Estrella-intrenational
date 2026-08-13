@@ -192,6 +192,7 @@ class SiteDiyVisa extends HTMLElement {
     const guide = this.querySelector('[data-guide]');
     if (!c) { guide.innerHTML = '<p class="diy__empty">暂无可选签证项目，请选择其他项目。</p>'; return; }
     guide.innerHTML = this.guideHtml(c);
+    if (c.data_status !== 'complete') return;
     this.renderQuestions();
     this.applyDeps();
     this.renderConditionResults();
@@ -199,6 +200,7 @@ class SiteDiyVisa extends HTMLElement {
   }
 
   guideHtml(c) {
+    if (c.data_status !== 'complete') return this.pendingHtml(c);
     const flag = this.countryFlag(c.country);
     const docs = this.docsOf(c.id);
     const tasks = this.tasksOf(c.id);
@@ -354,6 +356,56 @@ class SiteDiyVisa extends HTMLElement {
           <a class="btn btn--primary" href="${c.application_url}" target="_blank" rel="noopener noreferrer">进入官方申请页面 <span class="btn-arrow">→</span></a>
         </div>
         ${sources.length ? `<div class="diy__sources"><p class="diy__sources-title">官方信息来源</p>${sources.map((o) => `<p class="diy__sources-item">· ${o.source_name}${o.source_url ? '（<a href="' + o.source_url + '" target="_blank" rel="noopener noreferrer">访问</a>）' : ''} · ${o.source_type} · 验证 ${o.last_verified_date}</p>`).join('')}</div>` : ''}
+        <p class="diy__official-note">* 本站提供官方申请渠道导航，不代表政府机构，不提供签证审批服务。申请前请以目标国家官方最新信息为准。</p>
+      </section>
+    `;
+  }
+
+  /* 未完善项目占位页：仅概览 + 官方入口（不显示模板数据） */
+  pendingHtml(c) {
+    const flag = this.countryFlag(c.country);
+    const sources = this.sourcesOf(c.id);
+    return `
+      <div class="diy__guide-head">
+        <span class="diy__guide-flag"><img src="assets/flags/${flag}" alt="${this.countryCn(c.country)} 国旗" /></span>
+        <div>
+          <p class="diy__guide-country">${this.countryCn(c.country)} <small>${c.visa_type}</small></p>
+          <h2 class="diy__guide-title">${c.visa_name} · DIY</h2>
+        </div>
+      </div>
+      <div class="diy__pending">
+        <p class="diy__pending-badge">DIY 资料正在完善</p>
+        <p class="diy__pending-text">该项目的独立 DIY 数据正在按官方公开信息完善中，暂不提供条件检查、材料与流程模拟。在完善前，不会展示任何模板化的申请条件或材料，避免误导。可先查看项目概览与官方申请入口。</p>
+      </div>
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>01</span>项目概览</h3>
+        <div class="diy__facts">
+          <div class="diy__fact"><span>目标国家</span><b>${this.countryCn(c.country)}</b></div>
+          <div class="diy__fact"><span>签证名称</span><b>${c.visa_name}</b></div>
+          <div class="diy__fact"><span>签证类型</span><b>${c.visa_type}</b></div>
+          <div class="diy__fact"><span>适合人群</span><b>${c.target_people}</b></div>
+          <div class="diy__fact"><span>申请难度</span><b>${c.difficulty}</b></div>
+          <div class="diy__fact"><span>预计准备周期</span><b>${c.preparation_period}</b></div>
+        </div>
+        <p class="diy__apply-note"><span>基本申请方式：</span>${c.application_method}</p>
+        <div class="diy__dates">
+          <span>本 DIY 指南最后更新：${c.guide_updated_date || '—'}</span>
+          <span>官方信息最后验证：${c.last_verified_date}</span>
+        </div>
+      </section>
+      <section class="diy__sec diy__official">
+        <h3 class="diy__sec-title"><span>09</span>🏛 官方申请入口</h3>
+        <div class="diy__official-badge">官方申请渠道导航 · 伊斯特拉国际不是政府官方网站</div>
+        <div class="diy__official-grid">
+          <div class="diy__official-row"><span>官方申请机构</span><b>${c.official_authority}</b></div>
+          <div class="diy__official-row"><span>申请方式</span><b>${c.application_method}</b></div>
+          <div class="diy__official-row"><span>官方信息更新时间</span><b>${c.last_verified_date}</b></div>
+        </div>
+        <div class="diy__official-actions">
+          <a class="btn btn--ghost-dark" href="${c.official_website}" target="_blank" rel="noopener noreferrer">访问官方网站 <span class="btn-arrow">→</span></a>
+          <a class="btn btn--primary" href="${c.application_url}" target="_blank" rel="noopener noreferrer">进入官方申请页面 <span class="btn-arrow">→</span></a>
+        </div>
+        ${sources.length ? '<div class="diy__sources"><p class="diy__sources-title">官方信息来源</p>' + sources.map((o) => '<p class="diy__sources-item">· ' + o.source_name + (o.source_url ? '（<a href="' + o.source_url + '" target="_blank" rel="noopener noreferrer">访问</a>）' : '') + ' · ' + o.source_type + ' · 验证 ' + o.last_verified_date + '</p>').join('') + '</div>' : ''}
         <p class="diy__official-note">* 本站提供官方申请渠道导航，不代表政府机构，不提供签证审批服务。申请前请以目标国家官方最新信息为准。</p>
       </section>
     `;
