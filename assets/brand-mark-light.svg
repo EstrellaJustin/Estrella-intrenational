@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64" role="img" aria-label="伊斯特拉国际">
-  <!-- 深色背景专用 · 透明底 + 白色图形（机身 + 四向星主翼） -->
+  <!-- 深色背景专用 · 透明底 + 白色图形（机身 + 缩小后的四向星主翼） -->
   <path d="M16 31 L52 30 L62 28.5 L70 31 L66 34.5 L16 35 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/>
   <path d="M18 33 L13 20 L8 18 L10 26 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/>
-  <path d="M40 12 L48 24 L60 32 L48 40 L40 52 L32 40 L20 32 L32 24 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/>
-  <path d="M40 28.5 L42.5 31 L40 33.5 L37.5 31 Z" fill="#C9A227"/>
+  <path d="M40 18 L45.5 26.5 L54 32 L45.5 37.5 L40 46 L34.5 37.5 L26 32 L34.5 26.5 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M40 29.5 L42 31 L40 32.5 L38 31 Z" fill="#C9A227"/>
 </svg>
