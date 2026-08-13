@@ -1,12 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64" role="img" aria-label="伊斯特拉国际">
   <!-- 深蓝品牌底 -->
   <rect x="8" y="1.5" width="64" height="61" rx="14" fill="#041B3A" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/>
-  <!-- 机身（侧面 · 细长横向贯穿）：机头/驾驶舱/机身/尾翼 -->
-  <path d="M16 31 L52 30 L62 28.5 L70 31 L66 34.5 L16 35 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
-  <!-- 垂直尾翼 -->
-  <path d="M18 33 L13 20 L8 18 L10 26 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
-  <!-- 主翼 = 四向星（适当缩小 · 左翼 + 右翼 + 上部 + 下部） -->
-  <path d="M40 18 L45.5 26.5 L54 32 L45.5 37.5 L40 46 L34.5 37.5 L26 32 L34.5 26.5 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
-  <!-- 星核（金色 · 目标/希望/新机会） -->
-  <path d="M40 29.5 L42 31 L40 32.5 L38 31 Z" fill="#C9A227"/>
+  <!-- 机身 + 机头（左）+ 驾驶舱（Logo化现代飞机） -->
+  <path d="M8 32 L40 30.5 L50 28.8 L56 29 L66 31.5 L62 35.2 L8 34.5 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- 垂直尾翼（机尾上方） -->
+  <path d="M62 30.5 L58 18 L51 16 L53 24 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- 主翼（机身中后部向后下方展开） -->
+  <path d="M42 35.5 L52 43 L62 46 L50 37 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- 发动机短舱（主翼下方） -->
+  <path d="M55 43 L62 43 A2 2 0 0 1 62 47 L55 47 A2 2 0 0 1 55 43 Z" fill="#FFFFFF"/>
+  <!-- 主翼区域 · 小四向星（与机翼自然融合 · 品牌符号） -->
+  <path d="M48 29 L50.5 32 L52.5 34 L50.5 36 L48 39 L45.5 36 L43.5 34 L45.5 32 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round"/>
+  <!-- 星核（金色 · 目标/希望/未来） -->
+  <path d="M48 32.8 L49.4 34 L48 35.2 L46.6 34 Z" fill="#C9A227"/>
 </svg>
