@@ -39,7 +39,8 @@ const ES_NOMAD = {
     official_website: 'https://www.inclusion.gob.es',
     application_url: 'https://www.inclusion.gob.es/web/migraciones',
     source_reference: 'Ministerio de Inclusión, Seguridad Social y Migraciones',
-    last_verified_date: VERIFIED
+    last_verified_date: VERIFIED,
+    guide_updated_date: '2026-08-13'
   },
   conditions: [
     { name: '年龄要求', type: '年龄', desc: '申请人需年满 18 周岁。', req: true },
@@ -55,6 +56,12 @@ const ES_NOMAD = {
   ],
   questions: [
     ['你的年龄？', 'number', '', 'min:18', '年龄'],
+    ['你目前有多少长期客户？', 'text', '', '', '收入', '你当前的身份？', '自由职业者'],
+    ['你的客户主要来自哪些国家？', 'text', '', '', '收入', '你当前的身份？', '自由职业者'],
+    ['你是否可以提供服务合同？', 'select', '能|暂不能', '', '收入', '你当前的身份？', '自由职业者'],
+    ['你的雇主所在国家？', 'text', '', '', '职业', '你当前的身份？', '公司远程员工'],
+    ['你的工作合同期限？', 'select', '1年以内|1-3年|3年以上', '', '工作经验', '你当前的身份？', '公司远程员工'],
+    ['公司是否允许远程工作？', 'select', '是|否', '', '职业', '你当前的身份？', '公司远程员工'],
     ['你目前居住的国家？', 'select', '中国|其他国家', '', '其他'],
     ['你当前的身份？', 'select', '公司远程员工|自由职业者|企业主|其他', 'match:公司远程员工|自由职业者|企业主', '职业'],
     ['你的工作是否可以通过远程完成？', 'select', '是|否', 'match:是', '职业'],
@@ -88,14 +95,14 @@ const ES_NOMAD = {
     { condition_type: '其他', rule_type: 'match', rule_value: '无', question_key: '你是否有犯罪记录？' }
   ],
   documents: [
-    { name: '有效护照', cat: '身份证明', app: '所有申请人', desc: '护照有效期覆盖停留期并含空白签证页。', off: '有效护照原件及复印件', req: true, alt: '' },
-    { name: '远程工作合同', cat: '职业证明', app: '受雇于境外公司的申请人', desc: '证明受雇于境外公司且工作可远程完成。', off: '劳动合同或雇主证明，注明远程工作性质与期限', req: true, alt: '自由职业合同 / 客户服务协议' },
-    { name: '收入证明', cat: '财务资金', app: '所有申请人', desc: '证明月收入达到官方门槛。', off: '近 3 个月银行流水及雇主薪资证明', req: true, alt: '税单 / 收入申报表' },
-    { name: '医疗保险', cat: '健康保险', app: '所有申请人', desc: '覆盖西班牙的私人医疗保险。', off: '在西班牙有效的医疗保险证明', req: true, alt: '' },
-    { name: '无犯罪记录证明', cat: '背景审查', app: '所有申请人', desc: '近 5 年居住国无犯罪记录。', off: '无犯罪记录证明并完成公证翻译', req: true, alt: '' },
-    { name: '学历或培训证明', cat: '学历职业', app: '以学历满足条件的申请人', desc: '大学学历或职业培训证书。', off: '学历学位或培训证书（或提供 3 年工作经历证明）', req: false, alt: '3 年工作经历证明' },
-    { name: '工作经历证明', cat: '学历职业', app: '以从业经验满足条件的申请人', desc: '证明相关工作经验年限。', off: '工作经历证明或推荐信', req: false, alt: '学历学位证明' },
-    { name: '签证申请表', cat: '身份证明', app: '所有申请人', desc: '官方申请表。', off: '按要求填写并签名', req: true, alt: '' }
+    { name: '有效护照', cat: '身份证明', app: '所有申请人', desc: '护照有效期覆盖停留期并含空白签证页。', off: '有效护照原件及复印件', req: true, alt: '', tips: '确保护照有效期足够长并留有空白页，避免临近过期提交。' },
+    { name: '远程工作合同', cat: '职业证明', app: '受雇于境外公司的申请人', desc: '证明受雇于境外公司且工作可远程完成。', off: '劳动合同或雇主证明，注明远程工作性质与期限', req: true, alt: '自由职业合同 / 客户服务协议', tips: '合同需明确远程工作条款；自由职业者应准备多份客户合同佐证。' },
+    { name: '收入证明', cat: '财务资金', app: '所有申请人', desc: '证明月收入达到官方门槛。', off: '近 3 个月银行流水及雇主薪资证明', req: true, alt: '税单 / 收入申报表', tips: '流水需连续稳定，避免大额短期入账；金额需折算为欧元核对。' },
+    { name: '医疗保险', cat: '健康保险', app: '所有申请人', desc: '覆盖西班牙的私人医疗保险。', off: '在西班牙有效的医疗保险证明', req: true, alt: '', tips: '确认保险覆盖西班牙全境且保障范围符合要求，保留保单号。' },
+    { name: '无犯罪记录证明', cat: '背景审查', app: '所有申请人', desc: '近 5 年居住国无犯罪记录。', off: '无犯罪记录证明并完成公证翻译', req: true, alt: '', tips: '证明开具后尽快使用，避免超过有效期；需海牙认证或领事认证。' },
+    { name: '学历或培训证明', cat: '学历职业', app: '以学历满足条件的申请人', desc: '大学学历或职业培训证书。', off: '学历学位或培训证书（或提供 3 年工作经历证明）', req: false, alt: '3 年工作经历证明', tips: '非西班牙语文件需官方认可翻译并附原文。' },
+    { name: '工作经历证明', cat: '学历职业', app: '以从业经验满足条件的申请人', desc: '证明相关工作经验年限。', off: '工作经历证明或推荐信', req: false, alt: '学历学位证明', tips: '证明需注明起止时间、职位与职责。' },
+    { name: '签证申请表', cat: '身份证明', app: '所有申请人', desc: '官方申请表。', off: '按要求填写并签名', req: true, alt: '', tips: '信息需与护照及全部材料完全一致，签名处勿遗漏。' },
   ],
   tasks: [
     { name: '确认收入达到门槛', desc: '核对月收入是否达到官方最低标准。', reason: '收入是数字游民签证的核心资格之一。', off: '月收入不低于官方最低标准', done: '准备近 3 个月收入流水并核对金额', time: '1 天' },
@@ -105,12 +112,12 @@ const ES_NOMAD = {
     { name: '文件翻译与认证', desc: '对合同、学历等文件进行翻译与认证。', reason: '非西班牙语文件需官方认可翻译。', off: '官方认可翻译并附原文', done: '完成全部非西语文件翻译', time: '1–2 周' }
   ],
   steps: [
-    { title: '确认资格与收入门槛', desc: '核对年龄、身份、远程工作性质与收入是否满足官方条件。', action: '填写条件确认表单并逐项核对官方要求。' },
-    { title: '准备远程工作证明', desc: '取得境外雇佣或自由职业的远程工作证明。', action: '联系雇主/客户取得盖章证明。' },
-    { title: '完成前置要求', desc: '完成保险购买、无犯罪记录办理与文件翻译认证。', action: '按前置要求列表逐项完成。' },
-    { title: '准备全部申请材料', desc: '按专属材料清单准备护照、收入证明等全部文件。', action: '逐项准备并核对材料一致。' },
-    { title: '提交申请', desc: '通过官方渠道（线上系统或驻外使领馆）提交申请。', action: '在线或使领馆提交并保存回执。' },
-    { title: '等待审核并跟进', desc: '关注审核进度与补件通知，获批后安排入境登记。', action: '定期查询进度并准备入境材料。' }
+    { title: '确认资格与收入门槛', desc: '核对年龄、身份、远程工作性质与收入是否满足官方条件。', action: '填写条件确认表单并逐项核对官方要求。', criteria: '资格条件检查整体判定为「符合」或已逐项确认。' },
+    { title: '准备远程工作证明', desc: '取得境外雇佣或自由职业的远程工作证明。', action: '联系雇主/客户取得盖章证明。', criteria: '取得盖章的远程工作证明（合同或雇主函）。' },
+    { title: '完成前置要求', desc: '完成保险购买、无犯罪记录办理与文件翻译认证。', action: '按前置要求列表逐项完成。', criteria: '前置要求全部标记已完成。' },
+    { title: '准备全部申请材料', desc: '按专属材料清单准备护照、收入证明等全部文件。', action: '逐项准备并核对材料一致。', criteria: '申请材料全部标记已完成并核对一致。' },
+    { title: '提交申请', desc: '通过官方渠道（线上系统或驻外使领馆）提交申请。', action: '在线或使领馆提交并保存回执。', criteria: '已提交并取得申请回执。' },
+    { title: '等待审核并跟进', desc: '关注审核进度与补件通知，获批后安排入境登记。', action: '定期查询进度并准备入境材料。', criteria: '关注官方进度并完成补件（如需要）。' }
   ]
 };
 
@@ -177,7 +184,7 @@ const CAT_EXTRA_STEPS = {
   special: { s3: '准备专业资质证明与邀请材料。', s4: '取得机构邀请或项目资格确认。' }
 };
 
-const configs = [], conditions = [], questions = [], rules = [], docs = [], tasks = [], steps = [];
+const configs = [], conditions = [], questions = [], rules = [], docs = [], tasks = [], steps = [], officialSources = [];
 
 projects.forEach((p) => {
   const m = META[p.category.id] || META.work;
@@ -197,6 +204,7 @@ projects.forEach((p) => {
     application_method: isEsNomad ? es.config.application_method : (p.application_method || '通过该国官方移民/签证机构提交申请'),
     source_reference: isEsNomad ? es.config.source_reference : authority,
     last_verified_date: VERIFIED,
+    guide_updated_date: VERIFIED,
     difficulty: m.diff,
     preparation_period: m.period,
     target_people: (p.targetUsers && p.targetUsers[0]) || m.people,
@@ -216,7 +224,7 @@ projects.forEach((p) => {
   /* 用户填写问题 */
   const qList = isEsNomad ? es.questions : (CAT_QUESTIONS[p.category.id] || [['补充说明？', 'text', '', '', '其他']]);
   qList.forEach((q, i) => {
-    questions.push({ id: p.id + '-q' + String(i + 1).padStart(2, '0'), visa_id: p.id, question: q[0], answer_type: q[1], options: q[2] || '', validation_rule: q[3] || '', condition_type: q[4] || '' });
+    questions.push({ id: p.id + '-q' + String(i + 1).padStart(2, '0'), visa_id: p.id, question: q[0], answer_type: q[1], options: q[2] || '', validation_rule: q[3] || '', condition_type: q[4] || '', depends_on: q[5] || '', depends_value: q[6] || '' });
   });
 
   /* 资格判断规则（visa_eligibility_rules） */
@@ -237,10 +245,11 @@ projects.forEach((p) => {
     desc: d.official_requirement || d.document_name,
     off: d.official_requirement,
     req: d.is_required === true,
-    alt: ''
+    alt: '',
+    tips: d.preparation_tips || ''
   }));
   oldDocs.forEach((d, i) => {
-    docs.push({ id: p.id + '-d' + String(i + 1).padStart(2, '0'), visa_id: p.id, document_name: d.name, document_category: d.cat, applicable_to: d.app, description: d.desc, official_requirement: d.off, is_required: d.req, alternative_document: d.alt || '', source_reference: isEsNomad ? es.config.source_reference : authority, last_verified_date: VERIFIED });
+    docs.push({ id: p.id + '-d' + String(i + 1).padStart(2, '0'), visa_id: p.id, document_name: d.name, document_category: d.cat, applicable_to: d.app, description: d.desc, official_requirement: d.off, is_required: d.req, alternative_document: d.alt || '', tips: d.tips || '', source_reference: isEsNomad ? es.config.source_reference : authority, last_verified_date: VERIFIED });
   });
 
   /* 前置准备任务（含为什么/官方要求/完成标准） */
@@ -266,11 +275,19 @@ projects.forEach((p) => {
   }
   sList.forEach((s) => {
     const idx = sList.indexOf(s) + 1;
-    steps.push({ id: p.id + '-s' + String(idx).padStart(2, '0'), visa_id: p.id, step_order: idx, step_title: s.title, step_description: s.desc, user_action: s.action, completion_status: '未完成', source_reference: isEsNomad ? es.config.source_reference : authority, last_verified_date: VERIFIED });
+    steps.push({ id: p.id + '-s' + String(idx).padStart(2, '0'), visa_id: p.id, step_order: idx, step_title: s.title, step_description: s.desc, user_action: s.action, completion_criteria: s.criteria || '完成本步骤并核对官方依据。', completion_status: '未完成', source_reference: isEsNomad ? es.config.source_reference : authority, last_verified_date: VERIFIED });
   });
+
+  /* visa_official_sources：官方信息来源 */
+  if (isEsNomad) {
+    officialSources.push({ id: p.id + '-o1', visa_project_id: p.id, source_name: 'Ministerio de Inclusión, Seguridad Social y Migraciones · 官方网站', source_url: es.config.official_website, source_type: '政府官方网站', last_verified_date: VERIFIED });
+    officialSources.push({ id: p.id + '-o2', visa_project_id: p.id, source_name: '西班牙移民与数字游民签证官方信息/申请页面', source_url: es.config.application_url, source_type: '官方申请页面', last_verified_date: VERIFIED });
+  } else {
+    officialSources.push({ id: p.id + '-o1', visa_project_id: p.id, source_name: authority, source_url: p.official_website || '', source_type: '政府官方网站', last_verified_date: VERIFIED });
+  }
 });
 
-const db = { configs, conditions, questions, rules, docs, tasks, steps };
+const db = { configs, conditions, questions, rules, docs, tasks, steps, officialSources };
 fs.writeFileSync(path.join(DATA, 'diy-assistant.json'), JSON.stringify(db), 'utf8');
 const js = `/* DIY 签证助手数据库 · 最终独立配置系统（生成自 scripts/generate-diy-assistant.js，源文件 diy-assistant.json） */
 window.Istra = window.Istra || {};
@@ -281,6 +298,7 @@ Istra.diyRules = ${JSON.stringify(rules)};
 Istra.diyRequiredDocs = ${JSON.stringify(docs)};
 Istra.diyPrepTasks = ${JSON.stringify(tasks)};
 Istra.diySteps = ${JSON.stringify(steps)};
+Istra.diyOfficialSources = ${JSON.stringify(officialSources)};
 `;
 fs.writeFileSync(path.join(DATA, 'diy-assistant.js'), js, 'utf8');
-console.log('已生成：配置 ' + configs.length + ' · 条件 ' + conditions.length + ' · 问题 ' + questions.length + ' · 规则 ' + rules.length + ' · 材料 ' + docs.length + ' · 前置任务 ' + tasks.length + ' · 流程步骤 ' + steps.length);
+console.log('已生成：配置 ' + configs.length + ' · 条件 ' + conditions.length + ' · 问题 ' + questions.length + ' · 规则 ' + rules.length + ' · 材料 ' + docs.length + ' · 前置任务 ' + tasks.length + ' · 流程步骤 ' + steps.length + ' · 官方来源 ' + officialSources.length);

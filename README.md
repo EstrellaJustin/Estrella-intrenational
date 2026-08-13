@@ -13,8 +13,7 @@
 
 - 入口：顶部导航「DIY签证助手」→ `diy-visa.html`（支持 `?id=xx` 直达具体签证 DIY 指南）
 - 完整用户路径：了解项目 → 填写个人情况 → 判断申请条件 → 准备专属材料 → 完成前置要求 → 按专属流程准备 → 检查完成度 → **前往官方申请入口**
-- 页面 07 大模块：① 项目基本信息（国家/名称/类型/适合人群/申请方式/周期/难度）② 确认申请条件（专属问题动态生成 + 整体判定 符合/部分符合/暂不符合 + 已满足/不足/需补充证明明细）③ 专属申请材料（名称/必须/适用对象/官方要求/准备说明/来源/验证时间 + 三态）④ 必要前置要求（为什么需要/官方要求/完成标准/状态/来源）⑤ 专属 DIY 流程 ⑥ 我的 DIY 准备进度（总体准备度 + 申请条件/材料/前置/流程分项 + 下一步建议）⑦ **🏛 官方申请入口**（官方机构/官网按钮/申请按钮/申请方式/更新时间 + 「官方申请渠道导航」）
-- 免责声明：页面底部 6 段完整声明
+- 页面 10 大模块（工作台 2.0）：① 项目概览（国家/名称/类型/适合人群/难度/周期/申请方式 + 指南更新日期 + 官方验证日期）② 我的申请情况（**动态问答**：根据回答出现后续问题，如自由职业者→长期客户/客户国家/合同，公司远程员工→雇主国家/合同期限/是否允许远程）③ 资格条件检查（逐项：你的情况 / 🟢符合·🔴不符合·🟡需补充 / 为什么 / 需要做什么）④ 专属申请材料（名称/必须/适用对象/用途/准备说明/注意事项/替代材料/来源/验证时间 + 三态 + **用户备注**）⑤ 必要前置要求（为什么需要/官方要求/完成标准/预计时间/来源 + 三态 未开始·进行中·已完成）⑥ DIY 申请流程（名称/说明/用户操作/完成标准/官方依据 + 完成状态）⑦ 我的准备进度（准备度 + 资格/材料/前置/流程分项 + 下一步建议；**明确非通过率**）⑧ **最终申请检查**（一键检查资格/材料/前置/流程/填写/官方更新时间 → 「暂不建议正式提交」或「已基本完成 DIY 准备」，明确不代表政府审批）⑨ 🏛 官方申请入口（机构/官网/申请按钮/方式/更新时间 + **官方信息来源列表** + 非政府机构声明）⑩ 免责声明（6 段）
 - 页面 7 大模块：① 签证基础信息（名称/国家/类型/适合人群/难度/准备周期/申请方式简介）② DIY 申请流程（固定 5 步，可标记完成）③ 申请材料任务清单（三态：未开始/准备中/已完成）④ 材料详细说明弹窗（用途/准备要求/注意事项/常见错误）⑤ 我的 DIY 进度（完成度/已完成/未完成/下一步行动）⑥ 常见问题 ⑦ 免责声明（底部固定）
 - 数据库（最终独立配置 · 生成器 `scripts/generate-diy-assistant.js`，源 `src/data/diy-assistant.json` / `diy-assistant.js`）：
   - `Istra.diyConfigs`（visa_diy_config）：430 条（含 official_authority / official_website / application_url / application_method / source_reference / last_verified_date 官方入口字段）
@@ -23,7 +22,8 @@
   - `Istra.diyRules`（visa_eligibility_rules）：597 条资格判断规则（condition_type / rule_type min·match / rule_value / question_key）
   - `Istra.diyRequiredDocs`（visa_required_documents）：4146 条专属材料（applicable_to 适用对象 / is_required / alternative_document / source_reference / last_verified_date）
   - `Istra.diyPrepTasks`（visa_preparation_tasks）：863 条前置任务（why_needed 为什么需要 / official_requirement / completion_criteria 完成标准 / estimated_time / source_reference / last_verified_date）
-  - `Istra.diySteps`（visa_diy_steps）：2151 条 DIY 流程（step_title / step_description / user_action / completion_status / source_reference / last_verified_date）
+  - `Istra.diySteps`（visa_diy_steps）：2151 条 DIY 流程（step_title / step_description / user_action / **completion_criteria 完成标准** / completion_status / source_reference / last_verified_date）
+  - `Istra.diyOfficialSources`（visa_official_sources）：431 条官方信息来源（source_name / source_url / source_type / last_verified_date）
 - 西班牙数字游民签证（es-nomad-visa）为完整精修测试项目（10 条件 / 17 问题 / 13 规则 / 8 材料 / 5 前置 / 6 流程 / 官方入口）
 - 条件整体判定：符合 / 部分符合 / 暂不符合（基于必须条件），并列出已满足、不足、需补充证明明细
 - 完成度自动计算：条件 + 材料 + 前置任务 + 流程 + 问题已答，本地持久化；新增签证只需增加数据库配置，无需修改前端代码

@@ -602,3 +602,58 @@ is-diy-visa { display: block; }
   .diy__official-actions .btn { width: 100%; justify-content: center; }
   .diy__progress-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   DIY 签证工作台 2.0（条件结果 / 最终检查 / 备注 / 官方来源）
+   ============================================================ */
+
+.diy__dates { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.75rem; color: var(--color-text-faint); }
+.diy__dates span { padding: 0.35rem 0.75rem; background: rgba(4, 27, 58, 0.45); border: 1px solid var(--color-line-soft); border-radius: 999px; }
+
+/* 条件逐项结果 */
+.diy__cond-result { margin-top: 0.4rem; font-size: 0.8125rem; font-weight: 700; }
+.diy__cond-result.yes { color: #4ADE80; }
+.diy__cond-result.no { color: #F87171; }
+.diy__cond-result.need { color: var(--color-accent); }
+.diy__cond-desc span { color: var(--color-accent); }
+
+/* 材料备注 */
+.diy__task-note { width: 100%; margin-top: 0.625rem; padding: 0.45rem 0.75rem; background: rgba(4, 27, 58, 0.5); border: 1px solid var(--color-line); border-radius: var(--radius-s); color: var(--color-text); font-size: 0.75rem; outline: none; }
+.diy__task-note:focus { border-color: rgba(59, 130, 246, 0.55); }
+.diy__task-tip { color: var(--color-accent); }
+
+/* 前置任务三态 */
+.diy__prep-statusbar { margin-top: 0.75rem; padding-top: 0.625rem; border-top: 1px solid var(--color-line-soft); display: flex; gap: 0.375rem; flex-wrap: wrap; }
+.diy__prep-statusbar .chip { padding: 0.28rem 0.65rem; font-size: 0.75rem; }
+
+/* 进度说明 */
+.diy__progress-note { margin-top: 0.75rem; font-size: 0.75rem; color: var(--color-text-faint); }
+
+/* 最终申请检查 */
+.diy__final { margin-top: 1.25rem; padding: 1.25rem; border-radius: var(--radius-panel); border: 1px solid var(--color-line); }
+.diy__final.is-ready { border-color: rgba(74, 222, 128, 0.4); background: rgba(6, 43, 85, 0.4); }
+.diy__final.is-warn { border-color: rgba(201, 162, 39, 0.4); background: rgba(6, 43, 85, 0.4); }
+.diy__final-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.diy__final-label { font-size: 0.8125rem; color: var(--color-text-muted); }
+.diy__final-verdict { font-size: 1.25rem; font-weight: 700; }
+.diy__final.is-ready .diy__final-verdict { color: #4ADE80; }
+.diy__final.is-warn .diy__final-verdict { color: var(--color-accent); }
+.diy__final-grid { margin-top: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.625rem; }
+.diy__final-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.65rem 0.875rem; background: rgba(10, 61, 115, 0.24); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.diy__final-row span { font-size: 0.8125rem; color: var(--color-text-muted); }
+.diy__final-row b { font-size: 0.875rem; font-weight: 700; color: var(--color-heading); }
+.diy__final-issues { margin-top: 1rem; padding: 0.75rem 0.875rem; background: rgba(201, 162, 39, 0.1); border: 1px solid var(--color-accent-line); border-radius: var(--radius-s); }
+.diy__final-issues p { font-size: 0.8125rem; font-weight: 700; color: var(--color-accent); }
+.diy__final-issues ul { margin-top: 0.375rem; display: flex; flex-direction: column; gap: 0.25rem; list-style: none; }
+.diy__final-issues li { font-size: 0.8125rem; color: var(--color-text); }
+.diy__final-note { margin-top: 1rem; font-size: 0.75rem; line-height: 1.8; color: var(--color-text-faint); }
+
+/* 官方来源 */
+.diy__sources { margin-top: 1.125rem; padding: 0.875rem 1rem; background: rgba(4, 27, 58, 0.4); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.diy__sources-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--color-accent); }
+.diy__sources-item { margin-top: 0.375rem; font-size: 0.75rem; line-height: 1.8; color: var(--color-text-muted); }
+.diy__sources-item a { color: var(--color-blue); }
+
+@media (max-width: 640px) {
+  .diy__final-grid { grid-template-columns: 1fr; }
+}
