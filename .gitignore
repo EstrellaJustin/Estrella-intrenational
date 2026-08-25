@@ -18,3 +18,8 @@ work/
 
 # 运行时用户数据库
 data/userdb/*.json
+
+# 环境变量与密钥（禁止提交）
+.env
+.env.*
+!.env.example
