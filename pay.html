@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>订单确认 · 伊斯特拉国际</title>
+  <meta name="description" content="伊斯特拉国际 — 正式订单确认与支付页面。" />
+  <meta name="theme-color" content="#041B3A" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="src/styles/tokens.css" />
+  <link rel="stylesheet" href="src/styles/base.css" />
+  <link rel="stylesheet" href="src/styles/navbar.css" />
+  <link rel="stylesheet" href="src/styles/pay.css" />
+  <link rel="stylesheet" href="src/styles/footer.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要内容</a>
+  <is-navbar page="profile"></is-navbar>
+  <main id="main">
+    <div class="pay">
+      <header class="pay__head">
+        <div class="container">
+          <p class="pay__eyebrow" data-reveal>Secure Checkout</p>
+          <h1 class="pay__title" data-reveal>订单确认</h1>
+          <p class="pay__sub" data-reveal>确认商品信息后完成支付，权益将在支付成功后自动解锁。</p>
+        </div>
+      </header>
+      <div class="pay__body">
+        <div class="container container--narrow">
+          <div class="pay__card" data-reveal id="pay-card">
+            <div class="pay__loading">加载商品信息中…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <is-footer></is-footer>
+  <script src="src/data/brand.js"></script>
+  <script src="src/data/nav.js"></script>
+  <script src="src/data/footer.js"></script>
+  <script src="src/utils/icons.js"></script>
+  <script src="src/utils/reveal.js"></script>
+  <script src="src/utils/api.js"></script>
+  <script src="src/components/site-navbar.js"></script>
+  <script src="src/components/site-footer.js"></script>
+  <script src="src/pages/pay.js"></script>
+</body>
+</html>

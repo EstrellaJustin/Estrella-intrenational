@@ -192,6 +192,7 @@ class SiteDiyVisa extends HTMLElement {
     const guide = this.querySelector('[data-guide]');
     if (!c) { guide.innerHTML = '<p class="diy__empty">暂无可选签证项目，请选择其他项目。</p>'; return; }
     guide.innerHTML = this.guideHtml(c);
+    this.bindEntitlementBadge();
     if (c.data_status !== 'complete') return;
     this.renderQuestions();
     this.applyDeps();
@@ -409,6 +410,21 @@ class SiteDiyVisa extends HTMLElement {
         <p class="diy__official-note">* 本站提供官方申请渠道导航，不代表政府机构，不提供签证审批服务。申请前请以目标国家官方最新信息为准。</p>
       </section>
     `;
+  }
+
+  /* 深度方案权益徽标（不改功能，仅提示与购买入口） */
+  bindEntitlementBadge() {
+    if (!window.Istra || !Istra.auth || !Istra.auth.loggedIn() || !Istra.api || !Istra.api.checkEntitlement) return;
+    Istra.api.checkEntitlement('diy-full-access').then((r) => {
+      const head = this.querySelector('.diy__guide-head');
+      if (!head) return;
+      const div = document.createElement('div');
+      div.className = 'diy__entitle';
+      div.innerHTML = r.unlocked
+        ? '<span class="diy__entitle-badge is-on">✓ 深度方案已解锁</span>'
+        : '<span class="diy__entitle-badge">深度方案待解锁</span><a class="diy__entitle-link" href="pay.html?product=diy-full-access">解锁完整 DIY 深度方案 →</a>';
+      head.after(div);
+    }).catch(function () {});
   }
 
   /* 动态问答 */

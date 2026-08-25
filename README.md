@@ -114,6 +114,16 @@ ode scripts/serve.js 或双击 启动网站.bat），file:// 直开不支持 API
 - 生成器：`node scripts/generate-country-places.js`；图片工具：`node scripts/download-country-places-images.js`；验证：`node scripts/verify-country-places.js`
 
 
+## 正式支付系统（第一阶段 · 完整架构）
+
+- 商品（服务端数据库 products 表）：AI深度评估 ¥9.90（id=ai-assessment）/ DIY签证深度方案 ¥19.90（id=diy-full-access），价格不写死前端
+- 订单系统：orders / payments / entitlements 表，订单状态 pending → paid → cancelled / refunded / expired，仅后端可改
+- 支付流程：前端调用 /api/orders 创建订单 → /api/payment/create 创建支付 → 支付平台回调 /api/payment/notify（服务端验签）→ paid → 幂等发放权益（重复回调不重复发）
+- 支付 Provider 抽象：默认测试通道（TEST_PAY_SECRET 环境变量）；微信支付需配置 WECHAT_MCH_ID / WECHAT_APP_ID / WECHAT_API_KEY 后启用（当前未接入真实商户，不编造）
+- 前端页面：`pay.html` 订单确认（商品/说明/价格/购买须知/退款说明/支付方式/立即支付/模拟支付）；个人中心新增「我的订单」「我的权益」
+- 权益：AI深度评估 → 解锁完整评估报告（联动 assessmentUnlock）；DIY深度方案 → DIY 页面显示已解锁（未解锁显示购买入口，不影响现有浏览）
+- 安全：金额以服务端商品为准；状态仅后端修改；回调签名校验；金额篡改/伪造回调/越权访问全部拒绝；前端无任何密钥
+- 部署：前端可部署 GitHub Pages（仅调 /api/*），后端需独立 Node API 服务并配置环境变量
 ## 免责声明体系
 
 - 完整法律页面：`disclaimer.html`（免责声明）/ `privacy.html`（隐私政策）/ `terms.html`（用户协议），内容由 `src/data/legal.js` 单一数据源渲染（组件 `src/components/site-disclaimer.js`）

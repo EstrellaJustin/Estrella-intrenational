@@ -662,3 +662,33 @@ is-diy-visa { display: block; }
 .diy__pending { margin-top: 1.25rem; padding: 1.5rem; background: rgba(10, 61, 115, 0.24); border: 1px dashed rgba(201, 162, 39, 0.45); border-radius: var(--radius-panel); text-align: center; }
 .diy__pending-badge { display: inline-block; padding: 0.3rem 0.9rem; border: 1px solid var(--color-accent-line); border-radius: 999px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--color-accent); background: rgba(201, 162, 39, 0.08); }
 .diy__pending-text { margin: 0.875rem auto 0; max-width: 620px; font-size: 0.875rem; line-height: 1.9; color: var(--color-text-muted); }
+
+/* —— 深度方案权益徽标 —— */
+.diy__entitle {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  background: rgba(10, 61, 115, 0.3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-m);
+}
+.diy__entitle-badge {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+}
+.diy__entitle-badge.is-on { color: #4ADE80; border-color: rgba(74, 222, 128, 0.5); }
+.diy__entitle-link {
+  margin-left: auto;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  transition: color var(--dur) var(--ease);
+}
+.diy__entitle-link:hover { color: var(--color-accent-dark); }

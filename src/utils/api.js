@@ -34,7 +34,18 @@ Istra.api = {
   recordBehavior(payload) { return this.req('/api/behavior', 'POST', payload); },
   unlock() { return this.req('/api/pay/unlock', 'POST', {}); },
   removeFavorite(payload) { return this.req('/api/behavior', 'DELETE', payload); },
-  getBehavior() { return this.req('/api/me/behavior', 'GET'); }
+  getBehavior() { return this.req('/api/me/behavior', 'GET'); },
+  /* 正式支付系统 */
+  listProducts() { return this.req('/api/products', 'GET'); },
+  createOrder(productId, channel) { return this.req('/api/orders', 'POST', { productId, channel: channel || 'test' }); },
+  listOrders() { return this.req('/api/orders', 'GET'); },
+  getOrder(id) { return this.req('/api/orders/' + id, 'GET'); },
+  cancelOrder(id) { return this.req('/api/orders/' + id + '/cancel', 'POST', {}); },
+  createPayment(orderId) { return this.req('/api/payment/create', 'POST', { orderId }); },
+  notifyPayment(payload) { return this.req('/api/payment/notify', 'POST', payload); },
+  refundOrder(orderId) { return this.req('/api/payment/refund', 'POST', { orderId }); },
+  listEntitlements() { return this.req('/api/entitlements', 'GET'); },
+  checkEntitlement(productId) { return this.req('/api/entitlements/check?product=' + encodeURIComponent(productId), 'GET'); }
 };
 
 Istra.auth = {

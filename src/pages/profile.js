@@ -171,3 +171,35 @@ function esc(v) {
         </div>`).join('')}</div>`
     : '<div class="profile__empty">暂无咨询记录</div>';
 })();
+
+/* ================= 我的订单 / 我的权益（正式支付系统） ================= */
+const statusMap = { pending: '待支付', paid: '已支付', cancelled: '已取消', refunded: '已退款', expired: '已过期' };
+(function () {
+  var ordersEl = document.querySelector('#orders-list');
+  var entsEl = document.querySelector('#entitlements-list');
+  if (!ordersEl && !entsEl) return;
+  Promise.all([
+    Istra.api.listOrders().catch(function () { return { orders: [] }; }),
+    Istra.api.listEntitlements().catch(function () { return { entitlements: [] }; }),
+    Istra.api.listProducts().catch(function () { return { products: [] }; })
+  ]).then(function (res) {
+    var orders = (res[0] && res[0].orders) || [];
+    var ents = (res[1] && res[1].entitlements) || [];
+    var products = (res[2] && res[2].products) || [];
+    var yuan = function (fen) { return '¥' + (fen / 100).toFixed(2); };
+    if (ordersEl) {
+      ordersEl.innerHTML = orders.length ? '<div class="profile__rows">' + orders.map(function (x) {
+        return '<div class="profile__row"><p class="profile__row-label">' + esc(x.productName) + '<br><small style="color:#64748B">' + esc(x.orderId) + '</small></p><p class="profile__row-value">' + yuan(x.amount) + ' · ' + (statusMap[x.status] || x.status) + (x.paidAt ? '<br><small style="color:#64748B">支付于 ' + esc((x.paidAt || '').slice(0, 10)) + '</small>' : '') + (x.channel === 'test' ? '<br><small style="color:#C9A227">测试通道</small>' : '') + '</p></div>';
+      }).join('') + '</div><div style="margin-top:1rem"><a class="btn btn--ghost-dark" href="pay.html">去购买</a></div>'
+        : '<div class="profile__empty">暂无订单。<a href="pay.html">立即购买 AI 深度评估 / DIY 签证深度方案</a></div>';
+    }
+    if (entsEl) {
+      entsEl.innerHTML = ents.length ? '<div class="profile__rows">' + ents.map(function (x) {
+        var prod = null;
+        for (var i = 0; i < products.length; i++) { if (products[i].id === x.productId) { prod = products[i]; break; } }
+        return '<div class="profile__row"><p class="profile__row-label">' + esc(prod ? prod.name : x.productId) + '</p><p class="profile__row-value">已解锁 · ' + esc((x.grantedAt || '').slice(0, 10)) + '</p></div>';
+      }).join('') + '</div><div style="margin-top:1rem"><a class="btn btn--ghost-dark" href="pay.html">购买更多权益</a></div>'
+        : '<div class="profile__empty">暂无已解锁权益。购买后权益将显示在这里。</div>';
+    }
+  });
+})();

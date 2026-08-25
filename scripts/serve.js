@@ -20,7 +20,7 @@ const port = portArg ? Number(portArg.split('=')[1]) : (process.env.PORT || 4173
 const openBrowser = !args.includes('--no-open');
 
 /* ---------- 数据库（JSON 文件表） ---------- */
-const TABLES = ['users', 'user_profiles', 'assessments', 'recommendations', 'user_behavior', 'sessions'];
+const TABLES = ['users', 'user_profiles', 'assessments', 'recommendations', 'user_behavior', 'sessions', 'products', 'orders', 'payments', 'entitlements'];
 fs.mkdirSync(dbDir, { recursive: true });
 function loadTable(name) {
   const f = path.join(dbDir, name + '.json');
@@ -71,6 +71,70 @@ function readBody(req) {
   });
 }
 function cleanStr(v, max = 200) { return String(v || '').trim().slice(0, max); }
+
+/* ================= 正式支付系统（第一阶段） =================
+   商品 / 订单 / 支付 / 权益。密钥仅从环境变量读取，绝不进入前端。
+   当前默认测试 Provider；接入微信支付只需配置环境变量。
+   安全：金额以服务端商品为准；订单状态仅后端修改；回调验签；权益幂等发放。
+*/
+const PRODUCTS_SEED = [
+  { id: 'ai-assessment', name: 'AI深度评估', price: 990, currency: 'CNY', unit: '次', scope: 'ai-report', desc: '解锁完整 AI 深度评估报告：20 个个性化匹配方案、优势/不足分析、未来路线规划。', note: '购买后立即解锁本人账号的 AI 深度评估报告。', refund: '虚拟内容一经解锁原则上不支持退款；如因系统错误重复扣款可申请人工退款。' },
+  { id: 'diy-full-access', name: 'DIY签证深度方案', price: 1990, currency: 'CNY', unit: '账号', scope: 'diy-full', desc: '解锁全球签证 DIY 深度方案：专属条件检查、材料清单、前置任务与完整申请流程。', note: '购买后解锁本人账号的 DIY 深度方案（含后续新增项目）。', refund: '虚拟内容一经解锁原则上不支持退款；如因系统错误重复扣款可申请人工退款。' }
+];
+function ensureProducts() {
+  const rows = loadTable('products');
+  PRODUCTS_SEED.forEach((p) => { if (!rows.some((x) => x.id === p.id)) rows.push(Object.assign({}, p, { createdAt: new Date().toISOString() })); });
+  saveTable('products', rows);
+}
+function productById(id) { return loadTable('products').find((p) => p.id === id) || null; }
+const PAYMENT_CHANNELS = ['test', 'wechat'];
+function paymentProviderEnabled(channel) {
+  if (channel === 'test') return true;
+  if (channel === 'wechat') return !!(process.env.WECHAT_MCH_ID && process.env.WECHAT_APP_ID && process.env.WECHAT_API_KEY);
+  return false;
+}
+function testPaySecret() { return process.env.TEST_PAY_SECRET || 'istra-test-secret'; }
+function createPaymentRequest(order, product) {
+  if (order.channel === 'wechat') {
+    if (!paymentProviderEnabled('wechat')) throw new Error('微信支付未配置：请设置 WECHAT_MCH_ID / WECHAT_APP_ID / WECHAT_API_KEY 环境变量');
+    /* 正式接入时在此调用微信支付 APIv3 统一下单（Native/JSAPI） */
+    return { channel: 'wechat', payParams: { appId: process.env.WECHAT_APP_ID, mchId: process.env.WECHAT_MCH_ID, orderId: order.orderId, amount: order.amount, currency: order.currency } };
+  }
+  const token = crypto.createHmac('sha256', testPaySecret()).update(order.orderId).digest('hex');
+  return { channel: 'test', mock: true, payToken: token, expiresIn: 1800 };
+}
+function verifyPaymentNotify(body) {
+  if (!body || !body.orderId || !body.transactionId) return { ok: false, error: '回调参数不完整' };
+  const order = loadTable('orders').find((o) => o.orderId === cleanStr(body.orderId, 40));
+  if (!order) return { ok: false, error: '订单不存在' };
+  if (order.status === 'paid') return { ok: true, order, alreadyPaid: true };
+  if (order.status !== 'pending') return { ok: false, error: '订单状态不允许支付', order };
+  const expect = crypto.createHmac('sha256', testPaySecret()).update(order.orderId).digest('hex');
+  if (cleanStr(body.payToken, 128) !== expect) return { ok: false, error: '回调签名无效', order };
+  if (Number(body.amount) !== order.amount) return { ok: false, error: '金额不匹配', order };
+  return { ok: true, order };
+}
+function grantEntitlement(user, product, order) {
+  const ents = loadTable('entitlements');
+  if (ents.some((e) => e.userId === user.id && e.productId === product.id && e.orderId === order.orderId)) {
+    return ents.filter((e) => e.userId === user.id && e.productId === product.id && e.status === 'active');
+  }
+  ents.push({ id: nextId(ents), userId: user.id, productId: product.id, scope: product.scope || product.id, status: 'active', orderId: order.orderId, grantedAt: new Date().toISOString() });
+  saveTable('entitlements', ents);
+  if (product.id === 'ai-assessment') {
+    const users = loadTable('users');
+    const idx = users.findIndex((x) => x.id === user.id);
+    if (idx >= 0) { users[idx].assessmentUnlock = true; saveTable('users', users); }
+  }
+  return ents.filter((e) => e.userId === user.id && e.productId === product.id && e.status === 'active');
+}
+function revokeEntitlement(userId, productId, orderId) {
+  let ents = loadTable('entitlements');
+  ents = ents.map((e) => (e.userId === userId && e.productId === productId && e.orderId === orderId ? Object.assign({}, e, { status: 'revoked', revokedAt: new Date().toISOString() }) : e));
+  saveTable('entitlements', ents);
+  return ents;
+}
+function genOrderId() { return 'ORD' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 8).toUpperCase(); }
 
 async function handleApi(req, res, url) {
   const p = url.pathname;
@@ -202,6 +266,113 @@ async function handleApi(req, res, url) {
     return sendJson(res, 200, { assessment: rec, recommendations: recs });
   }
 
+  /* ============ 正式支付系统 API ============ */
+  /* GET /api/products（公开） */
+  if (p === '/api/products' && method === 'GET') {
+    return sendJson(res, 200, { products: loadTable('products') });
+  }
+  /* POST /api/orders（创建订单：金额以服务端商品为准） */
+  if (p === '/api/orders' && method === 'POST') {
+    const u = authUser(req); if (!u) return sendJson(res, 401, { error: '未登录' });
+    const b = await readBody(req);
+    const product = productById(cleanStr(b.productId, 60));
+    if (!product) return sendJson(res, 404, { error: '商品不存在' });
+    const channel = cleanStr(b.channel, 20) || 'test';
+    if (!PAYMENT_CHANNELS.includes(channel)) return sendJson(res, 400, { error: '不支持的支付渠道' });
+    const orders = loadTable('orders');
+    const order = { id: nextId(orders), orderId: genOrderId(), userId: u.id, productId: product.id, productName: product.name, amount: product.price, currency: product.currency, status: 'pending', channel, createdAt: new Date().toISOString(), paidAt: null, transactionId: null, refundStatus: 'none', refundedAt: null, cancelledAt: null };
+    orders.push(order); saveTable('orders', orders);
+    return sendJson(res, 200, { order });
+  }
+  /* GET /api/orders（本人订单列表） */
+  if (p === '/api/orders' && method === 'GET') {
+    const u = authUser(req); if (!u) return sendJson(res, 401, { error: '未登录' });
+    const rows = loadTable('orders').filter((o) => o.userId === u.id).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+    return sendJson(res, 200, { orders: rows });
+  }
+  /* GET /api/orders/:id */
+  const orderDetail = p.match(/^\/api\/orders\/(\d+)$/);
+  if (orderDetail && method === 'GET') {
+    const u = authUser(req); if (!u) return sendJson(res, 401, { error: '未登录' });
+    const o = loadTable('orders').find((x) => x.id === Number(orderDetail[1]) && x.userId === u.id);
+    if (!o) return sendJson(res, 404, { error: '订单不存在' });
+    return sendJson(res, 200, { order: o });
+  }
+  /* POST /api/orders/:id/cancel（仅 pending 可取消） */
+  const orderCancel = p.match(/^\/api\/orders\/(\d+)\/cancel$/);
+  if (orderCancel && method === 'POST') {
+    const u = authUser(req); if (!u) return sendJson(res, 401, { error: '未登录' });
+    const orders = loadTable('orders');
+    const o = orders.find((x) => x.id === Number(orderCancel[1]) && x.userId === u.id);
+    if (!o) return sendJson(res, 404, { error: '订单不存在' });
+    if (o.status !== 'pending') return sendJson(res, 400, { error: '仅待支付订单可取消' });
+    o.status = 'cancelled'; o.cancelledAt = new Date().toISOString();
+    saveTable('orders', orders);
+    return sendJson(res, 200, { order: o });
+  }
+  /* POST /api/payment/create（创建支付请求） */
+  if (p === '/api/payment/create' && method === 'POST') {
+    const u = authUser(req); if (!u) return sendJson(res, 401, { error: '未登录' });
+    const b = await readBody(req);
+    const o = loadTable('orders').find((x) => x.id === Number(b.orderId) && x.userId === u.id);
+    if (!o) return sendJson(res, 404, { error: '订单不存在' });
+    if (o.status !== 'pending') return sendJson(res, 400, { error: '订单状态不允许支付' });
+    const product = productById(o.productId);
+    try {
+      const pay = createPaymentRequest(o, product);
+      return sendJson(res, 200, { order: o, pay });
+    } catch (e) { return sendJson(res, 500, { error: e.message }); }
+  }
+  /* POST /api/payment/notify（支付平台回调：服务端验签 + 幂等发权益） */
+  if (p === '/api/payment/notify' && method === 'POST') {
+    const b = await readBody(req);
+    const r = verifyPaymentNotify(b);
+    if (!r.ok) return sendJson(res, 400, { error: r.error });
+    if (r.alreadyPaid) return sendJson(res, 200, { ok: true, alreadyPaid: true });
+    const orders = loadTable('orders');
+    const o = orders.find((x) => x.id === r.order.id);
+    if (!o) return sendJson(res, 404, { error: '订单不存在' });
+    if (o.status === 'paid') return sendJson(res, 200, { ok: true, alreadyPaid: true });
+    o.status = 'paid'; o.paidAt = new Date().toISOString(); o.transactionId = cleanStr(b.transactionId, 80);
+    saveTable('orders', orders);
+    const user = loadTable('users').find((x) => x.id === o.userId);
+    const product = productById(o.productId);
+    const ents = user && product ? grantEntitlement(user, product, o) : [];
+    return sendJson(res, 200, { ok: true, entitlements: ents.map((e) => e.productId) });
+  }
+  /* POST /api/payment/refund（退款：已支付订单 → refunded + 收回权益） */
+  if (p === '/api/payment/refund' && method === 'POST') {
+    const b = await readBody(req);
+    const orders = loadTable('orders');
+    const o = orders.find((x) => x.orderId === cleanStr(b.orderId, 40));
+    if (!o) return sendJson(res, 404, { error: '订单不存在' });
+    if (o.status !== 'paid') return sendJson(res, 400, { error: '仅已支付订单可退款' });
+    o.status = 'refunded'; o.refundStatus = 'refunded'; o.refundedAt = new Date().toISOString();
+    saveTable('orders', orders);
+    revokeEntitlement(o.userId, o.productId, o.orderId);
+    return sendJson(res, 200, { order: o });
+  }
+  /* GET /api/entitlements（本人有效权益） */
+  if (p === '/api/entitlements' && method === 'GET') {
+    const u = authUser(req); if (!u) return sendJson(res, 401, { error: '未登录' });
+    const rows = loadTable('entitlements').filter((e) => e.userId === u.id && e.status === 'active');
+    return sendJson(res, 200, { entitlements: rows });
+  }
+  /* GET /api/entitlements/check（服务端校验是否已解锁） */
+  if (p === '/api/entitlements/check' && method === 'GET') {
+    const u = authUser(req); if (!u) return sendJson(res, 401, { error: '未登录' });
+    const productId = cleanStr(url.searchParams.get('product'), 60);
+    const product = productById(productId);
+    if (!product) return sendJson(res, 404, { error: '商品不存在' });
+    const active = loadTable('entitlements').some((e) => e.userId === u.id && e.productId === productId && e.status === 'active');
+    let extra = {};
+    if (productId === 'ai-assessment') {
+      const user = loadTable('users').find((x) => x.id === u.id);
+      extra = { assessmentUnlock: !!(user && user.assessmentUnlock) };
+    }
+    return sendJson(res, 200, { productId, unlocked: active, ...extra });
+  }
+
   /* POST /api/pay/unlock（演示支付：将用户标记为已解锁，不重新生成评估） */
   if (p === '/api/pay/unlock' && method === 'POST') {
     const u = authUser(req);
@@ -288,6 +459,7 @@ const server = http.createServer((req, res) => {
   } catch (e) { res.writeHead(500); res.end('Server error'); }
 });
 
+ensureProducts();
 server.listen(port, () => {
   const url = `http://localhost:${port}`;
   console.log('');
