@@ -159,7 +159,7 @@ function productById(id) { return loadTable('products').find((p) => p.id === id)
 const PAYMENT_CHANNELS = ['test', 'wechat', 'alipay'];
 function paymentProviderEnabled(channel) {
   if (channel === 'test') return true;
-  if (channel === 'wechat') return !!(process.env.WECHAT_MCH_ID && process.env.WECHAT_APP_ID && process.env.WECHAT_API_KEY);
+  if (channel === 'wechat') return true; /* 微信收款码：人工审核，无需商户配置 */
   if (channel === 'alipay') return true; /* 支付宝扫码：人工审核，无需商户配置 */
   return false;
 }
@@ -170,9 +170,7 @@ function createPaymentRequest(order, product) {
     return { channel: 'alipay', manual: true, review: true };
   }
   if (order.channel === 'wechat') {
-    if (!paymentProviderEnabled('wechat')) throw new Error('微信支付未配置：请设置 WECHAT_MCH_ID / WECHAT_APP_ID / WECHAT_API_KEY 环境变量');
-    /* 正式接入时在此调用微信支付 APIv3 统一下单（Native/JSAPI） */
-    return { channel: 'wechat', payParams: { appId: process.env.WECHAT_APP_ID, mchId: process.env.WECHAT_MCH_ID, orderId: order.orderId, amount: order.amount, currency: order.currency } };
+    return { channel: 'wechat', manual: true, review: true };
   }
   const token = crypto.createHmac('sha256', testPaySecret()).update(order.orderId).digest('hex');
   return { channel: 'test', mock: true, payToken: token, expiresIn: 1800 };
@@ -586,8 +584,10 @@ function assessmentQuota(user, visitorId) {
     const orders = loadTable('orders');
     const o = orders.find((x) => x.id === Number(b.orderId) && x.userId === u.id);
     if (!o) return sendJson(res, 404, { error: '订单不存在' });
-    if (o.channel !== 'alipay') return sendJson(res, 400, { error: '该订单不支持上传付款凭证' });
+    if (o.channel !== 'alipay' && o.channel !== 'wechat') return sendJson(res, 400, { error: '该订单不支持上传付款凭证' });
     if (o.status !== 'pending') return sendJson(res, 400, { error: '订单状态不允许上传凭证' });
+    const transactionNo = cleanStr(b.transactionNo, 80);
+    if (!transactionNo) return sendJson(res, 400, { error: '请填写交易单号' });
     const proof = String(b.proof || '').replace(/^data:[^;]+;base64,/, '');
     if (!proof || proof.length < 100) return sendJson(res, 400, { error: '请上传有效的付款凭证图片' });
     const buf = Buffer.from(proof, 'base64');
@@ -596,6 +596,7 @@ function assessmentQuota(user, visitorId) {
     fs.mkdirSync(proofDir, { recursive: true });
     fs.writeFileSync(path.join(proofDir, o.orderId + '.jpg'), buf);
     o.proofAt = new Date().toISOString(); o.proofFile = o.orderId + '.jpg';
+    o.transactionNo = transactionNo; o.paymentMethod = o.channel;
     saveTable('orders', orders);
     return sendJson(res, 200, { ok: true, order: o });
   }
@@ -608,7 +609,7 @@ function assessmentQuota(user, visitorId) {
     const orders = loadTable('orders');
     const o = orders.find((x) => x.id === Number(b.orderId));
     if (!o) return sendJson(res, 404, { error: '订单不存在' });
-    if (o.channel !== 'alipay') return sendJson(res, 400, { error: '仅支付宝订单可人工审核' });
+    if (o.channel !== 'alipay' && o.channel !== 'wechat') return sendJson(res, 400, { error: '仅支付宝/微信订单可人工审核' });
     if (o.status === 'paid') return sendJson(res, 200, { ok: true, alreadyPaid: true, order: o });
     if (o.status !== 'pending') return sendJson(res, 400, { error: '订单状态不允许审核' });
     if (b.approve) {

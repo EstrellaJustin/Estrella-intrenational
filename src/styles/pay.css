@@ -116,3 +116,35 @@
   .pay__method-desc { display: none; }
   .pay__alipay-qr { width: 100%; max-width: 240px; }
 }
+
+/* ================= 支付方式选择卡片（支付宝/微信 独立选项） ================= */
+.pay__method-card {
+  margin-top: 0.75rem; width: 100%;
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 1rem 1.125rem;
+  background: rgba(10, 61, 115, 0.3);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-m);
+  cursor: pointer; color: inherit; font: inherit; text-align: left;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.pay__method-card:hover { border-color: var(--color-accent); background: rgba(201, 162, 39, 0.08); }
+.pay__method-card .pay__method-icon { flex: none; }
+.pay__method-arrow { margin-left: auto; color: var(--color-accent); font-size: 1rem; }
+.pay__note { margin-top: 1rem; font-size: 0.75rem; line-height: 1.8; color: var(--color-text-muted); }
+
+/* ================= 选定支付方式后的界面 ================= */
+.pay__method-body { margin-top: 1.25rem; text-align: center; }
+.pay__method-qr { width: min(260px, 100%); max-width: 260px; object-fit: contain; border-radius: var(--radius-m); border: 1px solid var(--color-line-soft); background: #fff; }
+.pay__method-tip { margin-top: 0.9rem; font-size: 1.0625rem; font-weight: 700; color: var(--color-heading); }
+.pay__method-sub { margin-top: 0.35rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+.pay__field { margin-top: 1.25rem; text-align: left; }
+.pay__field label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--color-text-faint); letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+.pay__field input { width: 100%; height: 44px; padding: 0 0.75rem; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: var(--radius-m); background: rgba(255, 255, 255, 0.04); color: var(--color-heading); font-size: 0.875rem; }
+.pay__field input::placeholder { color: var(--color-text-faint); }
+.pay__method-body .pay__proof { text-align: left; }
+.pay__method-body #btn-submit-proof { margin-top: 1rem; width: 100%; justify-content: center; }
+@media (max-width: 480px) {
+  .pay__method-card .pay__method-desc { display: none; }
+  .pay__method-qr { width: 100%; max-width: 240px; }
+}

@@ -57,7 +57,7 @@ Istra.api = {
   getAssessmentQuota(visitorId) { return this.req('/api/assessments/quota' + (visitorId ? '?visitorId=' + encodeURIComponent(visitorId) : ''), 'GET'); },
   saveVisitorAssessment(visitorId) { return this.req('/api/assessments/visitor', 'POST', { visitorId }); },
   /* 支付宝人工审核支付 */
-  submitPaymentProof(orderId, proof) { return this.req('/api/payment/proof', 'POST', { orderId, proof }); },
+  submitPaymentProof(orderId, proof, transactionNo) { return this.req('/api/payment/proof', 'POST', { orderId, proof, transactionNo }); },
   adminReview(orderId, approve, adminToken) {
     return fetch(this.apiBase() + '/api/payment/review', {
       method: 'POST',

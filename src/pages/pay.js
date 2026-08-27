@@ -29,6 +29,11 @@ function compressProof(file, maxSide, quality) {
   });
 }
 
+const CHANNELS = {
+  alipay: { name: '支付宝支付', qr: 'assets/pay-alipay.jpg', tip: '请使用支付宝扫码支付', sub: '打开支付宝 App，扫描上方收款码完成付款' },
+  wechat: { name: '微信支付', qr: 'assets/pay-wechat.png', tip: '请使用微信扫码支付', sub: '打开微信，扫描上方收款码完成付款' }
+};
+
 (async function () {
   if (!Istra.auth.loggedIn()) {
     location.href = 'login.html?next=' + encodeURIComponent(location.pathname + location.search);
@@ -48,10 +53,10 @@ function compressProof(file, maxSide, quality) {
 
   let order = null;
   let pay = null;
-  let channel = 'alipay';
   let proofB64 = '';
   const card = $('#pay-card');
 
+  /* 第一屏：商品 + 选择支付方式（不显示二维码，不创建订单） */
   const render = () => {
     card.innerHTML = `
       <div class="pay__product">
@@ -66,97 +71,83 @@ function compressProof(file, maxSide, quality) {
         <p class="pay__price"><small>${esc(product.currency)}</small>${yuan(product.price)}</p>
       </div>
       <div class="pay__info">
+        <div class="pay__info-block"><p class="pay__info-title">购买内容</p><p class="pay__info-text">AI 评估 10 次额度 · 解锁完整 20 个国家/项目匹配结果</p></div>
         <div class="pay__info-block"><p class="pay__info-title">购买须知</p><p class="pay__info-text">${esc(product.note)}</p></div>
-        <div class="pay__info-block"><p class="pay__info-title">退款说明</p><p class="pay__info-text">${esc(product.refund)}</p></div>
         <div class="pay__info-block"><p class="pay__info-title">售后客服</p><p class="pay__info-text">售后客服 QQ：3279331550 · 服务时间 9:00 – 21:00</p></div>
       </div>
       <div class="pay__methods">
         <p class="pay__methods-title">选择支付方式</p>
-        <label class="pay__method-option">
-          <input type="radio" name="pay-channel" value="alipay" ${channel === 'alipay' ? 'checked' : ''} />
+        <button class="pay__method-card" type="button" data-method="alipay">
           <span class="pay__method-icon">支</span>
-          <span class="pay__method-name">支付宝扫码</span>
-          <span class="pay__method-desc">收款码 + 上传付款凭证 · 人工审核</span>
-        </label>
-        <label class="pay__method-option">
-          <input type="radio" name="pay-channel" value="test" ${channel === 'test' ? 'checked' : ''} />
+          <span class="pay__method-name">支付宝</span>
+          <span class="pay__method-desc">收款码 + 上传凭证 · 人工审核</span>
+          <span class="pay__method-arrow">→</span>
+        </button>
+        <button class="pay__method-card" type="button" data-method="wechat">
           <span class="pay__method-icon">微</span>
           <span class="pay__method-name">微信支付</span>
-          <span class="pay__method-desc">测试通道（模拟支付）</span>
-        </label>
+          <span class="pay__method-desc">收款码 + 上传凭证 · 人工审核</span>
+          <span class="pay__method-arrow">→</span>
+        </button>
       </div>
-      <div class="pay__actions">
-        <button class="btn btn--primary" type="button" id="btn-pay">立即支付 <span class="btn-arrow">→</span></button>
-        <a class="btn btn--ghost-dark" href="profile.html#sec-orders">我的订单</a>
-      </div>`;
-    document.querySelectorAll('input[name="pay-channel"]').forEach((r) => {
-      r.addEventListener('change', () => { channel = document.querySelector('input[name="pay-channel"]:checked').value; });
+      <p class="pay__note">付款申请提交后进入「待人工审核」，审核通过后自动发放 10 次 AI 评估额度并解锁完整 20 个国家/项目匹配结果。通常 1-2 个工作日内完成。</p>`;
+    card.querySelectorAll('[data-method]').forEach((btn) => {
+      btn.addEventListener('click', () => onChooseMethod(btn.getAttribute('data-method')));
     });
-    $('#btn-pay').addEventListener('click', onPay);
   };
 
-  const onPay = async () => {
-    const btn = $('#btn-pay');
-    btn.disabled = true; btn.textContent = '创建订单中…';
+  /* 选择支付方式 → 创建订单 → 显示对应二维码与提交表单 */
+  const onChooseMethod = async (ch) => {
+    card.innerHTML = '<div class="pay__loading">创建订单中…</div>';
     try {
-      const o = await Istra.api.createOrder(product.id, channel);
+      const o = await Istra.api.createOrder(product.id, ch);
       order = o.order;
       const p = await Istra.api.createPayment(order.id);
       pay = p.pay;
-      renderPaying();
+      renderMethod(ch);
     } catch (e) {
       card.innerHTML = '<div class="pay__error">' + esc(e.message || '创建订单失败') + '</div>';
     }
   };
 
-  const renderPaying = () => {
-    if (pay.channel === 'alipay') return renderAlipay();
+  const renderMethod = (ch) => {
+    const c = CHANNELS[ch] || CHANNELS.alipay;
     card.innerHTML = `
       <div class="pay__product">
         <span class="pay__product-badge">${product.id === 'ai-assessment' ? '✦' : '✈'}</span>
-        <div><p class="pay__product-name">${esc(product.name)}</p><p class="pay__product-desc">${esc(product.desc)}</p></div>
+        <div><p class="pay__product-name">${esc(c.name)} · ${yuan(order.amount)}</p><p class="pay__product-desc">AI 评估 10 次 · 解锁完整 20 个国家/项目</p></div>
       </div>
-      <div class="pay__paying">
-        <p class="pay__paying-title">订单已创建，请完成支付</p>
-        <div class="pay__paying-row"><span>订单号</span><b>${esc(order.orderId)}</b></div>
-        <div class="pay__paying-row"><span>应付金额</span><b>${yuan(order.amount)}</b></div>
-        <div class="pay__paying-row"><span>支付方式</span><b>测试支付通道</b></div>
-        <p class="pay__paying-mock">当前为测试支付通道（未接入真实商户号）：点击下方按钮模拟支付成功。支付成功与否由服务端回调验证，前端无法伪造支付状态。</p>
-      </div>
-      <div class="pay__actions">
-        <button class="btn btn--primary" type="button" id="btn-mock-pay">模拟支付成功 <span class="btn-arrow">→</span></button>
-        <button class="btn btn--ghost-dark" type="button" id="btn-cancel-order">取消订单</button>
-      </div>`;
-    $('#btn-mock-pay').addEventListener('click', onMockPay);
-    $('#btn-cancel-order').addEventListener('click', onCancel);
-  };
-
-  const renderAlipay = () => {
-    card.innerHTML = `
-      <div class="pay__product">
-        <span class="pay__product-badge">${product.id === 'ai-assessment' ? '✦' : '✈'}</span>
-        <div><p class="pay__product-name">${esc(product.name)}</p><p class="pay__product-desc">${esc(product.desc)}</p></div>
-      </div>
-      <div class="pay__alipay">
-        <img class="pay__alipay-qr" src="assets/pay-alipay.jpg" alt="支付宝收款码" />
-        <p class="pay__alipay-tip">打开支付宝扫码支付</p>
-        <p class="pay__alipay-sub">请使用支付宝 App 扫描上方收款码，完成 ¥${(order.amount / 100).toFixed(2)} 付款</p>
-        <div class="pay__paying-row"><span>支付宝订单号</span><b>${esc(order.orderId)}</b></div>
+      <div class="pay__method-body">
+        <img class="pay__method-qr" src="${c.qr}" alt="${esc(c.name)}收款码" />
+        <p class="pay__method-tip">${esc(c.tip)}</p>
+        <p class="pay__method-sub">${esc(c.sub)}</p>
+        <div class="pay__paying-row"><span>系统订单号</span><b>${esc(order.orderId)}</b></div>
+        <div class="pay__field">
+          <label for="tx-no">${esc(c.name === '支付宝支付' ? '支付宝' : '微信')}交易单号</label>
+          <input id="tx-no" type="text" maxlength="80" placeholder="付款后填写 ${esc(c.name === '支付宝支付' ? '支付宝' : '微信')} 账单中的交易单号" autocomplete="off" />
+        </div>
         <div class="pay__proof">
           <p class="pay__proof-title">上传付款凭证</p>
           <label class="pay__proof-file">
             <input id="proof-file" type="file" accept="image/*" hidden />
             <span class="pay__proof-btn">选择凭证图片</span>
-            <span class="pay__proof-hint" id="proof-hint">付款成功后截图上传（转账记录/付款页）</span>
+            <span class="pay__proof-hint" id="proof-hint">付款成功后的账单截图 / 转账记录</span>
           </label>
           <img id="proof-preview" class="pay__proof-preview" alt="凭证预览" style="display:none" />
-          <button class="btn btn--primary" type="button" id="btn-submit-proof" disabled>提交凭证，等待审核 <span class="btn-arrow">→</span></button>
-          <p class="pay__proof-note">提交后订单进入「待审核」状态，审核通过后自动发放 AI 评估额度（10 次）。审核通常 1-2 个工作日内完成，如遇问题请联系售后客服 QQ：3279331550。</p>
         </div>
+        <button class="btn btn--primary" type="button" id="btn-submit-proof" disabled>提交付款申请 <span class="btn-arrow">→</span></button>
+        <p class="pay__proof-note">提交后订单进入「待人工审核」。审核通过后将获得 10 次 AI 评估额度并解锁完整 20 个国家/项目匹配结果，不会在提交时立即生效。</p>
       </div>
       <div class="pay__actions">
+        <button class="btn btn--ghost-dark" type="button" id="btn-back-method">← 返回支付方式</button>
         <button class="btn btn--ghost-dark" type="button" id="btn-cancel-order">取消订单</button>
       </div>`;
+    const refreshSubmit = () => {
+      const tx = $('#tx-no').value.trim();
+      const img = $('#proof-preview');
+      $('#btn-submit-proof').disabled = !(tx && img && img.style.display !== 'none');
+    };
+    $('#tx-no').addEventListener('input', refreshSubmit);
     $('#proof-file').addEventListener('change', async (e) => {
       const f = e.target.files && e.target.files[0];
       if (!f) return;
@@ -165,44 +156,37 @@ function compressProof(file, maxSide, quality) {
         $('#proof-preview').src = 'data:image/jpeg;base64,' + proofB64;
         $('#proof-preview').style.display = '';
         $('#proof-hint').textContent = '已选择：' + f.name + '（约 ' + Math.round(proofB64.length * 0.75 / 1024) + ' KB）';
-        $('#btn-submit-proof').disabled = false;
+        refreshSubmit();
       } catch (err) { $('#proof-hint').textContent = err.message; }
     });
     $('#btn-submit-proof').addEventListener('click', onSubmitProof);
+    $('#btn-back-method').addEventListener('click', async () => {
+      if (order && order.status === 'pending') { try { await Istra.api.cancelOrder(order.id); } catch (e) {} }
+      order = null; pay = null; proofB64 = '';
+      render();
+    });
     $('#btn-cancel-order').addEventListener('click', onCancel);
   };
 
   const onSubmitProof = async () => {
     const btn = $('#btn-submit-proof');
+    const tx = $('#tx-no').value.trim();
+    if (!tx) { alert('请填写交易单号'); return; }
+    if (!proofB64) { alert('请上传付款凭证'); return; }
     btn.disabled = true; btn.textContent = '提交中…';
     try {
-      const r = await Istra.api.submitPaymentProof(order.id, proofB64);
+      await Istra.api.submitPaymentProof(order.id, proofB64, tx);
       card.innerHTML = `
         <div class="pay__success">
-          <p class="pay__success-icon">✓</p>
-          <p class="pay__success-title">凭证已提交，订单待审核</p>
-          <p class="pay__success-text">订单号 ${esc(order.orderId)} · 审核通过后将自动发放：${esc(product.name)}（AI 评估额度 10 次）</p>
+          <p class="pay__success-icon">📋</p>
+          <p class="pay__success-title">付款申请已提交</p>
+          <p class="pay__success-text">订单正在等待人工审核。<br />审核通过后将获得 10 次 AI 评估额度，并解锁完整 20 个国家/项目匹配结果。</p>
+          <p class="pay__success-text">订单号 ${esc(order.orderId)} · 请保留付款凭证以便核对。</p>
           <a class="btn btn--primary" href="profile.html#sec-orders">查看我的订单</a>
         </div>`;
     } catch (e) {
-      btn.disabled = false; btn.textContent = '提交凭证，等待审核';
+      btn.disabled = false; btn.textContent = '提交付款申请';
       card.innerHTML += '<div class="pay__error">' + esc(e.message || '提交失败，请重试') + '</div>';
-    }
-  };
-
-  const onMockPay = async () => {
-    const btn = $('#btn-mock-pay');
-    btn.disabled = true; btn.textContent = '支付验证中…';
-    try {
-      const r = await Istra.api.notifyPayment({
-        orderId: order.orderId,
-        transactionId: 'TEST-' + Date.now(),
-        payToken: pay.payToken,
-        amount: order.amount
-      });
-      if (r.alreadyPaid || r.ok) renderSuccess();
-    } catch (e) {
-      card.innerHTML = '<div class="pay__error">' + esc(e.message || '支付失败') + '</div>';
     }
   };
 
@@ -213,16 +197,6 @@ function compressProof(file, maxSide, quality) {
     } catch (e) {
       card.innerHTML = '<div class="pay__error">' + esc(e.message || '取消失败') + '</div>';
     }
-  };
-
-  const renderSuccess = () => {
-    card.innerHTML = `
-      <div class="pay__success">
-        <p class="pay__success-icon">✓</p>
-        <p class="pay__success-title">支付成功，权益已解锁</p>
-        <p class="pay__success-text">订单号 ${esc(order.orderId)} · 已发放权益：${esc(product.name)}</p>
-        <a class="btn btn--primary" href="profile.html#sec-orders">查看我的订单与权益</a>
-      </div>`;
   };
 
   render();
