@@ -53,7 +53,9 @@ Istra.api = {
   notifyPayment(payload) { return this.req('/api/payment/notify', 'POST', payload); },
   refundOrder(orderId) { return this.req('/api/payment/refund', 'POST', { orderId }); },
   listEntitlements() { return this.req('/api/entitlements', 'GET'); },
-  checkEntitlement(productId) { return this.req('/api/entitlements/check?product=' + encodeURIComponent(productId), 'GET'); }
+  checkEntitlement(productId) { return this.req('/api/entitlements/check?product=' + encodeURIComponent(productId), 'GET'); },
+  getAssessmentQuota(visitorId) { return this.req('/api/assessments/quota' + (visitorId ? '?visitorId=' + encodeURIComponent(visitorId) : ''), 'GET'); },
+  saveVisitorAssessment(visitorId) { return this.req('/api/assessments/visitor', 'POST', { visitorId }); }
 };
 
 Istra.auth = {

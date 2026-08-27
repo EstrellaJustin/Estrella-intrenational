@@ -20,7 +20,7 @@ const port = portArg ? Number(portArg.split('=')[1]) : (process.env.PORT || 4173
 const openBrowser = !args.includes('--no-open');
 
 /* ---------- 数据库（JSON 文件表） ---------- */
-const TABLES = ['users', 'user_profiles', 'assessments', 'recommendations', 'user_behavior', 'sessions', 'products', 'orders', 'payments', 'entitlements'];
+const TABLES = ['users', 'user_profiles', 'assessments', 'recommendations', 'user_behavior', 'sessions', 'products', 'orders', 'payments', 'entitlements', 'visitor_assessments'];
 fs.mkdirSync(dbDir, { recursive: true });
 function loadTable(name) {
   const f = path.join(dbDir, name + '.json');
@@ -225,10 +225,32 @@ async function handleApi(req, res, url) {
     return sendJson(res, 200, { profile: row });
   }
 
+  /* GET /api/assessments/quota（评估次数额度） */
+  if (p === '/api/assessments/quota' && method === 'GET') {
+    const u = authUser(req);
+    const visitorId = cleanStr(url.searchParams.get('visitorId'), 80);
+    return sendJson(res, 200, assessmentQuota(u, visitorId));
+  }
+  /* POST /api/assessments/visitor（游客评估计数 · 成功生成报告后调用，失败不扣） */
+  if (p === '/api/assessments/visitor' && method === 'POST') {
+    const b = await readBody(req);
+    const visitorId = cleanStr(b.visitorId, 80);
+    if (!visitorId) return sendJson(res, 400, { error: '缺少 visitorId' });
+    const q = assessmentQuota(null, visitorId);
+    if (q.remaining <= 0) return sendJson(res, 429, { error: '评估次数已用完，请注册后继续使用', quota: q });
+    const rows = loadTable('visitor_assessments');
+    const rec = rows.find((x) => x.visitorId === visitorId);
+    if (rec) { rec.used += 1; } else { rows.push({ id: nextId(rows), visitorId, used: 1, createdAt: new Date().toISOString() }); }
+    saveTable('visitor_assessments', rows);
+    return sendJson(res, 200, assessmentQuota(null, visitorId));
+  }
+
   /* POST /api/assessments（保存评估 + 推荐） */
   if (p === '/api/assessments' && method === 'POST') {
     const u = authUser(req);
     if (!u) return sendJson(res, 401, { error: '未登录' });
+    const qBefore = assessmentQuota(u, '');
+    if (qBefore.remaining <= 0) return sendJson(res, 429, { error: '评估次数已用完，请付费解锁更多次数', quota: qBefore });
     const b = await readBody(req);
     const inputs = b.inputs || {};
     const recs = Array.isArray(b.recommendations) ? b.recommendations.slice(0, 20) : [];
@@ -245,6 +267,10 @@ async function handleApi(req, res, url) {
     };
     assessments.push(record);
     saveTable('assessments', assessments);
+    /* 评估保存成功后才扣次数 */
+    const users = loadTable('users');
+    const ui = users.findIndex((x) => x.id === u.id);
+    if (ui >= 0) { users[ui].assessment_used = Number(users[ui].assessment_used || 0) + 1; saveTable('users', users); }
     recs.forEach((r, i) => {
       recTable.push({
         id: nextId(recTable), userId: u.id, assessmentId: id,
@@ -277,7 +303,21 @@ async function handleApi(req, res, url) {
     return sendJson(res, 200, { assessment: rec, recommendations: recs });
   }
 
-  /* ============ 正式支付系统 API ============ */
+  /* AI 评估次数额度：付费 > 注册 > 游客 */
+function assessmentQuota(user, visitorId) {
+  if (user) {
+    const paid = !!user.assessmentUnlock;
+    const quota = paid ? 10 : 3;
+    const used = Number(user.assessment_used || 0);
+    return { tier: paid ? 'paid' : 'user', quota, used, remaining: Math.max(0, quota - used) };
+  }
+  const rows = loadTable('visitor_assessments');
+  const rec = rows.find((x) => x.visitorId === visitorId) || null;
+  const used = rec ? rec.used : 0;
+  return { tier: 'visitor', quota: 1, used, remaining: Math.max(0, 1 - used) };
+}
+
+/* ============ 正式支付系统 API ============ */
   /* GET /api/products（公开） */
   if (p === '/api/products' && method === 'GET') {
     return sendJson(res, 200, { products: loadTable('products') });

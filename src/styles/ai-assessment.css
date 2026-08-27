@@ -701,3 +701,7 @@ a.report__project:hover { border-color: rgba(59, 130, 246, 0.55); background: rg
   transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .search-select__list li:hover { background: var(--color-ink-3); color: var(--color-heading); }
+
+/* —— 评估次数提示 —— */
+.assessment__quota { margin-top: 0.75rem; font-size: 0.8125rem; color: var(--color-accent); }
+.quota-cta { margin-top: 1rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }

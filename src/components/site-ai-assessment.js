@@ -31,6 +31,50 @@ class SiteAiAssessment extends HTMLElement {
     this.bind();
     this.updateView();
     Istra.reveal.observe(this);
+    this.loadQuota();
+  }
+
+  /* 游客 ID（localStorage 持久，刷新无法绕过） */
+  visitorId() {
+    try {
+      let id = localStorage.getItem('istra_visitor_id') || '';
+      if (!id) { id = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); localStorage.setItem('istra_visitor_id', id); }
+      return id;
+    } catch (e) { return 'v' + Date.now().toString(36); }
+  }
+
+  /* 加载评估次数额度（后端控制） */
+  loadQuota() {
+    if (!window.Istra || !Istra.api || !Istra.api.getAssessmentQuota) return;
+    const vid = Istra.auth && Istra.auth.loggedIn() ? '' : this.visitorId();
+    Istra.api.getAssessmentQuota(vid).then((q) => {
+      this._quota = q;
+      const el = this.querySelector('[data-quota]');
+      if (el) {
+        el.textContent = q.tier === 'paid' ? '本账号剩余评估次数：' + q.remaining + ' / 10（深度版）'
+          : q.tier === 'user' ? '本账号剩余评估次数：' + q.remaining + ' / 3'
+          : '本游客剩余评估次数：' + q.remaining + ' / 1';
+      }
+    }).catch(function () {});
+  }
+
+  /* 次数用尽提示并引导注册/付费 */
+  showQuotaBlocked(q) {
+    const el = this.querySelector('[data-quota]');
+    if (el) el.textContent = '评估次数已用完。请注册后获得 3 次额度，或购买 AI 深度评估解锁 10 次额度。';
+    const btn = this.querySelector('[data-action="generate"]');
+    if (btn) btn.disabled = true;
+    const box = this.querySelector('.wizard__panel-cta');
+    if (box) {
+      const oldNote = box.querySelector('.wizard__submit-note');
+      if (oldNote) oldNote.textContent = '评估次数已用完 · 请注册或购买 AI 深度评估';
+      if (!box.querySelector('.quota-cta')) {
+        const cta = document.createElement('div');
+        cta.className = 'quota-cta';
+        cta.innerHTML = '<a class="btn btn--ghost-dark" href="register.html">注册获取 3 次</a> <a class="btn btn--primary" href="pay.html?product=ai-assessment">购买解锁 10 次</a>';
+        box.appendChild(cta);
+      }
+    }
   }
 
   /* ================= 全球主要国家/地区（可搜索） ================= */
@@ -318,6 +362,7 @@ class SiteAiAssessment extends HTMLElement {
             <p class="assessment__eyebrow" data-reveal>AI Life Path Planning System</p>
             <h1 class="assessment__title" data-reveal>全球人生路径规划评估中心</h1>
             <p class="assessment__sub" data-reveal>6 步专业评估 · 覆盖学生、职场人士、创业者与家庭用户 · 生成 20 个个性化匹配方案</p>
+            <p class="assessment__quota" data-quota data-reveal></p>
           </div>
         </header>
 
@@ -487,6 +532,11 @@ class SiteAiAssessment extends HTMLElement {
     const gen = this.querySelector('[data-action="generate"]');
     if (gen) gen.addEventListener('click', () => {
       if (!this.validate(this.totalSteps - 1)) return;
+      const q = this._quota;
+      if (q && q.remaining <= 0) {
+        this.showQuotaBlocked(q);
+        return;
+      }
       this.startAnalysis();
     });
   }
@@ -2091,6 +2141,16 @@ class SiteAiAssessment extends HTMLElement {
       }).catch(() => { if (saveBox) saveBox.innerHTML = '保存失败，请稍后在个人中心查看。'; });
     } else if (saveBox) {
       saveBox.innerHTML = '💡 <a href="login.html?next=ai-assessment.html">登录 / 注册</a>后，可保存本次评估记录与 20 个推荐方案到个人中心。';
+      /* 游客：报告生成成功后扣减一次评估额度（失败不扣，后端控制） */
+      if (window.Istra && Istra.api && Istra.api.saveVisitorAssessment) {
+        Istra.api.saveVisitorAssessment(this.visitorId()).then((q) => {
+          if (q && q.remaining !== undefined) {
+            this._quota = q;
+            const el = this.querySelector('[data-quota]');
+            if (el) el.textContent = '本游客剩余评估次数：' + q.remaining + ' / 1';
+          }
+        }).catch(function () {});
+      }
     }
 
     Istra.reveal.observe(this);
