@@ -145,3 +145,20 @@ is-navbar.is-scrolled .nav__account:hover { border-color: var(--color-accent); c
   transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .menu__account:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+/* —— 导航栏售后客服 —— */
+.nav__qq {
+  flex: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+.menu__qq {
+  padding: 0.875rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  border-top: 1px solid var(--color-line-soft);
+}
