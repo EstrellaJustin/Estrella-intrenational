@@ -203,3 +203,41 @@ const statusMap = { pending: '待支付', paid: '已支付', cancelled: '已取�
     }
   });
 })();
+/* ================= AI 评估额度中心（额度来自后端，未登录不展示） ================= */
+(function () {
+  var el = document.querySelector('#quota-card');
+  if (!el) return;
+  Istra.api.getAssessmentQuota('').then(function (q) {
+    if (!q || typeof q.remaining !== 'number') {
+      el.innerHTML = '<div class="profile__empty">额度信息暂不可用，请稍后刷新</div>';
+      return;
+    }
+    var total = q.quota || 0;
+    var used = q.used || 0;
+    var remaining = q.remaining;
+    var tierName = q.tier === 'paid' ? '深度版' : (q.tier === 'user' ? '注册用户' : '体验用户');
+    if (remaining <= 0) {
+      el.innerHTML = '<div class="quota-card quota-card--empty">' +
+        '<div class="quota-card__main">' +
+          '<span class="quota-card__badge">' + esc(q.tier === 'paid' ? '深度版 · 次数已用完' : '次数已用完') + '</span>' +
+          '<p class="quota-card__title">AI评估次数已用完</p>' +
+          '<p class="quota-card__sub">¥9.90 解锁 10 次评估</p>' +
+        '</div>' +
+        '<a class="btn btn--primary" href="pay.html?product=ai-assessment">立即购买 <span class="btn-arrow">→</span></a>' +
+      '</div>';
+      return;
+    }
+    var pct = total ? Math.max(0, Math.min(100, Math.round(remaining / total * 100))) : 0;
+    el.innerHTML = '<div class="quota-card">' +
+      '<div class="quota-card__main">' +
+        '<p class="quota-card__label">AI评估剩余次数</p>' +
+        '<p class="quota-card__count">' + remaining + ' <span>/ ' + total + '</span></p>' +
+        '<div class="quota-card__bar"><span style="width:' + pct + '%"></span></div>' +
+        '<p class="quota-card__meta">' + esc(tierName) + ' · 已用 ' + used + ' 次</p>' +
+      '</div>' +
+      '<a class="btn btn--ghost-dark" href="pay.html?product=ai-assessment">购买10次评估 · ¥9.90 <span class="btn-arrow">→</span></a>' +
+    '</div>';
+  }).catch(function () {
+    el.innerHTML = '<div class="profile__empty">额度信息加载失败，请稍后重试</div>';
+  });
+})();
