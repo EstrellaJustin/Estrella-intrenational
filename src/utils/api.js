@@ -76,15 +76,27 @@ Istra.auth = {
   loggedIn() { return !!Istra.api.token; },
   async init() {
     if (!this.loggedIn()) { this.user = null; return null; }
-    try {
+    const load = async () => {
       const data = await Istra.api.me();
       this.user = data.user;
       return this.user;
+    };
+    try {
+      return await load();
     } catch (e) {
-      this.user = null;
-      Istra.api.token = '';
-      try { localStorage.removeItem('istra_token'); } catch (err) {}
-      return null;
+      /* 401 = token 确实失效 → 真正退出；其它（网络/冷启动/5xx）→ 保留 token 并重试，避免瞬时故障导致永久“未登录” */
+      if (e && e.status === 401) {
+        this.user = null;
+        this.setToken('');
+        return null;
+      }
+      await new Promise((r) => setTimeout(r, 1200));
+      try {
+        return await load();
+      } catch (e2) {
+        this.user = null; /* 保留 token，下次页面加载自动恢复 */
+        return null;
+      }
     }
   },
   setToken(token) {
