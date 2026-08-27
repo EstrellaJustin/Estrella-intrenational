@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    伊斯特拉国际 · 本地服务器 + 用户系统 API（零依赖）
    静态文件服务 + REST API + JSON 文件数据库
    数据库目录：data/userdb/（users / user_profiles / assessments /
@@ -20,7 +20,7 @@ const port = portArg ? Number(portArg.split('=')[1]) : (process.env.PORT || 4173
 const openBrowser = !args.includes('--no-open');
 
 /* ---------- 数据库（JSON 文件表） ---------- */
-const TABLES = ['users', 'user_profiles', 'assessments', 'recommendations', 'user_behavior', 'sessions', 'products', 'orders', 'payments', 'entitlements', 'visitor_assessments', 'vision_cache'];
+const TABLES = ['users', 'user_profiles', 'assessments', 'recommendations', 'user_behavior', 'sessions', 'products', 'orders', 'payments', 'entitlements', 'visitor_assessments'];
 fs.mkdirSync(dbDir, { recursive: true });
 function loadTable(name) {
   const f = path.join(dbDir, name + '.json');
@@ -135,56 +135,6 @@ function revokeEntitlement(userId, productId, orderId) {
   return ents;
 }
 function genOrderId() { return 'ORD' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 8).toUpperCase(); }
-/* ---------- 图片识别 / 视觉分析（密钥仅在后端环境变量） ---------- */
-function sha256Hex(buf) { return crypto.createHash('sha256').update(buf).digest('hex'); }
-function loadVisionCache() {
-  const f = path.join(dbDir, 'vision_cache.json');
-  if (!fs.existsSync(f)) return {};
-  try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { return {}; }
-}
-function saveVisionCache(map) { fs.writeFileSync(path.join(dbDir, 'vision_cache.json'), JSON.stringify(map, null, 2)); }
-function visionConfigured() { return !!process.env.VISION_API_KEY; }
-/* 调用 OpenAI 兼容视觉模型（GPT-4o-mini / Qwen-VL / GLM-4V 等均可通过环境变量切换） */
-async function analyzeImageWithVision(imageB64, mime, focus) {
-  const baseUrl = (process.env.VISION_BASE_URL || 'https://api.openai.com/v1/chat/completions').replace(/\/+$/, '');
-  const model = process.env.VISION_MODEL || 'gpt-4o-mini';
-  const dataUrl = 'data:' + (mime || 'image/jpeg') + ';base64,' + imageB64;
-  const sys = '你是图片分析助手。识别图中的文字、界面、错误信息、表格与主要内容。只输出简洁中文JSON，字段：{"type":"图片类型","summary":"一句话概括","text":"提取的关键文字","items":["关键信息"],"conclusion":"结论或建议"}。不要输出JSON以外的内容。';
-  const body = {
-    model,
-    temperature: 0.2,
-    max_tokens: 600,
-    messages: [
-      { role: 'system', content: sys },
-      { role: 'user', content: [
-        { type: 'text', text: '分析这张图片。' + (focus ? '重点：' + focus : '') },
-        { type: 'image_url', image_url: { url: dataUrl } }
-      ] }
-    ]
-  };
-  const res = await fetch(baseUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + process.env.VISION_API_KEY },
-    body: JSON.stringify(body)
-  });
-  if (!res.ok) {
-    const t = await res.text().catch(() => '');
-    return { ok: false, error: '视觉模型请求失败 ' + res.status + (t ? ' ' + String(t).slice(0, 200) : '') };
-  }
-  const data = await res.json();
-  const content = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
-  if (!content) return { ok: false, error: '视觉模型未返回内容' };
-  let result;
-  try { result = JSON.parse(content); }
-  catch (e) {
-    const m = String(content).match(/\{[\s\S]*\}/);
-    if (m) { try { result = JSON.parse(m[0]); } catch (e2) { result = null; } }
-  }
-  if (!result || typeof result !== 'object') {
-    result = { type: '图片', summary: String(content).slice(0, 200), text: '', items: [], conclusion: '' };
-  }
-  return { ok: true, result };
-}
 
 async function handleApi(req, res, url) {
   /* CORS：允许 GitHub Pages 前端与本地开发（密钥仍在后端，不涉及前端） */
@@ -530,26 +480,6 @@ function assessmentQuota(user, visitorId) {
     return sendJson(res, 200, { favorites, history, consults });
   }
 
-  /* POST /api/vision/analyze（图片识别/视觉分析 · 密钥仅在后端，图片先由前端压缩） */
-  if (p === '/api/vision/analyze' && method === 'POST') {
-    const b = await readBody(req);
-    const imageB64 = String(b.image || '').replace(/^data:[^;]+;base64,/, '');
-    const mime = cleanStr(b.mime, 60) || 'image/jpeg';
-    const focus = cleanStr(b.focus, 200);
-    if (!imageB64 || imageB64.length < 32) return sendJson(res, 400, { error: '请上传有效的图片' });
-    const buf = Buffer.from(imageB64, 'base64');
-    if (buf.length < 100) return sendJson(res, 400, { error: '图片内容无效' });
-    if (buf.length > 2 * 1024 * 1024) return sendJson(res, 413, { error: '图片过大，请使用压缩后的图片（≤2MB）' });
-    const hash = sha256Hex(buf);
-    const cache = loadVisionCache();
-    if (cache[hash]) return sendJson(res, 200, Object.assign({ cached: true }, cache[hash]));
-    if (!visionConfigured()) return sendJson(res, 501, { error: '视觉分析服务未配置：请在服务器设置 VISION_API_KEY（可选 VISION_BASE_URL / VISION_MODEL）' });
-    const r = await analyzeImageWithVision(imageB64, mime, focus);
-    if (!r.ok) return sendJson(res, 502, { error: r.error });
-    cache[hash] = { analyzedAt: new Date().toISOString(), focus, result: r.result };
-    saveVisionCache(cache);
-    return sendJson(res, 200, { cached: false, result: r.result });
-  }
   return sendJson(res, 404, { error: '接口不存在' });
 }
 
