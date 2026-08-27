@@ -1,0 +1,42 @@
+/* ============================================================
+   图片识别 / 视觉分析页 · 伊斯特拉国际（深蓝 + 白 高端商务风）
+   ============================================================ */
+.vision { padding: clamp(2.5rem, 6vw, 5rem) 0 4rem; }
+.vision__head { max-width: 640px; }
+.vision__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; align-items: start; }
+.vision__panel { padding: 1.75rem; background: var(--color-ink-2); border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); }
+.vision__panel-title { font-size: 1rem; font-weight: 700; color: var(--color-heading); margin-bottom: 1.25rem; letter-spacing: 0.04em; }
+
+.vision__drop { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; min-height: 180px; padding: 1.5rem; border: 1px dashed var(--color-line); border-radius: var(--radius-m); cursor: pointer; text-align: center; transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease); }
+.vision__drop:hover, .vision__drop.is-drag { border-color: var(--color-accent); background: rgba(201, 162, 39, 0.05); }
+.vision__drop-icon { font-size: 2rem; line-height: 1; }
+.vision__drop-text { font-size: 0.9375rem; font-weight: 600; color: var(--color-heading); }
+.vision__drop-sub { font-size: 0.75rem; color: var(--color-text-muted); }
+
+.vision__preview { margin-top: 1rem; }
+.vision__preview img { width: 100%; max-height: 260px; object-fit: contain; border-radius: var(--radius-m); border: 1px solid var(--color-line-soft); background: rgba(255, 255, 255, 0.04); }
+.vision__preview-meta { margin-top: 0.5rem; font-size: 0.75rem; color: var(--color-text-muted); }
+
+.vision__field { margin-top: 1.25rem; }
+.vision__field label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--color-text-faint); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+.vision__field input { width: 100%; height: 44px; padding: 0 0.75rem; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: var(--radius-m); background: rgba(255, 255, 255, 0.04); color: var(--color-heading); font-size: 0.875rem; }
+.vision__field input::placeholder { color: var(--color-text-faint); }
+
+.vision__actions { margin-top: 1.25rem; }
+.vision__privacy { margin-top: 0.9rem; font-size: 0.75rem; color: var(--color-text-muted); }
+.vision__error { margin-top: 0.9rem; padding: 0.75rem 1rem; border-radius: var(--radius-s); background: rgba(220, 38, 38, 0.12); border: 1px solid rgba(220, 38, 38, 0.35); color: #FCA5A5; font-size: 0.8125rem; }
+
+.vision__placeholder { padding: 3rem 1rem; text-align: center; color: var(--color-text-muted); font-size: 0.875rem; border: 1px dashed var(--color-line); border-radius: var(--radius-m); }
+.vision__cached { margin-bottom: 0.9rem; padding: 0.6rem 0.9rem; border-radius: var(--radius-s); background: rgba(201, 162, 39, 0.1); border: 1px solid rgba(201, 162, 39, 0.3); color: var(--color-accent); font-size: 0.75rem; }
+.vision__card { border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); overflow: hidden; }
+.vision__card-row { display: flex; gap: 1rem; padding: 0.9rem 1rem; border-bottom: 1px solid var(--color-line-soft); }
+.vision__card-row:last-child { border-bottom: none; }
+.vision__card-label { flex: none; width: 5rem; font-size: 0.75rem; letter-spacing: 0.06em; color: var(--color-text-faint); padding-top: 0.15rem; }
+.vision__card-value { flex: 1; font-size: 0.875rem; color: var(--color-heading); line-height: 1.6; word-break: break-word; }
+.vision__card-text { white-space: pre-wrap; }
+.vision__list { margin: 0; padding-left: 1.1rem; }
+.vision__list li { margin: 0.15rem 0; }
+
+@media (max-width: 720px) {
+  .vision__grid { grid-template-columns: 1fr; }
+}

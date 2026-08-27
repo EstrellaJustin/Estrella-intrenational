@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>图片识别 · 伊斯特拉国际</title>
+  <meta name="description" content="伊斯特拉国际 — AI 图片识别与视觉分析：识别文字、界面、错误信息、表格与主要内容。" />
+  <meta name="theme-color" content="#041B3A" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="src/styles/tokens.css" />
+  <link rel="stylesheet" href="src/styles/base.css" />
+  <link rel="stylesheet" href="src/styles/navbar.css" />
+  <link rel="stylesheet" href="src/styles/vision.css" />
+  <link rel="stylesheet" href="src/styles/footer.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要内容</a>
+  <is-navbar page="vision"></is-navbar>
+  <main id="main">
+    <section class="vision">
+      <div class="container vision__wrap">
+        <header class="section-head section-head--dark vision__head">
+          <p class="eyebrow" data-reveal>Visual Analysis</p>
+          <h1 class="title" data-reveal>图片识别 / 视觉分析</h1>
+          <p class="sub" data-reveal>上传图片，AI 识别其中的文字、界面、错误信息、表格与主要内容，返回简洁的结构化分析结果。</p>
+        </header>
+
+        <div class="vision__grid">
+          <section class="vision__panel" data-reveal>
+            <h2 class="vision__panel-title">上传图片</h2>
+            <label class="vision__drop" id="drop-zone" for="file-input">
+              <input id="file-input" type="file" accept="image/*" hidden />
+              <span class="vision__drop-icon">🖼</span>
+              <span class="vision__drop-text">点击选择或拖拽图片到此处</span>
+              <span class="vision__drop-sub">支持 JPG / PNG / WEBP · 自动压缩后发送，原图不会上传</span>
+            </label>
+            <div class="vision__preview" id="preview-box" style="display:none">
+              <img id="preview-img" alt="待分析图片预览" />
+              <p class="vision__preview-meta" id="preview-meta"></p>
+            </div>
+
+            <div class="vision__field">
+              <label for="focus-input">分析重点（可选）</label>
+              <input id="focus-input" type="text" maxlength="100" placeholder="如：帮我提取这张截图里的错误信息" />
+            </div>
+
+            <div class="vision__actions">
+              <button class="btn btn--primary" type="button" id="btn-analyze">开始分析 <span class="btn-arrow">→</span></button>
+            </div>
+            <p class="vision__privacy">你的图片仅发送至本站后端用于分析，不会公开展示。</p>
+            <p class="vision__error" id="vision-error" style="display:none"></p>
+          </section>
+
+          <section class="vision__panel vision__result" data-reveal>
+            <h2 class="vision__panel-title">分析结果</h2>
+            <div id="vision-result">
+              <div class="vision__placeholder">上传图片后点击「开始分析」，结果将显示在这里。</div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+  <is-footer></is-footer>
+  <script src="src/data/brand.js"></script>
+  <script src="src/data/nav.js"></script>
+  <script src="src/data/footer.js"></script>
+  <script src="src/utils/icons.js"></script>
+  <script src="src/utils/reveal.js"></script>
+  <script src="src/utils/api.js"></script>
+  <script src="src/components/site-navbar.js"></script>
+  <script src="src/components/site-footer.js"></script>
+  <script src="src/pages/vision.js"></script>
+</body>
+</html>

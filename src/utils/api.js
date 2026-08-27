@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    用户系统前端工具：API 封装 + 登录态管理
    ============================================================ */
 window.Istra = window.Istra || {};
@@ -55,7 +55,9 @@ Istra.api = {
   listEntitlements() { return this.req('/api/entitlements', 'GET'); },
   checkEntitlement(productId) { return this.req('/api/entitlements/check?product=' + encodeURIComponent(productId), 'GET'); },
   getAssessmentQuota(visitorId) { return this.req('/api/assessments/quota' + (visitorId ? '?visitorId=' + encodeURIComponent(visitorId) : ''), 'GET'); },
-  saveVisitorAssessment(visitorId) { return this.req('/api/assessments/visitor', 'POST', { visitorId }); }
+  saveVisitorAssessment(visitorId) { return this.req('/api/assessments/visitor', 'POST', { visitorId }); },
+  /* 图片识别 / 视觉分析 */
+  analyzeVision(payload) { return this.req('/api/vision/analyze', 'POST', payload); }
 };
 
 Istra.auth = {
