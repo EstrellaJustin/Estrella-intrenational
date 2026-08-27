@@ -13,7 +13,8 @@ const crypto = require('crypto');
 const { exec } = require('child_process');
 
 const root = path.resolve(__dirname, '..');
-const dbDir = path.join(root, 'data', 'userdb');
+/* 数据库目录：默认本地 data/userdb；生产可设 DATA_DIR 指向 Render 持久磁盘，避免重启丢数据 */
+const dbDir = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path.join(root, 'data', 'userdb');
 const args = process.argv.slice(2);
 const portArg = args.find((a) => a.startsWith('--port='));
 const port = portArg ? Number(portArg.split('=')[1]) : (process.env.PORT || 4173);
