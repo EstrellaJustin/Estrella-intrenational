@@ -6,10 +6,16 @@ window.Istra = window.Istra || {};
 Istra.api = {
   token: (function () { try { return localStorage.getItem('istra_token') || ''; } catch (e) { return ''; } })(),
 
+  apiBase() {
+    let base = '';
+    try { base = window.ISTRA_API_BASE || localStorage.getItem('istra_api_base') || ''; } catch (e) {}
+    return base ? base.replace(/\/+$/, '') : '';
+  },
   async req(path, method, body) {
     const headers = { 'Content-Type': 'application/json' };
     if (this.token) headers['Authorization'] = 'Bearer ' + this.token;
-    const res = await fetch(path, {
+    const url = this.apiBase() + path;
+    const res = await fetch(url, {
       method,
       headers,
       body: body !== undefined ? JSON.stringify(body) : undefined
