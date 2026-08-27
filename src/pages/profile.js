@@ -233,7 +233,7 @@ const statusMap = { pending: '待支付', paid: '已支付', cancelled: '已取�
         '<p class="quota-card__label">AI评估剩余次数</p>' +
         '<p class="quota-card__count">' + remaining + ' <span>/ ' + total + '</span></p>' +
         '<div class="quota-card__bar"><span style="width:' + pct + '%"></span></div>' +
-        '<p class="quota-card__meta">' + esc(tierName) + ' · 已用 ' + used + ' 次</p>' +
+        '<p class="quota-card__meta">' + esc(tierName) + ' · 免费 ' + (q.free_quota || 0) + ' + 付费 ' + (q.paid_quota || 0) + ' · 已用 ' + used + ' 次</p>' +
       '</div>' +
       '<a class="btn btn--ghost-dark" href="pay.html?product=ai-assessment">购买10次评估 · ¥9.90 <span class="btn-arrow">→</span></a>' +
     '</div>';

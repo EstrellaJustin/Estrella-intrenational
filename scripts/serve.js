@@ -72,6 +72,74 @@ function readBody(req) {
 }
 function cleanStr(v, max = 200) { return String(v || '').trim().slice(0, max); }
 
+/* ================= AI 评估防刷 / 风控（最小化数据采集，仅哈希） ================= */
+const FREE_QUOTA = Math.max(0, Number(process.env.FREE_QUOTA) || 3);
+const PAID_QUOTA_PER_PURCHASE = 10;
+function riskSalt() { return process.env.RISK_SALT || 'istra-risk-salt'; }
+function hashRisk(v) { return crypto.createHash('sha256').update(String(v || '') + riskSalt()).digest('hex'); }
+function clientIp(req) {
+  const xff = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  return xff || (req.socket && req.socket.remoteAddress) || '';
+}
+/* 存量用户迁移：补齐风控/额度字段，不减少任何人已有额度 */
+function normalizeUsers() {
+  const users = loadTable('users');
+  let changed = false;
+  users.forEach((u) => {
+    if (u.assessment_used === undefined) { u.assessment_used = 0; changed = true; }
+    if (u.free_quota === undefined) { u.free_quota = 3; u.free_claimed = true; changed = true; }
+    if (u.paid_quota === undefined) { u.paid_quota = u.assessmentUnlock ? 10 : 0; changed = true; }
+    if (u.risk === undefined) { u.risk = 'low'; changed = true; }
+    if (u.last_assessment_at === undefined) { u.last_assessment_at = null; changed = true; }
+  });
+  if (changed) saveTable('users', users);
+}
+function computeQuota(user) {
+  const free = Math.max(0, Number(user.free_quota) || 0);
+  const paid = Math.max(0, Number(user.paid_quota) || 0);
+  const used = Math.max(0, Number(user.assessment_used) || 0);
+  const total = free + paid;
+  return {
+    tier: paid > 0 ? 'paid' : 'user',
+    quota: total,
+    free_quota: free,
+    paid_quota: paid,
+    used,
+    remaining: Math.max(0, total - used),
+    free_claimed: !!user.free_claimed,
+    risk: user.risk || 'low'
+  };
+}
+/* 注册风控：同一设备 / 同一 IP 近 24h 注册数量 → 风险评分（低/中/高） */
+function registerRisk(users, deviceHash, ipHash) {
+  const day = Date.now() - 24 * 3600 * 1000;
+  let dev = 0, ip = 0;
+  users.forEach((u) => {
+    if (!u.registeredAt) return;
+    const t = new Date(u.registeredAt).getTime();
+    if (!t || t < day) return;
+    if (deviceHash && u.device_hash === deviceHash) dev += 1;
+    if (ipHash && u.register_ip_hash === ipHash) ip += 1;
+  });
+  let score = 0;
+  if (dev >= 3) score += 4; else if (dev >= 1) score += 2;
+  if (ip >= 12) score += 4; else if (ip >= 6) score += 2; else if (ip >= 3) score += 1;
+  const risk = score >= 4 ? 'high' : (score >= 2 ? 'medium' : 'low');
+  return { score, dev, ip, risk };
+}
+/* 内存请求频率限制（防突发；重启重置可接受） */
+const rateBuckets = new Map();
+function rateLimit(key, max, windowMs) {
+  const now = Date.now();
+  let b = rateBuckets.get(key);
+  if (!b) { b = { times: [] }; rateBuckets.set(key, b); }
+  b.times = b.times.filter((t) => now - t < windowMs);
+  if (b.times.length >= max) return true;
+  b.times.push(now);
+  return false;
+}
+
+
 /* ================= 正式支付系统（第一阶段） =================
    商品 / 订单 / 支付 / 权益。密钥仅从环境变量读取，绝不进入前端。
    当前默认测试 Provider；接入微信支付只需配置环境变量。
@@ -129,7 +197,9 @@ function grantEntitlement(user, product, order) {
   if (product.id === 'ai-assessment') {
     const users = loadTable('users');
     const idx = users.findIndex((x) => x.id === user.id);
-    if (idx >= 0) { users[idx].assessmentUnlock = true; saveTable('users', users); }
+    if (idx >= 0) { users[idx].assessmentUnlock = true;
+      users[idx].paid_quota = (Number(users[idx].paid_quota) || 0) + PAID_QUOTA_PER_PURCHASE;
+      saveTable('users', users); }
   }
   return ents.filter((e) => e.userId === user.id && e.productId === product.id && e.status === 'active');
 }
@@ -157,6 +227,7 @@ async function handleApi(req, res, url) {
   const method = req.method;
 
   /* POST /api/auth/register */
+/* POST /api/auth/register */
   if (p === '/api/auth/register' && method === 'POST') {
     const b = await readBody(req);
     const name = cleanStr(b.name, 40);
@@ -165,26 +236,47 @@ async function handleApi(req, res, url) {
     const password = String(b.password || '');
     if (!name || !password || password.length < 4) return sendJson(res, 400, { error: '请填写姓名与至少 4 位密码' });
     if (!phone && !email) return sendJson(res, 400, { error: '手机号或邮箱至少填写一项' });
+    const ip = clientIp(req);
+    const ipHash = hashRisk(ip);
+    const deviceHash = b.deviceFingerprint ? hashRisk(cleanStr(b.deviceFingerprint, 500)) : '';
     const users = loadTable('users');
+    /* IP 短时限流：同一出口 IP 短时间内大量注册 → 429（不永久封禁） */
+    const shortWin = Number(process.env.REG_IP_SHORT_MS) || 5 * 60 * 1000;
+    const shortMax = Number(process.env.REG_IP_SHORT_MAX) || 3;
+    const burst = users.filter((u) => u.register_ip_hash === ipHash && u.registeredAt && (Date.now() - new Date(u.registeredAt).getTime()) < shortWin).length;
+    if (burst >= shortMax) return sendJson(res, 429, { error: '注册过于频繁，请稍后再试' });
     const dup = users.find((u) => (phone && u.phone === phone) || (email && u.email === email));
     if (dup) return sendJson(res, 409, { error: '该手机号或邮箱已注册' });
+    /* 多因素风控：设备 + IP + 频率 → 低/中/高风险 */
+    const rk = registerRisk(users, deviceHash, ipHash);
+    const freeGranted = rk.risk === 'low';
     const salt = crypto.randomBytes(16).toString('hex');
+    const now = new Date().toISOString();
     const user = {
       id: nextId(users), name, phone, email,
       salt, hash: hashPwd(password, salt),
-      registeredAt: new Date().toISOString(),
+      registeredAt: now,
       country: cleanStr(b.country, 60), city: cleanStr(b.city, 60),
-      lastLoginAt: new Date().toISOString(),
-      assessmentUnlock: false
+      lastLoginAt: now,
+      assessmentUnlock: false,
+      assessment_used: 0,
+      free_quota: freeGranted ? FREE_QUOTA : 0,
+      free_claimed: freeGranted,
+      paid_quota: 0,
+      risk: rk.risk,
+      device_hash: deviceHash || '',
+      register_ip_hash: ipHash,
+      last_ip_hash: ipHash,
+      last_assessment_at: null
     };
     users.push(user);
     saveTable('users', users);
-    saveTable('user_profiles', loadTable('user_profiles').concat([{ userId: user.id, updatedAt: user.registeredAt }]));
+    saveTable('user_profiles', loadTable('user_profiles').concat([{ userId: user.id, updatedAt: now }]));
     const token = newToken();
     saveTable('sessions', loadTable('sessions').concat([{ token, userId: user.id }]));
-    return sendJson(res, 200, { token, user: publicUser(user) });
+    return sendJson(res, 200, { token, user: publicUser(user), quota: computeQuota(user), risk: rk.risk });
   }
-
+  
   /* POST /api/auth/login */
   if (p === '/api/auth/login' && method === 'POST') {
     const b = await readBody(req);
@@ -194,6 +286,7 @@ async function handleApi(req, res, url) {
     const user = users.find((u) => u.phone === account || u.email === account);
     if (!user || hashPwd(password, user.salt) !== user.hash) return sendJson(res, 401, { error: '账号或密码错误' });
     user.lastLoginAt = new Date().toISOString();
+    user.last_ip_hash = hashRisk(clientIp(req));
     saveTable('users', users);
     const token = newToken();
     saveTable('sessions', loadTable('sessions').concat([{ token, userId: user.id }]));
@@ -237,26 +330,39 @@ async function handleApi(req, res, url) {
     return sendJson(res, 200, assessmentQuota(u, visitorId));
   }
   /* POST /api/assessments/visitor（游客评估计数 · 成功生成报告后调用，失败不扣） */
+/* POST /api/assessments/visitor（游客评估计数 · 成功生成报告后调用，失败不扣 · IP 频率限制） */
   if (p === '/api/assessments/visitor' && method === 'POST') {
     const b = await readBody(req);
     const visitorId = cleanStr(b.visitorId, 80);
     if (!visitorId) return sendJson(res, 400, { error: '缺少 visitorId' });
+    const ipHash = hashRisk(clientIp(req));
+    if (rateLimit('v:' + ipHash, Number(process.env.VISITOR_IP_MAX) || 3, 10 * 60 * 1000)) {
+      return sendJson(res, 429, { error: '操作过于频繁，请稍后再试' });
+    }
     const q = assessmentQuota(null, visitorId);
     if (q.remaining <= 0) return sendJson(res, 429, { error: '评估次数已用完，请注册后继续使用', quota: q });
     const rows = loadTable('visitor_assessments');
     const rec = rows.find((x) => x.visitorId === visitorId);
-    if (rec) { rec.used += 1; } else { rows.push({ id: nextId(rows), visitorId, used: 1, createdAt: new Date().toISOString() }); }
+    if (rec) { rec.used += 1; rec.lastIpHash = ipHash; } else { rows.push({ id: nextId(rows), visitorId, used: 1, ipHash, createdAt: new Date().toISOString() }); }
     saveTable('visitor_assessments', rows);
     return sendJson(res, 200, assessmentQuota(null, visitorId));
   }
-
+  
   /* POST /api/assessments（保存评估 + 推荐） */
+/* POST /api/assessments（保存评估 + 推荐：后端原子扣减，前端无法伪造次数） */
   if (p === '/api/assessments' && method === 'POST') {
     const u = authUser(req);
     if (!u) return sendJson(res, 401, { error: '未登录' });
-    const qBefore = assessmentQuota(u, '');
-    if (qBefore.remaining <= 0) return sendJson(res, 429, { error: '评估次数已用完，请付费解锁更多次数', quota: qBefore });
+    if (rateLimit('assess:' + u.id, Number(process.env.ASSESS_RATE_MAX) || 4, Number(process.env.ASSESS_RATE_MS) || 60000)) {
+      return sendJson(res, 429, { error: '评估请求过于频繁，请稍后再试' });
+    }
     const b = await readBody(req);
+    /* 授权检查 + 扣减：readBody 之后全部同步执行（单线程内无 await 间隙）→ 并发也无法超额 */
+    const users = loadTable('users');
+    const idx = users.findIndex((x) => x.id === u.id);
+    if (idx < 0) return sendJson(res, 401, { error: '未登录' });
+    const q = computeQuota(users[idx]);
+    if (q.remaining <= 0) return sendJson(res, 429, { error: '免费评估次数已用完，请购买评估次数。', quota: q });
     const inputs = b.inputs || {};
     const recs = Array.isArray(b.recommendations) ? b.recommendations.slice(0, 20) : [];
     const assessments = loadTable('assessments');
@@ -272,10 +378,6 @@ async function handleApi(req, res, url) {
     };
     assessments.push(record);
     saveTable('assessments', assessments);
-    /* 评估保存成功后才扣次数 */
-    const users = loadTable('users');
-    const ui = users.findIndex((x) => x.id === u.id);
-    if (ui >= 0) { users[ui].assessment_used = Number(users[ui].assessment_used || 0) + 1; saveTable('users', users); }
     recs.forEach((r, i) => {
       recTable.push({
         id: nextId(recTable), userId: u.id, assessmentId: id,
@@ -284,9 +386,14 @@ async function handleApi(req, res, url) {
       });
     });
     saveTable('recommendations', recTable);
-    return sendJson(res, 200, { id, savedAt: now });
+    /* 评估保存成功后才扣减（失败不扣） */
+    users[idx].assessment_used = q.used + 1;
+    users[idx].last_assessment_at = now;
+    users[idx].last_ip_hash = hashRisk(clientIp(req));
+    saveTable('users', users);
+    return sendJson(res, 200, { id, savedAt: now, quota: computeQuota(users[idx]) });
   }
-
+  
   /* GET /api/assessments（本人列表，不含健康敏感字段） */
   if (p === '/api/assessments' && method === 'GET') {
     const u = authUser(req);
@@ -308,18 +415,13 @@ async function handleApi(req, res, url) {
     return sendJson(res, 200, { assessment: rec, recommendations: recs });
   }
 
-  /* AI 评估次数额度：付费 > 注册 > 游客 */
+  /* AI 评估次数额度：付费额度 > 免费额度 > 游客（完全由后端计算） */
 function assessmentQuota(user, visitorId) {
-  if (user) {
-    const paid = !!user.assessmentUnlock;
-    const quota = paid ? 10 : 3;
-    const used = Number(user.assessment_used || 0);
-    return { tier: paid ? 'paid' : 'user', quota, used, remaining: Math.max(0, quota - used) };
-  }
+  if (user) return computeQuota(user);
   const rows = loadTable('visitor_assessments');
   const rec = rows.find((x) => x.visitorId === visitorId) || null;
   const used = rec ? rec.used : 0;
-  return { tier: 'visitor', quota: 1, used, remaining: Math.max(0, 1 - used) };
+  return { tier: 'visitor', quota: 1, free_quota: 1, paid_quota: 0, used, remaining: Math.max(0, 1 - used), free_claimed: true, risk: 'low' };
 }
 
 /* ============ 正式支付系统 API ============ */
@@ -529,6 +631,32 @@ function assessmentQuota(user, visitorId) {
     saveTable('orders', orders);
     return sendJson(res, 200, { ok: true, order: o });
   }
+  /* GET /api/admin/risk（管理员风控概览：脱敏展示，不泄露哈希/密钥/明文敏感信息） */
+  if (p === '/api/admin/risk' && method === 'GET') {
+    const token = getToken(req);
+    if (!token || token !== adminSecret()) return sendJson(res, 403, { error: '审核令牌无效' });
+    const users = loadTable('users');
+    const orders = loadTable('orders');
+    const mask = (x) => (x && x.length >= 7 ? x.slice(0, 3) + '****' + x.slice(-4) : (x || ''));
+    const out = users.map((u) => {
+      const uo = orders.filter((o) => o.userId === u.id);
+      const free = Number(u.free_quota) || 0;
+      const paid = Number(u.paid_quota) || 0;
+      const used = Number(u.assessment_used) || 0;
+      return {
+        id: u.id, name: u.name, phone: mask(u.phone), email: mask(u.email),
+        registeredAt: u.registeredAt, risk: u.risk || 'low',
+        free_quota: free, paid_quota: paid, used, remaining: Math.max(0, free + paid - used),
+        last_assessment_at: u.last_assessment_at || null,
+        device_hash: u.device_hash ? u.device_hash.slice(0, 10) : '',
+        ip_hash: u.register_ip_hash ? u.register_ip_hash.slice(0, 10) : '',
+        pending_alipay: uo.filter((o) => o.channel === 'alipay' && o.status === 'pending').length,
+        paid_orders: uo.filter((o) => o.status === 'paid').length
+      };
+    }).sort((a, b) => (a.registeredAt < b.registeredAt ? 1 : -1));
+    return sendJson(res, 200, { users: out });
+  }
+
   return sendJson(res, 404, { error: '接口不存在' });
 }
 
@@ -560,6 +688,7 @@ const server = http.createServer((req, res) => {
 });
 
 ensureProducts();
+normalizeUsers();
 server.listen(port, () => {
   const url = `http://localhost:${port}`;
   console.log('');
