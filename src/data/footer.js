@@ -31,7 +31,8 @@ Istra.footer = {
   ],
   contact: {
     label: '服务全球 · 预约咨询',
-    email: 'contact@istra-international.example'
+    email: 'contact@istra-international.example',
+    qq: '3279331550'
   }
 };
 

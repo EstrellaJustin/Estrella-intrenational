@@ -199,7 +199,7 @@ const statusMap = { pending: '待支付', paid: '已支付', cancelled: '已取�
         for (var i = 0; i < products.length; i++) { if (products[i].id === x.productId) { prod = products[i]; break; } }
         return '<div class="profile__row"><p class="profile__row-label">' + esc(prod ? prod.name : x.productId) + '</p><p class="profile__row-value">已解锁 · ' + esc((x.grantedAt || '').slice(0, 10)) + '</p></div>';
       }).join('') + '</div><div style="margin-top:1rem"><a class="btn btn--ghost-dark" href="pay.html">购买更多权益</a></div>'
-        : '<div class="profile__empty">暂无已解锁权益。购买后权益将显示在这里。</div>';
+        : '<div class="profile__empty">暂无已解锁权益。购买后权益将显示在这里。</div>'; + '<div class="profile__row" style="margin-top:0.75rem"><p class="profile__row-label">售后客服</p><p class="profile__row-value">QQ：3279331550</p></div>'
     }
   });
 })();

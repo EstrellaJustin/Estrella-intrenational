@@ -26,6 +26,7 @@ class SiteFooter extends HTMLElement {
         <ul class="footer__col-list">
           <li><a class="footer__col-link" href="mailto:${contact.email}">${contact.email}</a></li>
           <li><span class="footer__col-link">${contact.label}</span></li>
+          ${contact.qq ? '<li><span class="footer__col-link">售后客服 QQ：' + contact.qq + '</span></li>' : ''}
         </ul>
       </div>
     ` : '';

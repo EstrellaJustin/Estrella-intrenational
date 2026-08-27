@@ -67,3 +67,5 @@ is-about { display: block; }
 
 /* —— 关于我们 · 免责声明 —— */
 .about__legal { margin-top: 2.5rem; text-align: left; }
+
+.about__contact { margin-top: 1.25rem; text-align: center; font-size: 0.875rem; color: var(--color-accent); }

@@ -71,7 +71,7 @@ class SiteAiAssessment extends HTMLElement {
       if (!box.querySelector('.quota-cta')) {
         const cta = document.createElement('div');
         cta.className = 'quota-cta';
-        cta.innerHTML = '<a class="btn btn--ghost-dark" href="register.html">注册获取 3 次</a> <a class="btn btn--primary" href="pay.html?product=ai-assessment">购买解锁 10 次</a>';
+        cta.innerHTML = '<a class="btn btn--ghost-dark" href="register.html">注册获取 3 次</a> <a class="btn btn--primary" href="pay.html?product=ai-assessment">购买解锁 10 次</a> <span class="quota-qq">售后客服 QQ：3279331550</span>';
         box.appendChild(cta);
       }
     }

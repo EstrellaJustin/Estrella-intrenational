@@ -46,6 +46,7 @@ const yuan = (fen) => ('¥' + (fen / 100).toFixed(2));
       <div class="pay__info">
         <div class="pay__info-block"><p class="pay__info-title">购买须知</p><p class="pay__info-text">${esc(product.note)}</p></div>
         <div class="pay__info-block"><p class="pay__info-title">退款说明</p><p class="pay__info-text">${esc(product.refund)}</p></div>
+        <div class="pay__info-block"><p class="pay__info-title">售后客服</p><p class="pay__info-text">售后客服 QQ：3279331550 · 服务时间 9:00 – 21:00</p></div><p class="pay__info-text">${esc(product.refund)}</p></div>
       </div>
       <div class="pay__methods">
         <p class="pay__methods-title">支付方式</p>
