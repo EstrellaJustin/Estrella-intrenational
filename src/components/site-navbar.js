@@ -46,7 +46,7 @@ class SiteNavbar extends HTMLElement {
         </a>
 
         <nav aria-label="主导航">
-          <ul class="nav__links">${links}<li class="nav__qq">售后客服 QQ：3279331550</li></ul>
+          <ul class="nav__links">${links}<li class="nav__qq">售后客服 QQ：3279331550<br>伊斯特拉国际交流群：978638092</li></ul>
         </nav>
 
         <a class="nav__account" href="login.html" data-account-entry>登录</a>
@@ -58,7 +58,7 @@ class SiteNavbar extends HTMLElement {
       </div>
 
       <div class="menu" id="site-menu" aria-hidden="true">
-        <ul class="menu__list">${menuLinks}<li class="menu__qq">售后客服 QQ：3279331550</li></ul>
+        <ul class="menu__list">${menuLinks}<li class="menu__qq">售后客服 QQ：3279331550<br>伊斯特拉国际交流群：978638092</li></ul>
         <a class="menu__account" href="login.html" data-account-entry>登录</a>
         <p class="menu__foot">ESTRELLA INTERNATIONAL · GLOBAL DEVELOPMENT</p>
       </div>
