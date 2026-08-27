@@ -2106,8 +2106,9 @@ class SiteAiAssessment extends HTMLElement {
       unlockBtn.addEventListener('click', () => {
         let token = '';
         try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
-        if (!token || !window.Istra || !Istra.pay) { location.href = 'login.html?next=ai-assessment.html'; return; }
-        Istra.pay.openUnlockModal({ onDone: () => this.revealFull() });
+        if (!token) { location.href = 'login.html?next=ai-assessment.html'; return; }
+        /* 正式支付：进入订单确认页（支付宝扫码 + 凭证上传 + 人工审核），不再演示直接解锁 */
+        location.href = 'pay.html?product=ai-assessment';
       });
     }
 

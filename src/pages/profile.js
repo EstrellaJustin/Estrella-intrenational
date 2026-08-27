@@ -134,7 +134,7 @@ function esc(v) {
       </div></div>${recLockedBanner}`
     : '<div class="profile__empty">暂无推荐方案 · <a href="ai-assessment.html" style="color:var(--color-accent)">立即评估</a></div>');
   const unlockBtn = document.getElementById('btn-unlock-profile');
-  if (unlockBtn) unlockBtn.addEventListener('click', () => { Istra.pay.openUnlockModal({ onDone: () => location.reload() }); });
+  if (unlockBtn) unlockBtn.addEventListener('click', () => { location.href = 'pay.html?product=ai-assessment'; });
 
   /* 我的收藏 */
   const favType = { favorite_project: '项目', favorite_city: '城市' };

@@ -532,18 +532,9 @@ function assessmentQuota(user, visitorId) {
     return sendJson(res, 200, { productId, unlocked: active, ...extra });
   }
 
-  /* POST /api/pay/unlock（演示支付：将用户标记为已解锁，不重新生成评估） */
+    /* POST /api/pay/unlock（已停用：改为正式支付宝人工审核支付流程，禁止免支付直接解锁） */
   if (p === '/api/pay/unlock' && method === 'POST') {
-    const u = authUser(req);
-    if (!u) return sendJson(res, 401, { error: '未登录' });
-    const users = loadTable('users');
-    const idx = users.findIndex((x) => x.id === u.id);
-    if (idx >= 0) {
-      users[idx].assessmentUnlock = true;
-      saveTable('users', users);
-      return sendJson(res, 200, { ok: true, assessmentUnlock: true });
-    }
-    return sendJson(res, 404, { error: '用户不存在' });
+    return sendJson(res, 400, { error: '请通过正式支付流程购买：进入支付页面选择支付宝扫码支付并等待审核通过。' });
   }
 
   /* POST /api/behavior */
