@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    组件：is-home · 首页 = 全球出国项目分类系统（三列矩阵）
    一级分类卡片（图标+名称+二级分类+项目数）
    点击卡片 → 分类页 category.html?cat=xx
@@ -44,7 +44,8 @@ class SiteHome extends HTMLElement {
       <div class="home">
         <header class="home__head">
           <div class="container">
-            <p class="home__brand" data-reveal>
+            <img class="home__logo" src="assets/logo.jpg" alt="伊斯特拉国际" data-reveal />
+          <p class="home__brand" data-reveal>
               <span class="home__brand-cn">伊斯特拉国际</span>
               <span class="home__brand-en">Estrella International</span>
             </p>

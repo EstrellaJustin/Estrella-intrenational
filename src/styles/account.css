@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    用户体系：登录 / 注册 / 个人中心（深蓝主题）
    ============================================================ */
 
@@ -29,6 +29,7 @@
 
 /* 表单面板 */
 .auth-card { max-width: 460px; margin-inline: auto; padding: 2rem; background: var(--color-ink-2); border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); }
+.auth-card__logo { display: block; width: 88px; height: auto; object-fit: contain; border-radius: 12px; margin: 0 auto 1rem; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); }
 .auth-card__title { font-size: 1.25rem; font-weight: 700; color: var(--color-heading); }
 .auth-card__desc { margin-top: 0.375rem; font-size: 0.8125rem; color: var(--color-text-muted); }
 .auth-card .field { margin-top: 1rem; }

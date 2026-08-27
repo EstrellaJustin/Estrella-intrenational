@@ -189,7 +189,7 @@ const statusMap = { pending: '待支付', paid: '已支付', cancelled: '已取�
     var yuan = function (fen) { return '¥' + (fen / 100).toFixed(2); };
     if (ordersEl) {
       ordersEl.innerHTML = orders.length ? '<div class="profile__rows">' + orders.map(function (x) {
-        return '<div class="profile__row"><p class="profile__row-label">' + esc(x.productName) + '<br><small style="color:#64748B">' + esc(x.orderId) + '</small></p><p class="profile__row-value">' + yuan(x.amount) + ' · ' + (statusMap[x.status] || x.status) + (x.paidAt ? '<br><small style="color:#64748B">支付于 ' + esc((x.paidAt || '').slice(0, 10)) + '</small>' : '') + (x.channel === 'test' ? '<br><small style="color:#C9A227">测试通道</small>' : '') + '</p></div>';
+        return '<div class="profile__row"><p class="profile__row-label">' + esc(x.productName) + '<br><small style="color:#64748B">' + esc(x.orderId) + '</small></p><p class="profile__row-value">' + yuan(x.amount) + ' · ' + (x.channel === 'alipay' && x.status === 'pending' ? '待审核' : (statusMap[x.status] || x.status)) + (x.paidAt ? '<br><small style="color:#64748B">支付于 ' + esc((x.paidAt || '').slice(0, 10)) + '</small>' : '') + (x.channel === 'test' ? '<br><small style="color:#C9A227">测试通道</small>' : (x.channel === 'alipay' ? '<br><small style="color:#38BDF8">支付宝 · 人工审核</small>' : '')) + '</p></div>';
       }).join('') + '</div><div style="margin-top:1rem"><a class="btn btn--ghost-dark" href="pay.html">去购买</a></div>'
         : '<div class="profile__empty">暂无订单。<a href="pay.html">立即购买 AI 深度评估 / DIY 签证深度方案</a></div>';
     }

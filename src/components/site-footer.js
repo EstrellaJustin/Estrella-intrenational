@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    组件：is-footer · 页脚（v2）
    ============================================================ */
 
@@ -37,7 +37,7 @@ class SiteFooter extends HTMLElement {
           <div class="footer__main">
             <div class="footer__brand">
               <p class="footer__brand-name">
-                <img class="footer__brand-mark" src="assets/brand-mark.svg" alt="" width="36" height="36" />
+                <img class="footer__brand-mark" src="assets/logo.jpg" alt="" width="36" height="36" />
                 伊斯特拉国际
               </p>
               <p class="footer__brand-tagline">${Istra.brand.tagline}<br>${Istra.brand.desc}</p>

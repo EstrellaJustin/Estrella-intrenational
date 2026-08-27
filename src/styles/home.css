@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    首页 · is-home（全球出国项目分类系统 · 三列矩阵）
    仅保留：标题 + 分类矩阵（PC 3 列 / 平板 2 列 / 手机 1 列）
    模块：#062B55 / 边框 rgba(255,255,255,0.12) / hover 上浮+蓝色光晕
@@ -132,6 +132,7 @@ is-home { display: block; }
 }
 
 /* —— 品牌理念标语（首屏 · 品牌名称 → 英文品牌 → 理念） —— */
+.home__logo { width: clamp(88px, 12vw, 128px); height: auto; object-fit: contain; border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); margin-bottom: 1rem; }
 .home__brand {
   display: flex;
   flex-direction: column;

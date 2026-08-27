@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    用户系统前端工具：API 封装 + 登录态管理
    ============================================================ */
 window.Istra = window.Istra || {};
@@ -55,7 +55,20 @@ Istra.api = {
   listEntitlements() { return this.req('/api/entitlements', 'GET'); },
   checkEntitlement(productId) { return this.req('/api/entitlements/check?product=' + encodeURIComponent(productId), 'GET'); },
   getAssessmentQuota(visitorId) { return this.req('/api/assessments/quota' + (visitorId ? '?visitorId=' + encodeURIComponent(visitorId) : ''), 'GET'); },
-  saveVisitorAssessment(visitorId) { return this.req('/api/assessments/visitor', 'POST', { visitorId }); }
+  saveVisitorAssessment(visitorId) { return this.req('/api/assessments/visitor', 'POST', { visitorId }); },
+  /* 支付宝人工审核支付 */
+  submitPaymentProof(orderId, proof) { return this.req('/api/payment/proof', 'POST', { orderId, proof }); },
+  adminReview(orderId, approve, adminToken) {
+    return fetch(this.apiBase() + '/api/payment/review', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (adminToken || '') },
+      body: JSON.stringify({ orderId, approve })
+    }).then(async (res) => {
+      let d = {}; try { d = await res.json(); } catch (e) {}
+      if (!res.ok) { const err = new Error(d.error || '审核失败'); err.status = res.status; throw err; }
+      return d;
+    });
+  }
 };
 
 Istra.auth = {

@@ -86,3 +86,33 @@
 .pay__success-text { margin-top: 0.5rem; font-size: 0.875rem; color: var(--color-text-muted); }
 .pay__success .btn { margin-top: 1.5rem; }
 .pay__error { padding: 1rem; border: 1px solid rgba(248, 113, 113, 0.5); border-radius: var(--radius-m); color: #F87171; font-size: 0.875rem; }
+/* ================= 支付宝扫码支付（人工审核） ================= */
+.pay__method-option {
+  margin-top: 0.625rem;
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: rgba(10, 61, 115, 0.3);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-m);
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.pay__method-option:hover { border-color: var(--color-accent-line); }
+.pay__method-option:has(input:checked) { border-color: var(--color-accent); background: rgba(201, 162, 39, 0.08); }
+.pay__method-option input { accent-color: var(--color-accent); }
+.pay__alipay { margin-top: 1.25rem; text-align: center; }
+.pay__alipay-qr { width: min(260px, 100%); max-width: 260px; aspect-ratio: auto; object-fit: contain; border-radius: var(--radius-m); border: 1px solid var(--color-line-soft); background: #fff; }
+.pay__alipay-tip { margin-top: 0.9rem; font-size: 1.0625rem; font-weight: 700; color: var(--color-heading); }
+.pay__alipay-sub { margin-top: 0.35rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+.pay__proof { margin-top: 1.25rem; padding: 1.125rem; border: 1px dashed var(--color-line); border-radius: var(--radius-m); text-align: left; }
+.pay__proof-title { font-size: 0.8125rem; font-weight: 700; color: var(--color-heading); }
+.pay__proof-file { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem; cursor: pointer; }
+.pay__proof-btn { display: inline-block; width: fit-content; padding: 0.5rem 1rem; border: 1px solid var(--color-accent-line); border-radius: var(--radius-s); font-size: 0.8125rem; color: var(--color-accent); }
+.pay__proof-hint { font-size: 0.75rem; color: var(--color-text-muted); }
+.pay__proof-preview { margin-top: 0.75rem; max-width: 100%; max-height: 240px; object-fit: contain; border-radius: var(--radius-s); border: 1px solid var(--color-line-soft); }
+.pay__proof .btn { margin-top: 1rem; width: 100%; justify-content: center; }
+.pay__proof-note { margin-top: 0.75rem; font-size: 0.75rem; line-height: 1.8; color: var(--color-text-muted); }
+@media (max-width: 480px) {
+  .pay__method-desc { display: none; }
+  .pay__alipay-qr { width: 100%; max-width: 240px; }
+}

@@ -38,7 +38,7 @@ class SiteNavbar extends HTMLElement {
     this.innerHTML = `
       <div class="container nav">
         <a class="brand" href="index.html" aria-label="伊斯特拉国际 · 返回首页">
-          <img class="brand__mark" src="assets/brand-mark.svg" alt="" width="40" height="40" />
+          <img class="brand__mark" src="assets/logo.jpg" alt="" width="40" height="40" />
           <span class="brand__name">
             <span class="brand__cn">伊斯特拉国际</span>
             <span class="brand__en">Estrella International</span>

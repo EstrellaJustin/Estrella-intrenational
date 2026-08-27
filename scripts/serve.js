@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    伊斯特拉国际 · 本地服务器 + 用户系统 API（零依赖）
    静态文件服务 + REST API + JSON 文件数据库
    数据库目录：data/userdb/（users / user_profiles / assessments /
@@ -87,14 +87,19 @@ function ensureProducts() {
   saveTable('products', rows);
 }
 function productById(id) { return loadTable('products').find((p) => p.id === id) || null; }
-const PAYMENT_CHANNELS = ['test', 'wechat'];
+const PAYMENT_CHANNELS = ['test', 'wechat', 'alipay'];
 function paymentProviderEnabled(channel) {
   if (channel === 'test') return true;
   if (channel === 'wechat') return !!(process.env.WECHAT_MCH_ID && process.env.WECHAT_APP_ID && process.env.WECHAT_API_KEY);
+  if (channel === 'alipay') return true; /* 支付宝扫码：人工审核，无需商户配置 */
   return false;
 }
 function testPaySecret() { return process.env.TEST_PAY_SECRET || 'istra-test-secret'; }
+function adminSecret() { return process.env.ADMIN_TOKEN || 'istra-admin-secret'; }
 function createPaymentRequest(order, product) {
+  if (order.channel === 'alipay') {
+    return { channel: 'alipay', manual: true, review: true };
+  }
   if (order.channel === 'wechat') {
     if (!paymentProviderEnabled('wechat')) throw new Error('微信支付未配置：请设置 WECHAT_MCH_ID / WECHAT_APP_ID / WECHAT_API_KEY 环境变量');
     /* 正式接入时在此调用微信支付 APIv3 统一下单（Native/JSAPI） */
@@ -480,6 +485,50 @@ function assessmentQuota(user, visitorId) {
     return sendJson(res, 200, { favorites, history, consults });
   }
 
+  /* POST /api/payment/proof（支付宝人工审核：上传付款凭证 → 待审核） */
+  if (p === '/api/payment/proof' && method === 'POST') {
+    const u = authUser(req); if (!u) return sendJson(res, 401, { error: '未登录' });
+    const b = await readBody(req);
+    const orders = loadTable('orders');
+    const o = orders.find((x) => x.id === Number(b.orderId) && x.userId === u.id);
+    if (!o) return sendJson(res, 404, { error: '订单不存在' });
+    if (o.channel !== 'alipay') return sendJson(res, 400, { error: '该订单不支持上传付款凭证' });
+    if (o.status !== 'pending') return sendJson(res, 400, { error: '订单状态不允许上传凭证' });
+    const proof = String(b.proof || '').replace(/^data:[^;]+;base64,/, '');
+    if (!proof || proof.length < 100) return sendJson(res, 400, { error: '请上传有效的付款凭证图片' });
+    const buf = Buffer.from(proof, 'base64');
+    if (buf.length > 2 * 1024 * 1024) return sendJson(res, 413, { error: '凭证图片过大（≤2MB）' });
+    const proofDir = path.join(dbDir, 'proofs');
+    fs.mkdirSync(proofDir, { recursive: true });
+    fs.writeFileSync(path.join(proofDir, o.orderId + '.jpg'), buf);
+    o.proofAt = new Date().toISOString(); o.proofFile = o.orderId + '.jpg';
+    saveTable('orders', orders);
+    return sendJson(res, 200, { ok: true, order: o });
+  }
+
+  /* POST /api/payment/review（管理员审核支付宝订单：approve=true 通过并发权益） */
+  if (p === '/api/payment/review' && method === 'POST') {
+    const token = getToken(req);
+    if (!token || token !== adminSecret()) return sendJson(res, 403, { error: '审核令牌无效' });
+    const b = await readBody(req);
+    const orders = loadTable('orders');
+    const o = orders.find((x) => x.id === Number(b.orderId));
+    if (!o) return sendJson(res, 404, { error: '订单不存在' });
+    if (o.channel !== 'alipay') return sendJson(res, 400, { error: '仅支付宝订单可人工审核' });
+    if (o.status === 'paid') return sendJson(res, 200, { ok: true, alreadyPaid: true, order: o });
+    if (o.status !== 'pending') return sendJson(res, 400, { error: '订单状态不允许审核' });
+    if (b.approve) {
+      o.status = 'paid'; o.paidAt = new Date().toISOString(); o.transactionId = 'ALIPAY-REVIEW-' + Date.now();
+      saveTable('orders', orders);
+      const user = loadTable('users').find((x) => x.id === o.userId);
+      const product = productById(o.productId);
+      const ents = user && product ? grantEntitlement(user, product, o) : [];
+      return sendJson(res, 200, { ok: true, order: o, entitlements: ents.map((e) => e.productId) });
+    }
+    o.status = 'cancelled'; o.cancelledAt = new Date().toISOString(); o.reviewNote = cleanStr(b.note, 200);
+    saveTable('orders', orders);
+    return sendJson(res, 200, { ok: true, order: o });
+  }
   return sendJson(res, 404, { error: '接口不存在' });
 }
 

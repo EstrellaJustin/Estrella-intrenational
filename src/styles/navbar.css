@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    导航栏 · is-navbar（v3 · 深蓝透明 → 深蓝毛玻璃）
    Logo 白色 / 导航文字浅灰白 / 滚动后深蓝半透明 + 毛玻璃
    ============================================================ */
@@ -28,7 +28,7 @@ is-navbar.is-scrolled {
 
 /* —— 品牌（白色 Logo） —— */
 .brand { display: inline-flex; align-items: center; gap: 0.75rem; color: var(--color-heading); }
-.brand__mark { width: 38px; height: 38px; flex: none; }
+.brand__mark { width: 38px; height: 38px; flex: none; object-fit: contain; border-radius: 6px; }
 .brand__name { display: flex; flex-direction: column; line-height: 1.25; }
 .brand__cn { font-size: 1.0625rem; font-weight: 700; letter-spacing: 0.06em; color: var(--color-heading); }
 .brand__en {

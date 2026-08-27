@@ -23,3 +23,6 @@ data/userdb/*.json
 .env
 .env.*
 !.env.example
+
+# 支付宝付款凭证（用户敏感数据）
+data/userdb/proofs/
