@@ -1,0 +1,84 @@
+/* ============================================================
+   管理员后台 · 伊斯特拉国际（深蓝 + 白 高端商务风，PC/手机自适应）
+   ============================================================ */
+.admin { padding: clamp(2rem, 5vw, 4rem) 0 4rem; }
+.admin__head { margin-bottom: 1.75rem; }
+.admin__eyebrow { font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-accent); }
+.admin__title { margin-top: 0.35rem; font-size: clamp(1.5rem, 3.5vw, 2.25rem); font-weight: 800; color: var(--color-heading); }
+.admin__sub { margin-top: 0.4rem; font-size: 0.875rem; color: var(--color-text-muted); }
+.admin__body { margin-top: 1rem; }
+
+.admin__panel { padding: 1.5rem; background: var(--color-ink-2); border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); }
+.admin__loading, .admin__empty { padding: 2.5rem 1rem; text-align: center; color: var(--color-text-muted); font-size: 0.875rem; }
+
+/* 未配置提示 / 登录 */
+.admin__notice-title { font-size: 1.25rem; font-weight: 700; color: var(--color-heading); }
+.admin__notice-text { margin-top: 0.75rem; font-size: 0.875rem; line-height: 1.9; color: var(--color-text-muted); }
+.admin__notice-text code { color: var(--color-accent); background: rgba(201,162,39,.1); padding: 0.1rem 0.4rem; border-radius: 4px; }
+.admin__login { max-width: 420px; margin: 0 auto; }
+.admin__login-title { font-size: 1.25rem; font-weight: 700; color: var(--color-heading); }
+.admin__login-desc { margin-top: 0.4rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+.admin__input { width: 100%; height: 44px; margin-top: 1rem; padding: 0 0.75rem; border: 1px solid rgba(255,255,255,.25); border-radius: var(--radius-m); background: rgba(255,255,255,.04); color: var(--color-heading); font-size: 0.875rem; }
+.admin__login .btn { width: 100%; justify-content: center; margin-top: 0.85rem; }
+.admin__login-err { margin-top: 0.75rem; color: #F87171; font-size: 0.8125rem; }
+
+/* 统计卡片 */
+.admin__stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
+.admin__stat { padding: 1.1rem 0.75rem; text-align: center; background: var(--color-ink-2); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.admin__stat b { display: block; font-size: 1.5rem; font-weight: 800; color: var(--color-accent); }
+.admin__stat span { font-size: 0.75rem; color: var(--color-text-muted); }
+
+/* 工具栏 */
+.admin__toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin-bottom: 1rem; }
+.admin__tabs { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.admin__tab { padding: 0.45rem 0.85rem; border: 1px solid var(--color-line-soft); border-radius: 99px; background: transparent; color: var(--color-text-muted); font-size: 0.8125rem; cursor: pointer; }
+.admin__tab.is-active { border-color: var(--color-accent); color: var(--color-accent); background: rgba(201,162,39,.1); }
+.admin__search { flex: 1; min-width: 220px; margin-top: 0; }
+.admin__logout { margin-left: auto; }
+
+/* 订单列表 */
+.admin__order { display: flex; align-items: center; gap: 1rem; padding: 1rem; border-bottom: 1px solid var(--color-line-soft); cursor: pointer; transition: background var(--dur) var(--ease); }
+.admin__order:hover { background: rgba(201,162,39,.05); }
+.admin__order-main { flex: 1; min-width: 0; }
+.admin__order-id { font-size: 0.9375rem; font-weight: 700; color: var(--color-heading); word-break: break-all; }
+.admin__order-sub { margin-top: 0.3rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+.admin__order-time { margin-top: 0.25rem; font-size: 0.75rem; color: var(--color-text-faint); }
+.admin__tag { display: inline-block; margin-left: 0.4rem; padding: 0.15rem 0.55rem; border-radius: 99px; font-size: 0.6875rem; font-weight: 700; }
+.admin__tag.pending { background: rgba(201,162,39,.15); color: var(--color-accent); }
+.admin__tag.paid { background: rgba(74,222,128,.15); color: #4ADE80; }
+.admin__tag.cancelled { background: rgba(248,113,113,.15); color: #F87171; }
+.admin__tag.channel { background: rgba(56,189,248,.15); color: #38BDF8; }
+.admin__order-cta { flex: none; font-size: 0.8125rem; color: var(--color-accent); }
+
+/* 审核日志 */
+.admin__panel-title { font-size: 1rem; font-weight: 700; color: var(--color-heading); margin-bottom: 0.75rem; }
+.admin__audit-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--color-line-soft); font-size: 0.8125rem; color: var(--color-text-muted); }
+.admin__audit-act { padding: 0.15rem 0.55rem; border-radius: 99px; font-size: 0.6875rem; font-weight: 700; }
+.admin__audit-act.approve { background: rgba(74,222,128,.15); color: #4ADE80; }
+.admin__audit-act.reject { background: rgba(248,113,113,.15); color: #F87171; }
+.admin__audit-note { color: var(--color-text-faint); }
+
+/* 详情弹窗 */
+.admin__overlay { position: fixed; inset: 0; z-index: 100; background: rgba(2, 12, 28, 0.7); backdrop-filter: blur(4px); display: flex; align-items: flex-start; justify-content: center; padding: 1rem; overflow-y: auto; }
+.admin__modal { position: relative; width: 100%; max-width: 560px; margin: 2rem 0; padding: 1.5rem; background: var(--color-ink-2); border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); }
+.admin__modal-close { position: absolute; top: 0.75rem; right: 1rem; font-size: 1.5rem; line-height: 1; color: var(--color-text-muted); background: none; border: none; cursor: pointer; }
+.admin__modal-title { font-size: 1.125rem; font-weight: 700; color: var(--color-heading); padding-right: 1.5rem; }
+.admin__detail { margin-top: 1rem; }
+.admin__row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px solid var(--color-line-soft); font-size: 0.8125rem; }
+.admin__row span { color: var(--color-text-faint); flex: none; }
+.admin__row b { color: var(--color-heading); text-align: right; word-break: break-all; }
+.admin__proof { margin-top: 1rem; }
+.admin__proof-title { font-size: 0.8125rem; font-weight: 700; color: var(--color-heading); margin-bottom: 0.5rem; }
+.admin__proof-img { width: 100%; max-height: 420px; object-fit: contain; border-radius: var(--radius-m); border: 1px solid var(--color-line-soft); background: #fff; }
+.admin__done { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: var(--radius-s); background: rgba(56,189,248,.1); border: 1px solid rgba(56,189,248,.3); color: #38BDF8; font-size: 0.8125rem; }
+.admin__actions { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.7rem; }
+.admin__actions .btn { width: 100%; justify-content: center; }
+
+@media (max-width: 900px) {
+  .admin__stats { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 560px) {
+  .admin__stats { grid-template-columns: repeat(2, 1fr); }
+  .admin__order { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+  .admin__logout { margin-left: 0; }
+}

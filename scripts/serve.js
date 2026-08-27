@@ -21,7 +21,7 @@ const port = portArg ? Number(portArg.split('=')[1]) : (process.env.PORT || 4173
 const openBrowser = !args.includes('--no-open');
 
 /* ---------- 数据库（JSON 文件表） ---------- */
-const TABLES = ['users', 'user_profiles', 'assessments', 'recommendations', 'user_behavior', 'sessions', 'products', 'orders', 'payments', 'entitlements', 'visitor_assessments'];
+const TABLES = ['users', 'user_profiles', 'assessments', 'recommendations', 'user_behavior', 'sessions', 'products', 'orders', 'payments', 'entitlements', 'visitor_assessments', 'admin_audit'];
 fs.mkdirSync(dbDir, { recursive: true });
 function loadTable(name) {
   const f = path.join(dbDir, name + '.json');
@@ -164,7 +164,12 @@ function paymentProviderEnabled(channel) {
   return false;
 }
 function testPaySecret() { return process.env.TEST_PAY_SECRET || 'istra-test-secret'; }
-function adminSecret() { return process.env.ADMIN_TOKEN || 'istra-admin-secret'; }
+function adminSecret() {
+  if (process.env.ADMIN_TOKEN) return process.env.ADMIN_TOKEN;
+  /* 生产（Render 自动注入 RENDER=true）：必须显式配置 ADMIN_TOKEN，禁用默认弱口令 */
+  if (process.env.RENDER === 'true' || process.env.NODE_ENV === 'production') return '';
+  return 'istra-admin-secret';
+}
 function createPaymentRequest(order, product) {
   if (order.channel === 'alipay') {
     return { channel: 'alipay', manual: true, review: true };
@@ -615,6 +620,9 @@ function assessmentQuota(user, visitorId) {
     if (b.approve) {
       o.status = 'paid'; o.paidAt = new Date().toISOString(); o.transactionId = 'ALIPAY-REVIEW-' + Date.now();
       saveTable('orders', orders);
+      const audit1 = loadTable('admin_audit');
+      audit1.push({ id: nextId(audit1), orderId: o.orderId, userId: o.userId, action: 'approve', note: '', createdAt: new Date().toISOString() });
+      saveTable('admin_audit', audit1);
       const user = loadTable('users').find((x) => x.id === o.userId);
       const product = productById(o.productId);
       const ents = user && product ? grantEntitlement(user, product, o) : [];
@@ -622,6 +630,9 @@ function assessmentQuota(user, visitorId) {
     }
     o.status = 'cancelled'; o.cancelledAt = new Date().toISOString(); o.reviewNote = cleanStr(b.note, 200);
     saveTable('orders', orders);
+    const audit2 = loadTable('admin_audit');
+    audit2.push({ id: nextId(audit2), orderId: o.orderId, userId: o.userId, action: 'reject', note: cleanStr(b.note, 200), createdAt: new Date().toISOString() });
+    saveTable('admin_audit', audit2);
     return sendJson(res, 200, { ok: true, order: o });
   }
   /* GET /api/admin/risk（管理员风控概览：脱敏展示，不泄露哈希/密钥/明文敏感信息） */
@@ -648,6 +659,81 @@ function assessmentQuota(user, visitorId) {
       };
     }).sort((a, b) => (a.registeredAt < b.registeredAt ? 1 : -1));
     return sendJson(res, 200, { users: out });
+  }
+
+  /* GET /api/admin/status（管理员后台状态：是否已配置 ADMIN_TOKEN，不泄露密钥） */
+  if (p === '/api/admin/status' && method === 'GET') {
+    return sendJson(res, 200, { configured: !!adminSecret(), adminApi: true });
+  }
+  /* GET /api/admin/stats（管理员统计） */
+  if (p === '/api/admin/stats' && method === 'GET') {
+    const token = getToken(req);
+    if (!token || token !== adminSecret()) return sendJson(res, 403, { error: '审核令牌无效' });
+    const orders = loadTable('orders');
+    const users = loadTable('users');
+    const cnt = (f) => orders.filter(f).length;
+    return sendJson(res, 200, {
+      pending: cnt((o) => o.status === 'pending' && (o.channel === 'alipay' || o.channel === 'wechat')),
+      paid: cnt((o) => o.status === 'paid'),
+      cancelled: cnt((o) => o.status === 'cancelled'),
+      total: orders.length,
+      paid_users: users.filter((u) => u.assessmentUnlock || (Number(u.paid_quota) || 0) > 0).length,
+      total_quota: users.reduce((sum, u) => sum + (Number(u.paid_quota) || 0), 0)
+    });
+  }
+  /* GET /api/admin/orders（管理员订单列表：status/channel/q 筛选搜索，含用户信息） */
+  if (p === '/api/admin/orders' && method === 'GET') {
+    const token = getToken(req);
+    if (!token || token !== adminSecret()) return sendJson(res, 403, { error: '审核令牌无效' });
+    const status = cleanStr(url.searchParams.get('status'), 20);
+    const channel = cleanStr(url.searchParams.get('channel'), 20);
+    const q = cleanStr(url.searchParams.get('q'), 80).toLowerCase();
+    const users = loadTable('users');
+    const byId = {};
+    users.forEach((u) => { byId[u.id] = u; });
+    let rows = loadTable('orders').slice().sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+    if (status) rows = rows.filter((o) => o.status === status);
+    if (channel) rows = rows.filter((o) => o.channel === channel);
+    if (q) rows = rows.filter((o) => {
+      const u = byId[o.userId] || {};
+      return (o.orderId || '').toLowerCase().includes(q)
+        || (o.transactionNo || '').toLowerCase().includes(q)
+        || (u.phone || '').toLowerCase().includes(q)
+        || (u.email || '').toLowerCase().includes(q);
+    });
+    const out = rows.map((o) => {
+      const u = byId[o.userId] || {};
+      return {
+        id: o.id, orderId: o.orderId, userId: o.userId,
+        user: u.name || '', phone: u.phone || '', email: u.email || '',
+        amount: o.amount, currency: o.currency || 'CNY', channel: o.channel,
+        transactionNo: o.transactionNo || '', status: o.status,
+        createdAt: o.createdAt, reviewedAt: o.paidAt || o.cancelledAt || null, reviewNote: o.reviewNote || '',
+        hasProof: !!o.proofFile
+      };
+    });
+    return sendJson(res, 200, { orders: out });
+  }
+  /* GET /api/admin/orders/:id/proof（管理员查看付款凭证图片，禁止匿名访问） */
+  const proofMatch = p.match(/^\/api\/admin\/orders\/(\d+)\/proof$/);
+  if (proofMatch && method === 'GET') {
+    const token = getToken(req);
+    if (!token || token !== adminSecret()) return sendJson(res, 403, { error: '审核令牌无效' });
+    const o = loadTable('orders').find((x) => x.id === Number(proofMatch[1]));
+    if (!o) return sendJson(res, 404, { error: '订单不存在' });
+    if (!o.proofFile) return sendJson(res, 404, { error: '该订单暂无付款凭证' });
+    const f = path.join(dbDir, 'proofs', o.orderId + '.jpg');
+    if (!fs.existsSync(f)) return sendJson(res, 404, { error: '凭证文件不存在' });
+    res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+    fs.createReadStream(f).pipe(res);
+    return;
+  }
+  /* GET /api/admin/audit（管理员审核日志，不含令牌） */
+  if (p === '/api/admin/audit' && method === 'GET') {
+    const token = getToken(req);
+    if (!token || token !== adminSecret()) return sendJson(res, 403, { error: '审核令牌无效' });
+    const rows = loadTable('admin_audit').slice().sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1)).slice(0, 200);
+    return sendJson(res, 200, { audit: rows });
   }
 
   return sendJson(res, 404, { error: '接口不存在' });

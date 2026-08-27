@@ -58,11 +58,31 @@ Istra.api = {
   saveVisitorAssessment(visitorId) { return this.req('/api/assessments/visitor', 'POST', { visitorId }); },
   /* 支付宝人工审核支付 */
   submitPaymentProof(orderId, proof, transactionNo) { return this.req('/api/payment/proof', 'POST', { orderId, proof, transactionNo }); },
-  adminReview(orderId, approve, adminToken) {
+  /* 管理员后台（仅 Bearer ADMIN_TOKEN，前端不写死） */
+  adminStatus() { return this.req('/api/admin/status', 'GET'); },
+  adminFetch(path, adminToken, opts) {
+    return fetch(this.apiBase() + path, Object.assign({ headers: { 'Authorization': 'Bearer ' + (adminToken || '') } }, opts || {}))
+      .then(async (res) => {
+        let d = {}; try { d = await res.json(); } catch (e) {}
+        if (!res.ok) { const err = new Error(d.error || '请求失败'); err.status = res.status; throw err; }
+        return d;
+      });
+  },
+  adminStats(adminToken) { return this.adminFetch('/api/admin/stats', adminToken); },
+  adminOrders(adminToken, params) {
+    const qs = params ? '?' + Object.keys(params).filter((k) => params[k]).map((k) => k + '=' + encodeURIComponent(params[k])).join('&') : '';
+    return this.adminFetch('/api/admin/orders' + qs, adminToken);
+  },
+  adminAudit(adminToken) { return this.adminFetch('/api/admin/audit', adminToken); },
+  adminProof(orderId, adminToken) {
+    return fetch(this.apiBase() + '/api/admin/orders/' + orderId + '/proof', { headers: { 'Authorization': 'Bearer ' + (adminToken || '') } })
+      .then(async (res) => { if (!res.ok) { let d = {}; try { d = await res.json(); } catch (e) {} throw new Error(d.error || '凭证加载失败'); } return res.blob(); });
+  },
+  adminReview(orderId, approve, adminToken, note) {
     return fetch(this.apiBase() + '/api/payment/review', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (adminToken || '') },
-      body: JSON.stringify({ orderId, approve })
+      body: JSON.stringify({ orderId, approve, note: note || '' })
     }).then(async (res) => {
       let d = {}; try { d = await res.json(); } catch (e) {}
       if (!res.ok) { const err = new Error(d.error || '审核失败'); err.status = res.status; throw err; }
