@@ -9,7 +9,9 @@ Istra.api = {
   apiBase() {
     let base = '';
     try { base = window.ISTRA_API_BASE || localStorage.getItem('istra_api_base') || ''; } catch (e) {}
-    return base ? base.replace(/\/+$/, '') : '';
+    /* 生产默认：Render 后端（window/localStorage 可覆盖，兼容未来切换） */
+    if (!base) base = 'https://estrella-intrenational.onrender.com';
+    return base.replace(/\/+$/, '');
   },
   async req(path, method, body) {
     const headers = { 'Content-Type': 'application/json' };
