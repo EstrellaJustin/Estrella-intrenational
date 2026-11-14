@@ -179,3 +179,151 @@ is-projects { display: block; }
   .projects__count { align-items: flex-start; }
   .filter-panel__selects { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   全球机会搜索引擎 · 新增样式（搜索栏 / 多维筛选 / 卡片 / 分页）
+   ============================================================ */
+
+/* —— 搜索主区 —— */
+.search-hero {
+  margin-bottom: 1.25rem;
+  padding: 1.25rem;
+  background: rgba(6, 43, 85, 0.55);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+}
+.search-bar { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.search-input {
+  flex: 1;
+  min-width: 220px;
+  height: 52px;
+  padding: 0 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-m);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-heading);
+  font-size: 1rem;
+}
+.search-input::placeholder { color: var(--color-text-faint); }
+.search-input:focus { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15); }
+.search-input--main { min-height: 52px; }
+.search-input--mini { width: 100%; height: 40px; margin-top: 0.5rem; font-size: 0.8125rem; }
+.search-bar .btn { min-height: 52px; }
+.search-hero__row { margin-top: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.search-hero__hint { font-size: 0.75rem; color: var(--color-text-faint); }
+.search-sort { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+.search-sort select {
+  height: 40px; padding: 0 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.25); border-radius: var(--radius-s);
+  background: rgba(255, 255, 255, 0.05); color: var(--color-heading); font-size: 0.8125rem;
+}
+
+/* —— 筛选面板 —— */
+.search-panel {
+  padding: 1.25rem;
+  background: rgba(6, 43, 85, 0.4);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-panel);
+  margin-bottom: 1.25rem;
+}
+.search-group + .search-group { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-line-soft); }
+.search-group__label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--color-text-muted); margin-bottom: 0.55rem; }
+.search-group__hint { font-weight: 500; letter-spacing: 0; color: var(--color-text-faint); margin-left: 0.35rem; }
+.search-group__chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+/* 国家多选 */
+.country-list {
+  margin-top: 0.6rem;
+  max-height: 190px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.3rem;
+  padding: 0.5rem;
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-m);
+  background: rgba(4, 27, 58, 0.35);
+}
+.country-item {
+  display: flex; align-items: center; gap: 0.45rem;
+  padding: 0.35rem 0.5rem; border-radius: var(--radius-s);
+  font-size: 0.8125rem; color: var(--color-text); cursor: pointer;
+}
+.country-item:hover { background: rgba(201, 162, 39, 0.08); }
+.country-item.is-active { background: rgba(201, 162, 39, 0.14); color: var(--color-accent); }
+.country-item input { accent-color: var(--color-accent); }
+.country-item small { color: var(--color-text-faint); font-size: 0.6875rem; }
+.search-empty-tip { padding: 0.75rem; font-size: 0.8125rem; color: var(--color-text-faint); }
+.link-btn { margin-top: 0.5rem; padding: 0; border: none; background: none; color: var(--color-accent); font-size: 0.75rem; cursor: pointer; text-decoration: underline; }
+
+/* 年龄 / 资金 */
+.search-inline { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: flex-end; }
+.search-field { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.75rem; color: var(--color-text-muted); }
+.search-field input {
+  width: 150px; height: 40px; padding: 0 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.25); border-radius: var(--radius-s);
+  background: rgba(255, 255, 255, 0.05); color: var(--color-heading); font-size: 0.875rem;
+}
+.search-note { margin-top: 1rem; font-size: 0.6875rem; line-height: 1.8; color: var(--color-text-faint); }
+
+/* —— 已启用筛选 —— */
+.active-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; margin-bottom: 1rem; }
+.active-filters__label { font-size: 0.75rem; color: var(--color-text-faint); }
+.active-chip {
+  padding: 0.3rem 0.7rem; border-radius: 999px;
+  border: 1px solid var(--color-accent-line); background: rgba(201, 162, 39, 0.1);
+  color: var(--color-accent); font-size: 0.75rem; cursor: pointer;
+}
+
+/* —— 结果卡片 —— */
+.project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+.project-card {
+  display: flex; flex-direction: column;
+  padding: 1.15rem;
+  background: rgba(6, 43, 85, 0.45);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-panel);
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.project-card:hover { border-color: var(--color-accent-line); transform: translateY(-2px); }
+.project-card__top { display: flex; align-items: center; gap: 0.6rem; }
+.project-card__flag img { border-radius: 3px; display: block; }
+.project-card__country { display: flex; flex-direction: column; line-height: 1.2; }
+.project-card__country b { font-size: 0.875rem; color: var(--color-heading); }
+.project-card__country small { font-size: 0.6875rem; color: var(--color-text-faint); }
+.project-card__type {
+  margin-left: auto; padding: 0.2rem 0.55rem; border-radius: 999px;
+  border: 1px solid var(--color-accent-line); color: var(--color-accent);
+  font-size: 0.6875rem; white-space: nowrap;
+}
+.project-card__name { margin-top: 0.75rem; font-size: 1rem; font-weight: 700; color: var(--color-heading); line-height: 1.4; }
+.project-card__intro { margin-top: 0.45rem; font-size: 0.8125rem; line-height: 1.7; color: var(--color-text-muted); flex: 1; }
+.project-card__meta { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; }
+.project-card__meta-item { font-size: 0.75rem; color: var(--color-text); }
+.project-card__meta-item em { font-style: normal; color: var(--color-text-faint); margin-right: 0.3rem; }
+.project-card__meta-item i { font-style: normal; color: var(--color-text-faint); }
+.project-card__foot { margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--color-line-soft); display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.project-card__cat { font-size: 0.6875rem; color: var(--color-text-faint); }
+.project-card__btn { font-size: 0.8125rem; font-weight: 600; color: var(--color-accent); white-space: nowrap; }
+
+/* —— 分页 —— */
+.pagination { margin-top: 1.75rem; display: flex; justify-content: center; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+.page-btn {
+  min-width: 38px; height: 38px; padding: 0 0.6rem;
+  border: 1px solid var(--color-line-soft); border-radius: var(--radius-s);
+  background: transparent; color: var(--color-text); font-size: 0.8125rem; cursor: pointer;
+}
+.page-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.page-btn.is-active { border-color: var(--color-accent); background: rgba(201, 162, 39, 0.15); color: var(--color-accent); font-weight: 700; }
+.page-gap { color: var(--color-text-faint); padding: 0 0.25rem; }
+
+@media (max-width: 700px) {
+  .project-grid { grid-template-columns: 1fr; }
+  .search-bar .btn { flex: 1; }
+  .country-list { grid-template-columns: 1fr 1fr; }
+  .search-field input { width: 100%; }
+  .search-field { flex: 1 1 130px; }
+}
+@media (max-width: 420px) {
+  .country-list { grid-template-columns: 1fr; }
+}
