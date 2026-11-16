@@ -15,14 +15,20 @@ class SiteNavbar extends HTMLElement {
   }
 
   render() {
-    const links = (Istra.nav || [])
+    const navItems = Istra.nav || [];
+    const aiItem = navItems.find((i) => i.page === 'ai') || { href: 'ai-assessment.html', label: 'AI评估' };
+    const regularItems = navItems.filter((i) => i.page !== 'ai');
+    const aiActive = this.page === 'ai' ? ' aria-current="page"' : '';
+    const aiCurrent = this.page === 'ai' ? ' is-current' : '';
+
+    const links = regularItems
       .map((item) => {
         const active = item.page === this.page ? ' aria-current="page"' : '';
         return `<li><a class="nav__link" href="${item.href}"${active}>${item.label}</a></li>`;
       })
       .join('');
 
-    const menuLinks = (Istra.nav || [])
+    const menuLinks = regularItems
       .map((item) => {
         const active = item.page === this.page ? ' aria-current="page"' : '';
         return `
@@ -51,15 +57,17 @@ class SiteNavbar extends HTMLElement {
 
         <a class="nav__account" href="login.html" data-account-entry>登录</a>
 
-
         <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="打开菜单">
           ${Istra.icon('menu')}
         </button>
+
+        <a class="nav__ai-cta${aiCurrent}" href="${aiItem.href}"${aiActive}>AI评估 <span class="nav__ai-arrow" aria-hidden="true">→</span></a>
       </div>
 
       <div class="menu" id="site-menu" aria-hidden="true">
         <ul class="menu__list">${menuLinks}<li class="menu__qq">售后客服 QQ：3279331550<br>伊斯特拉国际交流群：978638092</li></ul>
         <a class="menu__account" href="login.html" data-account-entry>登录</a>
+        <a class="menu__ai-cta" href="${aiItem.href}"${aiActive}>AI评估 <span aria-hidden="true">→</span></a>
         <p class="menu__foot">ESTRELLA INTERNATIONAL · GLOBAL DEVELOPMENT</p>
       </div>
     `;

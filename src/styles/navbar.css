@@ -37,11 +37,15 @@ is-navbar.is-scrolled {
 }
 
 /* —— 桌面链接（浅灰白） —— */
-.nav__links { display: flex; align-items: center; gap: clamp(1.25rem, 2.2vw, 2.5rem); }
+.nav__links { display: flex; align-items: center; gap: clamp(0.85rem, 1.5vw, 1.9rem); }
+.nav__links > li { flex: none; }
+.nav__links { flex: 0 1 auto; min-width: 0; align-items: center; }
 .nav__link {
   position: relative;
   display: inline-block;
-  padding: 0.4rem 0.05rem;
+  padding: 0.35rem 0.05rem;
+  line-height: 1.25;
+  white-space: nowrap;
   font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -161,4 +165,66 @@ is-navbar.is-scrolled .nav__account:hover { border-color: var(--color-accent); c
   font-weight: 600;
   color: var(--color-accent);
   border-top: 1px solid var(--color-line-soft);
+}
+
+/* —— AI评估 · 主操作按钮（Primary CTA） —— */
+.nav__ai-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: none;
+  min-height: 56px;
+  padding: 0 1.9rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #DCB743 0%, var(--color-accent) 55%, var(--color-accent-dark) 100%);
+  color: var(--color-ink);
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  box-shadow: 0 10px 26px -10px rgba(201, 162, 39, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), filter var(--dur) var(--ease);
+}
+.nav__ai-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 30px -10px rgba(201, 162, 39, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+.nav__ai-cta:active { transform: translateY(0); }
+.nav__ai-cta.is-current { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35), 0 12px 28px -10px rgba(201, 162, 39, 0.75); }
+.nav__ai-arrow { transition: transform var(--dur) var(--ease); }
+.nav__ai-cta:hover .nav__ai-arrow { transform: translateX(3px); }
+
+/* —— 移动端 AI 主按钮 —— */
+.menu__ai-cta {
+  margin-top: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 56px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #DCB743 0%, var(--color-accent) 55%, var(--color-accent-dark) 100%);
+  color: var(--color-ink);
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  box-shadow: 0 10px 26px -12px rgba(201, 162, 39, 0.7);
+  transition: transform var(--dur) var(--ease), filter var(--dur) var(--ease);
+}
+.menu__ai-cta:active { transform: scale(0.99); filter: brightness(0.97); }
+
+/* —— 桌面宽度收紧：优先保证 AI CTA 可见且不溢出 —— */
+@media (max-width: 1600px) {
+  .nav__qq { display: none; }
+}
+@media (max-width: 1240px) {
+  .nav { gap: 0.9rem; }
+  .nav__links { gap: 0.85rem; }
+  .brand__cn { font-size: 1rem; }
+  .brand__en { display: none; }
+  .nav__ai-cta { padding: 0 1.35rem; font-size: 1.0625rem; min-height: 50px; }
+}
+@media (max-width: 1024px) {
+  .nav__ai-cta { display: none; }
 }
