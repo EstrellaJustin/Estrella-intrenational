@@ -20,8 +20,8 @@ class SiteAiAssessment extends HTMLElement {
       goals: [], priority1: '', priority2: '', priority3: '',
       likes: [], climate: [], pace: '', risk: '', accepts: [],
       identity: '', industry: '', developWays: [], planTime: '', idealLife: '',
-      name: '', phone: '', email: '', ageInput: '', englishCert: '', englishScore: '', fundsInput: '',
-      name: '', phone: '', email: '', ageInput: '', englishCert: '', englishScore: '', fundsInput: ''
+      name: '', email: '', ageInput: '', englishCert: '', englishScore: '', fundsInput: '',
+      name: '', email: '', ageInput: '', englishCert: '', englishScore: '', fundsInput: ''
     };
     this.report = null;
   }
@@ -376,7 +376,6 @@ class SiteAiAssessment extends HTMLElement {
                 <p class="assessment__contact-label">先填写基本信息，用于保存你的评估报告和后续查看结果：</p>
                 <div class="assessment__contact-grid">
                   ${this.text('name', '姓名', '请输入姓名')}
-                  ${this.text('phone', '手机号', '如：138 0000 0000')}
                   ${this.text('email', '邮箱（可选）', '用于接收报告')}
                 </div>
                 <p class="assessment__contact-privacy">你的信息仅用于生成评估报告，不会公开。</p>
@@ -614,7 +613,6 @@ class SiteAiAssessment extends HTMLElement {
     switch (step) {
       case 0:
         check('name', !!(this.state.name || '').trim());
-        check('phone', /^[+0-9][0-9\s-]{5,19}$/.test((this.state.phone || '').trim()));
         if ((this.state.email || '').trim()) check('email', /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.state.email.trim()));
         check('ageInput', /^\d{1,3}$/.test((this.state.ageInput || '').trim()) && parseInt(this.state.ageInput, 10) >= 5 && parseInt(this.state.ageInput, 10) <= 100);
         check('curCountry', !!this.state.curCountry);
@@ -2128,7 +2126,7 @@ class SiteAiAssessment extends HTMLElement {
       const payload = {
         inputs: {
           age: s.age, gender: s.gender, marital: s.marital, hasKids: s.hasKids,
-          cat1: s.cat1, cat2: s.cat2, identity: s.identity, industry: s.industry, name: s.name, phone: s.phone, email: s.email, ageInput: s.ageInput, englishCert: s.englishCert, englishScore: s.englishScore, fundsInput: s.fundsInput, skills: s.skills, years: s.years,
+          cat1: s.cat1, cat2: s.cat2, identity: s.identity, industry: s.industry, name: s.name, email: s.email, ageInput: s.ageInput, englishCert: s.englishCert, englishScore: s.englishScore, fundsInput: s.fundsInput, skills: s.skills, years: s.years,
           degree: s.degree, major: s.major, englishLevel: s.englishLevel, otherLangs: s.otherLangs,
           funds: s.funds, source: s.source, lowCost: s.lowCost, workDevelop: s.workDevelop, studyFirst: s.studyFirst, planTime: s.planTime, idealLife: s.idealLife, developWays: s.developWays,
           parentsPlan: s.parentsPlan, eduNeed: s.eduNeed, goals: s.goals,
