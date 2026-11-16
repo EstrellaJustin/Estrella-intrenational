@@ -112,11 +112,32 @@ function budgetMinWan(p) {
 
 class SiteProjects extends HTMLElement {
   connectedCallback() {
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
     this.buildIndex();
     this.state = this.readParams();
     this.render();
     this.bind();
     Istra.reveal.observe(this);
+    this.restoreScroll();
+  }
+
+  /* 从项目详情返回时恢复滚动位置 */
+  restoreScroll() {
+    try {
+      const raw = sessionStorage.getItem('istra_projects_scroll');
+      if (!raw) return;
+      sessionStorage.removeItem('istra_projects_scroll');
+      const data = JSON.parse(raw);
+      if (!data || data.y <= 0) return;
+      const cur = location.pathname + location.search;
+      if (data.url !== cur && decodeURIComponent(data.url) !== decodeURIComponent(cur)) return;
+      const y = data.y;
+      setTimeout(() => { window.scrollTo(0, y); }, 120);
+    } catch (e) {}
+  }
+
+  saveScroll() {
+    try { sessionStorage.setItem('istra_projects_scroll', JSON.stringify({ url: location.pathname + location.search, y: window.scrollY })); } catch (e) {}
   }
 
   /* 预计算派生字段，避免每次筛选重复解析 */
@@ -134,6 +155,13 @@ class SiteProjects extends HTMLElement {
       hay: textOf(p).toLowerCase() + ' ' + (p.country ? (p.country.cn + ' ' + p.country.en) : '').toLowerCase()
     }));
     this.countries = (Istra.countries || []).slice().sort((a, b) => a.cn.localeCompare(b.cn, 'zh'));
+    this.countryIndex = {};
+    (Istra.countries || []).forEach((c) => { this.countryIndex[c.id] = c; });
+    this.countryNameIndex = {};
+    (Istra.countries || []).forEach((c) => {
+      if (c.cn) this.countryNameIndex[String(c.cn).toLowerCase()] = c;
+      if (c.en) this.countryNameIndex[String(c.en).toLowerCase()] = c;
+    });
   }
 
   readParams() {
@@ -248,6 +276,21 @@ class SiteProjects extends HTMLElement {
     </div>`;
   }
 
+  flagHtml(p) {
+    const c = (p && p.country) || {};
+    let country = this.countryIndex ? this.countryIndex[c.id] : null;
+    if (!country) {
+      const byName = this.countryNameIndex || {};
+      country = byName[String(c.cn || '').toLowerCase()] || byName[String(c.en || '').toLowerCase()] || null;
+    }
+    const flagFile = (country && country.flag) || c.flag || '';
+    const label = (country && country.cn) || c.cn || c.en || '';
+    if (!flagFile) {
+      return '<span class="project-card__flag project-card__flag--unknown" title="国家信息未知" aria-label="国家未知">?</span>';
+    }
+    return '<span class="project-card__flag"><img src="assets/flags/' + flagFile + '" alt="' + label + ' 国旗" loading="lazy" width="36" height="27" onerror="this.parentNode.classList.add(\'project-card__flag--unknown\');this.remove();" /></span>';
+  }
+
   card(item) {
     const p = item.p;
     const meta = [];
@@ -259,7 +302,7 @@ class SiteProjects extends HTMLElement {
     const metaHtml = meta.map(([k, v]) => `<span class="project-card__meta-item"><em>${k}</em>${v ? v : '<i>未标注</i>'}</span>`).join('');
     return `<article class="project-card" data-reveal>
       <div class="project-card__top">
-        <span class="project-card__flag"><img src="assets/flags/${p.country.flag}" alt="${p.country.cn} 国旗" loading="lazy" width="36" height="27" /></span>
+        ${this.flagHtml(p)}
         <div class="project-card__country"><b>${p.country.cn}</b><small>${p.country.en}</small></div>
         <span class="project-card__type">${p.visaType}</span>
       </div>
@@ -371,11 +414,11 @@ class SiteProjects extends HTMLElement {
   bind() {
     const $ = (sel) => this.querySelector(sel);
 
-    const doSearch = () => { this.state.q = $('#search-q').value.trim(); this.state.page = 1; this.sync(); };
+    const doSearch = () => { this.state.q = $('#search-q').value.trim(); this.state.page = 1; this.sync({ scrollTo: 'none' }); };
     $('[data-action="search"]').addEventListener('click', doSearch);
     $('#search-q').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); doSearch(); } });
-    $('[data-action="clear-q"]').addEventListener('click', () => { this.state.q = ''; this.state.page = 1; this.sync(); });
-    $('#search-sort').addEventListener('change', (e) => { this.state.sort = e.target.value; this.state.page = 1; this.sync(); });
+    $('[data-action="clear-q"]').addEventListener('click', () => { this.state.q = ''; this.state.page = 1; this.sync({ scrollTo: 'none' }); });
+    $('#search-sort').addEventListener('change', (e) => { this.state.sort = e.target.value; this.state.page = 1; this.sync({ scrollTo: 'none' }); });
 
     this.querySelectorAll('[data-multi]').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -385,7 +428,7 @@ class SiteProjects extends HTMLElement {
         const i = arr.indexOf(val);
         if (i >= 0) arr.splice(i, 1); else arr.push(val);
         this.state.page = 1;
-        this.sync();
+        this.sync({ scrollTo: 'none' });
       });
     });
 
@@ -396,14 +439,14 @@ class SiteProjects extends HTMLElement {
     this.bindCountryCheckboxes();
 
     const clearCountries = $('[data-clear="countries"]');
-    if (clearCountries) clearCountries.addEventListener('click', () => { this.state.countries = []; this.state.page = 1; this.sync(); });
+    if (clearCountries) clearCountries.addEventListener('click', () => { this.state.countries = []; this.state.page = 1; this.sync({ scrollTo: 'none' }); });
 
     const applyNum = $('[data-action="apply-num"]');
     if (applyNum) applyNum.addEventListener('click', () => {
       this.state.age = $('#f-age').value.trim();
       this.state.funds = $('#f-funds').value.trim();
       this.state.page = 1;
-      this.sync();
+      this.sync({ scrollTo: 'none' });
     });
 
     this.querySelectorAll('[data-remove]').forEach((btn) => {
@@ -413,7 +456,7 @@ class SiteProjects extends HTMLElement {
         if (Array.isArray(this.state[k])) this.state[k] = this.state[k].filter((x) => x !== v);
         else this.state[k] = '';
         this.state.page = 1;
-        this.sync();
+        this.sync({ scrollTo: 'none' });
       });
     });
 
@@ -421,12 +464,17 @@ class SiteProjects extends HTMLElement {
       btn.addEventListener('click', () => {
         this.state = { q: '', countries: [], types: [], degrees: [], languages: [], industries: [], age: '', funds: '', sort: 'recommend', page: 1 };
         this.countryQuery = '';
-        this.sync();
+        this.sync({ scrollTo: 'none' });
       });
     });
 
     this.querySelectorAll('[data-page]').forEach((btn) => {
-      btn.addEventListener('click', () => { this.state.page = Number(btn.getAttribute('data-page')) || 1; this.sync(false); });
+      btn.addEventListener('click', () => { this.state.page = Number(btn.getAttribute('data-page')) || 1; this.sync({ scrollTo: 'results' }); });
+    });
+
+    /* 进入项目详情前记录滚动位置，返回时恢复 */
+    this.querySelectorAll('.project-card__btn').forEach((a) => {
+      a.addEventListener('click', () => this.saveScroll());
     });
   }
 
@@ -439,7 +487,7 @@ class SiteProjects extends HTMLElement {
         if (cb.checked && i < 0) arr.push(id);
         if (!cb.checked && i >= 0) arr.splice(i, 1);
         this.state.page = 1;
-        this.sync();
+        this.sync({ scrollTo: 'none' });
       });
     });
   }
@@ -457,7 +505,13 @@ class SiteProjects extends HTMLElement {
     this.bindCountryCheckboxes();
   }
 
-  sync(resetScroll) {
+  sync(options) {
+    const opts = options || {};
+    const active = document.activeElement;
+    const focusId = active && active.id ? active.id : '';
+    let selStart = null, selEnd = null;
+    try { if (active && active.selectionStart != null) { selStart = active.selectionStart; selEnd = active.selectionEnd; } } catch (e) {}
+    const keepY = window.scrollY;
     const s = this.state;
     const params = new URLSearchParams();
     if (s.q) params.set('q', s.q);
@@ -471,7 +525,23 @@ class SiteProjects extends HTMLElement {
     this.render();
     this.bind();
     Istra.reveal.observe(this);
-    if (resetScroll !== false) window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    /* 恢复输入焦点（搜索框/筛选输入不被重新渲染打断） */
+    if (focusId) {
+      const el = this.querySelector('#' + focusId);
+      if (el) {
+        el.focus();
+        try { if (selStart != null && el.setSelectionRange) el.setSelectionRange(selStart, selEnd); } catch (e) {}
+      }
+    }
+
+    /* 滚动策略：默认保持原位置；仅翻页时滚动到结果区顶部 */
+    if (opts.scrollTo === 'results') {
+      const anchor = this.querySelector('.projects__result-head');
+      if (anchor && anchor.scrollIntoView) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.scrollTo(0, keepY);
+    }
   }
 }
 
