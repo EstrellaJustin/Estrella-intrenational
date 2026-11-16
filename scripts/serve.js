@@ -175,10 +175,8 @@ function ensureProducts() {
   saveTable('products', rows);
 }
 function productById(id) { return loadTable('products').find((p) => p.id === id) || null; }
-const PAYMENT_CHANNELS = ['test', 'wechat', 'alipay'];
+const PAYMENT_CHANNELS = ['alipay']; /* 仅支持支付宝 */
 function paymentProviderEnabled(channel) {
-  if (channel === 'test') return true;
-  if (channel === 'wechat') return true; /* 微信收款码：人工审核，无需商户配置 */
   if (channel === 'alipay') return true; /* 支付宝扫码：人工审核，无需商户配置 */
   return false;
 }
@@ -190,14 +188,8 @@ function adminSecret() {
   return 'istra-admin-secret';
 }
 function createPaymentRequest(order, product) {
-  if (order.channel === 'alipay') {
-    return { channel: 'alipay', manual: true, review: true };
-  }
-  if (order.channel === 'wechat') {
-    return { channel: 'wechat', manual: true, review: true };
-  }
-  const token = crypto.createHmac('sha256', testPaySecret()).update(order.orderId).digest('hex');
-  return { channel: 'test', mock: true, payToken: token, expiresIn: 1800 };
+  /* 仅支持支付宝扫码 + 人工审核 */
+  return { channel: 'alipay', manual: true, review: true };
 }
 function verifyPaymentNotify(body) {
   if (!body || !body.orderId || !body.transactionId) return { ok: false, error: '回调参数不完整' };
@@ -470,7 +462,7 @@ function assessmentQuota(user, visitorId) {
     const b = await readBody(req);
     const product = productById(cleanStr(b.productId, 60));
     if (!product) return sendJson(res, 404, { error: '商品不存在' });
-    const channel = cleanStr(b.channel, 20) || 'test';
+    const channel = cleanStr(b.channel, 20) || 'alipay';
     if (!PAYMENT_CHANNELS.includes(channel)) return sendJson(res, 400, { error: '不支持的支付渠道' });
     const orders = loadTable('orders');
     const order = { id: nextId(orders), orderId: genOrderId(), userId: u.id, productId: product.id, productName: product.name, amount: product.price, currency: product.currency, status: 'pending', channel, createdAt: new Date().toISOString(), paidAt: null, transactionId: null, refundStatus: 'none', refundedAt: null, cancelledAt: null };
@@ -516,22 +508,9 @@ function assessmentQuota(user, visitorId) {
       return sendJson(res, 200, { order: o, pay });
     } catch (e) { return sendJson(res, 500, { error: e.message }); }
   }
-  /* POST /api/payment/notify（支付平台回调：服务端验签 + 幂等发权益） */
+  /* POST /api/payment/notify（已停用：仅支持支付宝人工审核，禁止测试回调修改订单状态） */
   if (p === '/api/payment/notify' && method === 'POST') {
-    const b = await readBody(req);
-    const r = verifyPaymentNotify(b);
-    if (!r.ok) return sendJson(res, 400, { error: r.error });
-    if (r.alreadyPaid) return sendJson(res, 200, { ok: true, alreadyPaid: true });
-    const orders = loadTable('orders');
-    const o = orders.find((x) => x.id === r.order.id);
-    if (!o) return sendJson(res, 404, { error: '订单不存在' });
-    if (o.status === 'paid') return sendJson(res, 200, { ok: true, alreadyPaid: true });
-    o.status = 'paid'; o.paidAt = new Date().toISOString(); o.transactionId = cleanStr(b.transactionId, 80);
-    saveTable('orders', orders);
-    const user = loadTable('users').find((x) => x.id === o.userId);
-    const product = productById(o.productId);
-    const ents = user && product ? grantEntitlement(user, product, o) : [];
-    return sendJson(res, 200, { ok: true, entitlements: ents.map((e) => e.productId) });
+    return sendJson(res, 400, { error: '测试支付回调已停用，请使用支付宝扫码并等待人工审核' });
   }
   /* POST /api/payment/refund（退款：已支付订单 → refunded + 收回权益） */
   if (p === '/api/payment/refund' && method === 'POST') {
@@ -620,7 +599,7 @@ function assessmentQuota(user, visitorId) {
     const orders = loadTable('orders');
     const o = orders.find((x) => x.id === Number(b.orderId) && x.userId === u.id);
     if (!o) return sendJson(res, 404, { error: '订单不存在' });
-    if (o.channel !== 'alipay' && o.channel !== 'wechat') return sendJson(res, 400, { error: '该订单不支持上传付款凭证' });
+    if (o.channel !== 'alipay') return sendJson(res, 400, { error: '仅支付宝订单支持上传付款凭证' });
     if (o.status !== 'pending') return sendJson(res, 400, { error: '订单状态不允许上传凭证' });
     const transactionNo = cleanStr(b.transactionNo, 80);
     if (!transactionNo) return sendJson(res, 400, { error: '请填写交易单号' });
@@ -645,7 +624,7 @@ function assessmentQuota(user, visitorId) {
     const orders = loadTable('orders');
     const o = orders.find((x) => x.id === Number(b.orderId));
     if (!o) return sendJson(res, 404, { error: '订单不存在' });
-    if (o.channel !== 'alipay' && o.channel !== 'wechat') return sendJson(res, 400, { error: '仅支付宝/微信订单可人工审核' });
+    if (o.channel !== 'alipay') return sendJson(res, 400, { error: '仅支付宝订单可人工审核' });
     if (o.status === 'paid') return sendJson(res, 200, { ok: true, alreadyPaid: true, order: o });
     if (o.status !== 'pending') return sendJson(res, 400, { error: '订单状态不允许审核' });
     if (b.approve) {
@@ -704,7 +683,7 @@ function assessmentQuota(user, visitorId) {
     const users = loadTable('users');
     const cnt = (f) => orders.filter(f).length;
     return sendJson(res, 200, {
-      pending: cnt((o) => o.status === 'pending' && (o.channel === 'alipay' || o.channel === 'wechat')),
+      pending: cnt((o) => o.status === 'pending' && o.channel === 'alipay'),
       paid: cnt((o) => o.status === 'paid'),
       cancelled: cnt((o) => o.status === 'cancelled'),
       total: orders.length,

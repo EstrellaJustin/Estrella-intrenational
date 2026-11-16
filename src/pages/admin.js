@@ -1,4 +1,4 @@
-/* 管理员后台脚本 · 仅用于人工审核支付宝/微信订单
+/* 管理员后台脚本 · 人工审核支付宝订单（微信仅保留历史订单查询）
    会话：ADMIN_TOKEN 只保存在 sessionStorage（关闭标签页即清除），不写入 localStorage；
    前端不写死任何令牌，所有管理员接口使用 Authorization: Bearer <管理员输入>。 */
 document.title = '管理员后台 · ' + Istra.brand.cn;
@@ -83,7 +83,7 @@ function render() {
   const filters = [
     { k: 'pending', label: '待审核' }, { k: 'paid', label: '已通过' }, { k: 'cancelled', label: '已驳回' }, { k: '', label: '全部' }
   ];
-  const channels = [{ k: '', label: '全部渠道' }, { k: 'alipay', label: '支付宝' }, { k: 'wechat', label: '微信支付' }];
+  const channels = [{ k: '', label: '全部渠道' }, { k: 'alipay', label: '支付宝' }, { k: 'wechat', label: '微信支付（历史）' }];
   app.innerHTML = `
     <div class="admin__stats">
       <div class="admin__stat"><b>${s.pending || 0}</b><span>待审核</span></div>

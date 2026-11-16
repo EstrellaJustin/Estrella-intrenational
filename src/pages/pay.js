@@ -1,4 +1,4 @@
-/* 订单确认页脚本 · 正式支付流程（前端只调用安全 API，状态由服务端控制） */
+/* 订单确认页脚本 · 仅支持支付宝扫码支付（收款码 + 凭证 + 人工审核） */
 document.title = '订单确认 · ' + Istra.brand.cn;
 Istra.reveal.observe(document);
 
@@ -8,8 +8,9 @@ function esc(v) {
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 const yuan = (fen) => ('¥' + (fen / 100).toFixed(2));
+const ALIPAY_QR = 'assets/pay-alipay.jpg';
 
-/* 客户端压缩凭证图：最长边 1024 / JPEG 0.85，控制体积 */
+/* 客户端压缩凭证图：最长边 1024 / JPEG 0.85 */
 function compressProof(file, maxSide, quality) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
@@ -28,11 +29,6 @@ function compressProof(file, maxSide, quality) {
     img.src = url;
   });
 }
-
-const CHANNELS = {
-  alipay: { name: '支付宝支付', qr: 'assets/pay-alipay.jpg', tip: '请使用支付宝扫码支付', sub: '打开支付宝 App，扫描上方收款码完成付款' },
-  wechat: { name: '微信支付', qr: 'assets/pay-wechat.png', tip: '请使用微信扫码支付', sub: '打开微信，扫描上方收款码完成付款' }
-};
 
 (async function () {
   if (!Istra.auth.loggedIn()) {
@@ -56,7 +52,7 @@ const CHANNELS = {
   let proofB64 = '';
   const card = $('#pay-card');
 
-  /* 第一屏：商品 + 选择支付方式（不显示二维码，不创建订单） */
+  /* 第一屏：商品信息 + 支付宝支付确认（不再显示支付方式选择） */
   const render = () => {
     card.innerHTML = `
       <div class="pay__product">
@@ -76,55 +72,50 @@ const CHANNELS = {
         <div class="pay__info-block"><p class="pay__info-title">售后客服</p><p class="pay__info-text">售后客服 QQ：3279331550 · 服务时间 9:00 – 21:00</p></div>
       </div>
       <div class="pay__methods">
-        <p class="pay__methods-title">选择支付方式</p>
-        <button class="pay__method-card" type="button" data-method="alipay">
+        <p class="pay__methods-title">支付方式</p>
+        <div class="pay__method-card is-fixed">
           <span class="pay__method-icon">支</span>
           <span class="pay__method-name">支付宝</span>
           <span class="pay__method-desc">收款码 + 上传凭证 · 人工审核</span>
-          <span class="pay__method-arrow">→</span>
-        </button>
-        <button class="pay__method-card" type="button" data-method="wechat">
-          <span class="pay__method-icon">微</span>
-          <span class="pay__method-name">微信支付</span>
-          <span class="pay__method-desc">收款码 + 上传凭证 · 人工审核</span>
-          <span class="pay__method-arrow">→</span>
-        </button>
+        </div>
+      </div>
+      <div class="pay__actions">
+        <button class="btn btn--primary" type="button" id="btn-pay">立即支付 ${yuan(product.price)} <span class="btn-arrow">→</span></button>
+        <a class="btn btn--ghost-dark" href="profile.html#sec-orders">我的订单</a>
       </div>
       <p class="pay__note">付款申请提交后进入「待人工审核」，审核通过后自动发放 10 次 AI 评估额度并解锁完整 20 个国家/项目匹配结果。通常 1-2 个工作日内完成。</p>`;
-    card.querySelectorAll('[data-method]').forEach((btn) => {
-      btn.addEventListener('click', () => onChooseMethod(btn.getAttribute('data-method')));
-    });
+    $('#btn-pay').addEventListener('click', onPay);
   };
 
-  /* 选择支付方式 → 创建订单 → 显示对应二维码与提交表单 */
-  const onChooseMethod = async (ch) => {
-    card.innerHTML = '<div class="pay__loading">创建订单中…</div>';
+  /* 创建支付宝订单 → 显示收款码与凭证提交表单 */
+  const onPay = async () => {
+    const btn = $('#btn-pay');
+    btn.disabled = true; btn.textContent = '创建订单中…';
     try {
-      const o = await Istra.api.createOrder(product.id, ch);
+      const o = await Istra.api.createOrder(product.id, 'alipay');
       order = o.order;
       const p = await Istra.api.createPayment(order.id);
       pay = p.pay;
-      renderMethod(ch);
+      renderAlipay();
     } catch (e) {
       card.innerHTML = '<div class="pay__error">' + esc(e.message || '创建订单失败') + '</div>';
     }
   };
 
-  const renderMethod = (ch) => {
-    const c = CHANNELS[ch] || CHANNELS.alipay;
+  const renderAlipay = () => {
     card.innerHTML = `
       <div class="pay__product">
         <span class="pay__product-badge">${product.id === 'ai-assessment' ? '✦' : '✈'}</span>
-        <div><p class="pay__product-name">${esc(c.name)} · ${yuan(order.amount)}</p><p class="pay__product-desc">AI 评估 10 次 · 解锁完整 20 个国家/项目</p></div>
+        <div><p class="pay__product-name">支付宝支付 · ${yuan(order.amount)}</p><p class="pay__product-desc">AI 评估 10 次 · 解锁完整 20 个国家/项目</p></div>
       </div>
       <div class="pay__method-body">
-        <img class="pay__method-qr" src="${c.qr}" alt="${esc(c.name)}收款码" />
-        <p class="pay__method-tip">${esc(c.tip)}</p>
-        <p class="pay__method-sub">${esc(c.sub)}</p>
+        <img class="pay__method-qr" src="${ALIPAY_QR}" alt="支付宝收款码" />
+        <p class="pay__method-tip">请使用支付宝扫码支付</p>
+        <p class="pay__method-sub">打开支付宝 App，扫描上方收款码完成付款</p>
         <div class="pay__paying-row"><span>系统订单号</span><b>${esc(order.orderId)}</b></div>
         <div class="pay__field">
-          <label for="tx-no">${esc(c.name === '支付宝支付' ? '支付宝' : '微信')}交易单号</label>
-          <input id="tx-no" type="text" maxlength="80" placeholder="付款后填写 ${esc(c.name === '支付宝支付' ? '支付宝' : '微信')} 账单中的交易单号" autocomplete="off" />
+          <label for="tx-no">支付宝交易单号</label>
+          <input id="tx-no" type="text" maxlength="80" placeholder="付款后填写支付宝账单中的交易单号" autocomplete="off" />
         </div>
         <div class="pay__proof">
           <p class="pay__proof-title">上传付款凭证</p>
@@ -139,7 +130,6 @@ const CHANNELS = {
         <p class="pay__proof-note">提交后订单进入「待人工审核」。审核通过后将获得 10 次 AI 评估额度并解锁完整 20 个国家/项目匹配结果，不会在提交时立即生效。</p>
       </div>
       <div class="pay__actions">
-        <button class="btn btn--ghost-dark" type="button" id="btn-back-method">← 返回支付方式</button>
         <button class="btn btn--ghost-dark" type="button" id="btn-cancel-order">取消订单</button>
       </div>`;
     const refreshSubmit = () => {
@@ -160,11 +150,6 @@ const CHANNELS = {
       } catch (err) { $('#proof-hint').textContent = err.message; }
     });
     $('#btn-submit-proof').addEventListener('click', onSubmitProof);
-    $('#btn-back-method').addEventListener('click', async () => {
-      if (order && order.status === 'pending') { try { await Istra.api.cancelOrder(order.id); } catch (e) {} }
-      order = null; pay = null; proofB64 = '';
-      render();
-    });
     $('#btn-cancel-order').addEventListener('click', onCancel);
   };
 
