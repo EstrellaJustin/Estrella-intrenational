@@ -35,6 +35,7 @@ Istra.api = {
   register(payload) { return this.req('/api/auth/register', 'POST', payload); },
   login(payload) { return this.req('/api/auth/login', 'POST', payload); },
   me() { return this.req('/api/auth/me', 'GET'); },
+  refreshToken() { return this.req('/api/auth/refresh', 'POST', {}); },
   updateProfile(payload) { return this.req('/api/profile', 'PUT', payload); },
   saveAssessment(payload) { return this.req('/api/assessments', 'POST', payload); },
   listAssessments() { return this.req('/api/assessments', 'GET'); },
@@ -106,6 +107,14 @@ Istra.auth = {
     } catch (e) {
       /* 401 = token 确实失效 → 真正退出；其它（网络/冷启动/5xx）→ 保留 token 并重试，避免瞬时故障导致永久“未登录” */
       if (e && e.status === 401) {
+        /* 会话过期前先尝试轮换刷新；刷新失败才真正退出 */
+        try {
+          const r = await Istra.api.refreshToken();
+          if (r && r.token) {
+            this.setToken(r.token);
+            return await load();
+          }
+        } catch (e2) { /* 刷新失败 → 清理登录态 */ }
         this.user = null;
         this.setToken('');
         return null;
@@ -146,3 +155,13 @@ Istra.updateAccountEntry = function () {
   });
 };
 
+
+
+/* 跨标签页同步登录态：任一标签页登录/退出，其他标签页立即同步 */
+try {
+  window.addEventListener('storage', function (ev) {
+    if (ev.key !== 'istra_token') return;
+    Istra.api.token = ev.newValue || '';
+    if (!ev.newValue && Istra.auth) Istra.auth.user = null;
+  });
+} catch (e) {}

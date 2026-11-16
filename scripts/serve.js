@@ -40,6 +40,12 @@ function hashPwd(password, salt) {
   return crypto.scryptSync(String(password), salt, 64).toString('hex');
 }
 function newToken() { return crypto.randomBytes(24).toString('hex'); }
+const SESSION_TTL_DAYS = Math.max(1, Number(process.env.SESSION_TTL_DAYS) || 30);
+function sessionExpiry(from) { return new Date((from || Date.now()) + SESSION_TTL_DAYS * 86400000).toISOString(); }
+function createSession(userId) {
+  const now = Date.now();
+  return { token: newToken(), userId, createdAt: new Date(now).toISOString(), lastSeenAt: new Date(now).toISOString(), expiresAt: sessionExpiry(now) };
+}
 function publicUser(u) {
   return { id: u.id, name: u.name, phone: u.phone || '', email: u.email || '', registeredAt: u.registeredAt, country: u.country || '', city: u.city || '', lastLoginAt: u.lastLoginAt || '', assessmentUnlock: !!u.assessmentUnlock };
 }
@@ -53,8 +59,21 @@ function authUser(req) {
   const token = getToken(req);
   if (!token) return null;
   const sessions = loadTable('sessions');
-  const row = sessions.find((s) => s.token === token);
-  if (!row) return null;
+  const idx = sessions.findIndex((s) => s.token === token);
+  if (idx < 0) return null;
+  const row = sessions[idx];
+  const now = Date.now();
+  if (row.expiresAt && new Date(row.expiresAt).getTime() < now) {
+    sessions.splice(idx, 1);
+    saveTable('sessions', sessions);
+    return null;
+  }
+  const lastSeen = row.lastSeenAt ? new Date(row.lastSeenAt).getTime() : 0;
+  if (now - lastSeen > 3600000) {
+    sessions[idx].lastSeenAt = new Date(now).toISOString();
+    sessions[idx].expiresAt = sessionExpiry(now);
+    saveTable('sessions', sessions);
+  }
   const users = loadTable('users');
   return users.find((u) => u.id === row.userId) || null;
 }
@@ -276,9 +295,9 @@ async function handleApi(req, res, url) {
     users.push(user);
     saveTable('users', users);
     saveTable('user_profiles', loadTable('user_profiles').concat([{ userId: user.id, updatedAt: now }]));
-    const token = newToken();
-    saveTable('sessions', loadTable('sessions').concat([{ token, userId: user.id }]));
-    return sendJson(res, 200, { token, user: publicUser(user), quota: computeQuota(user), risk: rk.risk });
+    const session = createSession(user.id);
+    saveTable('sessions', loadTable('sessions').concat([session]));
+    return sendJson(res, 200, { token: session.token, user: publicUser(user), quota: computeQuota(user), risk: rk.risk, expiresAt: session.expiresAt });
   }
   
   /* POST /api/auth/login */
@@ -292,9 +311,9 @@ async function handleApi(req, res, url) {
     user.lastLoginAt = new Date().toISOString();
     user.last_ip_hash = hashRisk(clientIp(req));
     saveTable('users', users);
-    const token = newToken();
-    saveTable('sessions', loadTable('sessions').concat([{ token, userId: user.id }]));
-    return sendJson(res, 200, { token, user: publicUser(user) });
+    const session = createSession(user.id);
+    saveTable('sessions', loadTable('sessions').concat([session]));
+    return sendJson(res, 200, { token: session.token, user: publicUser(user), expiresAt: session.expiresAt });
   }
 
   /* GET /api/auth/me */
@@ -304,6 +323,18 @@ async function handleApi(req, res, url) {
     const profiles = loadTable('user_profiles');
     const profile = profiles.find((x) => x.userId === u.id) || {};
     return sendJson(res, 200, { user: publicUser(u), profile });
+  }
+
+  /* POST /api/auth/refresh（滑动续期 + Token 轮换） */
+  if (p === '/api/auth/refresh' && method === 'POST') {
+    const u = authUser(req);
+    if (!u) return sendJson(res, 401, { error: '登录已过期，请重新登录' });
+    const oldToken = getToken(req);
+    const sessions = loadTable('sessions').filter((x) => x.token !== oldToken);
+    const session = createSession(u.id);
+    sessions.push(session);
+    saveTable('sessions', sessions);
+    return sendJson(res, 200, { token: session.token, user: publicUser(u), expiresAt: session.expiresAt });
   }
 
   /* PUT /api/profile */
@@ -768,6 +799,13 @@ const server = http.createServer((req, res) => {
 
 ensureProducts();
 normalizeUsers();
+/* 清理过期会话 */
+(function cleanupSessions() {
+  const rows = loadTable('sessions');
+  const now = Date.now();
+  const kept = rows.filter((x) => !x.expiresAt || new Date(x.expiresAt).getTime() > now);
+  if (kept.length !== rows.length) saveTable('sessions', kept);
+})();
 server.listen(port, () => {
   const url = `http://localhost:${port}`;
   console.log('');
