@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { exec } = require('child_process');
+const store = require('./remote-store');
 
 const root = path.resolve(__dirname, '..');
 /* 数据库目录：默认本地 data/userdb；生产可设 DATA_DIR 指向 Render 持久磁盘，避免重启丢数据 */
@@ -24,11 +25,13 @@ const openBrowser = !args.includes('--no-open');
 const TABLES = ['users', 'user_profiles', 'assessments', 'recommendations', 'user_behavior', 'sessions', 'products', 'orders', 'payments', 'entitlements', 'visitor_assessments', 'admin_audit'];
 fs.mkdirSync(dbDir, { recursive: true });
 function loadTable(name) {
+  if (store.enabled) return store.load(name);
   const f = path.join(dbDir, name + '.json');
   if (!fs.existsSync(f)) fs.writeFileSync(f, '[]');
   try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { return []; }
 }
 function saveTable(name, rows) {
+  if (store.enabled) { store.save(name, rows); return; }
   fs.writeFileSync(path.join(dbDir, name + '.json'), JSON.stringify(rows, null, 2));
 }
 function nextId(rows) {
@@ -782,6 +785,16 @@ const server = http.createServer((req, res) => {
     });
   } catch (e) { res.writeHead(500); res.end('Server error'); }
 });
+
+/* 启动：加载远程持久化存储（Supabase），未配置则使用本地 JSON */
+(async () => {
+  try {
+    const info = await store.init();
+    if (info.enabled) console.log('[storage] 远程持久化已启用（Supabase），已加载 ' + info.loaded + ' 张表');
+  } catch (e) {
+    console.warn('[storage] 远程存储加载失败：' + e.message);
+  }
+})();
 
 ensureProducts();
 /* 生产环境未配置 DATA_DIR：Render 临时磁盘会在重启/重新部署时清空用户与会话数据 */

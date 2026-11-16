@@ -318,3 +318,26 @@ istra-international/
 
 
 
+
+
+## 持久化存储（Render 免费实例）
+
+Render 免费实例没有持久磁盘，重启会清空 `data/userdb`。配置以下环境变量后，所有数据表会自动同步到 **Supabase 免费 Postgres**（通过 REST，无需额外依赖）：
+
+| 变量 | 说明 |
+|---|---|
+| `SUPABASE_URL` | Supabase 项目 URL（如 `https://xxxx.supabase.co`） |
+| `SUPABASE_SERVICE_KEY` | Supabase service_role key（仅放服务端环境变量） |
+
+Supabase SQL Editor 中执行一次：
+
+```sql
+create table if not exists app_tables (
+  name text primary key,
+  data jsonb not null default '[]'::jsonb,
+  updated_at timestamptz not null default now()
+);
+alter table app_tables enable row level security;
+```
+
+未配置上述变量时，自动回退到本地 JSON 文件存储（本地开发行为不变）。
