@@ -91,6 +91,12 @@ function readBody(req) {
   });
 }
 function cleanStr(v, max = 200) { return String(v || '').trim().slice(0, max); }
+/* 账号规范化：邮箱转小写；手机号去空格/连字符/括号 */
+function normalizeAccount(v) {
+  const s = cleanStr(v, 150).toLowerCase();
+  if (!s) return '';
+  return /^[+]?[0-9][0-9\s\-()]*$/.test(s) ? s.replace(/[\s\-()]/g, '') : s;
+}
 
 /* ================= AI 评估防刷 / 风控（最小化数据采集，仅哈希） ================= */
 const FREE_QUOTA = Math.max(0, Number(process.env.FREE_QUOTA) || 3);
@@ -246,7 +252,7 @@ async function handleApi(req, res, url) {
   if (p === '/api/auth/register' && method === 'POST') {
     const b = await readBody(req);
     const name = cleanStr(b.name, 40);
-    const phone = cleanStr(b.phone, 30);
+    const phone = normalizeAccount(cleanStr(b.phone, 30));
     const email = cleanStr(b.email, 120).toLowerCase();
     const password = String(b.password || '');
     if (!name || !password || password.length < 4) return sendJson(res, 400, { error: '请填写姓名与至少 4 位密码' });
@@ -295,10 +301,10 @@ async function handleApi(req, res, url) {
   /* POST /api/auth/login */
   if (p === '/api/auth/login' && method === 'POST') {
     const b = await readBody(req);
-    const account = cleanStr(b.account, 150).toLowerCase();
+    const account = normalizeAccount(b.account);
     const password = String(b.password || '');
     const users = loadTable('users');
-    const user = users.find((u) => u.phone === account || u.email === account);
+    const user = users.find((u) => normalizeAccount(u.phone || '') === account || normalizeAccount(u.email || '') === account);
     if (!user || hashPwd(password, user.salt) !== user.hash) return sendJson(res, 401, { error: '账号或密码错误' });
     user.lastLoginAt = new Date().toISOString();
     user.last_ip_hash = hashRisk(clientIp(req));
@@ -777,6 +783,10 @@ const server = http.createServer((req, res) => {
 });
 
 ensureProducts();
+/* 生产环境未配置 DATA_DIR：Render 临时磁盘会在重启/重新部署时清空用户与会话数据 */
+if ((process.env.RENDER === 'true' || process.env.NODE_ENV === 'production') && !process.env.DATA_DIR) {
+  console.warn('[警告] 未配置 DATA_DIR：数据写入临时磁盘，重启/重新部署后会丢失用户与会话。请挂载持久磁盘并设置 DATA_DIR。');
+}
 normalizeUsers();
 /* 清理过期会话 */
 (function cleanupSessions() {
