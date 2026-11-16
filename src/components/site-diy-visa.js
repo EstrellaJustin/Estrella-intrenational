@@ -234,6 +234,8 @@ class SiteDiyVisa extends HTMLElement {
     }
     guide.innerHTML = this.guideHtml(c);
     this.bindEntitlementBadge();
+    const meta = this.diyMeta(c);
+    if (meta.level !== 'A') { this.bindStdControls(); return; }
     if (c.data_status !== 'complete') return;
     this.renderQuestions();
     this.applyDeps();
@@ -253,33 +255,37 @@ class SiteDiyVisa extends HTMLElement {
 
   diyMeta(c) {
     const project = (Istra.projects || []).find((p) => p.id === c.id) || {};
+    const arr = (v) => Array.isArray(v) && v.length > 0;
     const has = {
-      requirements: !!(project.requirements && project.requirements.length),
-      conditions: this.conditionsOf(c.id).length > 0,
-      questions: this.questionsOf(c.id).length > 0,
-      docs: this.docsOf(c.id).length > 0,
-      tasks: this.tasksOf(c.id).length > 0,
-      steps: this.stepsOf(c.id).length > 0,
-      fees: !!(project.cost || c.fee_info || c.application_fee),
-      period: !!(c.preparation_period && String(c.preparation_period).trim()),
+      requirements: arr(project.requirements),
+      documents: arr(project.documents),
+      process: arr(project.process),
+      cost: arr(project.cost),
+      duration: !!(project.duration || (c.preparation_period && String(c.preparation_period).trim())),
       official: !!(c.official_website || c.application_url),
-      source: !!(c.source_reference || c.last_verified_date)
+      source: !!(c.source_reference || c.last_verified_date),
+      /* A 级专属：结构化、逐条可核验的数据 */
+      curated: c.data_status === 'complete' && this.conditionsOf(c.id).length > 0 && this.docsOf(c.id).length > 0 && this.stepsOf(c.id).length > 0
     };
+
     let level = 'D';
-    if (c.data_status === 'complete' && has.conditions && has.docs && has.steps && has.official) level = 'A';
-    else if (has.conditions || has.docs || has.steps || has.questions) level = 'B';
+    if (has.curated) level = 'A';
+    else if ((has.requirements || has.documents || has.process) && (has.official || has.source)) level = 'B';
     else if (has.official || has.source) level = 'C';
 
-    const missing = [];
-    if (!has.conditions) missing.push('申请资格条件');
-    if (!has.docs) missing.push('申请材料清单');
-    if (!has.steps) missing.push('申请流程步骤');
-    if (!has.fees) missing.push('申请费用明细');
-    if (!has.period) missing.push('办理周期');
-    if (!has.official) missing.push('官方申请入口');
-    if (!has.source) missing.push('官方政策来源');
-    const total = 7;
-    const completeness = Math.round((total - missing.length) / total * 100);
+    const checks = [
+      ['申请资格要求', has.requirements || has.curated],
+      ['申请材料清单', has.documents || has.curated],
+      ['申请流程步骤', has.process || has.curated],
+      ['费用信息', has.cost],
+      ['办理周期', has.duration],
+      ['官方申请入口', has.official],
+      ['官方政策来源', has.source]
+    ];
+    const missing = checks.filter(([, okFlag]) => !okFlag).map(([name]) => name);
+    const present = checks.length - missing.length;
+    const cap = level === 'A' ? 100 : level === 'B' ? 80 : level === 'C' ? 40 : 15;
+    const completeness = Math.round(cap * present / checks.length);
     return { level, missing, completeness, has, project };
   }
 
@@ -299,6 +305,137 @@ class SiteDiyVisa extends HTMLElement {
   }
 
   guideHtml(c) {
+    const meta = this.diyMeta(c);
+    return meta.level === 'A' ? this.curatedHtml(c) : this.standardHtml(c, meta);
+  }
+
+  /* 标准工作台：所有项目通用框架（B/C/D 级），内容全部来自项目库真实字段 */
+  stdStats(c) {
+    const project = (Istra.projects || []).find((p) => p.id === c.id) || {};
+    const reqs = project.requirements || [];
+    const docs = project.documents || [];
+    const steps = project.process || [];
+    let reqMet = 0, reqNeed = 0, reqUnknown = 0, docDone = 0, stepDone = 0;
+    reqs.forEach((_, i) => {
+      const v = this.state.answers['req_' + i];
+      if (v === '满足') reqMet++;
+      else if (v === '需补充') reqNeed++;
+      else reqUnknown++;
+    });
+    docs.forEach((_, i) => { if (this.state.docs['std_' + i] === '已完成') docDone++; });
+    steps.forEach((_, i) => { if (this.state.steps['std_' + i] === '已完成') stepDone++; });
+    const total = reqs.length + docs.length + steps.length;
+    const done = reqMet + docDone + stepDone;
+    return { reqs, docs, steps, reqMet, reqNeed, reqUnknown, docDone, stepDone, total, done, pct: total ? Math.round(done / total * 100) : 0 };
+  }
+
+  standardHtml(c, meta) {
+    const project = meta.project || {};
+    const st = this.stdStats(c);
+    const flag = this.countryFlag(c.country);
+    const cn = this.countryCn(c.country);
+    const reqRows = st.reqs.map((r, i) => {
+      const v = this.state.answers['req_' + i] || '不确定';
+      return '<li class="diy__std-item"><span class="diy__std-text">' + this.cleanText(r, c.country) + '</span>' +
+        '<select class="diy__std-select" data-std-req="' + i + '">' +
+        ['不确定', '满足', '需补充'].map((o) => '<option' + (v === o ? ' selected' : '') + '>' + o + '</option>').join('') +
+        '</select></li>';
+    }).join('');
+    const docRows = st.docs.map((d, i) => {
+      const v = this.state.docs['std_' + i] || '未开始';
+      return '<li class="diy__std-item"><span class="diy__std-text">' + this.cleanText(d, c.country) + '</span>' +
+        '<select class="diy__std-select" data-std-doc="' + i + '">' +
+        ['未开始', '准备中', '已完成'].map((o) => '<option' + (v === o ? ' selected' : '') + '>' + o + '</option>').join('') +
+        '</select></li>';
+    }).join('');
+    const stepRows = st.steps.map((x, i) => {
+      const v = this.state.steps['std_' + i] || '未开始';
+      return '<li class="diy__std-item"><span class="diy__std-num">' + (i + 1) + '</span><span class="diy__std-text">' + this.cleanText(x, c.country) + '</span>' +
+        '<select class="diy__std-select" data-std-step="' + i + '">' +
+        ['未开始', '进行中', '已完成'].map((o) => '<option' + (v === o ? ' selected' : '') + '>' + o + '</option>').join('') +
+        '</select></li>';
+    }).join('');
+    const costRows = (project.cost || []).map((x) => '<div class="diy__fact"><span>' + x.label + '</span><b>' + x.value + '</b></div>').join('');
+    const sources = this.sourcesOf(c.id);
+    const refNote = meta.level === 'B'
+      ? '<p class="diy__std-note">以下材料清单与流程整理自项目库现有资料（类别通用参考），<b>尚未逐条与本国官方原文核对</b>，申请前请以官方页面为准。</p>'
+      : '';
+
+    return `
+      <div class="diy__guide-head">
+        <span class="diy__guide-flag"><img src="assets/flags/${flag}" alt="${cn} 国旗" /></span>
+        <div>
+          <p class="diy__guide-country">${cn} <small>${c.visa_type || ''}</small></p>
+          <h2 class="diy__guide-title">${c.visa_name} · DIY</h2>
+        </div>
+      </div>
+      ${this.levelBlock(meta)}
+      ${refNote}
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>01</span>项目概览</h3>
+        <div class="diy__facts">
+          <div class="diy__fact"><span>目标国家</span><b>${cn}</b></div>
+          <div class="diy__fact"><span>签证名称</span><b>${c.visa_name}</b></div>
+          <div class="diy__fact"><span>签证类型</span><b>${c.visa_type || '—'}</b></div>
+          <div class="diy__fact"><span>适合人群</span><b>${c.target_people || (project.targetUsers || []).join('；') || '暂无可靠信息'}</b></div>
+          <div class="diy__fact"><span>办理周期</span><b>${c.preparation_period || project.duration || '待核实'}</b></div>
+          <div class="diy__fact"><span>官方信息验证</span><b>${c.last_verified_date || '待核实'}</b></div>
+        </div>
+        <p class="diy__apply-note"><span>基本申请方式：</span>${c.application_method || project.application_method || '待核实'}</p>
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>02</span>申请资格自查</h3>
+        <p class="diy__sec-desc">逐条核对自身条件。默认「不确定」，请勿将未确认项视为符合。</p>
+        <ul class="diy__std-list">${reqRows || '<li class="diy__std-item">暂无可靠资格要求，请以官方页面为准</li>'}</ul>
+        <p class="diy__std-summary" data-std-req-summary>已满足 ${st.reqMet} · 需补充 ${st.reqNeed} · 不确定 ${st.reqUnknown}</p>
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>03</span>申请材料清单</h3>
+        <ul class="diy__std-list">${docRows || '<li class="diy__std-item">暂无可靠材料清单，请以官方页面为准</li>'}</ul>
+        <p class="diy__std-summary" data-std-doc-summary>已完成 ${st.docDone} / ${st.docs.length} 项材料</p>
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>04</span>申请流程</h3>
+        <ul class="diy__std-list">${stepRows || '<li class="diy__std-item">暂无可靠流程信息，请以官方页面为准</li>'}</ul>
+        <p class="diy__std-summary" data-std-step-summary>已完成 ${st.stepDone} / ${st.steps.length} 步</p>
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>05</span>费用与时间</h3>
+        <div class="diy__facts">${costRows || '<div class="diy__fact"><span>费用</span><b>暂无可靠信息</b></div>'}</div>
+        <div class="diy__dates"><span>预计办理周期：${project.duration || c.preparation_period || '待核实'}</span><span>数据来源：${c.source_type || '待核实'}</span></div>
+      </section>
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>06</span>我的准备进度</h3>
+        <div class="diy__std-progress"><div class="diy__std-bar"><span data-std-bar style="width:${st.pct}%"></span></div><b data-std-pct>${st.pct}%</b></div>
+        <p class="diy__std-summary" data-std-total>已完成 ${st.done} / ${st.total} 项（资格+材料+流程）</p>
+      </section>
+
+      ${(c.official_website || c.application_url) ? `
+      <section class="diy__sec diy__official">
+        <h3 class="diy__sec-title"><span>07</span>🏛 官方申请入口</h3>
+        <div class="diy__official-badge">官方申请渠道导航 · 伊斯特拉国际不是政府官方网站</div>
+        <div class="diy__official-grid">
+          <div class="diy__official-row"><span>官方申请机构</span><b>${c.official_authority || '待核实'}</b></div>
+          <div class="diy__official-row"><span>申请方式</span><b>${c.application_method || '待核实'}</b></div>
+          <div class="diy__official-row"><span>官方信息更新时间</span><b>${c.last_verified_date || '待核实'}</b></div>
+        </div>
+        <div class="diy__official-actions">
+          ${c.official_website ? '<a class="btn btn--ghost-dark" href="' + c.official_website + '" target="_blank" rel="noopener noreferrer">访问官方网站 <span class="btn-arrow">→</span></a>' : ''}
+          ${c.application_url ? '<a class="btn btn--primary" href="' + c.application_url + '" target="_blank" rel="noopener noreferrer">进入官方申请页面 <span class="btn-arrow">→</span></a>' : ''}
+        </div>
+        ${sources.length ? '<div class="diy__sources"><p class="diy__sources-title">官方信息来源</p>' + sources.map((o) => '<p class="diy__sources-item">· ' + o.source_name + (o.source_url ? '（<a href="' + o.source_url + '" target="_blank" rel="noopener noreferrer">访问</a>）' : '') + ' · ' + o.source_type + ' · 验证 ' + o.last_verified_date + '</p>').join('') + '</div>' : ''}
+        <p class="diy__official-note">* 本站提供官方申请渠道导航，不代表政府机构，不提供签证审批服务。申请前请以目标国家官方最新信息为准。</p>
+      </section>` : ''}
+    `;
+  }
+
+  curatedHtml(c) {
     if (c.data_status !== 'complete') return this.pendingHtml(c);
     const flag = this.countryFlag(c.country);
     const docs = this.docsOf(c.id);
@@ -684,6 +821,32 @@ class SiteDiyVisa extends HTMLElement {
   }
 
   /* ================= 交互 ================= */
+
+  /* 标准工作台交互：资格自查 / 材料 / 流程 状态保存与进度即时更新 */
+  bindStdControls() {
+    const c = this.config(this.state.projectId);
+    if (!c) return;
+    const update = () => {
+      const st = this.stdStats(c);
+      const set = (sel, text) => { const el = this.querySelector(sel); if (el) el.textContent = text; };
+      set('[data-std-req-summary]', '已满足 ' + st.reqMet + ' · 需补充 ' + st.reqNeed + ' · 不确定 ' + st.reqUnknown);
+      set('[data-std-doc-summary]', '已完成 ' + st.docDone + ' / ' + st.docs.length + ' 项材料');
+      set('[data-std-step-summary]', '已完成 ' + st.stepDone + ' / ' + st.steps.length + ' 步');
+      set('[data-std-total]', '已完成 ' + st.done + ' / ' + st.total + ' 项（资格+材料+流程）');
+      set('[data-std-pct]', st.pct + '%');
+      const bar = this.querySelector('[data-std-bar]');
+      if (bar) bar.style.width = st.pct + '%';
+    };
+    this.querySelectorAll('[data-std-req]').forEach((el) => {
+      el.addEventListener('change', () => { this.state.answers['req_' + el.getAttribute('data-std-req')] = el.value; this.saveProgress(); update(); });
+    });
+    this.querySelectorAll('[data-std-doc]').forEach((el) => {
+      el.addEventListener('change', () => { this.state.docs['std_' + el.getAttribute('data-std-doc')] = el.value; this.saveProgress(); update(); });
+    });
+    this.querySelectorAll('[data-std-step]').forEach((el) => {
+      el.addEventListener('change', () => { this.state.steps['std_' + el.getAttribute('data-std-step')] = el.value; this.saveProgress(); update(); });
+    });
+  }
 
   /* 当前项目写入 URL，刷新后保持国家/项目/内容一致 */
   syncUrl() {

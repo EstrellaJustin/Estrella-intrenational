@@ -724,3 +724,21 @@ is-diy-visa { display: block; }
 .diy__checklist { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; list-style: none; }
 .diy__checklist li { position: relative; padding-left: 1rem; font-size: 0.8125rem; line-height: 1.75; color: var(--color-text); }
 .diy__checklist li::before { content: "·"; position: absolute; left: 0.25rem; color: var(--color-accent); font-weight: 700; }
+
+/* ================= 标准工作台（B/C/D 级 · 全项目通用） ================= */
+.diy__std-note { margin-top: 0.75rem; padding: 0.75rem 0.9rem; border-left: 3px solid var(--color-accent); background: rgba(201, 162, 39, 0.08); border-radius: var(--radius-s); font-size: 0.75rem; line-height: 1.8; color: var(--color-text-muted); }
+.diy__std-list { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; list-style: none; }
+.diy__std-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; background: rgba(6, 43, 85, 0.3); border: 1px solid var(--color-line-soft); border-radius: var(--radius-m); }
+.diy__std-text { flex: 1; font-size: 0.8125rem; line-height: 1.7; color: var(--color-text); min-width: 0; }
+.diy__std-num { flex: none; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--color-accent-line); border-radius: 50%; font-size: 0.75rem; font-weight: 700; color: var(--color-accent); }
+.diy__std-select { flex: none; height: 34px; padding: 0 0.5rem; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: var(--radius-s); background: rgba(4, 27, 58, 0.7); color: var(--color-heading); font-size: 0.75rem; }
+.diy__std-summary { margin-top: 0.65rem; font-size: 0.75rem; color: var(--color-text-muted); }
+.diy__std-progress { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.75rem; }
+.diy__std-bar { flex: 1; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+.diy__std-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--color-blue, #3B82F6), var(--color-accent)); border-radius: 99px; transition: width 0.3s ease; }
+.diy__std-progress b { font-size: 0.875rem; color: var(--color-accent); min-width: 3rem; text-align: right; }
+
+@media (max-width: 560px) {
+  .diy__std-item { flex-wrap: wrap; }
+  .diy__std-select { width: 100%; }
+}
