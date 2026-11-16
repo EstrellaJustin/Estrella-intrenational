@@ -150,11 +150,39 @@ class SiteDiyVisa extends HTMLElement {
 
   fillPickers() {
     const countrySel = this.querySelector('[data-picker="country"]');
-    const catSel = this.querySelector('[data-picker="category"]');
     const countries = (Istra.countries || []).filter((c) => c.is_available !== false);
     countrySel.innerHTML = '<option value="">全部国家</option>' + countries.map((c) => '<option value="' + c.id + '">' + c.cn + '</option>').join('');
-    catSel.innerHTML = '<option value="">全部类别</option>' + this.categoryOptions().map((c) => '<option value="' + c.id + '">' + c.label + '</option>').join('');
+    /* 依据当前项目预选国家，保证刷新后国家/项目/内容一致 */
+    const current = this.config(this.state.projectId);
+    if (current && current.country) countrySel.value = current.country;
+    this.fillCategoryPicker();
     this.fillProjectPicker();
+  }
+
+  /* 类别选项随所选国家动态变化，避免出现该国不存在的类型 */
+  fillCategoryPicker() {
+    const catSel = this.querySelector('[data-picker="category"]');
+    const countrySel = this.querySelector('[data-picker="country"]');
+    const country = countrySel ? countrySel.value : '';
+    const cats = [];
+    (Istra.diyConfigs || []).forEach((x) => {
+      if (country && x.country !== country) return;
+      const full = (Istra.projects || []).find((p) => p.id === x.id);
+      if (full && full.category && !cats.some((c) => c.id === full.category.id)) cats.push({ id: full.category.id, label: full.category.name });
+    });
+    cats.sort((a, b) => a.label.localeCompare(b.label, 'zh'));
+    const prev = catSel ? catSel.value : '';
+    catSel.innerHTML = '<option value="">全部类别</option>' + cats.map((c) => '<option value="' + c.id + '">' + c.label + '</option>').join('');
+    catSel.value = cats.some((c) => c.id === prev) ? prev : '';
+  }
+
+  /* 统一展示格式：国家只出现一次 */
+  projectLabel(c) {
+    const cn = this.countryCn(c.country);
+    let name = String(c.visa_name || '').trim();
+    const esc = cn.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    try { name = name.replace(new RegExp('^' + esc + '\\s*[·\\-—:：]?\\s*'), ''); } catch (e) {}
+    return cn + ' · ' + (name || c.visa_name || '签证项目');
   }
 
   categoryOptions() {
@@ -183,14 +211,27 @@ class SiteDiyVisa extends HTMLElement {
   fillProjectPicker() {
     const projSel = this.querySelector('[data-picker="project"]');
     const list = this.filteredConfigs();
-    if (!list.some((c) => c.id === this.state.projectId) && list.length) this.state.projectId = list[0].id;
-    projSel.innerHTML = list.map((c) => '<option value="' + c.id + '"' + (c.id === this.state.projectId ? ' selected' : '') + '>' + this.countryCn(c.country) + ' · ' + c.visa_name + '</option>').join('');
+    /* 当前项目不属于筛选结果时，切换到首个可用项目；无任何结果时清空，禁止残留旧项目内容 */
+    if (!list.some((c) => c.id === this.state.projectId)) {
+      this.state.projectId = list.length ? list[0].id : '';
+    }
+    projSel.innerHTML = list.length
+      ? list.map((c) => '<option value="' + c.id + '"' + (c.id === this.state.projectId ? ' selected' : '') + '>' + this.projectLabel(c) + '</option>').join('')
+      : '<option value="">当前条件下暂无 DIY 项目</option>';
+    projSel.disabled = !list.length;
+    return list;
   }
 
   renderGuide() {
     const c = this.config(this.state.projectId);
     const guide = this.querySelector('[data-guide]');
-    if (!c) { guide.innerHTML = '<p class="diy__empty">暂无可选签证项目，请选择其他项目。</p>'; return; }
+    if (!c) {
+      const countrySel = this.querySelector('[data-picker="country"]');
+      const catSel = this.querySelector('[data-picker="category"]');
+      const hasFilter = (countrySel && countrySel.value) || (catSel && catSel.value);
+      guide.innerHTML = '<div class="diy__empty"><p><b>' + (hasFilter ? '当前国家 / 类别下暂无 DIY 项目' : '暂无可选签证项目') + '</b></p><p>请调整上方「国家 / 类别」筛选条件后重试。</p></div>';
+      return;
+    }
     guide.innerHTML = this.guideHtml(c);
     this.bindEntitlementBadge();
     if (c.data_status !== 'complete') return;
@@ -565,16 +606,31 @@ class SiteDiyVisa extends HTMLElement {
 
   /* ================= 交互 ================= */
 
+  /* 当前项目写入 URL，刷新后保持国家/项目/内容一致 */
+  syncUrl() {
+    try {
+      const url = this.state.projectId ? 'diy-visa.html?id=' + encodeURIComponent(this.state.projectId) : 'diy-visa.html';
+      history.replaceState(null, '', url);
+    } catch (e) {}
+  }
+
   bind() {
     this.querySelectorAll('[data-picker]').forEach((sel) => {
       sel.addEventListener('change', () => {
-        if (sel.getAttribute('data-picker') === 'project') {
-          this.state.projectId = sel.value;
-          this.loadProgress();
-          this.renderGuide();
-        } else {
+        const kind = sel.getAttribute('data-picker');
+        if (kind === 'country') {
+          this.fillCategoryPicker();
           this.fillProjectPicker();
+        } else if (kind === 'category') {
+          this.fillProjectPicker();
+        } else {
+          this.state.projectId = sel.value;
         }
+        /* 切换后重置该项目的工作区状态，确保旧项目内容不残留 */
+        this.state.docs = {}; this.state.tasks = {}; this.state.steps = {}; this.state.answers = {}; this.state.notes = {};
+        if (this.state.projectId) this.loadProgress();
+        this.renderGuide();
+        this.syncUrl();
       });
     });
 

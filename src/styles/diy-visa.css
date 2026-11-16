@@ -4,8 +4,10 @@
 
 is-diy-visa { display: block; }
 
+.diy, .diy__head { overflow: visible; }
 .diy__head {
-  padding: calc(var(--nav-h) + clamp(3rem, 7vw, 5rem)) 0 clamp(2rem, 4vw, 3rem);
+  padding: max(calc(var(--nav-h) + clamp(3rem, 7vw, 5rem)), 148px) 0 clamp(2rem, 4vw, 3rem);
+  scroll-margin-top: var(--nav-h);
   background:
     radial-gradient(52% 44% at 84% 0%, rgba(10, 61, 115, 0.5), transparent 70%),
     var(--color-ink);
@@ -16,6 +18,9 @@ is-diy-visa { display: block; }
 .diy__eyebrow {
   display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  line-height: 1.6;
   gap: 0.75rem;
   font-size: var(--fs-micro);
   font-weight: 600;
