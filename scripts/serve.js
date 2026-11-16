@@ -262,8 +262,8 @@ async function handleApi(req, res, url) {
     const deviceHash = b.deviceFingerprint ? hashRisk(cleanStr(b.deviceFingerprint, 500)) : '';
     const users = loadTable('users');
     /* IP 短时限流：同一出口 IP 短时间内大量注册 → 429（不永久封禁） */
-    const shortWin = Number(process.env.REG_IP_SHORT_MS) || 5 * 60 * 1000;
-    const shortMax = Number(process.env.REG_IP_SHORT_MAX) || 3;
+    const shortWin = Number(process.env.REG_IP_SHORT_MS) || 10 * 60 * 1000;
+    const shortMax = Number(process.env.REG_IP_SHORT_MAX) || 20;
     const burst = users.filter((u) => u.register_ip_hash === ipHash && u.registeredAt && (Date.now() - new Date(u.registeredAt).getTime()) < shortWin).length;
     if (burst >= shortMax) return sendJson(res, 429, { error: '注册过于频繁，请稍后再试' });
     const dup = users.find((u) => (phone && u.phone === phone) || (email && u.email === email));
@@ -305,7 +305,8 @@ async function handleApi(req, res, url) {
     const password = String(b.password || '');
     const users = loadTable('users');
     const user = users.find((u) => normalizeAccount(u.phone || '') === account || normalizeAccount(u.email || '') === account);
-    if (!user || hashPwd(password, user.salt) !== user.hash) return sendJson(res, 401, { error: '账号或密码错误' });
+    if (!user) return sendJson(res, 404, { error: '账号不存在，请先注册', code: 'ACCOUNT_NOT_FOUND' });
+    if (hashPwd(password, user.salt) !== user.hash) return sendJson(res, 401, { error: '密码错误，请重新输入', code: 'WRONG_PASSWORD' });
     user.lastLoginAt = new Date().toISOString();
     user.last_ip_hash = hashRisk(clientIp(req));
     saveTable('users', users);
@@ -679,7 +680,7 @@ function assessmentQuota(user, visitorId) {
 
   /* GET /api/admin/status（管理员后台状态：是否已配置 ADMIN_TOKEN，不泄露密钥） */
   if (p === '/api/admin/status' && method === 'GET') {
-    return sendJson(res, 200, { configured: !!adminSecret(), adminApi: true });
+    return sendJson(res, 200, { configured: !!adminSecret(), adminApi: true, persistent: !!process.env.DATA_DIR, dataDir: process.env.DATA_DIR || 'temporary' });
   }
   /* GET /api/admin/stats（管理员统计） */
   if (p === '/api/admin/stats' && method === 'GET') {
