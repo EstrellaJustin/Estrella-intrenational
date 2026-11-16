@@ -241,6 +241,63 @@ class SiteDiyVisa extends HTMLElement {
     this.renderProgress();
   }
 
+  /* ===== DIY 服务等级：A 完整 / B 部分 / C 基础信息 / D 待核实 ===== */
+  /* 清理数据中的未渲染模板占位符，避免把 ${c.cn} 之类的原始文本展示给用户 */
+  cleanText(text, countryId) {
+    const cn = this.countryCn(countryId);
+    return String(text || '')
+      .replace(/\$\{c\.cn\}/g, cn)
+      .replace(/\$\{[^}]+\}/g, '')
+      .trim();
+  }
+
+  diyMeta(c) {
+    const project = (Istra.projects || []).find((p) => p.id === c.id) || {};
+    const has = {
+      requirements: !!(project.requirements && project.requirements.length),
+      conditions: this.conditionsOf(c.id).length > 0,
+      questions: this.questionsOf(c.id).length > 0,
+      docs: this.docsOf(c.id).length > 0,
+      tasks: this.tasksOf(c.id).length > 0,
+      steps: this.stepsOf(c.id).length > 0,
+      fees: !!(project.cost || c.fee_info || c.application_fee),
+      period: !!(c.preparation_period && String(c.preparation_period).trim()),
+      official: !!(c.official_website || c.application_url),
+      source: !!(c.source_reference || c.last_verified_date)
+    };
+    let level = 'D';
+    if (c.data_status === 'complete' && has.conditions && has.docs && has.steps && has.official) level = 'A';
+    else if (has.conditions || has.docs || has.steps || has.questions) level = 'B';
+    else if (has.official || has.source) level = 'C';
+
+    const missing = [];
+    if (!has.conditions) missing.push('申请资格条件');
+    if (!has.docs) missing.push('申请材料清单');
+    if (!has.steps) missing.push('申请流程步骤');
+    if (!has.fees) missing.push('申请费用明细');
+    if (!has.period) missing.push('办理周期');
+    if (!has.official) missing.push('官方申请入口');
+    if (!has.source) missing.push('官方政策来源');
+    const total = 7;
+    const completeness = Math.round((total - missing.length) / total * 100);
+    return { level, missing, completeness, has, project };
+  }
+
+  levelBlock(meta) {
+    const desc = {
+      A: '完整 DIY 服务：资格检查、材料准备、流程模拟、官方入口全部可用',
+      B: '部分 DIY 服务：已核实模块已开放，未完成模块单独标注',
+      C: '基础信息服务：提供项目概览、已核实要求与官方入口，暂不开放模拟',
+      D: '资料待核实：仅展示已确认的基础信息'
+    };
+    return '<div class="diy__level diy__level--' + meta.level + '">' +
+      '<div class="diy__level-head"><span class="diy__level-badge">' + meta.level + ' 级</span>' +
+      '<b class="diy__level-title">' + desc[meta.level] + '</b>' +
+      '<span class="diy__level-pct">数据完整度 ' + meta.completeness + '%</span></div>' +
+      (meta.missing.length ? '<p class="diy__level-missing">缺失信息：' + meta.missing.join('、') + '</p>' : '<p class="diy__level-missing diy__level-missing--ok">核心数据齐全</p>') +
+      '</div>';
+  }
+
   guideHtml(c) {
     if (c.data_status !== 'complete') return this.pendingHtml(c);
     const flag = this.countryFlag(c.country);
@@ -256,6 +313,7 @@ class SiteDiyVisa extends HTMLElement {
           <h2 class="diy__guide-title">${c.visa_name} · DIY</h2>
         </div>
       </div>
+      ${this.levelBlock(this.diyMeta(c))}
 
       <!-- 01 项目概览 -->
       <section class="diy__sec">
@@ -407,6 +465,16 @@ class SiteDiyVisa extends HTMLElement {
   pendingHtml(c) {
     const flag = this.countryFlag(c.country);
     const sources = this.sourcesOf(c.id);
+    const meta = this.diyMeta(c);
+    const project = meta.project || {};
+    const reqs = Array.isArray(project.requirements) ? project.requirements : [];
+    const conds = this.conditionsOf(c.id);
+    const docs = this.docsOf(c.id);
+    const steps = this.stepsOf(c.id);
+    const listBlock = (title, items) => items.length
+      ? '<section class="diy__sec"><h3 class="diy__sec-title"><span>已核实</span>' + title + '</h3><ul class="diy__checklist">' + items.join('') + '</ul></section>'
+      : '';
+
     return `
       <div class="diy__guide-head">
         <span class="diy__guide-flag"><img src="assets/flags/${flag}" alt="${this.countryCn(c.country)} 国旗" /></span>
@@ -415,41 +483,52 @@ class SiteDiyVisa extends HTMLElement {
           <h2 class="diy__guide-title">${c.visa_name} · DIY</h2>
         </div>
       </div>
-      <div class="diy__pending">
-        <p class="diy__pending-badge">DIY 资料正在完善</p>
-        <p class="diy__pending-text">该项目的独立 DIY 数据正在按官方公开信息完善中，暂不提供条件检查、材料与流程模拟。在完善前，不会展示任何模板化的申请条件或材料，避免误导。可先查看项目概览与官方申请入口。</p>
-      </div>
+      ${this.levelBlock(meta)}
+
       <section class="diy__sec">
         <h3 class="diy__sec-title"><span>01</span>项目概览</h3>
         <div class="diy__facts">
           <div class="diy__fact"><span>目标国家</span><b>${this.countryCn(c.country)}</b></div>
           <div class="diy__fact"><span>签证名称</span><b>${c.visa_name}</b></div>
           <div class="diy__fact"><span>签证类型</span><b>${c.visa_type}</b></div>
-          <div class="diy__fact"><span>适合人群</span><b>${c.target_people}</b></div>
-          <div class="diy__fact"><span>申请难度</span><b>${c.difficulty}</b></div>
-          <div class="diy__fact"><span>预计准备周期</span><b>${c.preparation_period}</b></div>
+          <div class="diy__fact"><span>适合人群</span><b>${c.target_people || '暂无可靠信息'}</b></div>
+          <div class="diy__fact"><span>申请难度</span><b>${c.difficulty || '暂无可靠信息'}</b></div>
+          <div class="diy__fact"><span>预计准备周期</span><b>${c.preparation_period || '暂无可靠信息'}</b></div>
         </div>
-        <p class="diy__apply-note"><span>基本申请方式：</span>${c.application_method}</p>
+        <p class="diy__apply-note"><span>基本申请方式：</span>${c.application_method || '暂无可靠信息'}</p>
         <div class="diy__dates">
-          <span>本 DIY 指南最后更新：${c.guide_updated_date || '—'}</span>
-          <span>官方信息最后验证：${c.last_verified_date}</span>
+          <span>官方信息最后验证：${c.last_verified_date || '待核实'}</span>
+          <span>数据来源类型：${c.source_type || '待核实'}</span>
         </div>
       </section>
+
+      ${listBlock('申请要求（来自项目资料）', reqs.map((r) => '<li>' + this.cleanText(r, c.country) + '</li>'))}
+      ${listBlock('资格条件', conds.map((x) => '<li><b>' + x.condition_name + '</b>：' + x.condition_description + '</li>'))}
+      ${listBlock('申请材料', docs.map((x) => '<li><b>' + x.document_name + '</b>' + (x.is_required ? '（必须）' : '（可选）') + '：' + x.official_requirement + '</li>'))}
+      ${listBlock('申请流程', steps.map((x) => '<li><b>步骤 ' + x.step_order + '：' + x.step_title + '</b>：' + x.step_description + '</li>'))}
+
+      <section class="diy__sec">
+        <h3 class="diy__sec-title"><span>说明</span>功能开放状态</h3>
+        <p class="diy__sec-desc">${meta.level === 'D' ? '该项目核心 DIY 资料尚待核实，当前仅展示已确认的基础信息，不提供任何模拟功能。' : '该项目尚未达到完整 DIY 服务标准，资格检查、材料状态与流程模拟暂不开放；已核实的资料已在上方展示，缺失模块见下方列表。'}</p>
+        ${meta.missing.length ? '<ul class="diy__checklist">' + meta.missing.map((m) => '<li>待完善：' + m + '</li>').join('') + '</ul>' : ''}
+      </section>
+
+      ${(c.official_website || c.application_url) ? `
       <section class="diy__sec diy__official">
         <h3 class="diy__sec-title"><span>09</span>🏛 官方申请入口</h3>
         <div class="diy__official-badge">官方申请渠道导航 · 伊斯特拉国际不是政府官方网站</div>
         <div class="diy__official-grid">
-          <div class="diy__official-row"><span>官方申请机构</span><b>${c.official_authority}</b></div>
-          <div class="diy__official-row"><span>申请方式</span><b>${c.application_method}</b></div>
-          <div class="diy__official-row"><span>官方信息更新时间</span><b>${c.last_verified_date}</b></div>
+          <div class="diy__official-row"><span>官方申请机构</span><b>${c.official_authority || '待核实'}</b></div>
+          <div class="diy__official-row"><span>申请方式</span><b>${c.application_method || '待核实'}</b></div>
+          <div class="diy__official-row"><span>官方信息更新时间</span><b>${c.last_verified_date || '待核实'}</b></div>
         </div>
         <div class="diy__official-actions">
-          <a class="btn btn--ghost-dark" href="${c.official_website}" target="_blank" rel="noopener noreferrer">访问官方网站 <span class="btn-arrow">→</span></a>
-          <a class="btn btn--primary" href="${c.application_url}" target="_blank" rel="noopener noreferrer">进入官方申请页面 <span class="btn-arrow">→</span></a>
+          ${c.official_website ? '<a class="btn btn--ghost-dark" href="' + c.official_website + '" target="_blank" rel="noopener noreferrer">访问官方网站 <span class="btn-arrow">→</span></a>' : ''}
+          ${c.application_url ? '<a class="btn btn--primary" href="' + c.application_url + '" target="_blank" rel="noopener noreferrer">进入官方申请页面 <span class="btn-arrow">→</span></a>' : ''}
         </div>
         ${sources.length ? '<div class="diy__sources"><p class="diy__sources-title">官方信息来源</p>' + sources.map((o) => '<p class="diy__sources-item">· ' + o.source_name + (o.source_url ? '（<a href="' + o.source_url + '" target="_blank" rel="noopener noreferrer">访问</a>）' : '') + ' · ' + o.source_type + ' · 验证 ' + o.last_verified_date + '</p>').join('') + '</div>' : ''}
         <p class="diy__official-note">* 本站提供官方申请渠道导航，不代表政府机构，不提供签证审批服务。申请前请以目标国家官方最新信息为准。</p>
-      </section>
+      </section>` : ''}
     `;
   }
 

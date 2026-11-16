@@ -697,3 +697,30 @@ is-diy-visa { display: block; }
   transition: color var(--dur) var(--ease);
 }
 .diy__entitle-link:hover { color: var(--color-accent-dark); }
+
+/* ================= DIY 服务等级（A/B/C/D） ================= */
+.diy__level {
+  margin-top: 1rem;
+  padding: 1rem 1.125rem;
+  border-radius: var(--radius-m);
+  border: 1px solid var(--color-line-soft);
+  background: rgba(6, 43, 85, 0.3);
+}
+.diy__level--A { border-color: rgba(74, 222, 128, 0.45); }
+.diy__level--B { border-color: rgba(56, 189, 248, 0.45); }
+.diy__level--C { border-color: rgba(201, 162, 39, 0.45); }
+.diy__level--D { border-color: rgba(248, 113, 113, 0.45); }
+.diy__level-head { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.diy__level-badge { padding: 0.2rem 0.65rem; border-radius: 999px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em; }
+.diy__level--A .diy__level-badge { background: rgba(74, 222, 128, 0.15); color: #4ADE80; }
+.diy__level--B .diy__level-badge { background: rgba(56, 189, 248, 0.15); color: #38BDF8; }
+.diy__level--C .diy__level-badge { background: rgba(201, 162, 39, 0.15); color: var(--color-accent); }
+.diy__level--D .diy__level-badge { background: rgba(248, 113, 113, 0.15); color: #F87171; }
+.diy__level-title { font-size: 0.875rem; font-weight: 600; color: var(--color-heading); }
+.diy__level-pct { margin-left: auto; font-size: 0.75rem; color: var(--color-text-muted); white-space: nowrap; }
+.diy__level-missing { margin-top: 0.55rem; font-size: 0.75rem; line-height: 1.7; color: var(--color-text-faint); }
+.diy__level-missing--ok { color: #4ADE80; }
+
+.diy__checklist { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; list-style: none; }
+.diy__checklist li { position: relative; padding-left: 1rem; font-size: 0.8125rem; line-height: 1.75; color: var(--color-text); }
+.diy__checklist li::before { content: "·"; position: absolute; left: 0.25rem; color: var(--color-accent); font-weight: 700; }
