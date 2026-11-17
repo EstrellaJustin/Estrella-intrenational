@@ -23,6 +23,16 @@ async function apiGet(path) { return Istra.api.adminFetch(path, getToken()); }
 async function boot() {
   let status = null;
   try { status = await Istra.api.adminStatus(); } catch (e) {}
+  /* 存储未持久化警告：Render 重启会清空用户与会话数据 */
+  if (status && status.adminApi && status.configured && !status.persistent) {
+    const banner = document.createElement('div');
+    banner.className = 'admin__panel admin__notice';
+    banner.style.marginBottom = '1rem';
+    banner.innerHTML = '<h2 class="admin__notice-title">⚠️ 数据存储未持久化</h2>' +
+      '<p class="admin__notice-text">当前使用临时磁盘，Render 重启/重新部署会清空用户与会话数据（用户需重新注册、重新登录）。</p>' +
+      '<p class="admin__notice-text">请在 Render 环境变量中配置 <code>SUPABASE_URL</code> 与 <code>SUPABASE_SERVICE_KEY</code>（免费 Supabase），或挂载持久磁盘并设置 <code>DATA_DIR</code>。</p>';
+    app.parentNode.insertBefore(banner, app);
+  }
   if (status && status.adminApi && !status.configured) {
     app.innerHTML = `
       <div class="admin__panel admin__notice">

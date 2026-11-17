@@ -683,7 +683,7 @@ function assessmentQuota(user, visitorId) {
 
   /* GET /api/admin/status（管理员后台状态：是否已配置 ADMIN_TOKEN，不泄露密钥） */
   if (p === '/api/admin/status' && method === 'GET') {
-    return sendJson(res, 200, { configured: !!adminSecret(), adminApi: true, persistent: !!process.env.DATA_DIR, dataDir: process.env.DATA_DIR || 'temporary' });
+    return sendJson(res, 200, { configured: !!adminSecret(), adminApi: true, persistent: !!(process.env.DATA_DIR || store.enabled), dataDir: process.env.DATA_DIR || 'temporary', remoteStore: !!store.enabled });
   }
   /* GET /api/admin/stats（管理员统计） */
   if (p === '/api/admin/stats' && method === 'GET') {
