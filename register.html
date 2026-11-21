@@ -3,60 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>注册 · 伊斯特拉国际</title>
+  <title>平台已取消注册登录 · 伊斯特拉国际</title>
+  <meta name="robots" content="noindex" />
   <meta name="theme-color" content="#041B3A" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="stylesheet" href="assets/fonts/fonts.css" />
   <link rel="stylesheet" href="src/styles/tokens.css" />
   <link rel="stylesheet" href="src/styles/base.css" />
   <link rel="stylesheet" href="src/styles/navbar.css" />
-  <link rel="stylesheet" href="src/styles/account.css" />
   <link rel="stylesheet" href="src/styles/footer.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要内容</a>
-  <is-navbar></is-navbar>
+  <is-navbar page="home"></is-navbar>
   <main id="main">
-    <div class="account">
-      <header class="account__head">
-        <div class="container">
-          <p class="account__eyebrow" data-reveal>Member Register</p>
-          <h1 class="account__title" data-reveal>注册</h1>
-          <p class="account__sub" data-reveal>手机号或邮箱注册，开启您的全球人生规划。</p>
+    <section style="padding: calc(var(--nav-h) + 4rem) 0 5rem">
+      <div class="container container--narrow" style="text-align:center">
+        <p style="font-size:.75rem;letter-spacing:.2em;color:var(--color-accent)">OPEN PLATFORM</p>
+        <h1 style="margin-top:1rem;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:var(--color-heading)">平台已取消注册与登录</h1>
+        <p style="margin-top:1rem;line-height:1.9;color:var(--color-text-muted)">伊斯特拉国际现已全面开放：无需注册、无需登录，即可无限次免费使用 AI 全球机会评估，并浏览全球国家、项目与 DIY 签证工作台。</p>
+        <p style="margin-top:.5rem;line-height:1.9;color:var(--color-text-muted)">每份评估报告可单独支付 ¥9.90 解锁本次测评的全部国家，已购买的报告永久保留。</p>
+        <div style="margin-top:2rem;display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap">
+          <a class="btn btn--primary" href="ai-assessment.html">立即开始 AI 评估 <span class="btn-arrow">→</span></a>
+          <a class="btn btn--ghost-dark" href="index.html">返回首页</a>
         </div>
-      </header>
-      <div class="account__body">
-        <div class="container">
-          <div class="auth-card" data-reveal>
-            <img class="auth-card__logo" src="assets/logo.jpg" alt="伊斯特拉国际" />
-            <h2 class="auth-card__title">创建账号</h2>
-            <p class="auth-card__desc">手机号与邮箱至少填写一项</p>
-            <form id="register-form">
-              <div class="field">
-                <label for="rg-name">姓名</label>
-                <input id="rg-name" type="text" placeholder="您的称呼" autocomplete="name" required />
-              </div>
-              <div class="field">
-                <label for="rg-phone">手机号（选填）</label>
-                <input id="rg-phone" type="tel" placeholder="手机号" autocomplete="tel" />
-              </div>
-              <div class="field">
-                <label for="rg-email">邮箱（选填）</label>
-                <input id="rg-email" type="email" placeholder="邮箱" autocomplete="email" />
-              </div>
-              <div class="field">
-                <label for="rg-password">密码</label>
-                <input id="rg-password" type="password" placeholder="至少 4 位" autocomplete="new-password" required />
-              </div>
-              <button class="btn btn--primary" type="submit">注册 <span class="btn-arrow">→</span></button>
-              <p class="auth-card__error" id="register-error"></p>
-            </form>
-            <p class="auth-card__switch">已有账号？<a href="login.html">直接登录</a></p>
-          </div>
-          <p class="account__note">* 注册即代表同意将您的评估记录仅用于本人查看与个性化推荐。</p>
-        </div>
+        <p style="margin-top:1.25rem;font-size:.75rem;color:var(--color-text-faint)">3 秒后自动跳转到 AI 评估页面…</p>
       </div>
-    </div>
+    </section>
   </main>
   <is-footer></is-footer>
   <script src="src/data/brand.js"></script>
@@ -67,6 +40,6 @@
   <script src="src/utils/api.js"></script>
   <script src="src/components/site-navbar.js"></script>
   <script src="src/components/site-footer.js"></script>
-  <script src="src/pages/register.js"></script>
+  <script>setTimeout(function(){ location.replace('ai-assessment.html'); }, 3000);</script>
 </body>
 </html>

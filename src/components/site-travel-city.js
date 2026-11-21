@@ -176,7 +176,17 @@ class SiteTravelCity extends HTMLElement {
     let token = '';
     try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
     if (!token) {
-      btn.addEventListener('click', () => { location.href = 'login.html?next=travel-city.html?id=' + city.id; });
+      const key = 'istra_fav_cities';
+      const read = () => { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { return []; } };
+      const has = read().indexOf(city.id) >= 0;
+      btn.textContent = has ? '★ 已收藏' : '☆ 收藏';
+      btn.addEventListener('click', () => {
+        const list = read();
+        const i = list.indexOf(city.id);
+        if (i >= 0) { list.splice(i, 1); btn.textContent = '☆ 收藏'; }
+        else { list.push(city.id); btn.textContent = '★ 已收藏'; }
+        try { localStorage.setItem(key, JSON.stringify(list)); } catch (e) {}
+      });
       return;
     }
     btn.addEventListener('click', () => {

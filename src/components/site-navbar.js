@@ -55,7 +55,6 @@ class SiteNavbar extends HTMLElement {
           <ul class="nav__links">${links}<li class="nav__qq">售后客服 QQ：3279331550<br>伊斯特拉国际交流群：978638092</li></ul>
         </nav>
 
-        <a class="nav__account" href="login.html" data-account-entry>登录</a>
 
         <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="打开菜单">
           ${Istra.icon('menu')}
@@ -66,19 +65,10 @@ class SiteNavbar extends HTMLElement {
 
       <div class="menu" id="site-menu" aria-hidden="true">
         <ul class="menu__list">${menuLinks}<li class="menu__qq">售后客服 QQ：3279331550<br>伊斯特拉国际交流群：978638092</li></ul>
-        <a class="menu__account" href="login.html" data-account-entry>登录</a>
         <a class="menu__ai-cta" href="${aiItem.href}"${aiActive}>AI评估 <span aria-hidden="true">→</span></a>
         <p class="menu__foot">ESTRELLA INTERNATIONAL · GLOBAL DEVELOPMENT</p>
       </div>
     `;
-
-    const acc = this.querySelector('[data-account-entry]');
-    if (acc) {
-      let token = '';
-      try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
-      acc.href = token ? 'profile.html' : 'login.html';
-      acc.textContent = token ? '个人中心' : '登录';
-    }
 
     this.toggle = this.querySelector('.nav__toggle');
     this.menu = this.querySelector('.menu');

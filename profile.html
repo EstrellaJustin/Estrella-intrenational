@@ -3,94 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>个人中心 · 伊斯特拉国际</title>
+  <title>平台已取消注册登录 · 伊斯特拉国际</title>
+  <meta name="robots" content="noindex" />
   <meta name="theme-color" content="#041B3A" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="stylesheet" href="assets/fonts/fonts.css" />
   <link rel="stylesheet" href="src/styles/tokens.css" />
   <link rel="stylesheet" href="src/styles/base.css" />
   <link rel="stylesheet" href="src/styles/navbar.css" />
-  <link rel="stylesheet" href="src/styles/account.css" />
   <link rel="stylesheet" href="src/styles/footer.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要内容</a>
-  <is-navbar></is-navbar>
+  <is-navbar page="home"></is-navbar>
   <main id="main">
-    <div class="account">
-      <header class="account__head">
-        <div class="container">
-          <p class="account__eyebrow" data-reveal>Member Center</p>
-          <h1 class="account__title" data-reveal>个人中心</h1>
-          <p class="account__sub" data-reveal>我的资料 · AI评估 · 推荐方案 · 收藏 · 浏览记录 · 咨询记录</p>
+    <section style="padding: calc(var(--nav-h) + 4rem) 0 5rem">
+      <div class="container container--narrow" style="text-align:center">
+        <p style="font-size:.75rem;letter-spacing:.2em;color:var(--color-accent)">OPEN PLATFORM</p>
+        <h1 style="margin-top:1rem;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:var(--color-heading)">平台已取消注册与登录</h1>
+        <p style="margin-top:1rem;line-height:1.9;color:var(--color-text-muted)">伊斯特拉国际现已全面开放：无需注册、无需登录，即可无限次免费使用 AI 全球机会评估，并浏览全球国家、项目与 DIY 签证工作台。</p>
+        <p style="margin-top:.5rem;line-height:1.9;color:var(--color-text-muted)">每份评估报告可单独支付 ¥9.90 解锁本次测评的全部国家，已购买的报告永久保留。</p>
+        <div style="margin-top:2rem;display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap">
+          <a class="btn btn--primary" href="ai-assessment.html">立即开始 AI 评估 <span class="btn-arrow">→</span></a>
+          <a class="btn btn--ghost-dark" href="index.html">返回首页</a>
         </div>
-      </header>
-      <div class="account__body">
-        <div class="container">
-          <div class="profile__grid">
-            <aside class="profile__side">
-              <div class="profile__card" id="profile-card"></div>
-              <div class="profile__card">
-                <nav class="profile__nav">
-                  <a class="profile__nav-item" href="#sec-profile">我的资料 <small>→</small></a>
-                  <a class="profile__nav-item" href="#sec-assess">我的AI评估 <small>→</small></a>
-                  <a class="profile__nav-item" href="#sec-recs">我的推荐方案 <small>→</small></a>
-                  <a class="profile__nav-item" href="#sec-fav">我的收藏 <small>→</small></a>
-                  <a class="profile__nav-item" href="#sec-history">浏览记录 <small>→</small></a>
-                  <a class="profile__nav-item" href="#sec-consult">咨询记录 <small>→</small></a>
-<a class="profile__nav-item" href="#sec-orders">我的订单 <small>→</small></a>
-<a class="profile__nav-item" href="#sec-entitlements">我的权益 <small>→</small></a>
-                  <a class="profile__nav-item" href="#sec-quota">AI评估额度 <small>→</small></a>
-                </nav>
-              </div>
-            </aside>
-            <div class="profile__main">
-              <section class="profile__section" id="sec-profile">
-                <h2 class="profile__section-title"><span>01</span>我的资料</h2>
-                <div id="profile-view"></div>
-                <div id="profile-edit" style="display:none"></div>
-                <div class="profile__actions">
-                  <button class="btn btn--ghost-dark" type="button" id="btn-edit-profile">编辑资料</button>
-                  <button class="btn btn--primary" type="button" id="btn-save-profile" style="display:none">保存资料</button>
-                </div>
-              </section>
-              <section class="profile__section" id="sec-assess">
-                <h2 class="profile__section-title"><span>02</span>我的AI评估</h2>
-                <div id="assess-list"></div>
-              </section>
-              <section class="profile__section" id="sec-recs">
-                <h2 class="profile__section-title"><span>03</span>我的推荐方案</h2>
-                <div id="recs-list"></div>
-              </section>
-              <section class="profile__section" id="sec-fav">
-                <h2 class="profile__section-title"><span>04</span>我的收藏</h2>
-                <div id="fav-list"></div>
-              </section>
-              <section class="profile__section" id="sec-history">
-                <h2 class="profile__section-title"><span>05</span>浏览记录</h2>
-                <div id="history-list"></div>
-              </section>
-              <section class="profile__section" id="sec-orders">
-<h2 class="profile__section-title"><span>07</span>我的订单</h2>
-<div id="orders-list"></div>
-</section>
-<section class="profile__section" id="sec-entitlements">
-<h2 class="profile__section-title"><span>08</span>我的权益</h2>
-<div id="entitlements-list"></div>
-</section>
-<section class="profile__section" id="sec-quota">
-<h2 class="profile__section-title"><span>09</span>AI 评估额度中心</h2>
-<div id="quota-card"></div>
-</section>
-<section class="profile__section" id="sec-consult">
-                <h2 class="profile__section-title"><span>06</span>咨询记录</h2>
-                <div id="consult-list"></div>
-              </section>
-            </div>
-          </div>
-        </div>
+        <p style="margin-top:1.25rem;font-size:.75rem;color:var(--color-text-faint)">3 秒后自动跳转到 AI 评估页面…</p>
       </div>
-    </div>
+    </section>
   </main>
   <is-footer></is-footer>
   <script src="src/data/brand.js"></script>
@@ -99,10 +38,8 @@
   <script src="src/utils/icons.js"></script>
   <script src="src/utils/reveal.js"></script>
   <script src="src/utils/api.js"></script>
-  <script src="src/utils/pay.js"></script>
   <script src="src/components/site-navbar.js"></script>
   <script src="src/components/site-footer.js"></script>
-  <script src="src/pages/profile.js"></script>
+  <script>setTimeout(function(){ location.replace('ai-assessment.html'); }, 3000);</script>
 </body>
 </html>
-

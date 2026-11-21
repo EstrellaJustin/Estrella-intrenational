@@ -71,7 +71,7 @@ class SiteAiAssessment extends HTMLElement {
       if (!box.querySelector('.quota-cta')) {
         const cta = document.createElement('div');
         cta.className = 'quota-cta';
-        cta.innerHTML = '<a class="btn btn--ghost-dark" href="register.html">注册获取 3 次</a> <a class="btn btn--primary" href="pay.html?product=ai-assessment">购买解锁 10 次</a> <span class="quota-qq">售后客服 QQ：3279331550</span>';
+        cta.innerHTML = '<span class="quota-qq">本平台无限次免费测评 · 售后客服 QQ：3279331550</span>';
         box.appendChild(cta);
       }
     }
@@ -2260,42 +2260,11 @@ class SiteAiAssessment extends HTMLElement {
       });
     });
 
-    /* 保存评估与推荐到个人中心（登录用户） */
+    /* 匿名报告：不绑定账号，访问凭证已在页面顶部展示 */
     const saveBox = this.querySelector('.report__saved');
-    let token = '';
-    try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
-    if (token && window.Istra && Istra.api) {
-      const payload = {
-        inputs: {
-          age: s.age, gender: s.gender, marital: s.marital, hasKids: s.hasKids,
-          cat1: s.cat1, cat2: s.cat2, identity: s.identity, industry: s.industry, name: s.name, email: s.email, ageInput: s.ageInput, englishCert: s.englishCert, englishScore: s.englishScore, fundsInput: s.fundsInput, skills: s.skills, years: s.years,
-          degree: s.degree, major: s.major, englishLevel: s.englishLevel, otherLangs: s.otherLangs,
-          funds: s.funds, source: s.source, lowCost: s.lowCost, workDevelop: s.workDevelop, studyFirst: s.studyFirst, planTime: s.planTime, idealLife: s.idealLife, developWays: s.developWays,
-          parentsPlan: s.parentsPlan, eduNeed: s.eduNeed, goals: s.goals,
-          likes: s.likes, climate: s.climate, pace: s.pace, risk: s.risk, accepts: s.accepts
-        },
-        health: { healthNeed: s.healthNeed, specialMed: s.specialMed, chronic: s.chronic, regularMed: s.regularMed },
-        recommendations: plans.slice(0, 20).map((pp) => ({ country: pp.project.country.cn, project: pp.project.name, score: pp.pct, reason: pp.reasons[0] || '' }))
-      };
-      Istra.api.saveAssessment(payload).then((r) => {
-        if (saveBox) saveBox.innerHTML = '✅ 已保存到个人中心（评估 #' + r.id + '）· <a href="profile.html">查看我的评估</a>';
-      }).catch(() => { if (saveBox) saveBox.innerHTML = '保存失败，请稍后在个人中心查看。'; });
-    } else if (saveBox) {
-      saveBox.innerHTML = '💡 <a href="login.html?next=ai-assessment.html">登录 / 注册</a>后，可保存本次评估记录与 20 个推荐方案到个人中心。';
-      /* 游客：报告生成成功后扣减一次评估额度（失败不扣，后端控制） */
-      if (window.Istra && Istra.api && Istra.api.saveVisitorAssessment) {
-        Istra.api.saveVisitorAssessment(this.visitorId()).then((q) => {
-          if (q && q.remaining !== undefined) {
-            this._quota = q;
-            const el = this.querySelector('[data-quota]');
-            if (el) el.textContent = '本游客剩余评估次数：' + q.remaining + ' / 1';
-          }
-        }).catch(function () {});
-      }
-    }
+    if (saveBox) saveBox.innerHTML = '✅ 本次报告已生成（匿名保存）。请保存上方「报告凭证」，以便日后恢复本报告。';
 
     Istra.reveal.observe(this);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
