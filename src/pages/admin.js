@@ -184,7 +184,7 @@ async function openDetail(orderId) {
 async function doApprove(o, overlay) {
   if (!confirm('确认审核通过订单 ' + o.orderId + ' ？\n通过后将自动发放 10 次 AI 评估额度并解锁完整 20 个国家/项目匹配结果。')) return;
   try {
-    await Istra.api.adminReview(o.id, true, getToken());
+    await Istra.api.adminReview(o.id, true, getToken(), '', o.kind);
     alert('审核成功，已发放10次额度并解锁20个国家/项目。');
     overlay.remove();
     await loadAll(); render();
@@ -196,7 +196,7 @@ async function doReject(o, overlay) {
   const r = prompt('请填写驳回原因：\n' + reasons.join(' / '), reasons[0]);
   if (r === null) return;
   try {
-    await Istra.api.adminReview(o.id, false, getToken(), r);
+    await Istra.api.adminReview(o.id, false, getToken(), r, o.kind);
     alert('订单已驳回，未增加额度。');
     overlay.remove();
     await loadAll(); render();

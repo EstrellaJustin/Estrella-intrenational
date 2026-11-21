@@ -707,3 +707,35 @@ a.report__project:hover { border-color: rgba(59, 130, 246, 0.55); background: rg
 .quota-cta { margin-top: 1rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
 
 .quota-qq { display: inline-block; font-size: 0.75rem; color: var(--color-text-muted); }
+
+/* ================= 匿名报告：锁定卡片与支付弹窗 ================= */
+.report-locked-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.65rem; margin-bottom: 1.25rem; }
+.report-locked-card { display: flex; align-items: center; gap: 0.5rem; padding: 0.7rem 0.85rem; border: 1px dashed var(--color-line); border-radius: var(--radius-m); background: rgba(6, 43, 85, 0.3); }
+.report-locked-rank { font-size: 0.75rem; font-weight: 700; color: var(--color-accent); }
+.report-locked-card img { border-radius: 2px; }
+.report-locked-card b { font-size: 0.8125rem; color: var(--color-heading); }
+.report-locked-hint { margin-left: auto; font-size: 0.6875rem; color: var(--color-text-faint); white-space: nowrap; }
+.report-locked-more { grid-column: 1 / -1; font-size: 0.75rem; color: var(--color-text-faint); }
+
+.report-pay { position: fixed; inset: 0; z-index: 200; display: flex; align-items: flex-start; justify-content: center; padding: 1rem; overflow-y: auto; background: rgba(2, 12, 28, 0.75); backdrop-filter: blur(4px); }
+.report-pay__box { position: relative; width: 100%; max-width: 460px; margin: 2rem 0; padding: 1.5rem; background: var(--color-ink-2); border: 1px solid var(--color-line-soft); border-radius: var(--radius-panel); text-align: center; }
+.report-pay__close { position: absolute; top: 0.5rem; right: 0.9rem; font-size: 1.5rem; line-height: 1; color: var(--color-text-muted); background: none; border: none; cursor: pointer; }
+.report-pay__title { font-size: 1.0625rem; font-weight: 700; color: var(--color-heading); padding-right: 1.5rem; }
+.report-pay__qr { width: min(240px, 100%); margin-top: 1rem; border-radius: var(--radius-m); border: 1px solid var(--color-line-soft); background: #fff; object-fit: contain; }
+.report-pay__tip { margin-top: 0.6rem; font-size: 0.875rem; color: var(--color-heading); }
+.report-pay__meta { margin-top: 0.4rem; font-size: 0.8125rem; color: var(--color-text-muted); }
+.report-pay__field { display: block; margin-top: 0.9rem; text-align: left; font-size: 0.75rem; color: var(--color-text-muted); }
+.report-pay__field input { display: block; width: 100%; margin-top: 0.35rem; padding: 0.5rem 0.7rem; border: 1px solid rgba(255,255,255,.25); border-radius: var(--radius-s); background: rgba(255,255,255,.05); color: var(--color-heading); font-size: 0.8125rem; }
+.report-pay__box .btn { width: 100%; justify-content: center; margin-top: 1rem; }
+.report-pay__note { margin-top: 0.75rem; font-size: 0.6875rem; line-height: 1.8; color: var(--color-text-faint); }
+@media (max-width: 560px) {
+  .report-locked-grid { grid-template-columns: 1fr 1fr; }
+  .report-pay__box { margin: 1rem 0; padding: 1.125rem; }
+}
+
+/* ================= 报告凭证（匿名恢复） ================= */
+.report__credential { margin-bottom: 1.25rem; padding: 0.9rem 1rem; border: 1px dashed var(--color-accent-line); border-radius: var(--radius-m); background: rgba(201, 162, 39, 0.06); }
+.report__credential-title { font-size: 0.75rem; color: var(--color-accent); margin-bottom: 0.5rem; }
+.report__credential code { display: block; font-size: 0.6875rem; color: var(--color-text-muted); word-break: break-all; margin-top: 0.2rem; }
+.report__credential code b { color: var(--color-heading); font-weight: 600; }
+.report__credential-copy { margin-top: 0.6rem; padding: 0.3rem 0.7rem; border: 1px solid var(--color-accent-line); border-radius: var(--radius-s); background: transparent; color: var(--color-accent); font-size: 0.75rem; cursor: pointer; }

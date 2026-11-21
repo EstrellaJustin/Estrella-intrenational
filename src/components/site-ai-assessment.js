@@ -1732,7 +1732,7 @@ class SiteAiAssessment extends HTMLElement {
     const maxRaw = Math.max(...raws);
     const norm = (raw) => Math.round(55 + ((raw - minRaw) / ((maxRaw - minRaw) || 1)) * 40);
 
-    return top20.map((x, i) => {
+    return scored.map((x, i) => {
       const p = x.project;
       return {
         rank: i + 1,
@@ -1910,11 +1910,34 @@ class SiteAiAssessment extends HTMLElement {
     if (this._detailEsc) { document.removeEventListener('keydown', this._detailEsc); this._detailEsc = null; }
   }
 
-  getUnlock() {
-    let token = '';
-    try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
-    if (!token || !window.Istra || !Istra.api) return Promise.resolve(false);
-    return Istra.api.me().then((d) => !!d.user.assessmentUnlock).catch(() => false);
+  /* 匿名报告：创建独立报告并保存访问凭证（无需登录） */
+  async createReportForPlans(plans) {
+    try {
+      const results = plans.map((p, i) => ({
+        rank: i + 1,
+        country: p.project.country.cn,
+        countryId: p.project.country.id,
+        flag: p.project.country.flag,
+        project: p.project.name,
+        projectId: p.project.id,
+        score: p.pct,
+        reason: (p.reasons && p.reasons[0]) || ''
+      }));
+      const st = this.state;
+      const inputs = {
+        age: st.ageInput, gender: st.gender, degree: st.degree, major: st.major,
+        identity: st.identity, industry: st.industry, years: st.years,
+        englishCert: st.englishCert, englishLevel: st.englishLevel,
+        funds: st.funds, planTime: st.planTime, goals: st.goals,
+        climate: st.climate, likes: st.likes, risk: st.risk
+      };
+      const r = await Istra.api.createReport({ inputs, results });
+      if (r && r.id && r.token) {
+        try { localStorage.setItem('istra_report_' + r.id, r.token); } catch (e) {}
+        return r;
+      }
+    } catch (e) { console.warn('创建评估报告失败：', e.message); }
+    return null;
   }
 
   revealFull() {
@@ -1939,9 +1962,109 @@ class SiteAiAssessment extends HTMLElement {
     if (midSec) midSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  /* ===== 报告支付（支付宝 ¥9.90，仅解锁当前报告） ===== */
+  openReportPay() {
+    const r = this._report;
+    if (!r) { alert('报告创建失败，请重新测评'); return; }
+    if (document.querySelector('.report-pay')) return;
+    const overlay = document.createElement('div');
+    overlay.className = 'report-pay';
+    overlay.innerHTML = `
+      <div class="report-pay__box">
+        <button class="report-pay__close" type="button" aria-label="关闭">×</button>
+        <h3 class="report-pay__title">支付 ¥9.90 · 解锁本次测评全部国家</h3>
+        <img class="report-pay__qr" src="assets/pay-alipay.jpg" alt="支付宝收款码" />
+        <p class="report-pay__tip">请使用支付宝扫码支付 ¥9.90</p>
+        <p class="report-pay__meta">订单号：<b data-rp-order>创建中…</b></p>
+        <label class="report-pay__field">支付宝交易单号<input id="rp-tx" type="text" placeholder="付款后填写支付宝账单中的交易单号" autocomplete="off" /></label>
+        <label class="report-pay__field">上传付款凭证<input id="rp-file" type="file" accept="image/*" /></label>
+        <button class="btn btn--primary" type="button" id="rp-submit" disabled>提交付款申请</button>
+        <p class="report-pay__note">提交后由管理员审核，审核通过自动解锁本报告；仅影响当前报告，已购买报告永久保留。</p>
+      </div>`;
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.querySelector('.report-pay__close').addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+
+    let order = null;
+    let proofB64 = '';
+    const txEl = overlay.querySelector('#rp-tx');
+    const fileEl = overlay.querySelector('#rp-file');
+    const submitBtn = overlay.querySelector('#rp-submit');
+    const refresh = () => { submitBtn.disabled = !(order && proofB64 && txEl.value.trim()); };
+    txEl.addEventListener('input', refresh);
+    fileEl.addEventListener('change', async (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      try { proofB64 = await this.compressReportProof(f); refresh(); }
+      catch (err) { alert(err.message); }
+    });
+
+    Istra.api.createReportOrder(r.id, r.token).then((d) => {
+      if (d && d.unlocked) { this.unlockNow(); close(); return; }
+      order = d && d.order;
+      overlay.querySelector('[data-rp-order]').textContent = order ? order.orderId : '创建失败';
+      refresh();
+    }).catch((e) => { overlay.querySelector('[data-rp-order]').textContent = '创建失败：' + e.message; });
+
+    submitBtn.addEventListener('click', async () => {
+      if (!order) return;
+      submitBtn.disabled = true; submitBtn.textContent = '提交中…';
+      try {
+        await Istra.api.submitReportProof(r.id, r.token, txEl.value.trim(), proofB64);
+        submitBtn.textContent = '已提交，等待审核';
+        overlay.querySelector('.report-pay__note').textContent = '付款申请已提交。管理员审核通过后本报告将自动解锁（通常 1–2 个工作日），无需刷新页面。';
+        this.pollUnlock(r, overlay);
+      } catch (e) {
+        submitBtn.disabled = false; submitBtn.textContent = '提交付款申请';
+        alert(e.message || '提交失败');
+      }
+    });
+  }
+
+  compressReportProof(file) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const scale = Math.min(1, 1024 / Math.max(img.width, img.height));
+        const c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(img.width * scale));
+        c.height = Math.max(1, Math.round(img.height * scale));
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        resolve(c.toDataURL('image/jpeg', 0.85).replace(/^data:[^;]+;base64,/, ''));
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('图片读取失败')); };
+      img.src = url;
+    });
+  }
+
+  pollUnlock(r, overlay) {
+    let tries = 0;
+    const timer = setInterval(async () => {
+      tries++;
+      try {
+        const d = await Istra.api.getReport(r.id, r.token);
+        if (d && d.unlocked) {
+          clearInterval(timer);
+          if (overlay) overlay.remove();
+          this.unlockNow();
+          return;
+        }
+      } catch (e) { /* 忽略轮询错误 */ }
+      if (tries >= 120) clearInterval(timer);
+    }, 5000);
+  }
+
+  unlockNow() {
+    this._unlocked = true;
+    this.revealFull();
+  }
+
   startAnalysis() {
     this.phase = 'analyzing';
-    const steps = ['正在理解您的个人画像…', '正在匹配目标国家…', '正在匹配 20 个方案…', '正在规划未来路线…'];
+    const steps = ['正在理解您的个人画像…', '正在匹配目标国家…', '正在匹配全球项目…', '正在规划未来路线…'];
     this.innerHTML = `
       <div class="assessment">
         <header class="assessment__head">
@@ -1983,13 +2106,15 @@ class SiteAiAssessment extends HTMLElement {
     const plans = this.buildPlans();
     const top = plans.slice(0, 5);
     const mid = plans.slice(5, 15);
-    const backup = plans.slice(15, 20);
+    const backup = plans.slice(15);
     const notRec = this.notRecommendedDirections();
     const topCountry = plans[0] ? plans[0].project.country.id : 'ca';
     const topProject = plans[0] ? plans[0].project : null;
     const roadmap = this.roadmap(topCountry, topProject);
     const why = this.whyRecommend();
-    const unlocked = await this.getUnlock();
+    const report = await this.createReportForPlans(plans);
+    this._report = report;
+    const unlocked = false;
     this._plans = plans;
     this._unlocked = unlocked;
     const s = this.state;
@@ -2010,7 +2135,14 @@ class SiteAiAssessment extends HTMLElement {
             <div class="report__cover" data-reveal>
               <p class="report__cover-eyebrow">Global Life Path Planning Report</p>
               <h2 class="report__cover-title">全球人生路径规划报告</h2>
-              <p class="report__cover-meta">${this.identityLabel()} · ${dateStr} · 20 个个性化匹配方案</p>
+              <p class="report__cover-meta">${this.identityLabel()} · ${dateStr} · ${plans.length} 个个性化匹配方案</p>
+            </div>
+
+            <div class="report__credential" data-reveal>
+              <p class="report__credential-title">报告凭证（请保存，用于日后恢复本报告）</p>
+              <code>报告 ID：<b data-report-id>${report ? report.id : '未生成'}</b></code>
+              <code>访问凭证：<b data-report-token>${report ? report.token : '未生成'}</b></code>
+              <button type="button" class="report__credential-copy" data-copy-report>复制凭证</button>
             </div>
 
             <section class="report__section" data-reveal>
@@ -2036,11 +2168,21 @@ class SiteAiAssessment extends HTMLElement {
 
             ${unlocked ? '' : `
             <section class="report__section" data-unlock-sec data-reveal>
-              <h3 class="report__section-title"><span>03</span>解锁完整方案</h3>
+              <h3 class="report__section-title"><span>03</span>其余 ${plans.length - 3} 个结果已锁定</h3>
+              <div class="report-locked-grid">
+                ${plans.slice(3, 15).map((p, i) => `
+                  <div class="report-locked-card">
+                    <span class="report-locked-rank">#${i + 4}</span>
+                    <img src="assets/flags/${p.project.country.flag}" alt="${p.project.country.cn}" width="28" height="20" />
+                    <b>${p.project.country.cn}</b>
+                    <span class="report-locked-hint">🔒 支付后解锁</span>
+                  </div>`).join('')}
+                ${plans.length > 15 ? `<p class="report-locked-more">还有 ${plans.length - 15} 个结果…</p>` : ''}
+              </div>
               <div class="unlock">
-                <p class="unlock__text">还有 ${plans.length - 3} 个适合您的项目已隐藏</p>
-                <button class="btn btn--primary" type="button" data-unlock>¥9.9 解锁完整方案 <span class="btn-arrow">→</span></button>
-                <p class="unlock__note">解锁后可查看全部 ${plans.length} 个项目与推荐方案。支付仅解锁已有 AI 评估结果，不会重新生成评估。</p>
+                <p class="unlock__text">免费已展示前 3 名，支付 ¥9.90 解锁本次测评全部 ${plans.length} 个结果</p>
+                <button class="btn btn--primary" type="button" data-unlock>支付 ¥9.90，解锁本次测评全部国家 <span class="btn-arrow">→</span></button>
+                <p class="unlock__note">本次支付仅解锁当前这份测评报告，不影响其他报告。每次重新测评均可免费生成新报告，已购买的报告永久保留解锁权益。</p>
               </div>
             </section>`}
 
@@ -2050,7 +2192,7 @@ class SiteAiAssessment extends HTMLElement {
             </section>
 
             <section class="report__section" data-backup-sec data-reveal${unlocked ? '' : ' style="display:none"'}>
-              <h3 class="report__section-title"><span>04</span>备用方案 · 16–20</h3>
+              <h3 class="report__section-title"><span>04</span>备用方案 · 16+</h3>
               <div class="plans plans--grid">${backup.map((p) => this.planCard(p, true)).join('')}</div>
             </section>
 
@@ -2099,16 +2241,16 @@ class SiteAiAssessment extends HTMLElement {
       </div>
     `;
     this.querySelector('[data-action="restart"]').addEventListener('click', () => this.reset());
+    const copyBtn = this.querySelector('[data-copy-report]');
+    if (copyBtn) copyBtn.addEventListener('click', () => {
+      const idEl = this.querySelector('[data-report-id]');
+      const tkEl = this.querySelector('[data-report-token]');
+      const text = '报告ID: ' + (idEl ? idEl.textContent : '') + ' 访问凭证: ' + (tkEl ? tkEl.textContent : '');
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => { copyBtn.textContent = '已复制 ✓'; }).catch(() => {});
+      else { window.prompt('请手动复制报告凭证', text); }
+    });
     const unlockBtn = this.querySelector('[data-unlock]');
-    if (unlockBtn && !unlocked) {
-      unlockBtn.addEventListener('click', () => {
-        let token = '';
-        try { token = localStorage.getItem('istra_token') || ''; } catch (e) {}
-        if (!token) { location.href = 'login.html?next=ai-assessment.html'; return; }
-        /* 正式支付：进入订单确认页（支付宝扫码 + 凭证上传 + 人工审核），不再演示直接解锁 */
-        location.href = 'pay.html?product=ai-assessment';
-      });
-    }
+    if (unlockBtn && !unlocked) unlockBtn.addEventListener('click', () => this.openReportPay());
 
     /* 推荐项目 → 评估结果页内打开项目详情（不离开评估流程） */
     this.querySelectorAll('[data-project-detail]').forEach((a) => {

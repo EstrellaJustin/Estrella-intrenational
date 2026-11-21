@@ -22,7 +22,7 @@ const port = portArg ? Number(portArg.split('=')[1]) : (process.env.PORT || 4173
 const openBrowser = !args.includes('--no-open');
 
 /* ---------- 数据库（JSON 文件表） ---------- */
-const TABLES = ['users', 'user_profiles', 'assessments', 'recommendations', 'user_behavior', 'sessions', 'products', 'orders', 'payments', 'entitlements', 'visitor_assessments', 'admin_audit'];
+const TABLES = ['users', 'user_profiles', 'assessments', 'recommendations', 'user_behavior', 'sessions', 'products', 'orders', 'payments', 'entitlements', 'visitor_assessments', 'admin_audit', 'reports', 'report_orders'];
 fs.mkdirSync(dbDir, { recursive: true });
 function loadTable(name) {
   if (store.enabled) return store.load(name);
@@ -43,6 +43,15 @@ function hashPwd(password, salt) {
   return crypto.scryptSync(String(password), salt, 64).toString('hex');
 }
 function newToken() { return crypto.randomBytes(24).toString('hex'); }
+/* ---------- 匿名评估报告 ---------- */
+function newReportId() { return 'R' + crypto.randomBytes(12).toString('hex'); }
+function reportTokenHash(t) { return crypto.createHash('sha256').update(String(t || '')).digest('hex'); }
+function findReportByToken(id, token) {
+  const r = loadTable('reports').find((x) => x.id === id);
+  if (!r) return { error: '报告不存在', code: 404 };
+  if (!token || reportTokenHash(token) !== r.tokenHash) return { error: '访问凭证无效', code: 403 };
+  return { report: r };
+}
 const SESSION_TTL_DAYS = Math.max(1, Number(process.env.SESSION_TTL_DAYS) || 30);
 function sessionExpiry(from) { return new Date((from || Date.now()) + SESSION_TTL_DAYS * 86400000).toISOString(); }
 function createSession(userId) {
@@ -385,7 +394,85 @@ async function handleApi(req, res, url) {
     return sendJson(res, 200, assessmentQuota(null, visitorId));
   }
   
-  /* POST /api/assessments（保存评估 + 推荐） */
+    /* POST /api/reports（匿名创建评估报告，无需登录） */
+  if (p === '/api/reports' && method === 'POST') {
+    const ipHash = hashRisk(clientIp(req));
+    if (rateLimit('report:' + ipHash, Number(process.env.REPORT_RATE_MAX) || 30, 3600000)) {
+      return sendJson(res, 429, { error: '请求过于频繁，请稍后再试' });
+    }
+    const b = await readBody(req);
+    const inputs = b.inputs || {};
+    const results = Array.isArray(b.results) ? b.results : [];
+    if (!results.length) return sendJson(res, 400, { error: '评估结果为空' });
+    const id = newReportId();
+    const token = crypto.randomBytes(32).toString('hex');
+    const reports = loadTable('reports');
+    reports.push({ id, tokenHash: reportTokenHash(token), inputs, results, unlocked: false, createdAt: new Date().toISOString(), unlockedAt: null });
+    saveTable('reports', reports);
+    return sendJson(res, 200, { id, token, unlocked: false, total: results.length });
+  }
+
+  /* GET /api/reports/:id?token= */
+  const reportGet = p.match(/^\/api\/reports\/([A-Za-z0-9]+)$/);
+  if (reportGet && method === 'GET') {
+    const found = findReportByToken(reportGet[1], url.searchParams.get('token'));
+    if (found.error) return sendJson(res, found.code, { error: found.error });
+    const r = found.report;
+    return sendJson(res, 200, {
+      id: r.id, unlocked: !!r.unlocked, createdAt: r.createdAt, unlockedAt: r.unlockedAt || null,
+      total: r.results.length,
+      results: r.unlocked ? r.results : r.results.slice(0, 3),
+      locked: r.unlocked ? 0 : Math.max(0, r.results.length - 3)
+    });
+  }
+
+  /* POST /api/reports/:id/orders */
+  const reportOrder = p.match(/^\/api\/reports\/([A-Za-z0-9]+)\/orders$/);
+  if (reportOrder && method === 'POST') {
+    const b = await readBody(req);
+    const found = findReportByToken(reportOrder[1], b.token);
+    if (found.error) return sendJson(res, found.code, { error: found.error });
+    const r = found.report;
+    if (r.unlocked) return sendJson(res, 200, { unlocked: true });
+    const orders = loadTable('report_orders');
+    const pending = orders.find((o) => o.reportId === r.id && o.status === 'pending');
+    if (pending) return sendJson(res, 200, { order: pending });
+    const order = {
+      id: nextId(orders), orderId: 'RPT' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase(),
+      reportId: r.id, amount: 990, currency: 'CNY', channel: 'alipay', status: 'pending',
+      transactionNo: '', proofFile: '', createdAt: new Date().toISOString(), paidAt: null
+    };
+    orders.push(order);
+    saveTable('report_orders', orders);
+    return sendJson(res, 200, { order });
+  }
+
+  /* POST /api/reports/:id/proof */
+  const reportProof = p.match(/^\/api\/reports\/([A-Za-z0-9]+)\/proof$/);
+  if (reportProof && method === 'POST') {
+    const b = await readBody(req);
+    const found = findReportByToken(reportProof[1], b.token);
+    if (found.error) return sendJson(res, found.code, { error: found.error });
+    const orders = loadTable('report_orders');
+    const o = orders.find((x) => x.reportId === found.report.id && x.status === 'pending');
+    if (!o) return sendJson(res, 400, { error: '没有待支付的订单' });
+    const transactionNo = cleanStr(b.transactionNo, 80);
+    if (!transactionNo) return sendJson(res, 400, { error: '请填写支付宝交易单号' });
+    const proof = String(b.proof || '').replace(/^data:[^;]+;base64,/, '');
+    if (!proof || proof.length < 100) return sendJson(res, 400, { error: '请上传有效的付款凭证图片' });
+    const buf = Buffer.from(proof, 'base64');
+    if (buf.length > 2 * 1024 * 1024) return sendJson(res, 413, { error: '凭证图片过大（≤2MB）' });
+    const proofDir = path.join(dbDir, 'report_proofs');
+    fs.mkdirSync(proofDir, { recursive: true });
+    fs.writeFileSync(path.join(proofDir, o.orderId + '.jpg'), buf);
+    o.transactionNo = transactionNo;
+    o.proofFile = o.orderId + '.jpg';
+    o.proofAt = new Date().toISOString();
+    saveTable('report_orders', orders);
+    return sendJson(res, 200, { ok: true, order: o });
+  }
+
+/* POST /api/assessments（保存评估 + 推荐） */
 /* POST /api/assessments（保存评估 + 推荐：后端原子扣减，前端无法伪造次数） */
   if (p === '/api/assessments' && method === 'POST') {
     const u = authUser(req);
@@ -626,32 +713,60 @@ function assessmentQuota(user, visitorId) {
     return sendJson(res, 200, { ok: true, order: o });
   }
 
-  /* POST /api/payment/review（管理员审核支付宝订单：approve=true 通过并发权益） */
+  /* POST /api/payment/review（管理员审核：支持账号订单与匿名报告订单） */
   if (p === '/api/payment/review' && method === 'POST') {
     const token = getToken(req);
     if (!token || token !== adminSecret()) return sendJson(res, 403, { error: '审核令牌无效' });
     const b = await readBody(req);
+    const orderId = Number(b.orderId);
+    const kind = cleanStr(b.kind, 20);
+    const now = new Date().toISOString();
+
+    /* 1) 匿名报告订单（kind=report 时优先；否则回退匹配） */
+    const rOrders = loadTable('report_orders');
+    const ro = (kind !== 'account') ? rOrders.find((x) => x.id === orderId) : null;
+    if (ro) {
+      if (ro.status === 'paid') return sendJson(res, 200, { ok: true, alreadyPaid: true, order: ro });
+      if (ro.status !== 'pending') return sendJson(res, 400, { error: '订单状态不允许审核' });
+      if (b.approve) {
+        ro.status = 'paid'; ro.paidAt = now; ro.transactionId = 'ALIPAY-REPORT-' + Date.now();
+        saveTable('report_orders', rOrders);
+        const reports = loadTable('reports');
+        const rep = reports.find((x) => x.id === ro.reportId);
+        if (rep && !rep.unlocked) { rep.unlocked = true; rep.unlockedAt = now; saveTable('reports', reports); }
+        const audit = loadTable('admin_audit');
+        audit.push({ id: nextId(audit), orderId: ro.orderId, userId: 0, action: 'approve', note: '报告解锁 ' + ro.reportId, createdAt: now });
+        saveTable('admin_audit', audit);
+        return sendJson(res, 200, { ok: true, order: ro, reportId: ro.reportId, unlocked: true });
+      }
+      ro.status = 'cancelled'; ro.cancelledAt = now; ro.reviewNote = cleanStr(b.note, 200);
+      saveTable('report_orders', rOrders);
+      return sendJson(res, 200, { ok: true, order: ro });
+    }
+
+    /* 2) 原有账号订单 */
+    if (kind === 'report') return sendJson(res, 404, { error: '订单不存在' });
     const orders = loadTable('orders');
-    const o = orders.find((x) => x.id === Number(b.orderId));
+    const o = orders.find((x) => x.id === orderId);
     if (!o) return sendJson(res, 404, { error: '订单不存在' });
     if (o.channel !== 'alipay') return sendJson(res, 400, { error: '仅支付宝订单可人工审核' });
     if (o.status === 'paid') return sendJson(res, 200, { ok: true, alreadyPaid: true, order: o });
     if (o.status !== 'pending') return sendJson(res, 400, { error: '订单状态不允许审核' });
     if (b.approve) {
-      o.status = 'paid'; o.paidAt = new Date().toISOString(); o.transactionId = 'ALIPAY-REVIEW-' + Date.now();
+      o.status = 'paid'; o.paidAt = now; o.transactionId = 'ALIPAY-REVIEW-' + Date.now();
       saveTable('orders', orders);
       const audit1 = loadTable('admin_audit');
-      audit1.push({ id: nextId(audit1), orderId: o.orderId, userId: o.userId, action: 'approve', note: '', createdAt: new Date().toISOString() });
+      audit1.push({ id: nextId(audit1), orderId: o.orderId, userId: o.userId, action: 'approve', note: '', createdAt: now });
       saveTable('admin_audit', audit1);
       const user = loadTable('users').find((x) => x.id === o.userId);
       const product = productById(o.productId);
       const ents = user && product ? grantEntitlement(user, product, o) : [];
       return sendJson(res, 200, { ok: true, order: o, entitlements: ents.map((e) => e.productId) });
     }
-    o.status = 'cancelled'; o.cancelledAt = new Date().toISOString(); o.reviewNote = cleanStr(b.note, 200);
+    o.status = 'cancelled'; o.cancelledAt = now; o.reviewNote = cleanStr(b.note, 200);
     saveTable('orders', orders);
     const audit2 = loadTable('admin_audit');
-    audit2.push({ id: nextId(audit2), orderId: o.orderId, userId: o.userId, action: 'reject', note: cleanStr(b.note, 200), createdAt: new Date().toISOString() });
+    audit2.push({ id: nextId(audit2), orderId: o.orderId, userId: o.userId, action: 'reject', note: cleanStr(b.note, 200), createdAt: now });
     saveTable('admin_audit', audit2);
     return sendJson(res, 200, { ok: true, order: o });
   }
@@ -692,13 +807,25 @@ function assessmentQuota(user, visitorId) {
     const orders = loadTable('orders');
     const users = loadTable('users');
     const cnt = (f) => orders.filter(f).length;
+    const reports = loadTable('reports');
+    const rOrders = loadTable('report_orders');
+    const today = new Date().toISOString().slice(0, 10);
+    const rPaid = rOrders.filter((o) => o.status === 'paid');
     return sendJson(res, 200, {
       pending: cnt((o) => o.status === 'pending' && o.channel === 'alipay'),
       paid: cnt((o) => o.status === 'paid'),
       cancelled: cnt((o) => o.status === 'cancelled'),
       total: orders.length,
       paid_users: users.filter((u) => u.assessmentUnlock || (Number(u.paid_quota) || 0) > 0).length,
-      total_quota: users.reduce((sum, u) => sum + (Number(u.paid_quota) || 0), 0)
+      total_quota: users.reduce((sum, u) => sum + (Number(u.paid_quota) || 0), 0),
+      reports_total: reports.length,
+      reports_today: reports.filter((r) => String(r.createdAt || '').slice(0, 10) === today).length,
+      reports_unlocked: reports.filter((r) => r.unlocked).length,
+      report_orders_total: rOrders.length,
+      report_orders_paid: rPaid.length,
+      report_orders_pending: rOrders.filter((o) => o.status === 'pending').length,
+      report_amount_total: rPaid.reduce((sum, o) => sum + (Number(o.amount) || 0), 0),
+      report_conversion: reports.length ? Math.round(rPaid.length / reports.length * 1000) / 10 : 0
     });
   }
   /* GET /api/admin/orders（管理员订单列表：status/channel/q 筛选搜索，含用户信息） */
@@ -721,6 +848,15 @@ function assessmentQuota(user, visitorId) {
         || (u.phone || '').toLowerCase().includes(q)
         || (u.email || '').toLowerCase().includes(q);
     });
+    /* 合并匿名报告订单（便于后台统一审核） */
+    const rOrders = loadTable('report_orders').map((o) => ({
+      id: o.id, orderId: o.orderId, userId: 0, user: '匿名报告', phone: '', email: '',
+      amount: o.amount, currency: o.currency || 'CNY', channel: o.channel,
+      transactionNo: o.transactionNo || '', status: o.status,
+      createdAt: o.createdAt, reviewedAt: o.paidAt || o.cancelledAt || null, reviewNote: o.reviewNote || '',
+      hasProof: !!o.proofFile, kind: 'report', reportId: o.reportId
+    }));
+    rows = rows.map((o) => Object.assign({ kind: 'account' }, o)).concat(rOrders).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
     const out = rows.map((o) => {
       const u = byId[o.userId] || {};
       return {

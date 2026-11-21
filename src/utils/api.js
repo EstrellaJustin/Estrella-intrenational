@@ -36,6 +36,11 @@ Istra.api = {
   login(payload) { return this.req('/api/auth/login', 'POST', payload); },
   me() { return this.req('/api/auth/me', 'GET'); },
   refreshToken() { return this.req('/api/auth/refresh', 'POST', {}); },
+  /* 匿名评估报告 */
+  createReport(payload) { return this.req('/api/reports', 'POST', payload); },
+  getReport(id, token) { return this.req('/api/reports/' + encodeURIComponent(id) + '?token=' + encodeURIComponent(token || ''), 'GET'); },
+  createReportOrder(id, token) { return this.req('/api/reports/' + encodeURIComponent(id) + '/orders', 'POST', { token }); },
+  submitReportProof(id, token, transactionNo, proof) { return this.req('/api/reports/' + encodeURIComponent(id) + '/proof', 'POST', { token, transactionNo, proof }); },
   updateProfile(payload) { return this.req('/api/profile', 'PUT', payload); },
   saveAssessment(payload) { return this.req('/api/assessments', 'POST', payload); },
   listAssessments() { return this.req('/api/assessments', 'GET'); },
@@ -79,11 +84,11 @@ Istra.api = {
     return fetch(this.apiBase() + '/api/admin/orders/' + orderId + '/proof', { headers: { 'Authorization': 'Bearer ' + (adminToken || '') } })
       .then(async (res) => { if (!res.ok) { let d = {}; try { d = await res.json(); } catch (e) {} throw new Error(d.error || '凭证加载失败'); } return res.blob(); });
   },
-  adminReview(orderId, approve, adminToken, note) {
+  adminReview(orderId, approve, adminToken, note, kind) {
     return fetch(this.apiBase() + '/api/payment/review', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (adminToken || '') },
-      body: JSON.stringify({ orderId, approve, note: note || '' })
+      body: JSON.stringify({ orderId, approve, note: note || '', kind: kind || '' })
     }).then(async (res) => {
       let d = {}; try { d = await res.json(); } catch (e) {}
       if (!res.ok) { const err = new Error(d.error || '审核失败'); err.status = res.status; throw err; }
